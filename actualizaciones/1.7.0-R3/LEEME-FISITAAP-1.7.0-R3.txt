@@ -1,0 +1,78 @@
+FISITAAP 1.7.0-R3
+Actualización acumulativa para cPanel y programa Windows
+
+QUÉ ARCHIVO VA EN CADA LUGAR
+FISITAAP-1.7.0-R3-FULL-cPanel.zip: este es el archivo que subes a cPanel.
+FISITAAP-Escritorio-1.7.0-Windows-x64.exe: este se instala en cada computadora Windows, no en cPanel.
+El ZIP reúne los cambios de R1, R2 y R3. No necesitas instalar los ZIP anteriores primero.
+Se conservan config.php, las fotos cargadas, los negocios, usuarios, pedidos e inventario. El paquete actualiza los archivos del programa y amplía la base de datos existente.
+
+ACTUALIZAR EN CPANEL
+1. Antes de empezar, descarga una copia completa de los archivos y la base de datos desde las copias de seguridad de cPanel. Conserva esa copia fuera del hosting.
+2. Termina los cobros y sincroniza las cajas Windows. Detén las cajas mientras actualizas.
+3. En cPanel abre Administrador de archivos y entra a la carpeta fisitaap.com, donde están app, assets e index.php. Si tu aplicación está en otra carpeta, usa esa carpeta.
+4. Sube FISITAAP-1.7.0-R3-FULL-cPanel.zip y pulsa Extraer en esa misma carpeta. Debe aparecer la carpeta actualizacion-fisitaap-r3 al lado de app y assets.
+5. Ingresa a la aplicación con tu cuenta Maestro.
+6. Abre https://fisitaap.com/actualizacion-fisitaap-r3/ . Si usas otro dominio, cambia solamente fisitaap.com por tu dominio.
+7. Revisa la comprobación. Marca que guardaste el respaldo y detuviste las cajas, y pulsa Instalar actualización.
+8. Cuando aparezca “Actualización 1.7.0-R3 instalada”, abre el panel y recarga la página con Ctrl + F5.
+9. Revisa una venta, su recibo, una mesa, los permisos de un cajero y un pedido del catálogo antes de reabrir las cajas.
+10. Descarga y conserva la carpeta actualizacion-fisitaap-r3/backups. Después de confirmar la instalación, retira del hosting el ZIP subido y la carpeta actualizacion-fisitaap-r3; mantén el respaldo descargado.
+
+SI EL INSTALADOR DICE “DISTINTO”
+Significa que un archivo del negocio cambió respecto de las copias revisadas. El instalador detiene la actualización para evitar reemplazarlo. No fuerces la instalación ni copies el contenido de payload manualmente. Conserva el mensaje y el respaldo para revisar ese archivo.
+La actualización acepta la copia original revisada, 1.5.0-R1 y 1.6.0-R2. Subir el ZIP por sí solo no activa la actualización: debes completar el paso del instalador en el navegador.
+
+QUÉ CAMBIA SEGÚN EL PDF
+Los menús quedan ordenados en Catálogo, Ventas, Clientes, Compras, Analítica, Administración y Delivery, según el tipo de negocio y sus permisos.
+La web oficial usa el diseño azul del PDF y se edita desde Maestro → Web oficial → Diseño y página.
+La página de cada negocio usa la estructura del anexo: presentación, nosotros, productos o servicios, contacto, mapa y redes. Sus textos e imágenes se editan desde Administración → Diseño. Usa las fotos, el nombre y el logo de tu negocio.
+El catálogo conserva sucursales, categorías, carrito, extras, opcionales, combos, promociones y fidelización.
+La primera compra pide nombre y teléfono. El cliente puede guardar después su acceso y consultar pedidos, premios, tarjetas y entrega.
+Venta rápida muestra los productos, cantidades, edición, búsqueda por código, accesos rápidos, notas, descuento, total, turno y cobro.
+El cobro abre una ventana con efectivo, tarjeta, SINPE, pago mixto, crédito, regalo, vuelto, recibo y división por productos o partes iguales.
+Los negocios tipo Menú tienen Express y mesas básicas o gráficas. Las mesas muestran disponibles, ocupadas o por cobrar, capacidad, saldo y tiempo.
+Al tocar una mesa se abre su cuenta con artículos, notas, servicio, envío a cocina, precuenta, cobro, división, traslado, unión y reimpresión.
+El diseñador del salón guarda mesas, paredes, puertas, ventanas, plantas, sillas, sofá, barra, separadores y textos. Permite mover, cambiar tamaño, girar, deshacer, rehacer, cuadrícula y sectores.
+Cada sector puede tener servicio activo o inactivo y su porcentaje. Cambiarlo no altera las cuentas que ya estaban abiertas.
+Las tarjetas de regalo mantienen saldo, permiten pagos parciales y recarga. La cancelación de un pedido web devuelve su saldo una vez.
+Se incluyen compras manuales de varias líneas, carga XML, inventario, proveedores, crédito, CXC, CXP, turnos, reportes, KPIs y gestión de motorizados.
+El Maestro puede consultar cortes mensuales, anuales o por fechas que suman ventas web y de caja por negocio, plan y vencimiento.
+Los reportes cubren 19 conjuntos de información e incluyen clientes que solo compraron en caja.
+Los roles tienen permisos por módulo y función. FISIChat ofrece los cuatro accesos indicados: vendedor/técnico, maestro, dueño y cliente. Para respuestas de IA se configura la conexión de FISIChat en Maestro; las ayudas internas funcionan sin una clave de IA.
+
+PREPARAR WINDOWS Y VARIAS CAJAS
+1. Instala el archivo .exe en computadoras con Windows 10 u 11 de 64 bits.
+2. Elige una computadora como equipo central de la sucursal. Todas las cajas del local deben conectarse a ese mismo equipo para compartir productos, existencias y ventas.
+3. Con internet, en la web abre Administración → Windows y cajas sin internet. Crea el equipo de esa sucursal, genera su código y autoriza los cajeros con su contraseña local.
+4. Abre FISITAAP en el equipo central. Escribe la dirección https:// de la web, el número de equipo y el código de conexión. Descarga el catálogo antes de trabajar sin internet.
+5. Entra con un cajero y asigna un nombre diferente a cada caja: Caja 1, Caja 2, etc. Abre el turno.
+6. En el equipo central pulsa Descargar conexión de las otras cajas. Copia ese archivo a las otras computadoras e instálales el mismo .exe.
+7. En las otras cajas usa el menú FISITAAP → Conectar a otro equipo central y selecciona el archivo descargado. Autoriza FISITAAP en la red privada de Windows si el firewall lo solicita.
+8. Mantén encendidos el equipo central y el router. Si se cae internet, las cajas pueden buscar productos y vender por la red del local. Si apagas el equipo central o se corta la red del local, las otras cajas no podrán registrar ventas.
+9. Al volver internet, el equipo central envía las operaciones a la web. Revisa que no queden ventas pendientes o mensajes de conflicto antes de cambiar de equipo o de negocio.
+10. Usa Guardar respaldo local y copia esos respaldos fuera del equipo central. No borres la carpeta de datos de Windows ni reinstales el equipo mientras tenga ventas pendientes.
+Sin internet se trabaja en venta rápida con efectivo, tarjeta o SINPE registrados por el cajero. El programa no autoriza pagos bancarios. Mesas, Express, crédito, regalos y administración requieren la versión web con conexión.
+Si el cobro perdió su respuesta, pulsa Confirmar la venta anterior. El sistema comprueba la misma operación: no vuelvas a cobrar al cliente.
+Para usar los demás módulos con internet, el menú FISITAAP → Abrir la versión web abre el panel en tu navegador.
+
+CONECTAR IMPRESORAS
+1. Instala en Windows el controlador de cada impresora y comprueba que Windows puede imprimir una página de prueba.
+2. En FISITAAP Windows abre el menú Imprimir → Configurar impresoras. Escribe la dirección https:// de tu web, selecciona la impresora y el papel de 58 u 80 mm, y guarda.
+3. Copia el código de esa pantalla en la web: Administración → Impresión → Token de FISITAAP Print.
+4. Configura Caja, Cocina, Barra, Despacho y Copia con el tipo de conexión, papel y nombre exacto de la impresora instalada. Puedes crear otras zonas, por ejemplo Parrilla o Repostería, y configurarlas en cada sucursal.
+5. En Catálogo → Categorías elige la zona de impresión de cada categoría. Así se separan los artículos de las comandas.
+6. Mantén abierto FISITAAP Windows en la computadora desde la que cobras e imprimes. Si el navegador pide acceso a la red local, concédelo para la impresión.
+7. Para una impresora de red puedes usar su dirección IP privada y puerto ESC/POS, o su controlador instalado en Windows. USB y Bluetooth usan el controlador de Windows.
+8. Si no configuraste el puente de impresión, puedes imprimir el recibo desde la ventana del navegador. Elegir PDF genera un comprobante para guardar.
+El mismo trabajo no se envía otra vez al reintentar. Si necesitas otra copia, usa Reimprimir. Un envío aceptado por Windows no confirma que la impresora tenga papel o haya terminado de imprimir.
+
+VOLVER ATRÁS
+El instalador ofrece Volver atrás antes de usarla. Conserva los datos anteriores y restaura los archivos reemplazados.
+Después de registrar ventas, modificar el salón, emitir tarjetas o cambiar datos con la actualización, esa opción se bloquea. En ese caso hay que revisar el respaldo completo y las operaciones pendientes antes de restaurar.
+
+COMPROBACIONES REALIZADAS
+Se probaron las rutas web, los cobros y sus importes, inventario, combos, compras, crédito, permisos, regalos con saldo, reintentos, cancelaciones y los tres caminos de instalación.
+Se revisaron las pantallas en navegador, incluidos el plano, la edición de productos, la ventana de cobro, la división de cuenta, la web oficial y la vista móvil.
+Se simularon dos cajas sin internet, reinicio del equipo central y pérdida de respuesta al sincronizar; las ventas y el inventario se conservaron sin duplicación.
+Se compiló el instalador Windows y se probaron el servicio local y el control de duplicados de impresión. La instalación en tu Windows y la impresión en tus impresoras físicas se comprueban en tu equipo.
