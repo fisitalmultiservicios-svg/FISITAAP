@@ -1,0 +1,121 @@
+FISITAAP 1.5.0-R1 — PRIMERA ENTREGA PARA CPANEL
+
+QUÉ INCLUYE
+
+Esta entrega reorganiza el panel en Catálogo, Ventas, Clientes, Compras,
+Analítica, Administración y Entregas. Los apartados de tienda física aparecen
+cuando ese modo está activo y sus módulos están habilitados.
+
+Agrega Administración > Roles y permisos. El dueño puede crear roles con
+permisos para consultar, crear/modificar, eliminar/anular, cobrar, autorizar
+crédito y configurar mesas, según las acciones existentes de cada módulo.
+Los permisos se comprueban en el servidor, además de controlar los enlaces.
+Se puede suspender un rol o regresar al perfil original del colaborador.
+
+Usuarios muestra el nombre del rol personalizado. Los cajeros también pueden
+ingresar desde el acceso de negocios. El dueño conserva su acceso.
+
+Las funciones existentes de extras, opcionales y combos siguen juntas en
+su pantalla actual. Compras y proveedores también siguen en su pantalla
+actual. Esta entrega no crea todavía todas las pantallas separadas del PDF.
+
+QUÉ SIGUE PENDIENTE
+
+Esta NO es la reestructuración completa. Quedan por desarrollar los nuevos
+diseños de página y de caja, plano gráfico de mesas, las ampliaciones de
+combos y promociones, compras mediante XML, los cuatro perfiles de FISIChat
+y los demás cambios de REESTRUCTURACION.pdf que no aparecen como incluidos
+arriba. El instalador Windows, trabajo sin internet y sincronización de varias
+cajas se entregarán por separado. No se activan con este ZIP.
+
+En esta entrega, los colaboradores con un rol personalizado realizan las
+operaciones desde las pantallas autorizadas. FISIChat sigue disponible para
+el dueño; no se habilita a los nuevos roles porque sus herramientas todavía
+necesitan permisos más detallados.
+
+ANTES DE SUBIR
+
+1. Desde cPanel guarda un respaldo de los archivos de fisitaap.com y de su
+   base de datos. Si no tienes una opción de respaldo, comprime y descarga
+   los archivos desde el Administrador de archivos y exporta la base de datos
+   desde phpMyAdmin. Guarda ambos respaldos fuera del servidor.
+2. Haz la instalación cuando las cajas y los demás usuarios no estén trabajando.
+3. Ten disponible la cuenta MAESTRO de FISITAAP. No se necesita escribir la
+   contraseña de cPanel ni de la base de datos en el instalador.
+
+CÓMO INSTALAR
+
+1. Abre el Administrador de archivos de cPanel y entra en la carpeta
+   fisitaap.com, donde están index.php, app y assets.
+2. Sube FISITAAP-1.5.0-R1-cPanel.zip y usa Extraer en esa misma carpeta.
+   Se creará actualizacion-fisitaap. No extraigas el ZIP dentro de app.
+3. Entra a tu aplicación con la cuenta MAESTRO.
+4. En la misma ventana del navegador abre:
+   https://fisitaap.com/actualizacion-fisitaap/
+5. El instalador mostrará una comprobación de los archivos. Si todos figuran
+   como compatibles, marca la confirmación del respaldo y pulsa
+   Instalar actualización.
+6. Continúa solamente si aparece el mensaje de actualización instalada.
+   Abre el panel y vuelve a cargar la página.
+
+El instalador hace automáticamente la copia de los archivos que reemplaza
+y crea tres tablas nuevas para los roles. No reemplaza config.php ni uploads
+y no instala una base de datos vacía encima de tus datos.
+
+Si aparece «distinto», no fuerces el reemplazo: la aplicación en el servidor
+tiene cambios diferentes a los archivos recibidos. La instalación se bloquea
+para conservarlos. Envía el mensaje o una captura para preparar un paquete
+compatible. No copies manualmente los archivos de payload.
+
+Si aparece un error de permisos, de PHP o de base de datos, conserva el
+mensaje y solicita revisión. No cambies todos los permisos a 777.
+
+PRIMERA COMPROBACIÓN
+
+1. Con el MAESTRO revisa que el panel abre y que la lista de negocios existe.
+2. Con el DUEÑO revisa los nuevos grupos del menú y abre Categorías,
+   Productos, Usuarios y Roles y permisos.
+3. Crea primero un rol de prueba con Consultar en Categorías. Asígnalo a un
+   colaborador de prueba, no a un cajero que esté atendiendo clientes.
+4. Ingresa con ese colaborador. Debe ver sus categorías y no podrá guardar
+   cambios, eliminar registros ni abrir pantallas no autorizadas.
+5. Desde el dueño, cambia los permisos o suspende el rol y comprueba el
+   resultado al volver a cargar la pantalla del colaborador.
+6. En un negocio de prueba verifica la operación habitual antes de asignar
+   roles nuevos a usuarios reales. La entrega fue comprobada con datos
+   ficticios; no se instaló ni se probó en tu HostGator.
+
+PARA VOLVER ATRÁS
+
+Mientras conserves actualizacion-fisitaap y su carpeta backups:
+1. Detén la operación de las cajas y entra con la cuenta MAESTRO.
+2. Abre https://fisitaap.com/actualizacion-fisitaap/.
+3. Marca la confirmación y pulsa Volver a la versión anterior.
+4. Verifica el mensaje de restauración y vuelve a abrir el panel.
+
+La restauración recupera los archivos anteriores y los perfiles originales
+de los colaboradores. Conserva productos, clientes y ventas. Deja las tablas
+nuevas de roles desactivadas; no las borra. Si detecta cambios de archivos
+posteriores a esta entrega, se bloquea para no sobrescribirlos.
+
+El respaldo automático cubre los archivos de esta actualización, no reemplaza
+el respaldo completo de archivos y base de datos que haces antes de instalar.
+
+AL TERMINAR
+
+Cuando hayas comprobado la instalación, descarga y guarda la carpeta
+actualizacion-fisitaap/backups mediante cPanel. Después elimina del servidor
+el ZIP subido y la carpeta actualizacion-fisitaap completa. El panel seguirá
+funcionando; el instalador y su botón de restauración ya no estarán disponibles.
+Conserva también el respaldo completo inicial.
+
+COMPROBACIONES REALIZADAS
+
+26 comprobaciones de integración aprobadas: instalación, integridad de
+archivos, autenticación, permisos, aislamiento entre negocios, cambios en
+sesiones abiertas, suspensión de roles, protección de respaldos, restauración
+y reinstalación. Los archivos PHP del paquete pasan la revisión de sintaxis.
+
+Las pruebas están enfocadas en esta entrega de menús y permisos. No prueban
+el futuro funcionamiento sin internet, la instalación Windows, todos los
+cobros de producción, las impresoras reales, pagos externos ni FISIChat con IA.
