@@ -1,0 +1,73 @@
+FISITAAP 1.6.0-R2 — actualización web y cajas Windows
+Fecha: 6 de octubre de 2026
+
+QUÉ ARCHIVO VA EN CADA LUGAR
+FISITAAP-1.6.0-R2-cPanel.zip: se sube a cPanel, en la carpeta fisitaap.com.
+FISITAAP-Escritorio-1.6.0-Windows-x64.exe: se instala en las computadoras Windows del negocio. No se sube a cPanel.
+GUIA-FISITAAP-1.6.0-R2.pdf: instrucciones de instalación y uso.
+Esta actualización admite la copia original que compartiste y la versión 1.5.0-R1. No hace falta instalar R1 primero.
+
+INSTALAR LA ACTUALIZACIÓN WEB
+1. En cPanel guarda una copia de los archivos de fisitaap.com y un respaldo de la base de datos. Conserva ambos fuera de esa carpeta.
+2. Elige un momento sin ventas. Detén las cajas mientras actualizas.
+3. Abre Administrador de archivos y entra en fisitaap.com, donde están app, assets e index.php.
+4. Sube FISITAAP-1.6.0-R2-cPanel.zip y selecciona Extraer. Aparecerá la carpeta actualizacion-fisitaap-r2. No extraigas dentro de app.
+5. Entra en la aplicación con la cuenta MAESTRO. Después abre https://fisitaap.com/actualizacion-fisitaap-r2/
+6. Los archivos deben figurar compatibles. Marca la casilla del respaldo y pulsa Instalar actualización.
+7. Abre el panel. Comprueba una compra de prueba, una venta y su comprobante antes de abrir las cajas al público.
+8. Cuando todo esté comprobado, descarga la carpeta actualizacion-fisitaap-r2 para conservar su respaldo y retírala del servidor. También puedes retirar el ZIP que subiste. Las funciones de la aplicación seguirán instaladas.
+Si aparece «distinto», no reemplaces archivos manualmente: la copia del servidor cambió respecto a la que revisamos. Se necesita revisar esos archivos antes de actualizar.
+Si falta SimpleXML o la versión de PHP es menor de 8.1, selecciónalos en la configuración de PHP de cPanel. PDO MySQL y mbstring también deben estar activos.
+
+CONECTAR WINDOWS Y VARIAS CAJAS
+1. Actualiza la web primero. La primera conexión se hace con internet.
+2. Elige una computadora como EQUIPO CENTRAL de la sucursal. Permanecerá encendida con FISITAAP abierto. No registres dos equipos centrales para la misma sucursal.
+3. En la web entra como dueño a Administración → Windows y cajas sin internet. Crea un usuario de caja por cada cajero si todavía no existen.
+4. Autoriza cada cajero para la sucursal y crea su contraseña LOCAL de al menos 12 caracteres. Este acceso local es distinto de la contraseña de la web. El rol debe permitir cobrar en POS.
+5. Crea el código de conexión del equipo central. Anota el número de equipo y el código. El código vence en 30 minutos y solo se usa una vez.
+6. Descarga e instala FISITAAP-Escritorio-1.6.0-Windows-x64.exe en el equipo central. Requiere Windows de 64 bits; úsalo en Windows 10 u 11. Cierra FISITAAP antes de reinstalar o actualizar.
+7. Abre FISITAAP. Escribe https://fisitaap.com, el número de equipo y el código. Pulsa Conectar.
+8. Ingresa con el cajero autorizado, su contraseña local y un nombre como Caja 1. Abre el turno, busca un producto y realiza una venta de prueba.
+9. En Otras cajas y respaldos descarga el archivo de conexión .fisitaap. Copia ese archivo a las otras computadoras del mismo router o red del local.
+10. En cada otra computadora instala el mismo programa. Abre el menú FISITAAP → Conectar a otro equipo central y elige el archivo .fisitaap. Ingresa con otro cajero y un nombre distinto, por ejemplo Caja 2. La aplicación recuerda esa conexión al volver a abrirse.
+También puedes abrir en el navegador de otra computadora la dirección local que muestra el equipo central. No necesitas instalar el programa para usar esta alternativa.
+Si Windows pregunta por acceso de red, permite FISITAAP en la red privada del negocio. Si otra caja no conecta, revisa que ambas estén en la misma red, que el central esté encendido y que su aplicación esté abierta. La dirección del central debe mantenerse: pide ayuda para reservar su dirección en el router si cambia con frecuencia.
+El instalador no tiene firma digital; Windows puede mostrar un aviso de editor desconocido. Comprueba que lo descargaste de este repositorio. No hace falta desactivar el antivirus.
+
+QUÉ SE PUEDE HACER SIN INTERNET
+Buscar los productos ya descargados, consultar su existencia local, seleccionar extras y opcionales, vender, combinar efectivo/tarjeta/SINPE, calcular vuelto, crear el nombre y teléfono de un cliente, guardar ventas en espera, abrir/cerrar turnos y reimprimir comprobantes locales.
+Las cajas conectadas al mismo central comparten la existencia local para evitar vender simultáneamente la última unidad.
+Al volver internet, el central envía las ventas y turnos a la web. Puedes pulsar Sincronizar; también lo intenta automáticamente cada minuto. Un reintento no crea otra copia de la venta.
+«Venta pendiente» significa que está guardada en el central y falta enviarla a la web. No borres los datos ni cambies de equipo para tratar de quitar ese aviso.
+Si se pierde la respuesta durante un cobro, pulsa Confirmar la venta anterior. No cobres de nuevo al cliente. El programa revisa el mismo cobro y permite recuperarlo al volver a abrir la caja.
+El trabajo sin internet necesita el central encendido y, para las otras cajas, la red local funcionando. No cubre una avería del central, un corte eléctrico ni una caída del router.
+Tarjeta y SINPE registran cómo pagó el cliente; FISITAAP no procesa esos pagos. Su autorización depende del banco o del medio usado.
+El inventario web puede cambiar mientras el local está desconectado. Al sincronizar se conserva la venta local y se muestran diferencias para revisar, por ejemplo existencia negativa. No se promete inventario idéntico entre una web desconectada y la caja.
+Pedidos web, compras/XML, crédito, canje de premios y FISIChat requieren la web e internet. Las cajas sin internet trabajan en venta rápida; la gestión de mesas y Express permanece en la web.
+Cambios de contraseña, permisos o acceso a cajas llegan cuando el central se conecta de nuevo. Si necesitas retirar un acceso inmediatamente mientras está desconectado, detén ese equipo central.
+
+RESPALDOS E IMPRESIÓN
+En el equipo central pulsa Guardar respaldo local. Abre el menú FISITAAP → Abrir carpeta de respaldos y copia el archivo a un disco externo. Hazlo al final del día y antes de cambiar de computadora. Los respaldos contienen datos del negocio; consérvalos en un lugar privado. Antes de trasladar el central, envía las ventas pendientes y pide ayuda para restaurar sus datos.
+Al cobrar puedes imprimir el comprobante local o reimprimirlo desde Historial. Selecciona tu impresora instalada en Windows; el diseño local está preparado para papel de 80 mm. En la web configura los perfiles y zonas desde Administración → Impresión.
+Estos son comprobantes internos. Esta entrega no incorpora una integración nueva de facturación electrónica con Hacienda.
+
+CAMBIOS DE LA REESTRUCTURACIÓN
+Catálogo: extras compartidos, opcionales sin recargo, combos a precio fijo y descuento de sus componentes en inventario, promociones 2×1/precio especial y cupones conservados.
+Página del negocio y web oficial: presentación, imágenes, tres tarjetas, contacto y redes editables. Los banners anteriores siguen accesibles.
+Clientes: crear con nombre y teléfono, buscar, consultar el origen de registro y compras, autorizar crédito y consultar beneficios. Quien hace su primer pedido puede guardar después un correo y contraseña desde Mi cuenta → Guardar mi acceso.
+Fidelización: las ventas físicas completadas también acumulan beneficios; las ventas Windows se acreditan al sincronizarse. Puntos, compras acumuladas, producto gratis y tarjetas promocionales de regalo de un solo uso. Las tarjetas son descuentos, no dinero recargable; si se usa menos que su valor, no queda saldo para otro pedido. Se entregan a un cliente y aparecen en su cuenta.
+Compras: proveedores, facturas manuales de varios productos y vista previa de XML de Costa Rica en colones. Los productos recibidos suman al inventario y el saldo de crédito pasa a cuentas por pagar. XML con cargos o ajustes que no coincidan con el total de sus productos debe registrarse manualmente.
+Cuentas por cobrar/pagar: estado de cuenta, historial de abonos, saldos y protección contra aplicar dos veces el mismo abono.
+POS web: venta rápida, ventas en espera, mesas básicas o gráficas, varios salones, mover/unir cuentas, cobro por productos o partes iguales, historial y reimpresión. El tipo de mesa se configura en Administración → Generales. El servicio de salones nuevos comienza en 0%; puedes configurarlo. Las cuentas ya abiertas conservan sus importes.
+Turnos: filtros por fecha/usuario y finanzas por forma de pago. Los turnos locales se cierran desde su caja Windows.
+Reportes y KPIs: periodos, exportaciones y gráficos combinados de la web y el POS.
+Motorizados: afiliados, invitaciones y su historial; el motorizado debe aceptar la invitación desde su cuenta. Las invitaciones se ven en FISITAAP; no se envían correos o mensajes externos automáticamente.
+FISIChat: perfiles vendedor/técnico, maestro, negocio y cliente. Los perfiles nuevos orientan y consultan datos permitidos; la herramienta del dueño ya existente se conserva. Necesita su conexión de IA configurada para responder con IA; sin ella muestra una guía básica.
+Roles: permisos por módulo y acción. Para un cajero web habilita POS para consultar y cobrar y Turnos para consultar y crear/cerrar su turno. Los permisos anteriores se conservan y se copian a las nuevas pantallas equivalentes al instalar.
+
+VOLVER ATRÁS
+El botón de volver atrás restaura los archivos anteriores antes de empezar a usar las funciones nuevas. Después de crear datos en los módulos nuevos, volver atrás requiere revisar el respaldo completo y las ventas pendientes; el instalador bloquea una restauración que pueda dejar esos datos sin sus funciones. No borra tablas ni ventas para forzarla.
+
+COMPROBACIONES Y LÍMITES
+La actualización y su instalador se probaron con PHP 8.3/Apache/MariaDB en una copia independiente con datos ficticios: compras, inventario, extras, combos, promociones, cobros, cuentas por pagar/cobrar, permisos, tarjetas, clientes y restauración. Se probaron dos cajas locales, reinicio, falta de internet, reenvío y sincronización real con la web. También se probaron las pantallas en navegador y se construyó el instalador Windows.
+No hubo acceso ni instalación en tu cPanel. Falta comprobar la instalación del .exe en una computadora Windows real y la impresión en tus equipos. Las llamadas externas a bancos, Hacienda, correo e IA no se probaron ni se usaron tus claves reales. Haz la primera instalación y ventas con un negocio de prueba antes de usarlo en operación diaria.

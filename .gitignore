@@ -1,0 +1,7 @@
+config.php
+.env
+uploads/
+actualizacion-fisitaap/backups/
+actualizacion-fisitaap-r2/backups/
+desktop/node_modules/
+desktop/dist/
