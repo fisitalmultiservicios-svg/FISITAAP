@@ -1,0 +1,49 @@
+{
+  "version": "1.7.6",
+  "files": {
+    "app/bootstrap.php": {
+      "new": "d0cb690e35788426bb89db5dbdb939bc4d967cfa2df17e08d2bacd53770be2db",
+      "old": [
+        "ce5c3cce4ead2990464358423e4fc9eaa28b565b46162b5e6c85f779db416dff"
+      ]
+    },
+    "app/core.php": {
+      "new": "3cb3802b9d7fb2f4930fc015853e54d485673a3033a081498d20ab09bd62b6ba",
+      "old": [
+        "ad80c862db740f5fd4d2a8d90ebe1a0bee9d0db2285b64b4c4c3f410ae335119"
+      ]
+    },
+    "app/desktop_r2.php": {
+      "new": "0624ae81473f45c8087475cea24254b8029a79a232d04969f48c792d19dcbe94",
+      "old": [
+        "ec01573cd277a5480464935b8a88122f6d430f08465e18c52f9322f7fcfb831b"
+      ]
+    },
+    "app/fisichat_v143.php": {
+      "new": "2bfa51ae8603324bdb0fc36460aa5f911b6d244984d4bfe00bd233664accdaf1",
+      "old": [
+        "7a897df130388200fe2bee96c4e216c54a3b5f0e6e250064ea14f0d6e90b5a2c"
+      ]
+    },
+    "app/physical_v14.php": {
+      "new": "4c8a80bb2b86bb38e5e7b88f0ff3058690be9aebf5a3313dc2b111b12155a3b4",
+      "old": [
+        "de3a063c6cd33c7287cf6c9fe81df4912561c7407ccbf021b2ca8c01b94780a9"
+      ]
+    },
+    "app/session_reads176.php": {
+      "new": "2d777bb9f21124599d658be9c8332df12d9751943f0384d2b3c315b08c6c7ee8",
+      "old": []
+    }
+  },
+  "baselines": {
+    "1.7.5": {
+      "app/bootstrap.php": "ce5c3cce4ead2990464358423e4fc9eaa28b565b46162b5e6c85f779db416dff",
+      "app/core.php": "ad80c862db740f5fd4d2a8d90ebe1a0bee9d0db2285b64b4c4c3f410ae335119",
+      "app/desktop_r2.php": "ec01573cd277a5480464935b8a88122f6d430f08465e18c52f9322f7fcfb831b",
+      "app/fisichat_v143.php": "7a897df130388200fe2bee96c4e216c54a3b5f0e6e250064ea14f0d6e90b5a2c",
+      "app/physical_v14.php": "de3a063c6cd33c7287cf6c9fe81df4912561c7407ccbf021b2ca8c01b94780a9",
+      "app/session_reads176.php": null
+    }
+  }
+}

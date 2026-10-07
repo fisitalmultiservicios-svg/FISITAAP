@@ -1,0 +1,23 @@
+FISITAAP 1.7.6 — CORRECCIÓN DE ESPERA Y LENTITUD
+7 de octubre de 2026, Costa Rica
+
+Esta actualización corrige la espera que ocurría cuando una pestaña, reporte o
+FISIChat mantenía ocupada la sesión del mismo usuario. Incluye también la
+corrección de mensajes de conexión de la versión 1.7.5.
+
+1. Confirma que ya instalaste 1.7.5. Si no aparece como instalada, no uses
+   este paquete: solicita primero el ZIP acumulativo 1.7.5.
+2. Guarda un respaldo de archivos y base de datos desde cPanel.
+3. Detén las cajas durante la actualización. No borres ventas locales ni
+   desactives el equipo central.
+4. Sube FISITAAP-1.7.6-FULL-cPanel.zip a la carpeta de FISITAAP y pulsa
+   Extraer. Abre actualizacion-fisitaap-r6/ con la cuenta MAESTRO.
+5. Marca el respaldo y las cajas detenidas. Pulsa Instalar actualización y
+   espera el mensaje de confirmación.
+6. Cierra sesión del navegador, vuelve a entrar y prueba Resumen, Ventas,
+   Turnos y una operación de búsqueda. Mantén el escritorio como está; no
+   necesitas volver a vincularlo.
+
+La actualización conserva config.php, imágenes, ventas, turnos, permisos,
+vinculación de cajas y datos locales. Si aparece «archivo diferente», detén
+la instalación y envía una captura; no reemplaces archivos manualmente.
