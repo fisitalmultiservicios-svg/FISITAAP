@@ -1,0 +1,19 @@
+FISITAAP 1.7.7 — VELOCIDAD Y AGILIDAD
+7 de octubre de 2026, Costa Rica
+
+Esta entrega requiere que 1.7.6 ya esté instalada.
+
+1. Guarda un respaldo completo de archivos y base de datos en cPanel.
+2. Detén temporalmente las cajas mientras actualizas. No borres ventas locales.
+3. Sube FISITAAP-1.7.7-FULL-cPanel.zip a la carpeta donde están app, assets e
+   index.php. Pulsa Extraer.
+4. Abre actualizacion-fisitaap-r7/ con la cuenta MAESTRO.
+5. Confirma el respaldo y las cajas detenidas y pulsa Instalar actualización.
+6. Cierra el navegador, vuelve a abrirlo y prueba Resumen, Ventas, búsqueda,
+   Turnos y una venta. El Desktop no se reinstala ni se vuelve a vincular.
+
+La actualización reduce consultas del resumen, evita descargar el diseñador
+POS en pantallas que no lo necesitan, activa compresión Brotli cuando el
+servidor la ofrece y agrega índices seguros para turnos y catálogos locales.
+Conserva config.php, imágenes, ventas, permisos, turnos y cajas vinculadas.
+Si aparece «archivo diferente», detén la instalación y envía una captura.

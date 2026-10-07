@@ -1,0 +1,37 @@
+{
+  "version": "1.7.7",
+  "files": {
+    ".htaccess": {
+      "new": "e47d35be55acdb676b8cc3d791e0f5fc3d93acad72e7fcb2b9e6726f0886051f",
+      "old": [
+        "5e68b8f9db6126bbd399dfef904296c2bd462f53b358edd2da04958fa6697578"
+      ]
+    },
+    "app/core.php": {
+      "new": "2c1917b23299123e76e88cbcdeee10af3aff47f5f50a4731987d01411874c176",
+      "old": [
+        "3cb3802b9d7fb2f4930fc015853e54d485673a3033a081498d20ab09bd62b6ba"
+      ]
+    },
+    "app/admin.php": {
+      "new": "3b28d940265e04a5dd522d4aeea6779362b2aebebebf7871708b466cf71073f8",
+      "old": [
+        "5bd8e96f4f197d83867755adbfbdbc9d68e77978f0409c205721c6b18b8a1b07"
+      ]
+    },
+    "index.php": {
+      "new": "2c87fcda5f22dbd57af829b04293c34969123fa09bec7b7010a175ecaeea878f",
+      "old": [
+        "4f2316bf87a502251d7a61bad7b72986caa59269a744e05b7344b05d517bb5d5"
+      ]
+    }
+  },
+  "baselines": {
+    "1.7.6": {
+      ".htaccess": "5e68b8f9db6126bbd399dfef904296c2bd462f53b358edd2da04958fa6697578",
+      "app/core.php": "3cb3802b9d7fb2f4930fc015853e54d485673a3033a081498d20ab09bd62b6ba",
+      "app/admin.php": "5bd8e96f4f197d83867755adbfbdbc9d68e77978f0409c205721c6b18b8a1b07",
+      "index.php": "4f2316bf87a502251d7a61bad7b72986caa59269a744e05b7344b05d517bb5d5"
+    }
+  }
+}
