@@ -1,0 +1,14 @@
+FISITAAP — RECUPERACIÓN VISUAL
+
+Usa este paquete para volver a la base estable anterior sin ejecutar un
+actualizador antiguo. Requiere que la aplicación ya esté funcionando.
+
+1. Guarda un respaldo de archivos y base de datos en cPanel.
+2. Detén temporalmente las cajas.
+3. Sube este ZIP a la carpeta donde están app, assets e index.php.
+4. Pulsa Extraer y confirma reemplazar los cuatro archivos.
+5. No borres ninguna carpeta y no abras ningún instalador.
+6. Cierra el navegador y presiona Ctrl+F5.
+
+Solo restaura .htaccess, app/core.php, app/admin.php e index.php. Conserva
+ventas, usuarios, cajas, permisos, imágenes y la base de datos.
