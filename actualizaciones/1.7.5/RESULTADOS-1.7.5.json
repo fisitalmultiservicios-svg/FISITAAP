@@ -1,0 +1,95 @@
+{
+  "version": "1.7.5",
+  "date_costa_rica": "2026-10-06",
+  "web_cases": {
+    "passed": 130,
+    "failed": 0
+  },
+  "node_tests": {
+    "passed": 45,
+    "failed": 0
+  },
+  "request_cache_and_catalog_checks": {
+    "passed": 4,
+    "failed": 0
+  },
+  "installer_baselines": {
+    "passed": 5,
+    "failed": 0
+  },
+  "regressions": [
+    {
+      "suite": "fixture_r2",
+      "exit_code": 0,
+      "seconds": 16.27
+    },
+    {
+      "suite": "fixture_r3",
+      "exit_code": 0,
+      "seconds": 5.77
+    },
+    {
+      "suite": "desktop_php",
+      "exit_code": 0,
+      "seconds": 1.76
+    },
+    {
+      "suite": "browser_connection",
+      "exit_code": 0,
+      "seconds": 2.46
+    },
+    {
+      "suite": "browser_desktop",
+      "exit_code": 0,
+      "seconds": 2.92
+    },
+    {
+      "suite": "fresh_r2",
+      "exit_code": 0,
+      "seconds": 16.63
+    },
+    {
+      "suite": "fresh_r3",
+      "exit_code": 0,
+      "seconds": 6.02
+    },
+    {
+      "suite": "web_deep",
+      "exit_code": 0,
+      "seconds": 46.79
+    }
+  ],
+  "controlled_performance": {
+    "latency_per_query_ms": 8,
+    "before": {
+      "products": 1004,
+      "snapshot_queries": 3027,
+      "snapshot_seconds": 25.558,
+      "latency_per_query_ms": 8,
+      "snapshot_content_sha256": "d0806fba075aa7991d6f43ed8ffc87f6596fed130427e3978cd8e4dcb78930e7",
+      "catalog_queries": 1,
+      "module_queries": 111,
+      "setting_queries": 50
+    },
+    "after": {
+      "products": 1004,
+      "snapshot_queries": 17,
+      "snapshot_seconds": 0.163,
+      "latency_per_query_ms": 8,
+      "snapshot_content_sha256": "d0806fba075aa7991d6f43ed8ffc87f6596fed130427e3978cd8e4dcb78930e7",
+      "catalog_queries": 2,
+      "module_queries": 2,
+      "setting_queries": 1
+    },
+    "snapshot_content_identical": true
+  },
+  "windows_installer": {
+    "version": "1.7.5",
+    "nsis_integrity": "passed",
+    "extracted_source_files_identical": 13
+  },
+  "hosting_checked": false,
+  "physical_windows_checked": false,
+  "physical_android_checked": false,
+  "physical_printers_checked": false
+}

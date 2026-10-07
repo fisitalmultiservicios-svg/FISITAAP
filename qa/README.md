@@ -2,6 +2,8 @@
 
 Estas pruebas son para revisión técnica en una **copia desechable**, con datos ficticios. No deben apuntarse al hosting del negocio. La [entrega QA](../actualizaciones/1.7.4-QA/README.md) incluye las correcciones comprobadas.
 
+La [corrección 1.7.5](../actualizaciones/1.7.5/README.md) añade `connectivity175.test.js` (respuesta 200, compatibilidad anterior, errores del alojamiento y respuesta después de siete segundos), `performance_web175.py` (cachés actualizadas, permisos, promociones y catálogos por sucursal) e `installer175.py` (cinco versiones de origen, incluida QA 1.7.4). La prueba de cachés utiliza exclusivamente `fisitaap_performance_test`, una copia del fixture aislado. Las suites que modifican el mismo fixture web se ejecutan de forma secuencial y se reinicializa antes de `web_deep.py`.
+
 | Archivo | Cobertura |
 |---|---|
 | `web_deep.py` | Pantallas, permisos, HTTP/SQL real, dos cajas, dos cobros, saldo de regalos, recuperación de contraseña, clientes, precisión, entregas y 19 exportaciones. |

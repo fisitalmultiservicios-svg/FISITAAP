@@ -1,12 +1,12 @@
 # FISITAAP
 
-La actualización actual es **1.7.4-QA**, con **Windows 1.7.4**: conserva las entregas anteriores del PDF y agrega las correcciones de ventas, seguridad, sincronización, impresión y lógica de entregas comprobadas durante la revisión profunda.
+La actualización actual es **1.7.5**, con **Windows 1.7.5**. Corrige la carga excesiva de consultas y mejora la comprobación de conexión del escritorio. Incluye las entregas anteriores del PDF y las 17 correcciones de la revisión QA.
 
-[**Descargar el ZIP completo, Windows, la guía y el informe QA**](actualizaciones/1.7.4-QA/README.md)
+[**Descargar el ZIP completo, Windows y la guía de actualización**](actualizaciones/1.7.5/README.md)
 
 El ZIP de actualización se sube a cPanel. El instalador `.exe` se instala en las computadoras Windows. La guía explica cada paso y las condiciones para trabajar sin internet con varias cajas.
 
-[**Windows actualizado 1.7.4: descargar instalador**](actualizaciones/1.7.4-QA/README.md). Abre el sistema web completo dentro del programa cuando hay conexión y conserva la caja local para buscar y vender sin internet. Actualiza también cPanel con el ZIP de esta entrega para recibir las correcciones web.
+[**Windows actualizado 1.7.5: descargar instalador**](actualizaciones/1.7.5/README.md). Abre el sistema web completo dentro del programa cuando hay conexión y conserva la caja local para buscar y vender sin internet. Actualiza primero cPanel y después Windows. Conserva la vinculación y las ventas locales del equipo central.
 
 [**Android 1.0.0: descargar instalador APK**](actualizaciones/android-1.0.0/README.md). Abre el sistema web completo e imprime recibos y comandas directamente a impresoras térmicas ESC/POS de red de 58 u 80 mm. Puede conectarse al equipo central Windows para buscar y vender sin internet mientras siga disponible la red del negocio.
 
@@ -17,3 +17,5 @@ El ZIP de actualización se sube a cPanel. El instalador `.exe` se instala en la
 [Entrega anterior 1.7.0-R3](actualizaciones/1.7.0-R3/README.md)
 
 [Windows anterior 1.7.3](actualizaciones/1.7.3/README.md)
+
+[Informe de la revisión QA anterior 1.7.4](actualizaciones/1.7.4-QA/INFORME-QA.md)

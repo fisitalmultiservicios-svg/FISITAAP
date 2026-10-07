@@ -1,0 +1,46 @@
+FISITAAP 1.7.5 — CORRECCIÓN DE LENTITUD Y CONEXIÓN
+6 de octubre de 2026, Costa Rica
+
+DOS ARCHIVOS DIFERENTES
+ZIP: se sube a cPanel y actualiza la web.
+EXE: se abre en Windows y actualiza el escritorio.
+
+1. Termina las ventas en curso y detén las cajas durante la instalación.
+   Si hay ventas locales pendientes, consérvalas en el equipo central.
+   No borres sus datos ni desactives el equipo desde la web.
+2. Guarda respaldo completo de los archivos y de la base de datos en cPanel.
+3. Sube FISITAAP-1.7.5-FULL-cPanel.zip a la carpeta donde están app, assets
+   e index.php. Pulsa Extraer. Aparecerá actualizacion-fisitaap-r5.
+4. Entra a FISITAAP con tu cuenta MAESTRO y abre:
+   https://fisitaap.com/actualizacion-fisitaap-r5/
+   Si tu aplicación está en una subcarpeta, añade esa subcarpeta a la URL.
+   Marca el respaldo y las cajas detenidas, y pulsa Instalar actualización.
+   Espera el mensaje de instalación completada.
+5. Cierra FISITAAP Escritorio e instala
+   FISITAAP-Escritorio-1.7.5-Windows-x64.exe en la misma carpeta anterior.
+   Empieza por el equipo central y después las demás cajas Windows.
+6. Abre el escritorio y selecciona Sistema completo. Conserva la conexión
+   ya configurada: no necesitas generar otro código ni volver a vincularlo.
+   Sincroniza las ventas pendientes y prueba una venta y un recibo.
+7. Al comprobar que funciona, guarda el respaldo automático fuera de la
+   carpeta pública y elimina el ZIP subido y actualizacion-fisitaap-r5.
+
+QUÉ CAMBIA
+La copia del catálogo se prepara con consultas agrupadas. Los ajustes,
+promociones y permisos no repiten consultas durante una misma pantalla.
+El escritorio comprueba la web con una respuesta normal de conexión y
+tolera servidores que tardan más. Las comprobaciones web no crean sesiones
+de usuario innecesarias. La dirección sigue siendo la que indica
+Administración → Windows y cajas sin internet, no el enlace del catálogo.
+
+COMPATIBILIDAD
+Incluye las actualizaciones anteriores R1, R2, R3 y QA 1.7.4.
+El instalador acepta exactamente las copias revisadas y se detiene si
+encuentra archivos modificados. No cambia config.php ni imágenes.
+Conserva las ventas locales, contraseñas, turnos y vinculación en Windows.
+Android continúa usando su APK actual; no necesita reinstalación.
+
+SI CONTINÚA LA LENTITUD O NO CONECTA
+Copia el mensaje exacto del escritorio e indica la pantalla web que tarda.
+La prueba local no permite confirmar la carga y las reglas de tu HostGator.
+No desactives ni vuelvas a conectar el central con ventas pendientes.
