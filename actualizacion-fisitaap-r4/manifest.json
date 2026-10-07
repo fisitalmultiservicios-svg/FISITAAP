@@ -1,0 +1,452 @@
+{
+  "version": "1.7.4-QA",
+  "files": {
+    "app/accounts_r2.php": {
+      "new": "a65f8a36c084e4e4ab564cea4cc0d972bd2b44995120989a0efa7df4c9332744",
+      "old": [
+        null,
+        "a65f8a36c084e4e4ab564cea4cc0d972bd2b44995120989a0efa7df4c9332744"
+      ]
+    },
+    "app/admin.php": {
+      "new": "5bd8e96f4f197d83867755adbfbdbc9d68e77978f0409c205721c6b18b8a1b07",
+      "old": [
+        "b231e3292db9fc5899037824afb2b7d253bac81fa7ddeb3feffd41af05b61d18",
+        "c24814398ef7cc1ba7a5b0b7995a38fc5027b2deada8f467b48edede46b5fc26",
+        "6417cbf59a0767605b2c9c7b91918a27fa1fef7149d3682919f967120a40462f"
+      ]
+    },
+    "app/admin_v1.php": {
+      "new": "525c4f587ccfead330fa6afd58aa33418a73ea426df6ff1b25aea10645b3f045",
+      "old": [
+        "68bf2fb76f360d43ec1ab9e68ec679d6f36a18011b524f03184d49a59b932cae",
+        "792186100d751b00d10f81b31989e02fee8124ebe32c9e4c79b43bcfd18ac091",
+        "525c4f587ccfead330fa6afd58aa33418a73ea426df6ff1b25aea10645b3f045"
+      ]
+    },
+    "app/branches_v1.php": {
+      "new": "ce13e5f84fbc362ec4e0edcc990718b59d4d98d77bbbe095c3366f5d0c7a0ec2",
+      "old": [
+        "50a19c47106f6b8a78a6e85a59a7cc685903926fc4889ed653e13d5aeb427422",
+        "3f0ec86880cf8f9e2efddbed91ca607eb55838457e3afe5a2c451909ce7a6574",
+        "53bde33073a97440249365168bb581dd06fd4d7626f58fe4b1d576d19e1abd4e"
+      ]
+    },
+    "app/business_r2.php": {
+      "new": "76239d6d487e74200232832fe3b5ceb013a18310da7cd723004b7036a4ac1f92",
+      "old": [
+        null,
+        "a8b72baae495fe17826bbf594491cbbeeb9a65ca2e634b986ed3d64c45a2482d",
+        "76239d6d487e74200232832fe3b5ceb013a18310da7cd723004b7036a4ac1f92"
+      ]
+    },
+    "app/catalog_r2.php": {
+      "new": "d14f7443175c156ddc375e50dc8c04d89c6b0e873b914d78e88ba618b0211606",
+      "old": [
+        null,
+        "d14f7443175c156ddc375e50dc8c04d89c6b0e873b914d78e88ba618b0211606"
+      ]
+    },
+    "app/chat_r2.php": {
+      "new": "97034b13eb41c3295252796bb6960feaa1d3ede673bd388896914672a388c881",
+      "old": [
+        null,
+        "97034b13eb41c3295252796bb6960feaa1d3ede673bd388896914672a388c881"
+      ]
+    },
+    "app/checkout_r3.php": {
+      "new": "7f698559894b989aebcb6d047a56a3c7d12f4c67e637843c19733e4dbfc312be",
+      "old": [
+        null,
+        "7f698559894b989aebcb6d047a56a3c7d12f4c67e637843c19733e4dbfc312be"
+      ]
+    },
+    "app/core.php": {
+      "new": "e7c1e0a7e52d8dc2b234f1d6d02986a5c7020da2bcd51e290c1900f7e5eb7f6c",
+      "old": [
+        "7b0dd9514b08cde34797e24e5a7f5c0d8e3b617a948273677443708b9f76271e",
+        "799a3980b9e0b0494bef314df750bc9b74ec09c9139bf024df21ff49431b346e",
+        "4f760cd1cc3fc926efb94347db1be39d3a65b1ca5808ab7543d209988795d370",
+        "a2a8a0b0ae7980eb9328451a363cac34646e6c9b4b8ea8e948cd7c08f5017a85"
+      ]
+    },
+    "app/desktop_r2.php": {
+      "new": "422f706ab512217a187c984c6c5f1e291d897738e31d8d4ff762f6c7631e969e",
+      "old": [
+        null,
+        "f67b948f7e12a38790d46334633b066067aaada311063733f1ed5efe8550f6b5",
+        "422f706ab512217a187c984c6c5f1e291d897738e31d8d4ff762f6c7631e969e"
+      ]
+    },
+    "app/fisichat_v143.php": {
+      "new": "7a897df130388200fe2bee96c4e216c54a3b5f0e6e250064ea14f0d6e90b5a2c",
+      "old": [
+        "72fd1aac47e8b8f3f0bee346604e724f43c12db74ea6c4749fcd3793be58585e",
+        "ca0c59845109748b4ed4e9ab3c090984875aa6e59a828f229514050bf1d57327"
+      ]
+    },
+    "app/floor_r3.php": {
+      "new": "ca49b0912723424d0921d08bc1c8c7a2461c860e2bec0c9f7aa8f32092ab2ccb",
+      "old": [
+        null,
+        "ca49b0912723424d0921d08bc1c8c7a2461c860e2bec0c9f7aa8f32092ab2ccb"
+      ]
+    },
+    "app/gifts_r2.php": {
+      "new": "d806f17b4a1d532fbbc45715e27702c11881e852ed695fb4392cbc2b2ae2767c",
+      "old": [
+        null,
+        "f15aa3ea29c06eddca33af1f9841189fa3b7bcc4c3a581d4467c29035df3dc96",
+        "d806f17b4a1d532fbbc45715e27702c11881e852ed695fb4392cbc2b2ae2767c"
+      ]
+    },
+    "app/gifts_r3.php": {
+      "new": "09116e49b41e5c4637eacc065aad8dc2cb4a697e2a8a31095f619dfc219430f6",
+      "old": [
+        null,
+        "09116e49b41e5c4637eacc065aad8dc2cb4a697e2a8a31095f619dfc219430f6"
+      ]
+    },
+    "app/modules_v12.php": {
+      "new": "eeff23386892b5a64ae2a7e4d71dcc8948ae78b99872920aca92805967f85d0a",
+      "old": [
+        "de229c7c09b67669645482eeb4554c0ffcfe6fba1c4a4a9789896f005c9c649a",
+        "9c0ec58c930c5f2a9d7742d066a2bca6a55f5fa92f488b2f96376f2eae1f2f2e",
+        "1d4408ee29c9b7fbd7a46cf4a4e594d1f0a9fe9613046de5910f95dc51cfc125"
+      ]
+    },
+    "app/official_r3.php": {
+      "new": "3ad936878911b6c4387606ff7c6687a1edd1241175fa24a77db5103ea8d22c77",
+      "old": [
+        null,
+        "3ad936878911b6c4387606ff7c6687a1edd1241175fa24a77db5103ea8d22c77"
+      ]
+    },
+    "app/physical_v14.php": {
+      "new": "de3a063c6cd33c7287cf6c9fe81df4912561c7407ccbf021b2ca8c01b94780a9",
+      "old": [
+        "29db5f4f56bb55db865b3fbf7974d777fa02116ae3b82c9d23d55ca2d7ec71e8",
+        "5c4a0b52a1216540cc58eefa90a1622305a6650913278aed29b10d49890a820e",
+        "0cea998c93d50ddc0181a616c041667fc864c8e3cf342e86cab3ae6e7cfde168"
+      ]
+    },
+    "app/pos_r2.php": {
+      "new": "4cdfe723e95298470564662467bd29a015a40726def0dc3ad4db299b7f773682",
+      "old": [
+        null,
+        "f5ec92f5e335159b7ccbaab701f6d2eba4a26f3ff475ee0092713dda260b559f",
+        "4cdfe723e95298470564662467bd29a015a40726def0dc3ad4db299b7f773682"
+      ]
+    },
+    "app/pos_v141.php": {
+      "new": "6311055ac64e87afc1adbdd7dd4c01fcd15a5a9e1bd6c3301f5e803da706c45a",
+      "old": [
+        "c9e1a7e8d60df5b9b0a5acdcbf18112b6070bc8524ec9b8e408cdd51f51c055c",
+        "f045dc8958143f04503cd8c403094e8216fa6d79a6ac9f3de70adea5a8aec4bd",
+        "6311055ac64e87afc1adbdd7dd4c01fcd15a5a9e1bd6c3301f5e803da706c45a"
+      ]
+    },
+    "app/pos_v148.php": {
+      "new": "e41e95bd0f7e77d57a574f9f27a6a9eceff86692182555e060fcd5dd4ef02c1a",
+      "old": [
+        "c4c119aaba8200b432a1103970f9352125e5a5f99f1db45dbe250688c6abb064",
+        "4838d7f65635162b4a752b820d1e2fb7e959a7b36ade555fdedd689b79a7d71c",
+        "21970fcfe0886f1fdcbe66f45391156a1fd07b57b25d20f8032f8dc7581cc5f4"
+      ]
+    },
+    "app/printing_r3.php": {
+      "new": "6d7d967c4e989fc71882ff8cc7fd116f1e53cbace9ecdadcbb7052de67745871",
+      "old": [
+        null,
+        "6d7d967c4e989fc71882ff8cc7fd116f1e53cbace9ecdadcbb7052de67745871"
+      ]
+    },
+    "app/purchases_r2.php": {
+      "new": "abb4d48e989df79a2b0b41920c27b9e6c9bee1f9ea4ce3538f02f180a356293e",
+      "old": [
+        null,
+        "abb4d48e989df79a2b0b41920c27b9e6c9bee1f9ea4ce3538f02f180a356293e"
+      ]
+    },
+    "app/reports_r3.php": {
+      "new": "bbf71b095abef5df1181c4411ec3be945c3935ea5ae2c7547e3e2fec26a5162e",
+      "old": [
+        null,
+        "bbf71b095abef5df1181c4411ec3be945c3935ea5ae2c7547e3e2fec26a5162e"
+      ]
+    },
+    "app/restructure_r1.php": {
+      "new": "e25d469756e1bb09bccacdb1e0ea69a8307924b909ef0198d892a5c8883f60d0",
+      "old": [
+        null,
+        "914428b861c1ef8613091fb1654fe5a47c3a3fda19ef7621f0419798fd895f57",
+        "91e97621dfa926d7d7eb4c0cec08c3ebac7403cd37e3de832b56ba9d76b188f6"
+      ]
+    },
+    "app/restructure_r2.php": {
+      "new": "adb1c9fa42e11132a634fc1bf2daa54e7c3f2f9d5f43dbefaa48b3ce40ba3d54",
+      "old": [
+        null,
+        "e82abb315dc6314be54b0ae79558d4f9b1f8e977363ac002b979379dfab9060e",
+        "adb1c9fa42e11132a634fc1bf2daa54e7c3f2f9d5f43dbefaa48b3ce40ba3d54"
+      ]
+    },
+    "app/restructure_r3.php": {
+      "new": "1ea0fcc088d98f1677b138f1da3b6ab11cdd191786bec3629ebf6c11f9e1ee61",
+      "old": [
+        null,
+        "a77fecf3cfd6c7cfc3145224df01d3ba6d553257f4961f018ae2fab55bf9f025"
+      ]
+    },
+    "app/sales_r3.php": {
+      "new": "a64ec18dce0bc7193eb47dc7eb05319e131f354e3f8b1a1bf1dae5faa2777a64",
+      "old": [
+        null,
+        "a64ec18dce0bc7193eb47dc7eb05319e131f354e3f8b1a1bf1dae5faa2777a64"
+      ]
+    },
+    "app/schema_r2.php": {
+      "new": "74267b018e82d502cde484519ac89b1e09b87b194b750ed414fbfc5f1f4cd716",
+      "old": [
+        null,
+        "f65f631783c6d53a3564c46de59f110590a2bb93e6a6aedf2a90064ac5e139ce"
+      ]
+    },
+    "app/schema_r3.php": {
+      "new": "57d63f658cf82c534ac31458f1e6b221efa8ddeb5e8d64f6abb798d438408b5c",
+      "old": [
+        null,
+        "57d63f658cf82c534ac31458f1e6b221efa8ddeb5e8d64f6abb798d438408b5c"
+      ]
+    },
+    "app/shifts_r2.php": {
+      "new": "54211b78010c9707f3f67db9f7d2ceffbfeea598d30e3b97f8939066e374f66a",
+      "old": [
+        null,
+        "54211b78010c9707f3f67db9f7d2ceffbfeea598d30e3b97f8939066e374f66a"
+      ]
+    },
+    "app/v1.php": {
+      "new": "6159eaaf9b46d74d1fa21f2c1fda3eca487f362e6ddf927b00627f20e56044d4",
+      "old": [
+        "b9898c12d29ef18b0515425a9e946cbdf0c9dae2c12c93e6c08344fd32318f61",
+        "a2b9f5be7c8974625d362a9f75026320e57f91675e99d25689f9cebd7fec54f7",
+        "e82e8122733331899e72571d99a893b60fdb739fdd5feed67f56a4cdc3ff793f"
+      ]
+    },
+    "assets/app.js": {
+      "new": "1be0d538a140e64b30fe8de113d0adc85a0376edcef8508cfc7d81ee19841c9e",
+      "old": [
+        "2672d39eaec1a1e8e9e21c44324231e64eaaa0dd18e7a28328a85fd7fc182bd2",
+        "1be0d538a140e64b30fe8de113d0adc85a0376edcef8508cfc7d81ee19841c9e"
+      ]
+    },
+    "assets/pdf-r3.css": {
+      "new": "79730bb49da9aba4909ddff1c5b8299e49043153765f3ec0335ba45e2b635be9",
+      "old": [
+        null,
+        "79730bb49da9aba4909ddff1c5b8299e49043153765f3ec0335ba45e2b635be9"
+      ]
+    },
+    "assets/pdf-r3.js": {
+      "new": "05b53504273ce65ea5e1c73d23970a82bcdd1f91301a2d49aea46586e193730a",
+      "old": [
+        null,
+        "05b53504273ce65ea5e1c73d23970a82bcdd1f91301a2d49aea46586e193730a"
+      ]
+    },
+    "assets/pos-v148.js": {
+      "new": "0bc2def954145398d1a72521a2123050472cb5c8383e89526b144e1fb2619bb9",
+      "old": [
+        "5964a12678b6743714cc5c181bced5108b511d227467563760404a7f7d06749c",
+        "8abf4888313035688e30d39bc7498c6d20e43409b0e55d6f1766c219d61aa5b9",
+        "0bc2def954145398d1a72521a2123050472cb5c8383e89526b144e1fb2619bb9"
+      ]
+    },
+    "assets/restructure-r2.css": {
+      "new": "50c802d0f0cc5937297327fcd2d347e273b0337ef7ca9b7e70fdb4e2a0aba638",
+      "old": [
+        null,
+        "50c802d0f0cc5937297327fcd2d347e273b0337ef7ca9b7e70fdb4e2a0aba638"
+      ]
+    },
+    "assets/restructure-r2.js": {
+      "new": "e02bcf378b84ee7e50178ee9d4330d21d9f77d148231ba170e1e698a99cb0b32",
+      "old": [
+        null,
+        "e02bcf378b84ee7e50178ee9d4330d21d9f77d148231ba170e1e698a99cb0b32"
+      ]
+    },
+    "index.php": {
+      "new": "2926542fa6c92cbea33486c2202d02892244a2953f913266cb5365903435895d",
+      "old": [
+        "fcdb051c665b8b8118c16157e35a3a96351ed7df6d346dc4ea785c8e94d4fc59",
+        "ea8660c1e1abccb12cf445789fb797718e9dbdb5c60d496639a6adef4d9dc7e1",
+        "2926542fa6c92cbea33486c2202d02892244a2953f913266cb5365903435895d"
+      ]
+    }
+  },
+  "baselines": {
+    "original": {
+      "app/accounts_r2.php": null,
+      "app/admin.php": "b231e3292db9fc5899037824afb2b7d253bac81fa7ddeb3feffd41af05b61d18",
+      "app/admin_v1.php": "68bf2fb76f360d43ec1ab9e68ec679d6f36a18011b524f03184d49a59b932cae",
+      "app/branches_v1.php": "50a19c47106f6b8a78a6e85a59a7cc685903926fc4889ed653e13d5aeb427422",
+      "app/business_r2.php": null,
+      "app/catalog_r2.php": null,
+      "app/chat_r2.php": null,
+      "app/checkout_r3.php": null,
+      "app/core.php": "7b0dd9514b08cde34797e24e5a7f5c0d8e3b617a948273677443708b9f76271e",
+      "app/desktop_r2.php": null,
+      "app/fisichat_v143.php": "72fd1aac47e8b8f3f0bee346604e724f43c12db74ea6c4749fcd3793be58585e",
+      "app/floor_r3.php": null,
+      "app/gifts_r2.php": null,
+      "app/gifts_r3.php": null,
+      "app/modules_v12.php": "de229c7c09b67669645482eeb4554c0ffcfe6fba1c4a4a9789896f005c9c649a",
+      "app/official_r3.php": null,
+      "app/physical_v14.php": "29db5f4f56bb55db865b3fbf7974d777fa02116ae3b82c9d23d55ca2d7ec71e8",
+      "app/pos_r2.php": null,
+      "app/pos_v141.php": "c9e1a7e8d60df5b9b0a5acdcbf18112b6070bc8524ec9b8e408cdd51f51c055c",
+      "app/pos_v148.php": "c4c119aaba8200b432a1103970f9352125e5a5f99f1db45dbe250688c6abb064",
+      "app/printing_r3.php": null,
+      "app/purchases_r2.php": null,
+      "app/reports_r3.php": null,
+      "app/restructure_r1.php": null,
+      "app/restructure_r2.php": null,
+      "app/restructure_r3.php": null,
+      "app/sales_r3.php": null,
+      "app/schema_r2.php": null,
+      "app/schema_r3.php": null,
+      "app/shifts_r2.php": null,
+      "app/v1.php": "b9898c12d29ef18b0515425a9e946cbdf0c9dae2c12c93e6c08344fd32318f61",
+      "assets/app.js": "2672d39eaec1a1e8e9e21c44324231e64eaaa0dd18e7a28328a85fd7fc182bd2",
+      "assets/pdf-r3.css": null,
+      "assets/pdf-r3.js": null,
+      "assets/pos-v148.js": "5964a12678b6743714cc5c181bced5108b511d227467563760404a7f7d06749c",
+      "assets/restructure-r2.css": null,
+      "assets/restructure-r2.js": null,
+      "index.php": "fcdb051c665b8b8118c16157e35a3a96351ed7df6d346dc4ea785c8e94d4fc59"
+    },
+    "1.5.0-R1": {
+      "app/accounts_r2.php": null,
+      "app/admin.php": "c24814398ef7cc1ba7a5b0b7995a38fc5027b2deada8f467b48edede46b5fc26",
+      "app/admin_v1.php": "792186100d751b00d10f81b31989e02fee8124ebe32c9e4c79b43bcfd18ac091",
+      "app/branches_v1.php": "50a19c47106f6b8a78a6e85a59a7cc685903926fc4889ed653e13d5aeb427422",
+      "app/business_r2.php": null,
+      "app/catalog_r2.php": null,
+      "app/chat_r2.php": null,
+      "app/checkout_r3.php": null,
+      "app/core.php": "799a3980b9e0b0494bef314df750bc9b74ec09c9139bf024df21ff49431b346e",
+      "app/desktop_r2.php": null,
+      "app/fisichat_v143.php": "72fd1aac47e8b8f3f0bee346604e724f43c12db74ea6c4749fcd3793be58585e",
+      "app/floor_r3.php": null,
+      "app/gifts_r2.php": null,
+      "app/gifts_r3.php": null,
+      "app/modules_v12.php": "de229c7c09b67669645482eeb4554c0ffcfe6fba1c4a4a9789896f005c9c649a",
+      "app/official_r3.php": null,
+      "app/physical_v14.php": "29db5f4f56bb55db865b3fbf7974d777fa02116ae3b82c9d23d55ca2d7ec71e8",
+      "app/pos_r2.php": null,
+      "app/pos_v141.php": "c9e1a7e8d60df5b9b0a5acdcbf18112b6070bc8524ec9b8e408cdd51f51c055c",
+      "app/pos_v148.php": "c4c119aaba8200b432a1103970f9352125e5a5f99f1db45dbe250688c6abb064",
+      "app/printing_r3.php": null,
+      "app/purchases_r2.php": null,
+      "app/reports_r3.php": null,
+      "app/restructure_r1.php": "914428b861c1ef8613091fb1654fe5a47c3a3fda19ef7621f0419798fd895f57",
+      "app/restructure_r2.php": null,
+      "app/restructure_r3.php": null,
+      "app/sales_r3.php": null,
+      "app/schema_r2.php": null,
+      "app/schema_r3.php": null,
+      "app/shifts_r2.php": null,
+      "app/v1.php": "a2b9f5be7c8974625d362a9f75026320e57f91675e99d25689f9cebd7fec54f7",
+      "assets/app.js": "2672d39eaec1a1e8e9e21c44324231e64eaaa0dd18e7a28328a85fd7fc182bd2",
+      "assets/pdf-r3.css": null,
+      "assets/pdf-r3.js": null,
+      "assets/pos-v148.js": "5964a12678b6743714cc5c181bced5108b511d227467563760404a7f7d06749c",
+      "assets/restructure-r2.css": null,
+      "assets/restructure-r2.js": null,
+      "index.php": "ea8660c1e1abccb12cf445789fb797718e9dbdb5c60d496639a6adef4d9dc7e1"
+    },
+    "1.6.0-R2": {
+      "app/accounts_r2.php": "a65f8a36c084e4e4ab564cea4cc0d972bd2b44995120989a0efa7df4c9332744",
+      "app/admin.php": "6417cbf59a0767605b2c9c7b91918a27fa1fef7149d3682919f967120a40462f",
+      "app/admin_v1.php": "525c4f587ccfead330fa6afd58aa33418a73ea426df6ff1b25aea10645b3f045",
+      "app/branches_v1.php": "3f0ec86880cf8f9e2efddbed91ca607eb55838457e3afe5a2c451909ce7a6574",
+      "app/business_r2.php": "a8b72baae495fe17826bbf594491cbbeeb9a65ca2e634b986ed3d64c45a2482d",
+      "app/catalog_r2.php": "d14f7443175c156ddc375e50dc8c04d89c6b0e873b914d78e88ba618b0211606",
+      "app/chat_r2.php": "97034b13eb41c3295252796bb6960feaa1d3ede673bd388896914672a388c881",
+      "app/checkout_r3.php": null,
+      "app/core.php": "4f760cd1cc3fc926efb94347db1be39d3a65b1ca5808ab7543d209988795d370",
+      "app/desktop_r2.php": "f67b948f7e12a38790d46334633b066067aaada311063733f1ed5efe8550f6b5",
+      "app/fisichat_v143.php": "ca0c59845109748b4ed4e9ab3c090984875aa6e59a828f229514050bf1d57327",
+      "app/floor_r3.php": null,
+      "app/gifts_r2.php": "f15aa3ea29c06eddca33af1f9841189fa3b7bcc4c3a581d4467c29035df3dc96",
+      "app/gifts_r3.php": null,
+      "app/modules_v12.php": "9c0ec58c930c5f2a9d7742d066a2bca6a55f5fa92f488b2f96376f2eae1f2f2e",
+      "app/official_r3.php": null,
+      "app/physical_v14.php": "5c4a0b52a1216540cc58eefa90a1622305a6650913278aed29b10d49890a820e",
+      "app/pos_r2.php": "f5ec92f5e335159b7ccbaab701f6d2eba4a26f3ff475ee0092713dda260b559f",
+      "app/pos_v141.php": "f045dc8958143f04503cd8c403094e8216fa6d79a6ac9f3de70adea5a8aec4bd",
+      "app/pos_v148.php": "4838d7f65635162b4a752b820d1e2fb7e959a7b36ade555fdedd689b79a7d71c",
+      "app/printing_r3.php": null,
+      "app/purchases_r2.php": "abb4d48e989df79a2b0b41920c27b9e6c9bee1f9ea4ce3538f02f180a356293e",
+      "app/reports_r3.php": null,
+      "app/restructure_r1.php": "91e97621dfa926d7d7eb4c0cec08c3ebac7403cd37e3de832b56ba9d76b188f6",
+      "app/restructure_r2.php": "e82abb315dc6314be54b0ae79558d4f9b1f8e977363ac002b979379dfab9060e",
+      "app/restructure_r3.php": null,
+      "app/sales_r3.php": null,
+      "app/schema_r2.php": "f65f631783c6d53a3564c46de59f110590a2bb93e6a6aedf2a90064ac5e139ce",
+      "app/schema_r3.php": null,
+      "app/shifts_r2.php": "54211b78010c9707f3f67db9f7d2ceffbfeea598d30e3b97f8939066e374f66a",
+      "app/v1.php": "e82e8122733331899e72571d99a893b60fdb739fdd5feed67f56a4cdc3ff793f",
+      "assets/app.js": "2672d39eaec1a1e8e9e21c44324231e64eaaa0dd18e7a28328a85fd7fc182bd2",
+      "assets/pdf-r3.css": null,
+      "assets/pdf-r3.js": null,
+      "assets/pos-v148.js": "8abf4888313035688e30d39bc7498c6d20e43409b0e55d6f1766c219d61aa5b9",
+      "assets/restructure-r2.css": "50c802d0f0cc5937297327fcd2d347e273b0337ef7ca9b7e70fdb4e2a0aba638",
+      "assets/restructure-r2.js": "e02bcf378b84ee7e50178ee9d4330d21d9f77d148231ba170e1e698a99cb0b32",
+      "index.php": "2926542fa6c92cbea33486c2202d02892244a2953f913266cb5365903435895d"
+    },
+    "1.7.0-R3": {
+      "app/accounts_r2.php": "a65f8a36c084e4e4ab564cea4cc0d972bd2b44995120989a0efa7df4c9332744",
+      "app/admin.php": "6417cbf59a0767605b2c9c7b91918a27fa1fef7149d3682919f967120a40462f",
+      "app/admin_v1.php": "525c4f587ccfead330fa6afd58aa33418a73ea426df6ff1b25aea10645b3f045",
+      "app/branches_v1.php": "53bde33073a97440249365168bb581dd06fd4d7626f58fe4b1d576d19e1abd4e",
+      "app/business_r2.php": "76239d6d487e74200232832fe3b5ceb013a18310da7cd723004b7036a4ac1f92",
+      "app/catalog_r2.php": "d14f7443175c156ddc375e50dc8c04d89c6b0e873b914d78e88ba618b0211606",
+      "app/chat_r2.php": "97034b13eb41c3295252796bb6960feaa1d3ede673bd388896914672a388c881",
+      "app/checkout_r3.php": "7f698559894b989aebcb6d047a56a3c7d12f4c67e637843c19733e4dbfc312be",
+      "app/core.php": "a2a8a0b0ae7980eb9328451a363cac34646e6c9b4b8ea8e948cd7c08f5017a85",
+      "app/desktop_r2.php": "422f706ab512217a187c984c6c5f1e291d897738e31d8d4ff762f6c7631e969e",
+      "app/fisichat_v143.php": "ca0c59845109748b4ed4e9ab3c090984875aa6e59a828f229514050bf1d57327",
+      "app/floor_r3.php": "ca49b0912723424d0921d08bc1c8c7a2461c860e2bec0c9f7aa8f32092ab2ccb",
+      "app/gifts_r2.php": "d806f17b4a1d532fbbc45715e27702c11881e852ed695fb4392cbc2b2ae2767c",
+      "app/gifts_r3.php": "09116e49b41e5c4637eacc065aad8dc2cb4a697e2a8a31095f619dfc219430f6",
+      "app/modules_v12.php": "1d4408ee29c9b7fbd7a46cf4a4e594d1f0a9fe9613046de5910f95dc51cfc125",
+      "app/official_r3.php": "3ad936878911b6c4387606ff7c6687a1edd1241175fa24a77db5103ea8d22c77",
+      "app/physical_v14.php": "0cea998c93d50ddc0181a616c041667fc864c8e3cf342e86cab3ae6e7cfde168",
+      "app/pos_r2.php": "4cdfe723e95298470564662467bd29a015a40726def0dc3ad4db299b7f773682",
+      "app/pos_v141.php": "6311055ac64e87afc1adbdd7dd4c01fcd15a5a9e1bd6c3301f5e803da706c45a",
+      "app/pos_v148.php": "21970fcfe0886f1fdcbe66f45391156a1fd07b57b25d20f8032f8dc7581cc5f4",
+      "app/printing_r3.php": "6d7d967c4e989fc71882ff8cc7fd116f1e53cbace9ecdadcbb7052de67745871",
+      "app/purchases_r2.php": "abb4d48e989df79a2b0b41920c27b9e6c9bee1f9ea4ce3538f02f180a356293e",
+      "app/reports_r3.php": "bbf71b095abef5df1181c4411ec3be945c3935ea5ae2c7547e3e2fec26a5162e",
+      "app/restructure_r1.php": "91e97621dfa926d7d7eb4c0cec08c3ebac7403cd37e3de832b56ba9d76b188f6",
+      "app/restructure_r2.php": "adb1c9fa42e11132a634fc1bf2daa54e7c3f2f9d5f43dbefaa48b3ce40ba3d54",
+      "app/restructure_r3.php": "a77fecf3cfd6c7cfc3145224df01d3ba6d553257f4961f018ae2fab55bf9f025",
+      "app/sales_r3.php": "a64ec18dce0bc7193eb47dc7eb05319e131f354e3f8b1a1bf1dae5faa2777a64",
+      "app/schema_r2.php": "f65f631783c6d53a3564c46de59f110590a2bb93e6a6aedf2a90064ac5e139ce",
+      "app/schema_r3.php": "57d63f658cf82c534ac31458f1e6b221efa8ddeb5e8d64f6abb798d438408b5c",
+      "app/shifts_r2.php": "54211b78010c9707f3f67db9f7d2ceffbfeea598d30e3b97f8939066e374f66a",
+      "app/v1.php": "e82e8122733331899e72571d99a893b60fdb739fdd5feed67f56a4cdc3ff793f",
+      "assets/app.js": "1be0d538a140e64b30fe8de113d0adc85a0376edcef8508cfc7d81ee19841c9e",
+      "assets/pdf-r3.css": "79730bb49da9aba4909ddff1c5b8299e49043153765f3ec0335ba45e2b635be9",
+      "assets/pdf-r3.js": "05b53504273ce65ea5e1c73d23970a82bcdd1f91301a2d49aea46586e193730a",
+      "assets/pos-v148.js": "0bc2def954145398d1a72521a2123050472cb5c8383e89526b144e1fb2619bb9",
+      "assets/restructure-r2.css": "50c802d0f0cc5937297327fcd2d347e273b0337ef7ca9b7e70fdb4e2a0aba638",
+      "assets/restructure-r2.js": "e02bcf378b84ee7e50178ee9d4330d21d9f77d148231ba170e1e698a99cb0b32",
+      "index.php": "2926542fa6c92cbea33486c2202d02892244a2953f913266cb5365903435895d"
+    }
+  },
+  "migration_r1_sha256": "de4421ee694c1d8657465767cd351941d7d4ed5100f0dc5058efd33391366fa3"
+}

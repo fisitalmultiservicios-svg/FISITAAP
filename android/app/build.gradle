@@ -10,6 +10,7 @@ android {
         versionName '1.0.0'
     }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    testOptions { unitTests.includeAndroidResources = true }
     signingConfigs {
         release {
             if (System.getenv('FISITAAP_ANDROID_KEYSTORE')) {
@@ -34,4 +35,15 @@ android {
 dependencies {
     implementation 'androidx.webkit:webkit:1.12.1'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+}
+tasks.withType(Test).configureEach {
+    // Keep Robolectric's SDK locks, downloads and native graphics cache in the test profile.
+    def testHome = new File(gradle.gradleUserHomeDir, 'test-user')
+    doFirst { testHome.mkdirs() }
+    systemProperty 'user.home', testHome.absolutePath
+    systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
+    ['http.proxyHost','http.proxyPort','https.proxyHost','https.proxyPort','http.nonProxyHosts'].each { key ->
+        if (System.getProperty(key)) systemProperty key, System.getProperty(key)
+    }
 }

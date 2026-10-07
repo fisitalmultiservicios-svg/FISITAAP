@@ -1,0 +1,6 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^(?:payload|backups)(?:/|$) - [F,L]
+<FilesMatch "^(?:manifest\.json|files\.php|migration-r1\.sql|.*\.(?:json|sql|lock|log|bak|md))$">
+ Require all denied
+</FilesMatch>

@@ -1,0 +1,51 @@
+FISITAAP — ACTUALIZACIÓN ACUMULATIVA 1.7.4-QA
+Revisión del 6 de octubre de 2026 (Costa Rica; 7 de octubre UTC)
+
+ESTE ZIP SE SUBE A CPANEL. NO SE INSTALA EN WINDOWS.
+Incluye las actualizaciones web anteriores R1, R2 y R3 y las correcciones
+de ventas, seguridad, Express y clientes verificadas durante este QA.
+Es compatible con las copias originales revisadas y las entregas R1/R2/R3.
+Si modificaste por tu cuenta algún archivo, la comprobación se detendrá.
+
+PASOS EN CPANEL
+1. Espera a que nadie esté vendiendo. Sincroniza las ventas pendientes del
+   equipo central y detén las cajas mientras haces la actualización.
+2. Guarda una copia completa de la carpeta de la aplicación y de su base
+   de datos mediante las herramientas de respaldo de cPanel.
+3. En el Administrador de archivos, abre la carpeta donde está index.php
+   de FISITAAP. Puede ser fisitaap.com, public_html o una subcarpeta.
+4. Sube FISITAAP-1.7.4-QA-FULL-cPanel.zip y pulsa Extraer en esa carpeta.
+   Debe aparecer actualizacion-fisitaap-r4 al lado de app, assets e index.php.
+5. Entra en FISITAAP con la cuenta MAESTRO.
+6. Abre tu dirección web seguida de /actualizacion-fisitaap-r4/
+   Ejemplo si está en subcarpeta:
+   https://fisitaap.com/laventatita/actualizacion-fisitaap-r4/
+7. Revisa la comprobación, marca que ya guardaste el respaldo y detuviste
+   las cajas, y pulsa Instalar actualización. No cierres hasta ver el éxito.
+8. Prueba una venta, un recibo, Express pendientes y el listado de clientes.
+9. Tras comprobar todo, borra el ZIP subido. Descarga el respaldo automático
+   de la actualización y consérvalo fuera de la carpeta pública. Elimina
+   actualizacion-fisitaap-r4 cuando termine tu revisión.
+
+SI LA COMPROBACIÓN SE DETIENE
+No reemplaces archivos manualmente ni cambies la base de datos para forzar
+la instalación. Conserva el mensaje y solicita revisión de compatibilidad.
+Se necesita PHP 8.1 o superior con PDO MySQL, mbstring y SimpleXML.
+El paquete no incluye ni sustituye config.php, tus imágenes ni tus ventas.
+
+VOLVER ATRÁS
+El botón sirve antes de empezar a trabajar con la actualización. Si ya hay
+ventas o datos nuevos, se bloquea para conservarlos: la recuperación debe
+revisarse junto con el respaldo completo. El respaldo automático cubre
+archivos reemplazados, no sustituye tu respaldo completo de base de datos.
+
+WINDOWS Y ANDROID
+Windows: instala FISITAAP Escritorio 1.7.4 en la misma carpeta que la versión
+anterior. Actualiza primero el central y luego las cajas, tras terminar las
+ventas en curso. Conserva los datos locales. No borres la carpeta de datos.
+Android: este QA no cambió el funcionamiento del APK 1.0.0; no necesitas
+reinstalarlo por esta revisión. Sigue usando la misma configuración.
+La caja Android sin internet depende de que el central y la red local sigan
+encendidos. Para imprimir, las térmicas de red deben admitir ESC/POS.
+
+CONSULTA EL INFORME QA PARA VER EL ALCANCE Y LAS PRUEBAS FÍSICAS PENDIENTES.

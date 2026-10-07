@@ -1,0 +1,1184 @@
+{
+  "date_local": "2026-10-06",
+  "timezone": "America/Costa_Rica",
+  "web_version": "1.7.4-QA",
+  "windows_version": "1.7.4",
+  "android_runtime_version": "1.0.0",
+  "scope": "Isolated cloud fixtures with fictitious data; production and physical Windows/Android/printers are not validated here.",
+  "final_regression": [
+    {
+      "name": "web-r2-final",
+      "exit": 0,
+      "seconds": 19.34,
+      "log": "web-r2-final.log"
+    },
+    {
+      "name": "web-r3-final",
+      "exit": 0,
+      "seconds": 6.21,
+      "log": "web-r3-final.log"
+    },
+    {
+      "name": "web-reportes-final",
+      "exit": 0,
+      "seconds": 3.2,
+      "log": "web-reportes-final.log"
+    },
+    {
+      "name": "web-consumidor-final",
+      "exit": 0,
+      "seconds": 0.51,
+      "log": "web-consumidor-final.log"
+    },
+    {
+      "name": "sin-internet-php-final",
+      "exit": 0,
+      "seconds": 1.7,
+      "log": "sin-internet-php-final.log"
+    },
+    {
+      "name": "web-pdf-navegador-final",
+      "exit": 0,
+      "seconds": 10.38,
+      "log": "web-pdf-navegador-final.log"
+    },
+    {
+      "name": "cajas-navegador-final",
+      "exit": 0,
+      "seconds": 2.88,
+      "log": "cajas-navegador-final.log"
+    },
+    {
+      "name": "web-profundo-final",
+      "exit": 0,
+      "seconds": 44.87,
+      "log": "web-profundo-final.log"
+    },
+    {
+      "name": "android-web-final",
+      "exit": 0,
+      "seconds": 2.05,
+      "log": "android-web-final.log"
+    },
+    {
+      "name": "usabilidad-final",
+      "exit": 0,
+      "seconds": 3.93,
+      "log": "usabilidad-final.log"
+    }
+  ],
+  "web_deep": {
+    "passed": 130,
+    "failed": 0,
+    "cases": [
+      {
+        "case": "PHP and database clocks agree for sales, expiry and daily reports",
+        "status": "passed",
+        "seconds": 0.076
+      },
+      {
+        "case": "owner screen /admin",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "owner screen /admin/sucursales",
+        "status": "passed",
+        "seconds": 0.077
+      },
+      {
+        "case": "owner screen /admin/pedidos",
+        "status": "passed",
+        "seconds": 0.073
+      },
+      {
+        "case": "owner screen /admin/cocina",
+        "status": "passed",
+        "seconds": 0.076
+      },
+      {
+        "case": "owner screen /admin/ventas",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "owner screen /admin/cobro",
+        "status": "passed",
+        "seconds": 0.078
+      },
+      {
+        "case": "owner screen /admin/express-pendientes",
+        "status": "passed",
+        "seconds": 0.084
+      },
+      {
+        "case": "owner screen /admin/turnos",
+        "status": "passed",
+        "seconds": 0.081
+      },
+      {
+        "case": "owner screen /admin/inventario",
+        "status": "passed",
+        "seconds": 0.073
+      },
+      {
+        "case": "owner screen /admin/compras",
+        "status": "passed",
+        "seconds": 0.075
+      },
+      {
+        "case": "owner screen /admin/cxc",
+        "status": "passed",
+        "seconds": 0.065
+      },
+      {
+        "case": "owner screen /admin/cxp",
+        "status": "passed",
+        "seconds": 0.073
+      },
+      {
+        "case": "owner screen /admin/repartidor",
+        "status": "passed",
+        "seconds": 0.076
+      },
+      {
+        "case": "owner screen /admin/express",
+        "status": "passed",
+        "seconds": 0.078
+      },
+      {
+        "case": "owner screen /admin/productos",
+        "status": "passed",
+        "seconds": 0.087
+      },
+      {
+        "case": "owner screen /admin/opciones",
+        "status": "passed",
+        "seconds": 0.083
+      },
+      {
+        "case": "owner screen /admin/categorias",
+        "status": "passed",
+        "seconds": 0.08
+      },
+      {
+        "case": "owner screen /admin/delivery",
+        "status": "passed",
+        "seconds": 0.074
+      },
+      {
+        "case": "owner screen /admin/cupones",
+        "status": "passed",
+        "seconds": 0.082
+      },
+      {
+        "case": "owner screen /admin/clientes",
+        "status": "passed",
+        "seconds": 0.075
+      },
+      {
+        "case": "owner screen /admin/fidelizacion",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "owner screen /admin/contenido",
+        "status": "passed",
+        "seconds": 0.073
+      },
+      {
+        "case": "owner screen /admin/blog",
+        "status": "passed",
+        "seconds": 0.084
+      },
+      {
+        "case": "owner screen /admin/contactos",
+        "status": "passed",
+        "seconds": 0.07
+      },
+      {
+        "case": "owner screen /admin/reportes",
+        "status": "passed",
+        "seconds": 0.081
+      },
+      {
+        "case": "owner screen /admin/usuarios",
+        "status": "passed",
+        "seconds": 0.079
+      },
+      {
+        "case": "owner screen /admin/auditoria",
+        "status": "passed",
+        "seconds": 0.073
+      },
+      {
+        "case": "owner screen /admin/configuracion",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "owner screen /admin/impresion",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "owner screen /admin/roles",
+        "status": "passed",
+        "seconds": 0.082
+      },
+      {
+        "case": "owner screen /admin/extras",
+        "status": "passed",
+        "seconds": 0.083
+      },
+      {
+        "case": "owner screen /admin/opcionales",
+        "status": "passed",
+        "seconds": 0.081
+      },
+      {
+        "case": "owner screen /admin/combos",
+        "status": "passed",
+        "seconds": 0.081
+      },
+      {
+        "case": "owner screen /admin/promociones",
+        "status": "passed",
+        "seconds": 0.079
+      },
+      {
+        "case": "owner screen /admin/clientes-crear",
+        "status": "passed",
+        "seconds": 0.082
+      },
+      {
+        "case": "owner screen /admin/clientes-buscar",
+        "status": "passed",
+        "seconds": 0.076
+      },
+      {
+        "case": "owner screen /admin/clientes-historial",
+        "status": "passed",
+        "seconds": 0.081
+      },
+      {
+        "case": "owner screen /admin/credito",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "owner screen /admin/proveedores",
+        "status": "passed",
+        "seconds": 0.075
+      },
+      {
+        "case": "owner screen /admin/kpis",
+        "status": "passed",
+        "seconds": 0.07
+      },
+      {
+        "case": "owner screen /admin/mesas",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "owner screen /admin/afiliados",
+        "status": "passed",
+        "seconds": 0.075
+      },
+      {
+        "case": "owner screen /admin/invitaciones",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "owner screen /admin/entregas-historial",
+        "status": "passed",
+        "seconds": 0.077
+      },
+      {
+        "case": "owner screen /admin/escritorio",
+        "status": "passed",
+        "seconds": 0.078
+      },
+      {
+        "case": "master screen /master",
+        "status": "passed",
+        "seconds": 0.073
+      },
+      {
+        "case": "master screen /master/empresas",
+        "status": "passed",
+        "seconds": 0.067
+      },
+      {
+        "case": "master screen /master/planes",
+        "status": "passed",
+        "seconds": 0.064
+      },
+      {
+        "case": "master screen /master/reportes",
+        "status": "passed",
+        "seconds": 0.073
+      },
+      {
+        "case": "master screen /master/blog",
+        "status": "passed",
+        "seconds": 0.061
+      },
+      {
+        "case": "master screen /master/auditoria",
+        "status": "passed",
+        "seconds": 0.06
+      },
+      {
+        "case": "master screen /master/qa",
+        "status": "passed",
+        "seconds": 0.066
+      },
+      {
+        "case": "master screen /master/cache",
+        "status": "passed",
+        "seconds": 0.06
+      },
+      {
+        "case": "master screen /master/modules",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "master screen /master/configuracion",
+        "status": "passed",
+        "seconds": 0.077
+      },
+      {
+        "case": "master screen /master/contenido",
+        "status": "passed",
+        "seconds": 0.071
+      },
+      {
+        "case": "master screen /master/contenido-anterior",
+        "status": "passed",
+        "seconds": 0.067
+      },
+      {
+        "case": "public screen /",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "public screen /prueba-a",
+        "status": "passed",
+        "seconds": 0.067
+      },
+      {
+        "case": "public screen /prueba-a/menu",
+        "status": "passed",
+        "seconds": 0.06
+      },
+      {
+        "case": "public screen /prueba-a/blog",
+        "status": "passed",
+        "seconds": 0.071
+      },
+      {
+        "case": "public screen /prueba-a/contacto",
+        "status": "passed",
+        "seconds": 0.061
+      },
+      {
+        "case": "public screen /login",
+        "status": "passed",
+        "seconds": 0.068
+      },
+      {
+        "case": "public screen /owner-login",
+        "status": "passed",
+        "seconds": 0.06
+      },
+      {
+        "case": "public screen /register",
+        "status": "passed",
+        "seconds": 0.061
+      },
+      {
+        "case": "public screen /driver-register",
+        "status": "passed",
+        "seconds": 0.066
+      },
+      {
+        "case": "public screen /forgot-password",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "public screen /reset-password?token=invalid",
+        "status": "passed",
+        "seconds": 0.063
+      },
+      {
+        "case": "public screen /verify-email?token=invalid",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "public screen /demo",
+        "status": "passed",
+        "seconds": 0.07
+      },
+      {
+        "case": "public screen /robots.txt",
+        "status": "passed",
+        "seconds": 0.082
+      },
+      {
+        "case": "public screen /sitemap.xml",
+        "status": "passed",
+        "seconds": 0.063
+      },
+      {
+        "case": "public screen /manifest.webmanifest",
+        "status": "passed",
+        "seconds": 0.063
+      },
+      {
+        "case": "public screen /prueba-a/manifest.webmanifest",
+        "status": "passed",
+        "seconds": 0.065
+      },
+      {
+        "case": "public screen /sw.js",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "public help requires authenticated access",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "role isolation anon /admin",
+        "status": "passed",
+        "seconds": 0.067
+      },
+      {
+        "case": "role isolation anon /master",
+        "status": "passed",
+        "seconds": 0.066
+      },
+      {
+        "case": "role isolation owner /master",
+        "status": "passed",
+        "seconds": 0.065
+      },
+      {
+        "case": "role isolation cashier /admin/usuarios",
+        "status": "passed",
+        "seconds": 0.068
+      },
+      {
+        "case": "role isolation editor /admin/usuarios",
+        "status": "passed",
+        "seconds": 0.067
+      },
+      {
+        "case": "role isolation kitchen /admin/compras",
+        "status": "passed",
+        "seconds": 0.062
+      },
+      {
+        "case": "role isolation driver /admin",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "role isolation ownerb /admin/sucursal-detalle?branch_id=301",
+        "status": "passed",
+        "seconds": 0.062
+      },
+      {
+        "case": "role isolation ownerb /admin/compras",
+        "status": "passed",
+        "seconds": 0.063
+      },
+      {
+        "case": "role isolation anon /api/pos-options?product=502",
+        "status": "passed",
+        "seconds": 0.073
+      },
+      {
+        "case": "role isolation owner /api/desktop/snapshot",
+        "status": "passed",
+        "seconds": 0.066
+      },
+      {
+        "case": "POS idempotency key cannot confirm a different account",
+        "status": "passed",
+        "seconds": 1.259
+      },
+      {
+        "case": "PHP two simultaneous boxes reserve the last unit once",
+        "status": "passed",
+        "seconds": 1.503
+      },
+      {
+        "case": "PHP concurrent same payment creates a single sale",
+        "status": "passed",
+        "seconds": 0.707
+      },
+      {
+        "case": "checkout handles malformed and scalar JSON",
+        "status": "passed",
+        "seconds": 0.319
+      },
+      {
+        "case": "CSV export protects spreadsheet formulas",
+        "status": "passed",
+        "seconds": 0.209
+      },
+      {
+        "case": "driver cannot reopen a completed delivery",
+        "status": "passed",
+        "seconds": 0.462
+      },
+      {
+        "case": "password reset token is atomic under concurrent use",
+        "status": "passed",
+        "seconds": 3.281
+      },
+      {
+        "case": "disabled staff loses an existing web session",
+        "status": "passed",
+        "seconds": 0.207
+      },
+      {
+        "case": "Express preparation, dispatch, blocked unpaid delivery, payment and delivery",
+        "status": "passed",
+        "seconds": 1.711
+      },
+      {
+        "case": "master creates a business, default branch, owner, subscription and suspension",
+        "status": "passed",
+        "seconds": 0.982
+      },
+      {
+        "case": "branch catalog prices, copy and rejection of a foreign branch",
+        "status": "passed",
+        "seconds": 1.038
+      },
+      {
+        "case": "product creation/edit, fractional inventory and foreign IDs",
+        "status": "passed",
+        "seconds": 1.328
+      },
+      {
+        "case": "two web boxes cannot spend the same gift balance",
+        "status": "passed",
+        "seconds": 1.298
+      },
+      {
+        "case": "negative, incomplete, excessive, unauthorized credit and foreign customer payments",
+        "status": "passed",
+        "seconds": 2.122
+      },
+      {
+        "case": "web order and repeated cancellation restore inventory once",
+        "status": "passed",
+        "seconds": 0.687
+      },
+      {
+        "case": "uploaded code disguised as an image is rejected",
+        "status": "passed",
+        "seconds": 0.07
+      },
+      {
+        "case": "customer creation/search escapes HTML and treats SQL text as text",
+        "status": "passed",
+        "seconds": 0.34
+      },
+      {
+        "case": "product quantities cannot exceed the precision of inventory storage",
+        "status": "passed",
+        "seconds": 0.219
+      },
+      {
+        "case": "temporary password must be changed before using business functions",
+        "status": "passed",
+        "seconds": 0.632
+      },
+      {
+        "case": "saved sale is discoverable, resumes and keeps its inventory reservation",
+        "status": "passed",
+        "seconds": 1.196
+      },
+      {
+        "case": "driver registration, profile, affiliation, delivery states, PIN and duplicate delivery",
+        "status": "passed",
+        "seconds": 8.221
+      },
+      {
+        "case": "cancelled web order stops delivery, releases driver and restores stock once",
+        "status": "passed",
+        "seconds": 4.644
+      },
+      {
+        "case": "business cannot assign two simultaneous deliveries to one driver",
+        "status": "passed",
+        "seconds": 2.293
+      },
+      {
+        "case": "report export products",
+        "status": "passed",
+        "seconds": 0.07
+      },
+      {
+        "case": "report export categories",
+        "status": "passed",
+        "seconds": 0.077
+      },
+      {
+        "case": "report export options",
+        "status": "passed",
+        "seconds": 0.068
+      },
+      {
+        "case": "report export combos",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "report export promotions",
+        "status": "passed",
+        "seconds": 0.082
+      },
+      {
+        "case": "report export customers",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "report export sales",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "report export items",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "report export inventory",
+        "status": "passed",
+        "seconds": 0.066
+      },
+      {
+        "case": "report export purchases",
+        "status": "passed",
+        "seconds": 0.069
+      },
+      {
+        "case": "report export suppliers",
+        "status": "passed",
+        "seconds": 0.067
+      },
+      {
+        "case": "report export shifts",
+        "status": "passed",
+        "seconds": 0.064
+      },
+      {
+        "case": "report export cxc",
+        "status": "passed",
+        "seconds": 0.062
+      },
+      {
+        "case": "report export cxp",
+        "status": "passed",
+        "seconds": 0.068
+      },
+      {
+        "case": "report export delivery",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "report export loyalty",
+        "status": "passed",
+        "seconds": 0.072
+      },
+      {
+        "case": "report export gifts",
+        "status": "passed",
+        "seconds": 0.062
+      },
+      {
+        "case": "report export branches",
+        "status": "passed",
+        "seconds": 0.071
+      },
+      {
+        "case": "report export users",
+        "status": "passed",
+        "seconds": 0.068
+      }
+    ]
+  },
+  "node": {
+    "existing_regression_passed": 29,
+    "additional_passed": 9,
+    "quote_comparisons": 1500,
+    "fixture": "Actual local server; Windows native driver API is substituted"
+  },
+  "android_java": [
+    {
+      "suite": "com.fisitaap.android.PrinterIntegrationTest",
+      "tests": 3,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "com.fisitaap.android.SafetyTest",
+      "tests": 6,
+      "failures": 0,
+      "skipped": 0
+    }
+  ],
+  "android_lint": {
+    "errors": 0,
+    "warnings": 8
+  },
+  "layout": {
+    "cases": [
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Resumen",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Productos e inventario",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 9,
+        "route": "/admin/productos",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Mesas",
+        "smallVisibleControls": 0,
+        "unlabelledInputs": 0,
+        "route": "/admin/mesas?view=basic",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Mesas",
+        "smallVisibleControls": 0,
+        "unlabelledInputs": 0,
+        "route": "/admin/mesas?view=graphic",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Cobro · Cuentas abiertas",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/cobro",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Buscar clientes",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/clientes-buscar",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "FISITAPP Express",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/express",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Fidelización",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 5,
+        "route": "/admin/fidelizacion",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Compras",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 21,
+        "route": "/admin/compras",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Impresoras y recibos",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/impresion",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "Windows y cajas sin internet",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/escritorio",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 1366,
+        "documentWidth": 1366,
+        "mainHeading": "KPIs",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/kpis",
+        "viewport": "1366x900",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Resumen",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Productos e inventario",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 9,
+        "route": "/admin/productos",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Mesas",
+        "smallVisibleControls": 0,
+        "unlabelledInputs": 0,
+        "route": "/admin/mesas?view=basic",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Mesas",
+        "smallVisibleControls": 0,
+        "unlabelledInputs": 0,
+        "route": "/admin/mesas?view=graphic",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Cobro · Cuentas abiertas",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/cobro",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Buscar clientes",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/clientes-buscar",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "FISITAPP Express",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/express",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Fidelización",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 5,
+        "route": "/admin/fidelizacion",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Compras",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 21,
+        "route": "/admin/compras",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Impresoras y recibos",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/impresion",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "Windows y cajas sin internet",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/escritorio",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "mainHeading": "KPIs",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/kpis",
+        "viewport": "768x1024",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Resumen",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Productos e inventario",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 9,
+        "route": "/admin/productos",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Mesas",
+        "smallVisibleControls": 0,
+        "unlabelledInputs": 0,
+        "route": "/admin/mesas?view=basic",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Mesas",
+        "smallVisibleControls": 0,
+        "unlabelledInputs": 0,
+        "route": "/admin/mesas?view=graphic",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Cobro · Cuentas abiertas",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/cobro",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Buscar clientes",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/clientes-buscar",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "FISITAPP Express",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/express",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Fidelización",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 5,
+        "route": "/admin/fidelizacion",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Compras",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 21,
+        "route": "/admin/compras",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Impresoras y recibos",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/impresion",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "Windows y cajas sin internet",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/escritorio",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "mainHeading": "KPIs",
+        "smallVisibleControls": 1,
+        "unlabelledInputs": 0,
+        "route": "/admin/kpis",
+        "viewport": "390x844",
+        "overflow": false,
+        "status": "passed"
+      }
+    ],
+    "page_overflow": 0,
+    "screens_with_unlabelled_controls": [
+      "/admin/compras",
+      "/admin/fidelizacion",
+      "/admin/productos"
+    ]
+  },
+  "installer": {
+    "baselines": [
+      "original",
+      "1.5.0-R1",
+      "1.6.0-R2",
+      "1.7.0-R3"
+    ],
+    "passed": 4,
+    "repeat_apply": "passed",
+    "rollback_before_new_business_data": "passed",
+    "rollback_after_new_business_data_blocked": "passed"
+  },
+  "native_electron": {
+    "full_workspace": "passed on Linux with virtual display; sync transport substituted, separate real PHP sync suite passed",
+    "pdf_58_80": "passed on actual Electron; printer hardware not used"
+  },
+  "windows_package": {
+    "format": "NSIS x64",
+    "integrity": "passed; extracted app.asar matches source and version",
+    "physical_installation": "not run"
+  },
+  "external_services_and_physical_checks": [
+    "HostGator/cPanel configuration",
+    "Windows physical installation and firewall",
+    "Android physical installation and full WebView workflow",
+    "Actual ESC/POS printers and Windows drivers",
+    "Live SMTP, AI provider, WhatsApp and configured payment/fiscal services"
+  ]
+}
