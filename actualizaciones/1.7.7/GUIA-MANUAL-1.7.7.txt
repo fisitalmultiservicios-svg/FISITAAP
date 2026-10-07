@@ -1,0 +1,15 @@
+FISITAAP 1.7.7 — ACTUALIZACIÓN MANUAL
+
+Usa este método si el instalador web muestra error 403.
+Requiere que la versión 1.7.6 ya esté instalada.
+
+1. Guarda un respaldo completo de archivos y base de datos en cPanel.
+2. Detén temporalmente las cajas.
+3. Sube este ZIP a la carpeta donde están app, assets e index.php.
+4. Pulsa Extraer y confirma que se reemplacen app/core.php, app/admin.php,
+   index.php y .htaccess.
+5. Cierra y vuelve a abrir el navegador.
+6. Prueba Resumen, Ventas, búsqueda, Turnos y una venta.
+
+No borres app, assets, database ni index.php. No necesitas abrir la carpeta
+actualizacion-fisitaap-r7 para este método. El Desktop no se reinstala.
