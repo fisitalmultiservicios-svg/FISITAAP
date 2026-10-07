@@ -13,7 +13,7 @@ Esta entrega requiere que 1.7.6 ya esté instalada.
    Turnos y una venta. El Desktop no se reinstala ni se vuelve a vincular.
 
 La actualización reduce consultas del resumen, evita descargar el diseñador
-POS en pantallas que no lo necesitan, activa compresión Brotli cuando el
-servidor la ofrece y agrega índices seguros para turnos y catálogos locales.
+POS en pantallas que no lo necesitan, conserva compresión gzip compatible y
+agrega índices seguros para turnos y catálogos locales.
 Conserva config.php, imágenes, ventas, permisos, turnos y cajas vinculadas.
 Si aparece «archivo diferente», detén la instalación y envía una captura.
