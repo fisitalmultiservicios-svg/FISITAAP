@@ -8,6 +8,8 @@ El ZIP de actualización se sube a cPanel. El instalador `.exe` se instala en la
 
 [**Windows actualizado 1.7.3: descargar instalador**](actualizaciones/1.7.3/README.md). Abre el sistema web completo dentro del programa cuando hay conexión, y conserva la caja local para buscar y vender sin internet. Mantiene los datos y no requiere actualizar cPanel.
 
+[**Android 1.0.0: descargar instalador APK**](actualizaciones/android-1.0.0/README.md). Abre el sistema web completo e imprime recibos y comandas directamente a impresoras térmicas ESC/POS de red de 58 u 80 mm. Puede conectarse al equipo central Windows para buscar y vender sin internet mientras siga disponible la red del negocio.
+
 [Primera entrega 1.5.0-R1](actualizaciones/1.5.0-R1/README.md)
 
 [Entrega anterior 1.6.0-R2](actualizaciones/1.6.0-R2/README.md)

@@ -6,3 +6,9 @@ actualizacion-fisitaap-r2/backups/
 actualizacion-fisitaap-r3/backups/
 desktop/node_modules/
 desktop/dist/
+android/.gradle/
+android/local.properties
+android/app/build/
+android/build/
+*.jks
+*.keystore
