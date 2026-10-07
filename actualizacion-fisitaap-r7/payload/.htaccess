@@ -30,14 +30,6 @@ LimitRequestBody 52428800
   AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
 </IfModule>
 
-<IfModule mod_brotli.c>
-  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css application/javascript application/json image/svg+xml
-</IfModule>
-
-<IfModule mod_headers.c>
-  Header append Vary Accept-Encoding
-</IfModule>
-
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/css "access plus 1 year"
