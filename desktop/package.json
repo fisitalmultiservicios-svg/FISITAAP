@@ -1,6 +1,6 @@
 {
   "name": "fisitaap-escritorio",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "description": "FISITAAP: cajas Windows conectadas a un equipo central local",
   "main": "main.js",
   "author": "FISITAL",

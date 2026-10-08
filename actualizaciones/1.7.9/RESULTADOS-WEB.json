@@ -1,0 +1,652 @@
+[
+  {
+    "case": "PHP and database clocks agree for sales, expiry and daily reports",
+    "status": "passed",
+    "seconds": 0.082
+  },
+  {
+    "case": "owner screen /admin",
+    "status": "passed",
+    "seconds": 0.078
+  },
+  {
+    "case": "owner screen /admin/sucursales",
+    "status": "passed",
+    "seconds": 0.066
+  },
+  {
+    "case": "owner screen /admin/pedidos",
+    "status": "passed",
+    "seconds": 0.072
+  },
+  {
+    "case": "owner screen /admin/cocina",
+    "status": "passed",
+    "seconds": 0.08
+  },
+  {
+    "case": "owner screen /admin/ventas",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "owner screen /admin/cobro",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "owner screen /admin/express-pendientes",
+    "status": "passed",
+    "seconds": 0.067
+  },
+  {
+    "case": "owner screen /admin/turnos",
+    "status": "passed",
+    "seconds": 0.073
+  },
+  {
+    "case": "owner screen /admin/inventario",
+    "status": "passed",
+    "seconds": 0.069
+  },
+  {
+    "case": "owner screen /admin/compras",
+    "status": "passed",
+    "seconds": 0.063
+  },
+  {
+    "case": "owner screen /admin/cxc",
+    "status": "passed",
+    "seconds": 0.072
+  },
+  {
+    "case": "owner screen /admin/cxp",
+    "status": "passed",
+    "seconds": 0.075
+  },
+  {
+    "case": "owner screen /admin/repartidor",
+    "status": "passed",
+    "seconds": 0.073
+  },
+  {
+    "case": "owner screen /admin/express",
+    "status": "passed",
+    "seconds": 0.084
+  },
+  {
+    "case": "owner screen /admin/productos",
+    "status": "passed",
+    "seconds": 0.08
+  },
+  {
+    "case": "owner screen /admin/opciones",
+    "status": "passed",
+    "seconds": 0.074
+  },
+  {
+    "case": "owner screen /admin/categorias",
+    "status": "passed",
+    "seconds": 0.081
+  },
+  {
+    "case": "owner screen /admin/delivery",
+    "status": "passed",
+    "seconds": 0.067
+  },
+  {
+    "case": "owner screen /admin/cupones",
+    "status": "passed",
+    "seconds": 0.065
+  },
+  {
+    "case": "owner screen /admin/clientes",
+    "status": "passed",
+    "seconds": 0.073
+  },
+  {
+    "case": "owner screen /admin/fidelizacion",
+    "status": "passed",
+    "seconds": 0.075
+  },
+  {
+    "case": "owner screen /admin/contenido",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "owner screen /admin/blog",
+    "status": "passed",
+    "seconds": 0.075
+  },
+  {
+    "case": "owner screen /admin/contactos",
+    "status": "passed",
+    "seconds": 0.069
+  },
+  {
+    "case": "owner screen /admin/reportes",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "owner screen /admin/usuarios",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "owner screen /admin/auditoria",
+    "status": "passed",
+    "seconds": 0.065
+  },
+  {
+    "case": "owner screen /admin/configuracion",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "owner screen /admin/impresion",
+    "status": "passed",
+    "seconds": 0.072
+  },
+  {
+    "case": "owner screen /admin/roles",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "owner screen /admin/extras",
+    "status": "passed",
+    "seconds": 0.069
+  },
+  {
+    "case": "owner screen /admin/opcionales",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "owner screen /admin/combos",
+    "status": "passed",
+    "seconds": 0.079
+  },
+  {
+    "case": "owner screen /admin/promociones",
+    "status": "passed",
+    "seconds": 0.103
+  },
+  {
+    "case": "owner screen /admin/clientes-crear",
+    "status": "passed",
+    "seconds": 0.073
+  },
+  {
+    "case": "owner screen /admin/clientes-buscar",
+    "status": "passed",
+    "seconds": 0.07
+  },
+  {
+    "case": "owner screen /admin/clientes-historial",
+    "status": "passed",
+    "seconds": 0.069
+  },
+  {
+    "case": "owner screen /admin/credito",
+    "status": "passed",
+    "seconds": 0.066
+  },
+  {
+    "case": "owner screen /admin/proveedores",
+    "status": "passed",
+    "seconds": 0.072
+  },
+  {
+    "case": "owner screen /admin/kpis",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "owner screen /admin/mesas",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "owner screen /admin/afiliados",
+    "status": "passed",
+    "seconds": 0.076
+  },
+  {
+    "case": "owner screen /admin/invitaciones",
+    "status": "passed",
+    "seconds": 0.07
+  },
+  {
+    "case": "owner screen /admin/entregas-historial",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "owner screen /admin/escritorio",
+    "status": "passed",
+    "seconds": 0.078
+  },
+  {
+    "case": "master screen /master",
+    "status": "passed",
+    "seconds": 0.073
+  },
+  {
+    "case": "master screen /master/empresas",
+    "status": "passed",
+    "seconds": 0.08
+  },
+  {
+    "case": "master screen /master/planes",
+    "status": "passed",
+    "seconds": 0.067
+  },
+  {
+    "case": "master screen /master/reportes",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "master screen /master/blog",
+    "status": "passed",
+    "seconds": 0.067
+  },
+  {
+    "case": "master screen /master/auditoria",
+    "status": "passed",
+    "seconds": 0.096
+  },
+  {
+    "case": "master screen /master/qa",
+    "status": "passed",
+    "seconds": 0.096
+  },
+  {
+    "case": "master screen /master/cache",
+    "status": "passed",
+    "seconds": 0.074
+  },
+  {
+    "case": "master screen /master/modules",
+    "status": "passed",
+    "seconds": 0.08
+  },
+  {
+    "case": "master screen /master/configuracion",
+    "status": "passed",
+    "seconds": 0.075
+  },
+  {
+    "case": "master screen /master/contenido",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "master screen /master/contenido-anterior",
+    "status": "passed",
+    "seconds": 0.086
+  },
+  {
+    "case": "public screen /",
+    "status": "passed",
+    "seconds": 0.082
+  },
+  {
+    "case": "public screen /prueba-a",
+    "status": "passed",
+    "seconds": 0.067
+  },
+  {
+    "case": "public screen /prueba-a/menu",
+    "status": "passed",
+    "seconds": 0.074
+  },
+  {
+    "case": "public screen /prueba-a/blog",
+    "status": "passed",
+    "seconds": 0.066
+  },
+  {
+    "case": "public screen /prueba-a/contacto",
+    "status": "passed",
+    "seconds": 0.065
+  },
+  {
+    "case": "public screen /login",
+    "status": "passed",
+    "seconds": 0.076
+  },
+  {
+    "case": "public screen /owner-login",
+    "status": "passed",
+    "seconds": 0.08
+  },
+  {
+    "case": "public screen /register",
+    "status": "passed",
+    "seconds": 0.073
+  },
+  {
+    "case": "public screen /driver-register",
+    "status": "passed",
+    "seconds": 0.067
+  },
+  {
+    "case": "public screen /forgot-password",
+    "status": "passed",
+    "seconds": 0.069
+  },
+  {
+    "case": "public screen /reset-password?token=invalid",
+    "status": "passed",
+    "seconds": 0.077
+  },
+  {
+    "case": "public screen /verify-email?token=invalid",
+    "status": "passed",
+    "seconds": 0.083
+  },
+  {
+    "case": "public screen /demo",
+    "status": "passed",
+    "seconds": 0.085
+  },
+  {
+    "case": "public screen /robots.txt",
+    "status": "passed",
+    "seconds": 0.061
+  },
+  {
+    "case": "public screen /sitemap.xml",
+    "status": "passed",
+    "seconds": 0.062
+  },
+  {
+    "case": "public screen /manifest.webmanifest",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "public screen /prueba-a/manifest.webmanifest",
+    "status": "passed",
+    "seconds": 0.073
+  },
+  {
+    "case": "public screen /sw.js",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "public help requires authenticated access",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "role isolation anon /admin",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "role isolation anon /master",
+    "status": "passed",
+    "seconds": 0.077
+  },
+  {
+    "case": "role isolation owner /master",
+    "status": "passed",
+    "seconds": 0.07
+  },
+  {
+    "case": "role isolation cashier /admin/usuarios",
+    "status": "passed",
+    "seconds": 0.059
+  },
+  {
+    "case": "role isolation editor /admin/usuarios",
+    "status": "passed",
+    "seconds": 0.059
+  },
+  {
+    "case": "role isolation kitchen /admin/compras",
+    "status": "passed",
+    "seconds": 0.067
+  },
+  {
+    "case": "role isolation driver /admin",
+    "status": "passed",
+    "seconds": 0.084
+  },
+  {
+    "case": "role isolation ownerb /admin/sucursal-detalle?branch_id=301",
+    "status": "passed",
+    "seconds": 0.065
+  },
+  {
+    "case": "role isolation ownerb /admin/compras",
+    "status": "passed",
+    "seconds": 0.064
+  },
+  {
+    "case": "role isolation anon /api/pos-options?product=502",
+    "status": "passed",
+    "seconds": 0.069
+  },
+  {
+    "case": "role isolation owner /api/desktop/snapshot",
+    "status": "passed",
+    "seconds": 0.063
+  },
+  {
+    "case": "POS idempotency key cannot confirm a different account",
+    "status": "passed",
+    "seconds": 1.361
+  },
+  {
+    "case": "PHP two simultaneous boxes reserve the last unit once",
+    "status": "passed",
+    "seconds": 1.638
+  },
+  {
+    "case": "PHP concurrent same payment creates a single sale",
+    "status": "passed",
+    "seconds": 0.731
+  },
+  {
+    "case": "checkout handles malformed and scalar JSON",
+    "status": "passed",
+    "seconds": 0.324
+  },
+  {
+    "case": "CSV export protects spreadsheet formulas",
+    "status": "passed",
+    "seconds": 0.24
+  },
+  {
+    "case": "driver cannot reopen a completed delivery",
+    "status": "passed",
+    "seconds": 0.51
+  },
+  {
+    "case": "password reset token is atomic under concurrent use",
+    "status": "passed",
+    "seconds": 3.296
+  },
+  {
+    "case": "disabled staff loses an existing web session",
+    "status": "passed",
+    "seconds": 0.204
+  },
+  {
+    "case": "Express preparation, dispatch, blocked unpaid delivery, payment and delivery",
+    "status": "passed",
+    "seconds": 1.707
+  },
+  {
+    "case": "master creates a business, default branch, owner, subscription and suspension",
+    "status": "passed",
+    "seconds": 1.062
+  },
+  {
+    "case": "branch catalog prices, copy and rejection of a foreign branch",
+    "status": "passed",
+    "seconds": 1.062
+  },
+  {
+    "case": "product creation/edit, fractional inventory and foreign IDs",
+    "status": "passed",
+    "seconds": 1.246
+  },
+  {
+    "case": "two web boxes cannot spend the same gift balance",
+    "status": "passed",
+    "seconds": 1.398
+  },
+  {
+    "case": "negative, incomplete, excessive, unauthorized credit and foreign customer payments",
+    "status": "passed",
+    "seconds": 2.233
+  },
+  {
+    "case": "web order and repeated cancellation restore inventory once",
+    "status": "passed",
+    "seconds": 0.698
+  },
+  {
+    "case": "uploaded code disguised as an image is rejected",
+    "status": "passed",
+    "seconds": 0.08
+  },
+  {
+    "case": "customer creation/search escapes HTML and treats SQL text as text",
+    "status": "passed",
+    "seconds": 0.337
+  },
+  {
+    "case": "product quantities cannot exceed the precision of inventory storage",
+    "status": "passed",
+    "seconds": 0.213
+  },
+  {
+    "case": "temporary password must be changed before using business functions",
+    "status": "passed",
+    "seconds": 0.681
+  },
+  {
+    "case": "saved sale is discoverable, resumes and keeps its inventory reservation",
+    "status": "passed",
+    "seconds": 1.272
+  },
+  {
+    "case": "driver registration, profile, affiliation, delivery states, PIN and duplicate delivery",
+    "status": "passed",
+    "seconds": 8.916
+  },
+  {
+    "case": "cancelled web order stops delivery, releases driver and restores stock once",
+    "status": "passed",
+    "seconds": 4.889
+  },
+  {
+    "case": "business cannot assign two simultaneous deliveries to one driver",
+    "status": "passed",
+    "seconds": 2.179
+  },
+  {
+    "case": "report export products",
+    "status": "passed",
+    "seconds": 0.073
+  },
+  {
+    "case": "report export categories",
+    "status": "passed",
+    "seconds": 0.075
+  },
+  {
+    "case": "report export options",
+    "status": "passed",
+    "seconds": 0.064
+  },
+  {
+    "case": "report export combos",
+    "status": "passed",
+    "seconds": 0.07
+  },
+  {
+    "case": "report export promotions",
+    "status": "passed",
+    "seconds": 0.065
+  },
+  {
+    "case": "report export customers",
+    "status": "passed",
+    "seconds": 0.069
+  },
+  {
+    "case": "report export sales",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "report export items",
+    "status": "passed",
+    "seconds": 0.066
+  },
+  {
+    "case": "report export inventory",
+    "status": "passed",
+    "seconds": 0.068
+  },
+  {
+    "case": "report export purchases",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "report export suppliers",
+    "status": "passed",
+    "seconds": 0.071
+  },
+  {
+    "case": "report export shifts",
+    "status": "passed",
+    "seconds": 0.065
+  },
+  {
+    "case": "report export cxc",
+    "status": "passed",
+    "seconds": 0.081
+  },
+  {
+    "case": "report export cxp",
+    "status": "passed",
+    "seconds": 0.061
+  },
+  {
+    "case": "report export delivery",
+    "status": "passed",
+    "seconds": 0.074
+  },
+  {
+    "case": "report export loyalty",
+    "status": "passed",
+    "seconds": 0.061
+  },
+  {
+    "case": "report export gifts",
+    "status": "passed",
+    "seconds": 0.063
+  },
+  {
+    "case": "report export branches",
+    "status": "passed",
+    "seconds": 0.074
+  },
+  {
+    "case": "report export users",
+    "status": "passed",
+    "seconds": 0.062
+  }
+]

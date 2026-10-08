@@ -5,7 +5,7 @@ const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),cryp
 const bcrypt=require('../desktop/node_modules/bcryptjs');
 const {createLocalServer,quote}=require('../desktop/server');
 const password=crypto.randomBytes(16).toString('hex');
-function snapshot(stock=1000000){return{id:'a'.repeat(32),generated_at:new Date().toISOString(),tenant:{id:1,name:'QA',tax_included:false},branch:{id:1,name:'QA'},products:[{id:1,name:'Product',price:1000,normal_price:1000,rate:1300,min:1000,step:1000,stock,track:true,allow_negative:false,bogo:false,groups:[],components:[]}],users:[{id:1,name:'A',password_hash:bcrypt.hashSync(password,4)},{id:2,name:'B',password_hash:bcrypt.hashSync(password,4)}],customers:[],categories:[]};}
+function snapshot(stock=1000000){return{offline_policy:{version:179,allowed:true,generation:1},id:'a'.repeat(32),generated_at:new Date().toISOString(),tenant:{id:1,name:'QA',tax_included:false},branch:{id:1,name:'QA'},products:[{id:1,name:'Product',price:1000,normal_price:1000,rate:1300,min:1000,step:1000,stock,track:true,allow_negative:false,bogo:false,groups:[],components:[]}],users:[{id:1,name:'A',password_hash:bcrypt.hashSync(password,4)},{id:2,name:'B',password_hash:bcrypt.hashSync(password,4)}],customers:[],categories:[]};}
 async function environment(t,handler){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'fisitaap-qa-'));
  const received=new Map(),linked=new Set(),closed=new Set(),calls=[];
@@ -69,7 +69,7 @@ test('QA sales created while a snapshot downloads keep their reserved stock',asy
  assert.equal((await e.request('/api/sales',e.sale(),a)).status,200);releaseSnapshot();await pending;
  assert.equal(e.service.store.data.stocks[1],999000);assert.equal(e.service.store.data.sales[0].synced,false);
 });
-test('QA pair completion cannot replace a connection after a new offline sale',async t=>{
+test('QA an assigned principal cannot start re-pairing while offline sales are possible',async t=>{
  const e=await environment(t);
  let releasePair;const release=new Promise(resolve=>releasePair=resolve);
  // The pending request parses a deliberately slow response while a cashier can still sell.
@@ -82,13 +82,12 @@ test('QA pair completion cannot replace a connection after a new offline sale',a
  let enteredResolve;const entered=new Promise(resolve=>enteredResolve=resolve);
  const service=await create({dataDir:directory,port:0,host:'127.0.0.1',autoSync:false,fetch:async()=>({ok:true,json:async()=>{enteredResolve();await release;return{ok:true,token:'c'.repeat(64),snapshot:secondSnapshot};}})});
  t.after(async()=>{await new Promise(resolve=>service.server.close(resolve));fs.rmSync(directory,{recursive:true,force:true});});
- const responsePromise=remoteFetch(service.url+'/api/pair',{method:'POST',headers:{Origin:service.url,'Content-Type':'application/json'},body:JSON.stringify({url:'https://other.invalid',device_id:2,code:'test'})});
- await entered;
+ const result=await remoteFetch(service.url+'/api/pair',{method:'POST',headers:{Origin:service.url,'Content-Type':'application/json'},body:JSON.stringify({url:'https://other.invalid',device_id:2,code:'test'})});
+ assert.equal(result.status,422);assert.match((await result.json()).error,/Libera primero/);
  const localPost=async(route,body,actor)=>remoteFetch(service.url+route,{method:'POST',headers:{Origin:service.url,'Content-Type':'application/json','X-CSRF-Token':actor?.csrf||'',Cookie:actor?.cookie||''},body:JSON.stringify(body)});
  const login=await localPost('/api/login',{user_id:1,register:'A',password});const actor={cookie:login.headers.get('set-cookie').split(';')[0],csrf:(await login.json()).csrf};
  assert.equal((await localPost('/api/shift/open',{opening_cash:0},actor)).status,200);
  assert.equal((await localPost('/api/sales',e.sale(),actor)).status,200);releasePair();
- const result=await responsePromise;assert.equal(result.status,422,'A connection changed while a local sale was being saved');
  assert.equal(service.store.data.snapshot.tenant.id,1);assert.equal(service.store.data.sales.length,1);
 });
 test('QA 1500 generated quotes agree between JavaScript and PHP to the cent',()=>{

@@ -65,7 +65,7 @@ class DesktopWorkspace {
     if(this.notice)this.state.message=this.notice;
     else if(!this.state.webUrl)this.state.message='Conecta primero tu negocio en la caja local.';
     else if(!this.state.centralReady)this.state.message='El equipo central no responde. Revisa el equipo y la red del local.';
-    else if(!this.state.available)this.state.message=(this.connectionError||'Sin conexión con la web.')+(this.state.mode==='web'?' Puedes pasar a Caja local; revisa cualquier cobro web sin confirmar.':' Usa la caja local para buscar y vender.');
+    else if(!this.state.available)this.state.message=(this.connectionError||'Sin conexión con la web.')+(this.state.mode==='web'?' Revisa el cobro web sin confirmar. Solo el principal puede vender localmente.':this.state.primary?' Usa Caja local: este es el equipo principal.':'Solo el principal puede vender sin internet; esta caja usa la web con conexión.');
     else if(this.state.pending>0)this.state.message='Hay '+this.state.pending+' venta(s) local(es) pendientes de sincronizar.';
     else if(this.webFailed)this.state.message='La web vuelve a estar disponible. Pulsa Sistema completo para abrirla de nuevo.';
     else this.state.message=this.state.mode==='web'?'Sistema web completo. Usa tu cuenta y tus permisos habituales.':'La web está disponible. Puedes volver a Sistema completo cuando termines tu venta local.';
@@ -84,7 +84,7 @@ class DesktopWorkspace {
     this.state.mode=mode;this.resize();this.publish();
   }
   async setup() {
-    if(this.localURL===this.service.url)return {configured:!!this.service.store.data.snapshot,webUrl:this.service.store.data.connection?.url||null,pending:this.service.store.data.sales.filter(s=>!s.synced).length};
+    if(this.localURL===this.service.url)return {configured:!!this.service.store.data.snapshot,primary:this.service.isPrincipal?.()===true,webUrl:this.service.store.data.connection?.url||null,pending:this.service.store.data.sales.filter(s=>!s.synced).length};
     const response=await this.request(this.localURL+'/api/setup',{signal:AbortSignal.timeout(5000)}),out=await response.json();
     if(!response.ok||!out.ok)throw new Error('El equipo central no responde.');
     return out;
@@ -95,7 +95,7 @@ class DesktopWorkspace {
     this.refreshing=(async()=>{
       const generation=this.generation,wasAvailable=this.state.available;
       try{
-        const info=await this.setup();if(generation!==this.generation)return this.snapshot();this.state.centralReady=true;this.state.configured=!!info.configured;this.state.pending=Number.isSafeInteger(info.pending)?info.pending:0;
+        const info=await this.setup();if(generation!==this.generation)return this.snapshot();this.state.primary=this.localURL===this.service.url&&info.primary===true;this.state.centralReady=true;this.state.configured=!!info.configured;this.state.pending=Number.isSafeInteger(info.pending)?info.pending:0;
         if(info.webUrl){const url=webBase(info.webUrl);if(url!==this.state.webUrl){this.state.webUrl=url;this.webLoaded=false;this.webFailed=false;this.onWebURL(url);}}
       }catch{this.state.centralReady=false;}
       if(this.state.webUrl){
@@ -158,8 +158,8 @@ class DesktopWorkspace {
     const contents=this.activeView?.webContents;
     if(!contents)return;
     if(typeof contents.executeJavaScript==='function'){
-      const receipt=await contents.executeJavaScript("Boolean(document.querySelector('[data-bridge-print]'))");
-      if(receipt){await contents.executeJavaScript('window.print()');return;}
+      const receipt=await contents.executeJavaScript("Boolean(document.querySelector('[data-bridge-print],#receiptDialog[open] #printReceipt'))");
+      if(receipt){await contents.executeJavaScript("(()=>{const local=document.querySelector('#receiptDialog[open] #printReceipt');if(local)local.click();else window.print();})()");return;}
     }
     contents.print({printBackground:true});
   }

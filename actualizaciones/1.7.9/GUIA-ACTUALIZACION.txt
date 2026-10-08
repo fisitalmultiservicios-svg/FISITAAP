@@ -1,0 +1,31 @@
+FISITAAP 1.7.9 — actualización coordinada web, Windows y Android
+
+ANTES DE EMPEZAR
+1. Detén las ventas. En todas las cajas anteriores sincroniza las ventas pendientes y cierra todos los turnos. Guarda respaldo de archivos cPanel, base de datos y cajas locales.
+2. Descarga los tres archivos de esta entrega. Esta actualización necesita la instalación existente R1/R2/R3; no crea una plataforma vacía.
+
+EN CPANEL
+3. Sube FISITAAP-1.7.9-FULL-cPanel.zip a la carpeta real del sitio y extráelo reemplazando los archivos existentes. No borres ninguna carpeta. Conserva config.php, .htaccess, uploads y los datos de tu base.
+4. Con las ventas todavía detenidas, actualiza TODOS los equipos Windows y Android. Ejecuta el instalador Windows. Instala el APK sobre la aplicación anterior, sin desinstalarla ni borrar sus datos.
+5. Inicia sesión con la cuenta maestra y entra a https://TU-SITIO/master/actualizar-179. Confirma tu respaldo y aplica. Esta ruta también instala los índices de 1.7.8. Repetirla no borra datos ni cambia el principal.
+
+ELEGIR EL ÚNICO PRINCIPAL
+6. Entra como dueño a Administración → Windows y cajas sin internet. Configura el cajero y su contraseña local (12 a 72 caracteres). Si el dispositivo es nuevo, regístralo y crea su código de conexión.
+7. En Windows o en Caja local de Android, conecta el dispositivo con la misma dirección web, número de equipo y código. Android no necesita un Windows. En un Windows ya conectado no es necesario volver a conectarlo.
+8. En la administración web selecciona ese dispositivo conectado como equipo principal. En el dispositivo pulsa Sincronizar para descargar la autorización y el catálogo. Solo entonces podrá abrir un turno y vender sin internet. Hay un principal para TODO el negocio, no uno por sucursal; su catálogo corresponde a su sucursal registrada.
+9. Las otras cajas abren el sistema web completo con su usuario habitual. Sin internet no podrán vender, incluso si están en la misma red del principal. Todas deben tener la versión nueva antes de activar esta regla.
+
+ANDROID E IMPRESORAS
+10. En ajustes Android coloca la dirección web del negocio. Caja local abre la caja del propio Android. La opción de abrirla cuando falla internet NO concede permisos: eso lo decide el dueño en la web.
+11. Configura la impresora en Administración → Impresión. Android admite impresoras térmicas de red compatibles ESC/POS de 58 u 80 mm por su IP privada. Windows utiliza la impresora instalada/configurada en Windows. Recibos y comandas con impresión nativa no requieren FISITAAP Print. Prueba cada modelo antes de usarlo con clientes.
+12. El router y la impresora deben seguir encendidos para imprimir por red cuando falla internet. Sin internet están disponibles las funciones de la caja local, no todos los módulos web. Pagos electrónicos deben estar realmente confirmados; la caja no confirma transferencias o tarjetas sin conexión.
+
+CAMBIAR DE PRINCIPAL
+13. En el principal anterior cierra TODOS los turnos y sincroniza hasta que no existan ventas o cierres pendientes. Pulsa Liberar equipo principal. Luego selecciona el nuevo desde la administración web y sincronízalo.
+14. Si falla la liberación, la caja queda bloqueada para evitar dos principales. Recupera conexión y vuelve a liberar. No existe relevo automático si se pierde o daña el equipo: hace falta recuperar/revisar sus datos antes de reemplazarlo.
+15. Android mantiene respaldo interno cifrado en ese mismo dispositivo; no es un archivo trasladable a otro teléfono. No desinstales ni borres datos con ventas pendientes. Ante una confirmación dudosa, revisa la venta antes de volver a cobrar.
+
+DESPUÉS
+16. Comprueba acceso web, catálogo, una venta y una impresión. Prueba la caja principal sin internet y después su sincronización. Conserva los respaldos. No ejecutes actualizadores antiguos R5/R7/R8 encima ni restaures una versión anterior con operaciones nuevas pendientes.
+
+Las pruebas de esta entrega se realizaron en un laboratorio. No se ha instalado automáticamente en tu cPanel ni se han probado tus dispositivos o impresoras físicas.

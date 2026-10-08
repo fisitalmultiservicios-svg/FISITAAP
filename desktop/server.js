@@ -48,6 +48,8 @@ async function createLocalServer(options){
   const interfaces=Object.values(os.networkInterfaces()).flat().filter(x=>x&&x.family==='IPv4'&&!x.internal).map(x=>x.address);
   const allowedHosts=new Set(['localhost','127.0.0.1','[::1]',...interfaces]);
   const loopback=req=>['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress);
+  const primaryAllowed=()=>store.data.snapshot?.offline_policy?.version===179 && store.data.snapshot.offline_policy.allowed===true && store.data.snapshot.offline_policy.generation>0 && !store.data.releasePending && store.data.snapshot.offline_policy.generation>(store.data.releaseBlockedGeneration??-1);
+  const requirePrimary=req=>{if(!loopback(req)||!primaryAllowed())throw Object.assign(new Error('Solo el equipo principal autorizado puede vender en Caja local. Las cajas secundarias usan la web con internet.'),{status:403});};
   const body=async req=>{let data='';for await(const chunk of req){data+=chunk;if(Buffer.byteLength(data)>2*1024*1024)throw new Error('Solicitud demasiado grande.');}return JSON.parse(data||'{}');};
   const send=(res,status,value,headers={})=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers});res.end(JSON.stringify(value));};
   const auth=(req,write=false)=>{
@@ -65,7 +67,7 @@ async function createLocalServer(options){
     };
     let out;try{out=await response.json();}catch{throw invalid();}
     if(!out||typeof out!=='object'||Array.isArray(out)||typeof out.ok!=='boolean')throw invalid();
-    if(!response.ok||!out.ok)throw new Error(typeof out.error==='string'?out.error.slice(0,500):'No se pudo conectar con la web.');
+    if(!response.ok||!out.ok)throw Object.assign(new Error(typeof out.error==='string'?out.error.slice(0,500):'No se pudo conectar con la web.'),{status:response.status});
     if(action==='pair'||action==='snapshot'){
       const snap=out.snapshot;
       if(!snap||typeof snap.id!=='string'||!snap.id||!snap.tenant||!snap.branch||!['products','users','categories','customers'].every(key=>Array.isArray(snap[key]))||!snap.products.every(p=>p&&Array.isArray(p.components))||(action==='pair'&&(typeof out.token!=='string'||!out.token)))throw new Error('La web devolvió datos incompletos. Comprueba que la actualización web esté instalada y vuelve a conectar.');
@@ -100,7 +102,7 @@ async function createLocalServer(options){
         for(const sale of next.sales.filter(s=>!s.synced))for(const [id,qty]of Object.entries(sale.stock))stocks[id]=(stocks[id]||0)-qty;
         next.snapshot=snap;next.stocks=stocks;store.commit(next);
       }
-    }catch(error){const next=jsonClone(store.data);next.syncMessage='Sin conexión con la web: '+error.message+'. Las ventas siguen guardadas aquí.';store.commit(next);}
+    }catch(error){const next=jsonClone(store.data);if([401,403].includes(error.status)&&next.snapshot?.offline_policy)next.snapshot.offline_policy.allowed=false;next.syncMessage='Sin conexión con la web: '+error.message+'. Las ventas siguen guardadas aquí.';store.commit(next);}
     finally{busy=false;}
   };
   const handler=async(req,res)=>{
@@ -113,6 +115,7 @@ async function createLocalServer(options){
         if(pathname==='/api/pair'){
           if(!loopback(req))return send(res,403,{ok:false,error:'Conecta el negocio desde el equipo central.'});
           if(pairing||busy)throw new Error('Hay una conexión o sincronización en curso. Espera a que termine.');
+          if(store.data.connection&&primaryAllowed())throw new Error('Libera primero la función principal antes de cambiar la conexión.');
           if(store.data.sales.some(s=>!s.synced))throw new Error('Sincroniza las ventas pendientes antes de cambiar la conexión.');
           if(store.data.shifts.some(s=>!s.syncedClosed))throw new Error('Cierra y sincroniza los turnos locales antes de cambiar la conexión.');
           pairing=true;try{
@@ -124,6 +127,7 @@ async function createLocalServer(options){
           }finally{pairing=false;}
         }
         if(pathname==='/api/login'){
+          if(!loopback(req))throw Object.assign(new Error('Esta caja es secundaria. Usa Sistema completo con internet; la caja local pertenece solo al principal.'),{status:403});
           const key=req.socket.remoteAddress;const times=(attempts.get(key)||[]).filter(t=>t>Date.now()-300000);if(times.length>=10)throw Object.assign(new Error('Espera 5 minutos antes de intentar otra vez.'),{status:429});times.push(Date.now());attempts.set(key,times);
           const user=store.data.snapshot?.users.find(u=>u.id===Number(data.user_id));if(!user||!bcrypt.compareSync(String(data.password||''),user.password_hash.replace(/^\$2y\$/,'$2b$')))throw new Error('Acceso local incorrecto.');
           const register=String(data.register||'').trim().slice(0,80);if(!register)throw new Error('Escribe el nombre de esta caja.');
@@ -131,8 +135,21 @@ async function createLocalServer(options){
           return send(res,200,{ok:true,csrf},{'Set-Cookie':'fisitaap_local='+sid+'; HttpOnly; SameSite=Strict; Path=/'});
         }
         const session=auth(req,true);
+        if(pathname==='/api/primary/release'){
+          if(!loopback(req))throw new Error('Libera la función desde el equipo principal.');
+          if(busy||pairing)throw new Error('Espera a que termine la sincronización.');
+          if(store.data.sales.some(s=>!s.synced)||store.data.shifts.some(s=>!s.syncedClosed))throw new Error('Cierra y sincroniza todos los turnos y ventas antes de liberar el equipo.');
+          busy=true;
+          try {
+            const next=jsonClone(store.data);next.releasePending=true;next.releaseBlockedGeneration=next.snapshot?.offline_policy?.generation??0;store.commit(next);
+            await remote('release',{});
+            const done=jsonClone(store.data);done.releasePending=false;if(done.snapshot.offline_policy)done.snapshot.offline_policy.allowed=false;store.commit(done);
+            return send(res,200,{ok:true});
+          }finally{busy=false;}
+        }
         if(pathname==='/api/logout'){for(const [id,s]of sessions)if(s===session)sessions.delete(id);return send(res,200,{ok:true},{'Set-Cookie':'fisitaap_local=; Max-Age=0; HttpOnly; SameSite=Strict; Path=/'});}
         if(pathname==='/api/shift/open'){
+          requirePrimary(req);
           const next=jsonClone(store.data);if(next.shifts.some(s=>!s.closed_at&&(s.register===session.register||s.user_id===session.user.id)))throw new Error('Ya hay un turno abierto para esta caja o cajero.');
           next.shifts.push({id:crypto.randomUUID(),user_id:session.user.id,register:session.register,snapshot_id:next.snapshot.id,opening_cash:integer(data.opening_cash),opened_at:new Date().toISOString(),closed_at:null,syncedClosed:false});store.commit(next);return send(res,200,{ok:true});
         }
@@ -143,6 +160,7 @@ async function createLocalServer(options){
           const id=uuid(data.id);saleRequestId=id;const next=jsonClone(store.data),old=next.sales.find(s=>s.id===id);
           const fingerprint=crypto.createHash('sha256').update(JSON.stringify({user:session.user.id,register:session.register,items:data.items,payments:data.payments,customer:data.customer||{},...(data.discount?{discount:data.discount}:{}),...(data.note?{note:String(data.note).slice(0,1000)}:{})})).digest('hex');
           if(old){if(old.fingerprint!==fingerprint)throw new Error('El identificador ya corresponde a otra venta.');return send(res,200,{ok:true,sale:{id:old.id,quote:old.quote,change:old.change,synced:old.synced}});}
+          requirePrimary(req);
           const shift=next.shifts.find(s=>s.user_id===session.user.id&&s.register===session.register&&!s.closed_at);if(!shift)throw new Error('Abre tu turno antes de cobrar.');
           const createdAt=new Date().toISOString();const calculated=quote(next.snapshot,data.items,Date.parse(createdAt),data.discount||0);if(data.expected_total!==undefined&&data.expected_total!==calculated.total)throw new Error('El precio o la promoción cambió. Actualiza la caja y revisa el total antes de cobrar.');for(const [pid,qty]of Object.entries(calculated.stock)){const p=next.snapshot.products.find(p=>p.id===Number(pid))||next.snapshot.products.flatMap(p=>p.components).find(p=>p.id===Number(pid));if((next.stocks[pid]||0)-qty<0&&!p?.allow_negative)throw new Error('Existencia insuficiente: '+(p?.name||pid));}
           const payments={cash:integer(data.payments?.cash||0),card:integer(data.payments?.card||0),sinpe:integer(data.payments?.sinpe||0)};const cashApplied=calculated.total-payments.card-payments.sinpe;if(cashApplied<0||payments.cash<cashApplied)throw new Error('Falta completar el pago o los montos superan el total.');
@@ -157,9 +175,10 @@ async function createLocalServer(options){
         throw Object.assign(new Error('Acción no disponible.'),{status:404});
       }
       if(req.method!=='GET')return send(res,405,{ok:false,error:'Método no disponible.'});
-      if(pathname==='/api/setup'){return send(res,200,{ok:true,configured:!!store.data.snapshot,canPair:loopback(req),webUrl:store.data.connection?.url||null,pending:store.data.sales.filter(s=>!s.synced).length,users:store.data.snapshot?.users.map(u=>({id:u.id,name:u.name}))||[]});}
+      if(pathname==='/api/setup'){return send(res,200,{ok:true,configured:!!store.data.snapshot,canPair:loopback(req),primary:primaryAllowed()&&loopback(req),secondary:!loopback(req),webUrl:store.data.connection?.url||null,pending:store.data.sales.filter(s=>!s.synced).length,users:store.data.snapshot?.users.map(u=>({id:u.id,name:u.name}))||[]});}
       if(pathname==='/api/state'){
         const s=auth(req);const snap=jsonClone(store.data.snapshot);delete snap.users;
+        if(snap.offline_policy)snap.offline_policy.allowed=primaryAllowed()&&loopback(req);
         return send(res,200,{ok:true,snapshot:snap,stocks:store.data.stocks,user:s.user,register:s.register,csrf:s.csrf,shift:store.data.shifts.find(x=>x.user_id===s.user.id&&x.register===s.register&&!x.closed_at)||null,sales:store.data.sales.filter(x=>x.user_id===s.user.id&&x.register===s.register).slice(-100).reverse().map(x=>({id:x.id,created_at:x.created_at,total:x.quote.total,synced:x.synced,error:x.error,conflicts:x.conflicts,quote:x.quote,change:x.change})),pending:store.data.sales.filter(s=>!s.synced).length,lastSync:store.data.lastSync,syncMessage:store.data.syncMessage,addresses:interfaces.map(ip=>'http://'+ip+':'+port),canManage:loopback(req)});
       }
       if(pathname==='/conexion.fisitaap'){
@@ -171,6 +190,6 @@ async function createLocalServer(options){
   };
   const server=http.createServer(handler);await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,options.host||'0.0.0.0',resolve);});port=server.address().port;
   if(options.autoSync!==false){timer=setInterval(()=>void sync(),60000);timer.unref();void sync();}
-  return {url:'http://127.0.0.1:'+port,port,store,sync,close:()=>{clearInterval(timer);server.close();},server};
+  return {url:'http://127.0.0.1:'+port,port,store,sync,isPrincipal:primaryAllowed,close:()=>{clearInterval(timer);server.close();},server};
 }
 module.exports={createLocalServer,LocalStore,quote};

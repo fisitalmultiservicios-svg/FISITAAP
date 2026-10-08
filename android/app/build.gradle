@@ -6,8 +6,8 @@ android {
         applicationId 'com.fisitaap.android'
         minSdk 26
         targetSdk 35
-        versionCode 10100
-        versionName '1.1.0'
+        versionCode 10709
+        versionName '1.7.9'
     }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
     testOptions { unitTests.includeAndroidResources = true }
@@ -47,3 +47,8 @@ tasks.withType(Test).configureEach {
         if (System.getProperty(key)) systemProperty key, System.getProperty(key)
     }
 }
+tasks.register('buildOfflineAssets', Exec) {
+    workingDir rootProject.projectDir
+    commandLine 'node', 'build-offline-assets.js'
+}
+tasks.named('preBuild').configure { dependsOn 'buildOfflineAssets' }

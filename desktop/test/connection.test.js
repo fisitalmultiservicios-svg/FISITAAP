@@ -3,7 +3,7 @@ const {test}=require('node:test'),assert=require('node:assert/strict');
 const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto'),bcrypt=require('bcryptjs');
 const {createLocalServer}=require('../server');
 const password=crypto.randomBytes(16).toString('hex');
-const snapshot=()=>({id:'a'.repeat(32),tenant:{id:1,name:'Prueba',tax_included:false},branch:{id:1,name:'Principal'},products:[{id:1,name:'Artículo',sku:'TEST',price:1000,rate:0,min:1000,step:1000,stock:10000,track:true,allow_negative:false,groups:[],components:[]}],users:[{id:1,name:'Cajero',password_hash:bcrypt.hashSync(password,4)}],categories:[],customers:[]});
+const snapshot=()=>({offline_policy:{version:179,allowed:true,generation:1},id:'a'.repeat(32),tenant:{id:1,name:'Prueba',tax_included:false},branch:{id:1,name:'Principal'},products:[{id:1,name:'Artículo',sku:'TEST',price:1000,rate:0,min:1000,step:1000,stock:10000,track:true,allow_negative:false,groups:[],components:[]}],users:[{id:1,name:'Cajero',password_hash:bcrypt.hashSync(password,4)}],categories:[],customers:[]});
 async function local(t,options={}){
  const dataDir=fs.mkdtempSync(path.join(os.tmpdir(),'fisitaap-connection-'));
  const service=await createLocalServer({dataDir,port:0,host:'127.0.0.1',autoSync:false,allowTestHttp:true,...options});
@@ -29,6 +29,8 @@ test('a shop URL returning real HTML gives directions and can be corrected witho
  const good=await e.pair(base+'/');assert.equal(good.status,200);assert.equal(e.service.store.data.connection.url,base);assert.equal(e.service.store.data.snapshot.products.length,1);
  const saved=fs.readFileSync(e.service.store.file);
  assert.equal((await e.pair(base+'/laventanita')).status,422);assert(fs.readFileSync(e.service.store.file).equals(saved));
+ const blocked=await e.pair(base+'/instalacion/');assert.equal(blocked.status,422);assert.match(blocked.data.error,/Libera primero/);
+ const next=structuredClone(e.service.store.data);next.snapshot.offline_policy.allowed=false;e.service.store.commit(next);
  const installed=await e.pair(base+'/instalacion/');assert.equal(installed.status,200);assert.equal(e.service.store.data.connection.url,base+'/instalacion');
  assert.equal(calls.filter(p=>p==='/api/desktop/pair').length,1);
 });
