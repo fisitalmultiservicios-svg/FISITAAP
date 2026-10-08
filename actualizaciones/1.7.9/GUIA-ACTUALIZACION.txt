@@ -7,7 +7,7 @@ ANTES DE EMPEZAR
 EN CPANEL
 3. Sube FISITAAP-1.7.9-FULL-cPanel.zip a la carpeta real del sitio y extráelo reemplazando los archivos existentes. No borres ninguna carpeta. Conserva config.php, .htaccess, uploads y los datos de tu base.
 4. Con las ventas todavía detenidas, actualiza TODOS los equipos Windows y Android. Ejecuta el instalador Windows. Instala el APK sobre la aplicación anterior, sin desinstalarla ni borrar sus datos.
-5. Inicia sesión con la cuenta maestra y entra a https://TU-SITIO/master/actualizar-179. Confirma tu respaldo y aplica. Esta ruta también instala los índices de 1.7.8. Repetirla no borra datos ni cambia el principal.
+5. Inicia sesión con la cuenta maestra y entra a https://TU-SITIO/activar-179.php. Confirma tu respaldo y aplica. Esta ruta también instala los índices de 1.7.8. Repetirla no borra datos ni cambia el principal.
 
 ELEGIR EL ÚNICO PRINCIPAL
 6. Entra como dueño a Administración → Windows y cajas sin internet. Configura el cajero y su contraseña local (12 a 72 caracteres). Si el dispositivo es nuevo, regístralo y crea su código de conexión.

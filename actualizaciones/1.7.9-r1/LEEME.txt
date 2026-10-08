@@ -1,0 +1,13 @@
+Corrección del activador 1.7.9 (sin actualizar Windows ni Android).
+
+1. Guarda respaldo de los archivos antes de reemplazarlos.
+2. Sube FISITAAP-1.7.9-CORREGIR-ACTIVADOR.zip a la carpeta raíz de fisitaap.com y extráelo reemplazando archivos. No borres carpetas.
+3. Inicia sesión con tu cuenta maestra.
+4. Abre exactamente https://fisitaap.com/activar-179.php
+5. Marca la casilla solo después de sincronizar, cerrar turnos, respaldar y actualizar todas las cajas. Pulsa Activar equipo principal único.
+
+La doble barra de la dirección //master/actualizar-179 puede interpretarse como un nombre de servidor y una ruta incompleta. El nuevo formulario envía a /activar-179.php, un archivo físico que evita depender de la reescritura de rutas. Conserva las validaciones de cuenta maestra y CSRF, y permite repetir la activación sin borrar datos ni cambiar el principal.
+
+Archivos del parche: activar-179.php y app/primary179.php. No toca config.php, .htaccess, uploads ni los datos de ventas. Los errores de base se muestran dentro del activador y se registran sin exponer detalles.
+
+Validado en PHP/MariaDB aislados: envío por navegador real, activación repetida, rechazo de cuenta dueña y token CSRF inválido. No instalado automáticamente en cPanel.
