@@ -1,0 +1,21 @@
+FISITAAP 1.7.9-R2 — impresión y diseño del negocio
+
+Incluye toda la actualización web 1.7.9 y su corrección del activador R1. No requiere nuevos instaladores Windows ni Android si ya tienes los de 1.7.9.
+
+1. Finaliza las operaciones en curso y guarda respaldo de los archivos del sitio y de la base de datos.
+2. Sube FISITAAP-1.7.9-R2-FULL-cPanel.zip a la carpeta real del sitio, donde están index.php, app y assets.
+3. Extráelo reemplazando los archivos. NO borres carpetas ni config.php, .htaccess o uploads. El ZIP no contiene esos archivos ni los datos de ventas.
+4. Recarga el sistema. En navegador Windows puedes usar Ctrl + F5. En el escritorio o APK vuelve a abrir la página web.
+5. Si ya activaste 1.7.9, no necesitas volver a hacerlo. Conserva el equipo principal elegido. Si aún no lo hiciste, completa primero los pasos de la guía 1.7.9, actualiza todas las cajas y entra como maestra a https://TU-SITIO/activar-179.php.
+
+QUÉ CAMBIA
+- Windows y Android imprimen comandas, precuentas y recibos desde la pantalla de trabajo, sin mostrar primero la pantalla de FISITAAP Print.
+- Al enviar a cocina se actualiza la misma venta. Al confirmar un cobro vuelve a ventas. Respeta la opción de impresión automática del cobro y de los perfiles.
+- Si una impresora falla, aparece un aviso pequeño para reintentar el mismo trabajo. Ese botón no vuelve a cobrar ni enviar la operación de venta al servidor. Si se pierde la respuesta del servidor, primero debes revisar el estado de la operación.
+- Para una copia adicional usa Imprimir otra copia y confirma. El reintento por fallo conserva el identificador; una copia pedida expresamente genera otro.
+- El navegador común conserva la vista manual porque no tiene el puente nativo del escritorio o APK. No puede imprimir silenciosamente como la aplicación instalada.
+- Panel del dueño: colores comunes del sistema, líneas finas, esquinas rectas y tipografía uniforme. Los colores comerciales de la tienda solo afectan su catálogo y página pública.
+- Logo de la tienda en administración, venta rápida, catálogo y página pública. Si no hay logo cargado, se muestra su nombre. El logo de FISITAAP aparece en la oferta al pie de la página pública; la identidad de la aplicación instalada se conserva.
+
+PRUEBA DESPUÉS DE INSTALAR
+Comprueba el panel, el catálogo y la página pública. Desde Windows/Android 1.7.9 comprueba una comanda y un recibo con tu impresora configurada. Si falla, revisa impresora, papel y configuración antes de reintentar. Las verificaciones de esta entrega fueron de laboratorio, no de tus impresoras físicas.

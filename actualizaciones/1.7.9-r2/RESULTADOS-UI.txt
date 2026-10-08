@@ -1,0 +1,10 @@
+PASS real kitchen POST prints silently, same sales page, shared colors, straight corners, business logo
+PASS failed printer retry conserves IDs, no financial replay or print preview
+PASS explicit confirmed copy uses a new ID; failure retries keep that ID
+PASS real payment prints and returns to sales without a preview and retains one committed sale
+PASS existing Android bridge prints in place without rebuilding APK
+PASS uncertain mutation response stops automatic financial/command replay
+PASS disabled automatic receipt records sale without a preview or print job
+PASS narrow mobile dashboard fits without horizontal page overflow
+PASS no business logo falls back to its name, never the platform logo
+PASS public catalog/landing retain store theme and logo, platform offer confined to footer

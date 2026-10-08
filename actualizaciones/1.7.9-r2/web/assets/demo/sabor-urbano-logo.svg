@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 180" role="img" aria-labelledby="title">
+  <title id="title">Sabor Urbano</title>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb000"/><stop offset="1" stop-color="#ff5b35"/></linearGradient></defs>
+  <rect width="620" height="180" rx="34" fill="#17251e"/>
+  <circle cx="92" cy="90" r="58" fill="url(#g)"/>
+  <path d="M55 98c18-27 55-41 79-18-10 37-47 58-79 18Zm12-7c20 5 37 1 54-11M87 52c7 12 8 23 5 35" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+  <text x="175" y="88" fill="#fff" font-family="Arial,sans-serif" font-size="49" font-weight="800">SABOR</text>
+  <text x="175" y="137" fill="#ffb000" font-family="Arial,sans-serif" font-size="47" font-weight="900">URBANO</text>
+</svg>
