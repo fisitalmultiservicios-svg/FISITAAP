@@ -1,0 +1,64 @@
+{
+  "name": "fisitaap-escritorio",
+  "version": "1.7.8",
+  "description": "FISITAAP: cajas Windows conectadas a un equipo central local",
+  "main": "main.js",
+  "author": "FISITAL",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "build:win": "electron-builder --win nsis --x64 --publish never"
+  },
+  "dependencies": {
+    "bcryptjs": "3.0.2"
+  },
+  "devDependencies": {
+    "electron": "44.5.1",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.fisital.fisitaap",
+    "productName": "FISITAAP Escritorio",
+    "electronLanguages": [
+      "es",
+      "en-US"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "workspace.js",
+      "server.js",
+      "public/**/*",
+      "package.json",
+      "print-bridge.js",
+      "preload.js",
+      "web-preload.js"
+    ],
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false,
+      "artifactName": "FISITAAP-Escritorio-${version}-Windows-x64.${ext}"
+    },
+    "nsis": {
+      "script": "installer.nsi",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "deleteAppDataOnUninstall": false,
+      "installerLanguages": [
+        "es_ES"
+      ]
+    },
+    "publish": [],
+    "afterPack": "build-hooks.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fisitalmultiservicios-svg/FISITAAP.git"
+  }
+}

@@ -1,0 +1,33 @@
+FISITAAP 1.7.8 WEB + WINDOWS / ANDROID 1.1.0
+
+Esta entrega parte de la instalación recuperada, con las reestructuraciones R1/R2/R3 ya activadas. No uses el instalador R5 ni el paquete anterior R7.
+
+ANTES DE EMPEZAR
+1. Sincroniza todas las cajas. Termina ventas y cierra las aplicaciones.
+2. En cPanel guarda respaldo de la carpeta completa del sitio y de su base de datos. Guarda también respaldo de las cajas locales.
+
+ACTUALIZAR LA WEB
+3. Sube FISITAAP-1.7.8-FULL-cPanel.zip a la carpeta donde están index.php, app y assets (fisitaap.com). Extrae allí y reemplaza archivos cuando lo pida.
+4. El ZIP contiene app, assets e index.php. NO contiene config.php, .htaccess, uploads ni datos de tu base de datos. NO borres carpetas para instalarlo.
+5. Los archivos deben tener permisos 644 y las carpetas 755. Nunca 777.
+6. Abre https://fisitaap.com/owner-login e inicia como administrador maestro. Luego abre https://fisitaap.com/master/actualizar-178 . Confirma el respaldo y pulsa Completar actualización, solo una vez. Puede tardar mientras crea índices. Puedes repetirlo si se interrumpe: no duplica índices ni modifica ventas.
+7. Comprueba inicio de sesión, portada, venta de prueba y administración. Recarga con Ctrl+F5. Si algo falla, detén las cajas y restaura el respaldo completo; no mezcles archivos de paquetes viejos.
+
+WINDOWS
+8. Instala FISITAAP-Escritorio-1.7.8-Windows-x64.exe con el escritorio cerrado. Conserva su carpeta de datos. Windows puede pedir confirmación porque el instalador no tiene firma comercial.
+9. Selecciona la impresora instalada en Windows en Administración > Impresión; también puedes configurar la impresora predeterminada en el menú Imprimir del escritorio. Para recibos/comandas no necesitas abrir FISITAAP Print.
+10. Si el controlador o la impresora no están disponibles, se muestra error. No se informa impresión exitosa por haber abierto un PDF. Los informes generales pueden usar el diálogo normal cuando eliges imprimirlos explícitamente.
+
+ANDROID
+11. Instala FISITAAP-Android-1.1.0.apk sobre la versión anterior (misma firma). No desinstales ni borres datos si hay trabajos pendientes de impresión.
+12. En Ajustes elige uno de estos modos:
+    A. Directamente a la web: dirección https://fisitaap.com, sin equipo Windows. Accede con tu cuenta habitual. Este modo necesita internet para buscar/vender en la web; no incluye una base de ventas independiente sin conexión.
+    B. Web y caja local con Windows central: misma dirección web y dirección del central, por ejemplo http://192.168.1.20:18766 . Usa la caja local cuando se pierde internet. El Windows central y el router deben permanecer encendidos; sincroniza antes de volver a la web.
+13. Configura la IP local y puerto de la impresora (habitualmente 9100), papel 58 u 80 mm y corte solo si lo admite. Teléfono e impresora deben estar en la misma red. Las impresoras deben aceptar ESC/POS por TCP; que sean térmicas no garantiza compatibilidad.
+14. Si Administración > Impresión define destinos distintos para cocina/barra/caja, verifica las IP y anchos de cada destino. Android no puede usar nombres de controladores Windows como destinos propios: usa perfiles de red compatibles o su impresora predeterminada.
+
+PRUEBA ANTES DE REABRIR
+15. Imprime un recibo y una comanda: debe salir una copia por destino, sin ventana de FISITAAP Print ni selector automático del navegador. Verifica cantidades, totales, ancho y acentos.
+16. Prueba dos cajas y un corte de internet. Si hay una duda de entrega a la impresora, revisa físicamente antes de reimprimir para evitar copias extra.
+
+Si no tienes Windows y necesitas vender desde varios Android SIN INTERNET, falta implementar un central Android o una base local coordinada: esta entrega no lo promete.

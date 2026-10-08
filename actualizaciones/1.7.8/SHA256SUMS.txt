@@ -1,0 +1,3 @@
+509beaf9b1b7be8ba24a6fd8edb62eb7be40bc1a23c6130e1165d941699c4d51  FISITAAP-1.7.8-FULL-cPanel.zip
+5baf593ec0e831beaab4c95cbba6ebd367e950bdad279b9e150ea4d86caf1d8c  FISITAAP-Escritorio-1.7.8-Windows-x64.exe
+c37f415591256f50ef2149aa130e76ce3ad941e7fbe4323590d863dffd13f4dd  FISITAAP-Android-1.1.0.apk
