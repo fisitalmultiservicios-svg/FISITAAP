@@ -1,0 +1,14 @@
+{
+  "environment": "isolated PHP 8.3 / MariaDB 11.4; reported legacy columns and foreign keys, fake records only",
+  "passed": 8,
+  "checks": [
+    "authenticated preparation retains legacy links for selected branches and shared drivers/profiles; excluded links and unrelated driver disappear",
+    "repeating preparation with legacy links preserves every retained row",
+    "discarding a temporary demo removes its legacy branch link and preserves the shared real driver",
+    "another unknown table still blocks all deletion and leaves every row unchanged",
+    "a broken legacy user reference aborts and rolls back selective deletion",
+    "an unexpected legacy column layout is rejected before any deletion",
+    "original business/configuration hashes remain unchanged; temporary rate-limit counters are cleared by preparation",
+    "corrective ZIP contains only the verified helper and matching manifest, preserving private configuration and uploads"
+  ]
+}

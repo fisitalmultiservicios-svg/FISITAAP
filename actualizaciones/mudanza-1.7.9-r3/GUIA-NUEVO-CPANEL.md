@@ -66,6 +66,8 @@ Las carpetas suelen usar permisos 755 y archivos 644. PHP debe poder escribir en
 
 La herramienta rechaza negocios ambiguos, demos ausentes y estructuras que no puede filtrar con seguridad. Si informa un error, no borres tablas manualmente ni continúes el traslado: guarda el mensaje para revisión. La limpieza de datos usa una transacción para evitar dejar una eliminación a medias; la tabla auxiliar de demos puede quedar creada si falla la preparación.
 
+**Corrección de driver_branches para instalaciones ya subidas:** algunas bases anteriores incluyen esta relación entre repartidores y sucursales, además de las afiliaciones actuales. Esta entrega la conserva por sucursal y mantiene los usuarios y perfiles asociados. Si tu preparación se detuvo diciendo que `driver_branches` no tiene un alcance conocido, descarga `FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip` y extráelo directamente en la raíz del sitio del **cPanel nuevo**, reemplazando sus dos archivos: `app/data_tools179.php` y `mudanza-manifest.php`. Vuelve a abrir preparar-mudanza.php, confirma el nombre de la base nueva y la frase, y repite la preparación. No borres tablas ni importes la base otra vez. El ZIP completo ya incorpora esta corrección. Si aparece otra tabla en el error, conserva el mensaje para revisar también su alcance.
+
 ## 5. Optimizar fotos y llevar solo las imágenes necesarias
 
 ### Optimizar las fotos anteriores

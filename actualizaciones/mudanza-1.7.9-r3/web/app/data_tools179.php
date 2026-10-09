@@ -27,6 +27,13 @@ function fm_meta(App $app):array {
         $known=false;foreach($refs as $ref)if($ref['child']===$table&&isset($ref['pairs'][$col])){$known=true;break;}
         if(!$known)$refs['virtual:'.$table.':'.$col]=['child'=>$table,'parent'=>$parent,'pairs'=>[$col=>'id'],'virtual'=>true];
     }
+    if(isset($meta['driver_branches'])){
+        foreach(['branch_id'=>'branches','user_id'=>'users'] as $column=>$parent){
+            $found=false;
+            foreach($refs as $ref)if($ref['child']==='driver_branches'&&$ref['parent']===$parent&&$ref['pairs']===[$column=>'id']){$found=true;break;}
+            if(!$found)throw new RuntimeException('La estructura de driver_branches no corresponde a la relación revisada entre users.id y branches.id. No se modificaron datos.');
+        }
+    }
     return ['tables'=>$meta,'refs'=>array_values($refs)];
 }
 function fm_match(string $a,string $b,array $pairs):string {
@@ -62,7 +69,9 @@ function fm_related(App $app,array $meta,array $sets,array $ref,bool $up,string 
     $join=$up?fm_match('o','b',$ref['pairs']):fm_match('b','o',$ref['pairs']);
     return fm_mark($app,$meta,$sets,$target,'('.$extra.') AND EXISTS(SELECT 1 FROM '.fm_id($other).' o JOIN '.fm_id($sets[$other]).' k ON '.fm_pkmatch('o','k',$meta['tables'][$other]['pk']).' WHERE '.$join.')');
 }
-const FM_OWNERS=['branch_products'=>'branch_id','driver_profiles'=>'user_id','product_options'=>'group_id','order_items'=>'order_id','loyalty_ledger'=>'account_id','loyalty_rewards'=>'account_id','driver_affiliation_branches'=>'affiliation_id','sale_items'=>'sale_id','purchase_items'=>'purchase_id','ar_payments'=>'receivable_id','ap_payments'=>'payable_id','pos_ticket_items'=>'ticket_id','pos_payments'=>'ticket_id','fisitaap_r1_permissions'=>'role_id','fisitaap_r2_modifier_groups'=>'modifier_id','fisitaap_r2_combo_items'=>'combo_id','fisitaap_r2_floor'=>'table_id','fisitaap_r3_room_versions'=>'room_id','fisitaap_r2_snapshots'=>'device_id','fisitaap_r2_synced_sales'=>'device_id','fisitaap_r2_shift_links'=>'device_id','customer_addresses'=>'user_id','password_resets'=>'user_id','email_verifications'=>'user_id','plan_modules'=>'plan_id'];
+// Legacy driver links belong to a branch. Following user_id downward would also
+// retain that shared driver's links to businesses excluded from the migration.
+const FM_OWNERS=['branch_products'=>'branch_id','driver_branches'=>'branch_id','driver_profiles'=>'user_id','product_options'=>'group_id','order_items'=>'order_id','loyalty_ledger'=>'account_id','loyalty_rewards'=>'account_id','driver_affiliation_branches'=>'affiliation_id','sale_items'=>'sale_id','purchase_items'=>'purchase_id','ar_payments'=>'receivable_id','ap_payments'=>'payable_id','pos_ticket_items'=>'ticket_id','pos_payments'=>'ticket_id','fisitaap_r1_permissions'=>'role_id','fisitaap_r2_modifier_groups'=>'modifier_id','fisitaap_r2_combo_items'=>'combo_id','fisitaap_r2_floor'=>'table_id','fisitaap_r3_room_versions'=>'room_id','fisitaap_r2_snapshots'=>'device_id','fisitaap_r2_synced_sales'=>'device_id','fisitaap_r2_shift_links'=>'device_id','customer_addresses'=>'user_id','password_resets'=>'user_id','email_verifications'=>'user_id','plan_modules'=>'plan_id'];
 function fm_keep(App $app,array $meta,array $sets,array $ids):void {
     $list=implode(',',array_map('intval',$ids));if(!$list)throw new RuntimeException('No se seleccionó ningún negocio.');
     foreach($meta['tables'] as $table=>$m){

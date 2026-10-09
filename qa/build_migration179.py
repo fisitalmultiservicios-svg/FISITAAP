@@ -25,18 +25,21 @@ def build():
     encoded=json.dumps(data,ensure_ascii=False,separators=(',',':'))
     MANIFEST.write_text("<?php\ndeclare(strict_types=1);\nreturn json_decode(<<<'MIGRATION_MANIFEST'\n"+encoded+"\nMIGRATION_MANIFEST\n, true, 512, JSON_THROW_ON_ERROR);\n")
     for p in WEB.rglob('*'):p.chmod(0o755 if p.is_dir() else 0o644)
-    names=['FISITAAP-1.7.9-R3-NUEVO-CPANEL.zip','FISITAAP-COMPROBAR-MUDANZA.zip']
-    for name in names:
+    packages={
+        'FISITAAP-1.7.9-R3-NUEVO-CPANEL.zip': files,
+        'FISITAAP-COMPROBAR-MUDANZA.zip': [WEB/'comprobar-mudanza.php',MANIFEST],
+        'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip': [WEB/'app/data_tools179.php',MANIFEST],
+    }
+    for name,selected in packages.items():
         target=DELIVERY/name;temp=target.with_suffix('.zip.tmp')
         try:
             with zipfile.ZipFile(temp,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
-                selected=files if 'NUEVO-CPANEL' in name else [WEB/'comprobar-mudanza.php',MANIFEST]
                 for p in selected:archive.write(p,p.relative_to(WEB).as_posix())
                 if 'NUEVO-CPANEL' in name:archive.write(DELIVERY/'GUIA-NUEVO-CPANEL.md','LEEME-MUDANZA.md')
             temp.replace(target)
         finally:
             if temp.exists():temp.unlink()
-    (DELIVERY/'SHA256SUMS.txt').write_text(''.join(hashlib.sha256((DELIVERY/name).read_bytes()).hexdigest()+'  '+name+'\n' for name in names))
+    (DELIVERY/'SHA256SUMS.txt').write_text(''.join(hashlib.sha256((DELIVERY/name).read_bytes()).hexdigest()+'  '+name+'\n' for name in packages))
     print('Reviewed deployment ZIPs and SHA256 checksums rebuilt without private data.')
 
 if __name__=='__main__':build()

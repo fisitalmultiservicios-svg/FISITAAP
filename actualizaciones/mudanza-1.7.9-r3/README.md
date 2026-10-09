@@ -6,8 +6,10 @@ Conserva La Ventanita y los dos demos desde un respaldo privado importado en la 
 
 [Comprobador opcional para el hosting anterior](FISITAAP-COMPROBAR-MUDANZA.zip) · [Sumas SHA256](SHA256SUMS.txt)
 
+Si ya subiste el sistema y la preparación se detuvo en `driver_branches`, descarga [la corrección pequeña](FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip). Extráela en la raíz del sitio del **cPanel nuevo**, permitiendo reemplazar los dos archivos incluidos; luego vuelve a abrir preparar-mudanza.php y confirma la preparación. No necesitas importar la base otra vez ni reinstalar el sistema. El paquete completo también incorpora esta corrección.
+
 Instala únicamente en el servidor nuevo y sigue la guía; no ejecutes la limpieza en el hosting anterior. Los clientes Windows y Android siguen siendo [1.7.9](../1.7.9/README.md).
 
-Validación: [instalación e importación](QA-MUDANZA.json), [filtrado y demos](QA-DEMOS.json), [pestañas en Chromium](QA-NAVEGADOR.json), [imágenes](QA-IMAGENES.json), [revisión adicional](QA-REVISION.json). Estas pruebas usan datos ficticios; no sustituyen la comparación de tu respaldo real ni las pruebas de impresión física.
+Validación: [instalación e importación](QA-MUDANZA.json), [filtrado y demos](QA-DEMOS.json), [pestañas en Chromium](QA-NAVEGADOR.json), [imágenes](QA-IMAGENES.json), [revisión adicional](QA-REVISION.json), [relaciones antiguas de repartidores](QA-DRIVER-BRANCHES.json). Estas pruebas usan datos ficticios; no sustituyen la comparación de tu respaldo real ni las pruebas de impresión física.
 
 Para reconstruir los ZIP desde estos archivos: `python qa/build_migration179.py` desde la raíz del repositorio. El script rechaza configuración privada y fotos de negocios dentro del paquete público.
