@@ -1,0 +1,16 @@
+Diagnóstico de la lentitud informada después de 1.7.9-R2
+
+Este archivo NO es una corrección confirmada ni activa otra versión. Añade solo dos archivos de diagnóstico; no reemplaza app, assets, index.php, configuración ni datos de ventas.
+
+1. Descarga FISITAAP-DIAGNOSTICO-VELOCIDAD.zip y extráelo en la carpeta real de fisitaap.com en cPanel.
+2. Inicia sesión como dueño del negocio (preferible, para medir sus pantallas) o cuenta maestra.
+3. Abre https://fisitaap.com/diagnostico-rendimiento.php
+4. Pulsa Medir desde este navegador, cuando notes la lentitud.
+5. Copia aquí el contenido del recuadro de resultados. Si falla el acceso, copia el mensaje que aparece. No envíes contraseñas, tokens ni tu config.php.
+6. Repite desde Chrome y desde el escritorio si la demora difiere. Puedes borrar los dos archivos de diagnóstico después de terminar.
+
+Solo permite usuarios activos con perfil dueño/maestro y comprueba su identidad en la base. Libera la sesión antes de medir. Hace cinco consultas SELECT 1 y descarga secuencialmente tres páginas de lectura (dos para maestra), un CSS y un JavaScript; no ejecuta el HTML descargado ni hace POST de venta. Las páginas de lectura pueden consumir avisos pendientes de la sesión, igual que abrirlas normalmente.
+
+Arranque incluye PHP, apertura de sesión y conexión a la base. Base de datos mide SELECT 1, no consultas completas del negocio. La respuesta/total de cada petición incluye conexión de red y servidor. Un archivo estático lento apunta a otra capa que una consulta SQL, pero estos datos deben interpretarse junto con las pantallas que fallan.
+
+Validación en laboratorio: PHP/JS, acceso dueño/maestra, rechazo anónimo y navegador real. La comparación de código encontró seis PHP modificados en R2, sin nuevas consultas SQL en las rutas normales. Comparación de ocho lecturas por ruta: medianas inferiores a 15 ms en laboratorio; no reproduce los segundos reportados. La diferencia entre medianas no prueba una mejora: influyen cachés y orden de ejecución. No se ha podido medir HostGator desde esta conexión, que rechaza el acceso al dominio en el proxy; eso no es un 403 confirmado del sitio.

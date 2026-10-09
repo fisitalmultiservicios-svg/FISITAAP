@@ -1,0 +1,14 @@
+{
+  "1.7.9": {
+    "/admin": 13.2,
+    "/admin/productos": 11.4,
+    "/admin/ventas": 6.17,
+    "/prueba-a/catalogo": 4.2
+  },
+  "1.7.9-r2": {
+    "/admin": 5.65,
+    "/admin/productos": 5.1,
+    "/admin/ventas": 6.03,
+    "/prueba-a/catalogo": 4.49
+  }
+}
