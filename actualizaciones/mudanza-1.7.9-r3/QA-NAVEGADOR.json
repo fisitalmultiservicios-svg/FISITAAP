@@ -1,10 +1,20 @@
 {
-  "environment": "Chromium with real JavaScript on isolated PHP 8.3 fixture",
-  "passed": 4,
+  "environment": "Chromium with real JavaScript and nonpersistent browser contexts on isolated PHP 8.3 fixture; actual Brave deployment still requires user verification",
+  "passed": 14,
   "checks": [
     "start sets tab storage and navigation remains in the private demo",
     "a new tab without demo storage returns to the selector",
     "entry after closing the demo starts a new disposable copy",
-    "explicit finish returns the browser to the demo selector"
+    "explicit finish returns the browser to the demo selector",
+    "customer catalog return opens the public selector without a 403",
+    "browser Back and customer/panel switching keep the same private copy",
+    "older scoped selector links return safely; writes, other stores and device APIs stay blocked",
+    "restaurant entry from the selector opens a new copy and shows its correct coupon",
+    "returning and re-entering starts from the original template, without prior private edits",
+    "a separate browser session cannot reuse another visitor's demo URL",
+    "both old public catalog addresses and the restaurant shortcut reach the selector",
+    "both official landing buttons directly launch isolated demos and return correctly",
+    "return links work even when the disposable session has already expired",
+    "browser tests discard only their own copies and preserve all original business data"
   ]
 }

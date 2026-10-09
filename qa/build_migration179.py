@@ -34,8 +34,8 @@ def build():
     packages={
         'FISITAAP-1.7.9-R3-NUEVO-CPANEL.zip': files,
         'FISITAAP-COMPROBAR-MUDANZA.zip': [WEB/'comprobar-mudanza.php',MANIFEST],
-        'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip': [WEB/'app/data_tools179.php',WEB/'app/demo_sandbox.php',MANIFEST],
-        'FISITAAP-CORREGIR-MUDANZA-DEMOS.zip': [WEB/'app/data_tools179.php',WEB/'app/demo_sandbox.php',MANIFEST],
+        'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip': [WEB/'app/data_tools179.php',WEB/'app/demo_sandbox.php',WEB/'app/branches_v1.php',WEB/'app/official_r3.php',MANIFEST],
+        'FISITAAP-CORREGIR-MUDANZA-DEMOS.zip': [WEB/'app/data_tools179.php',WEB/'app/demo_sandbox.php',WEB/'app/branches_v1.php',WEB/'app/official_r3.php',MANIFEST],
     }
     for name,selected in packages.items():
         target=DELIVERY/name;temp=target.with_suffix('.zip.tmp')

@@ -92,6 +92,10 @@ function demo_open(App $app,string $type,string $mode):string {
     finally{fm_drop_sets($app,$sets);}
 }
 function demo_runtime(App $app,string $token):void {
+    header('Cache-Control: private, no-store, max-age=0');
+    // Public navigation must leave the namespace, including older cached links.
+    // Only GET can return to the selector; demo writes remain scoped and guarded.
+    if(request_path()==='demo'&&($_SERVER['REQUEST_METHOD']??'GET')==='GET')redirect(demo_base().'/demo');
     $row=$app->one('SELECT s.*,t.slug FROM fisitaap_demo_sessions s JOIN tenants t ON t.id=s.tenant_id WHERE s.token=? AND s.expires_at>NOW() AND s.created_at>DATE_SUB(NOW(),INTERVAL 4 HOUR)',[$token]);
     if(!$row||!hash_equals($row['browser_hash'],demo_browser_hash()))demo_fail('Esta prueba terminó o pertenece a otro navegador. Abre un demo nuevo.');
     $GLOBALS['demo_context']=$row;
@@ -144,6 +148,7 @@ function demo_cleanup(App $app,int $limit=10):int {
     foreach($expired as $row){demo_discard($app,$row);$done++;}return $done;
 }
 function demo_dispatch(App $app,string $path):void {
+    header('Cache-Control: private, no-store, max-age=0');
     if($path==='demo/iniciar'){
         if(!is_post())redirect(url('demo'));verify_csrf();
         if(!rate_limit_persistent($app,'demo_start',client_identity('demo'),12,3600))demo_fail('Ya se abrieron varias pruebas desde esta conexión. Espera antes de abrir otra.',429);
