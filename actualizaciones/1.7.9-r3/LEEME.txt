@@ -1,0 +1,19 @@
+1.7.9-R3 — parche sobre 1.7.9-R2
+
+Los datos recibidos muestran arranque de 1,3 ms y archivos estáticos de unos 180 ms, frente a Empresas de 4 segundos y Panel maestro de más de 20. No confirman que todas las consultas SQL sean rápidas: SELECT 1 no mide las consultas reales. La causa general aún requiere medición en producción.
+
+1. Finaliza operaciones en curso y respalda los archivos del sitio.
+2. Sube FISITAAP-1.7.9-R3-RENDIMIENTO.zip a la carpeta del sitio y extráelo reemplazando archivos. No borres carpetas.
+3. No ejecutes ningún activador ni reinstales Windows/Android. Conserva el diseño y la impresión de R2, las ventas y la selección del principal.
+4. Con sesión maestra vuelve a https://fisitaap.com/diagnostico-rendimiento.php y pulsa Medir. Envía el recuadro completo actualizado. Puedes repetirlo con sesión de dueño para medir su menú.
+
+CAMBIOS
+- Panel maestro: reúne cuatro consultas de contadores en dos, conservando la exclusión de demos y todos los resultados. Pedidos y clientes se calculan en un solo recorrido.
+- Medición detallada: solo las peticiones GET del diagnóstico con sesión dueño/maestra habilitan el registro de tiempos. Server-Timing muestra PHP, espera al abrir sesión, suma de consultas, número de consultas y las tres lecturas más lentas. No muestra SQL completo, parámetros, filas, contraseñas o tokens. Las visitas normales no habilitan ni almacenan este perfil.
+- El diagnóstico espera hasta 45 segundos para capturar las páginas lentas y recibe las mediciones reales de su ejecución.
+
+ARCHIVOS
+app/admin.php, app/bootstrap.php, app/core.php y los dos archivos del diagnóstico. No incluye configuración, SQL, uploads o .htaccess. Este es un parche para R2, no un paquete inicial.
+
+VALIDACIÓN
+Laboratorio PHP/MariaDB: 21 pruebas R2 y 9 R3 sin fallos. Contadores maestros iguales a las cuatro consultas originales, con seis lecturas totales de página en lugar de ocho. Encabezados de perfil ausentes en visitas normales y solicitudes anónimas. Sintaxis PHP y JavaScript comprobada. La mejora medida aquí no acredita la resolución de la demora de producción: el próximo resultado debe identificar el tramo lento restante.
