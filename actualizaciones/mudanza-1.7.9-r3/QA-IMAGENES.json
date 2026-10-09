@@ -1,0 +1,21 @@
+{
+  "environment": "PHP 8.3/GD WebP on isolated fixture, generated detailed photo and transparent logo",
+  "passed": 10,
+  "checks": [
+    "detailed upload becomes smaller WebP within 1440px with adaptive sizing and a 480px thumbnail",
+    "transparent logo retains its transparent background",
+    "phone JPEG orientation is honored even without the PHP EXIF extension; small images are not enlarged",
+    "invalid MIME, upload-size excess and unsafe decoded dimensions are rejected",
+    "existing-photo optimization preserves original bytes and database rows; media URLs choose generated variants",
+    "repeated batches are idempotent; external images and traversal paths are not rewritten",
+    "selective media export also includes optimized versions and thumbnails",
+    "catalog cards actually render lazy thumbnails and Apache serves the 480px WebP file",
+    "master-only CSRF-protected batch tool completes small batches without database mutations",
+    "batch tool is disabled immediately when migration mode is removed"
+  ],
+  "example": {
+    "original_photo_bytes": 3943232,
+    "optimized_upload_bytes": 142356,
+    "thumbnail_bytes": 40698
+  }
+}

@@ -66,7 +66,23 @@ Las carpetas suelen usar permisos 755 y archivos 644. PHP debe poder escribir en
 
 La herramienta rechaza negocios ambiguos, demos ausentes y estructuras que no puede filtrar con seguridad. Si informa un error, no borres tablas manualmente ni continúes el traslado: guarda el mensaje para revisión. La limpieza de datos usa una transacción para evitar dejar una eliminación a medias; la tabla auxiliar de demos puede quedar creada si falla la preparación.
 
-## 5. Llevar solo las imágenes necesarias
+## 5. Optimizar fotos y llevar solo las imágenes necesarias
+
+### Optimizar las fotos anteriores
+
+Después de preparar la base nueva, y **antes de descargar uploads necesarios**, abre con la cuenta maestra:
+
+`https://fisitaap.com/optimizar-imagenes.php`
+
+Mantén habilitado migration_mode durante este paso. Pulsa **Buscar imágenes para optimizar** y después **Procesar siguiente lote** hasta que indique **Proceso terminado**. Cada petición procesa hasta tres imágenes para evitar una carga grande en el hosting. Revisa las advertencias: una imagen rechazada conserva su original y necesita revisión aparte.
+
+Se crean WebP y miniaturas sin cambiar los registros de la base ni borrar los originales. El sitio utiliza una versión generada cuando pesa menos. Por tanto, bajará el peso que descargan tus clientes, pero **conservar originales y derivados ocupa espacio adicional en el servidor**. No borres originales manualmente: sus rutas siguen siendo referencias en la base.
+
+Las imágenes nuevas se optimizan automáticamente al subirlas: máximo de 1.440 píxeles en el lado mayor, reducción adicional si la foto sigue pesada, y miniatura de hasta 480 píxeles. Se conserva transparencia y se corrige la orientación JPEG del celular. No se agrandan fotos pequeñas. Los objetivos aproximados son 160 KB para la imagen principal y 40 KB para miniaturas; dependen de cada imagen y no son límites garantizados. Animaciones existentes se conservan sin aplanarlas; SVG y documentos no se convierten.
+
+Las tarjetas de productos, categorías y miniaturas del catálogo utilizan versiones pequeñas y carga diferida. Las imágenes siguen siendo archivos estáticos con caché; no se convierten ni se procesan durante una visita normal.
+
+### Descargar los archivos necesarios
 
 Hazlo **antes de abrir pruebas de demo**, mientras preparar-mudanza.php está habilitado.
 
@@ -112,7 +128,7 @@ El comprobador puede advertir cambios en .htaccess cuando cPanel añade reglas P
 2. Impide nuevas operaciones en el servidor anterior, por ejemplo con **Privacidad del directorio** de cPanel coordinada con el proveedor. Cerrar solo el navegador no bloquea otras cajas.
 3. Obtén un nuevo respaldo SQL y uploads después de esa pausa. Ese será el respaldo definitivo.
 4. En el hosting nuevo usa una base nueva y vacía para ese respaldo definitivo. Cambia su nombre y credenciales en config.php, importa y repite la preparación selectiva y la revisión de imágenes. No mezcles los datos de prueba con los definitivos.
-5. Compara nuevamente los datos de La Ventanita, revisa accesos y elimina de config.php la línea migration_mode. Elimina preparar-mudanza.php, los ZIP subidos y cualquier respaldo SQL público. Guarda tus respaldos en la computadora.
+5. Compara nuevamente los datos de La Ventanita, revisa accesos y elimina de config.php la línea migration_mode. Elimina preparar-mudanza.php y optimizar-imagenes.php, los ZIP subidos y cualquier respaldo SQL público. Guarda tus respaldos en la computadora.
 6. Cambia los DNS del dominio con ayuda del proveedor. Revisa A, AAAA y www para evitar que alguna dirección siga enviando al hosting viejo. Si cambias servidores de nombres, conserva también MX y TXT del correo.
 7. Activa AutoSSL y verifica HTTPS válido. Mantén bloqueadas las escrituras en el servidor anterior durante la propagación.
 8. Abre la web en varios dispositivos, inicia sesión y comprueba que todos llegan al nuevo servidor. Después reconecta las cajas y reabre ventas.
@@ -129,6 +145,6 @@ Conserva el hosting anterior y los respaldos al menos una semana. Antes de reali
 
 ## Validación de esta entrega
 
-Probada en un servidor de laboratorio con PHP 8.3 y MariaDB 11.4, usando datos ficticios: importación completa, accesos, rutas y archivos; filtrado selectivo; conservación de registros financieros y equipos; ventas aisladas en demos, reinicio y limpieza. Pasaron 28 comprobaciones: 10 de instalación/importación, 14 de filtrado/demos/imágenes y 4 de pestañas en Chromium con JavaScript real. Los informes QA están en esta carpeta del repositorio.
+Probada en un servidor de laboratorio con PHP 8.3 y MariaDB 11.4, usando datos ficticios: importación completa, accesos, rutas y archivos; filtrado selectivo; conservación de registros financieros y equipos; ventas aisladas en demos, reinicio y limpieza. Además pasaron 10 comprobaciones de imágenes: compresión de una foto detallada, transparencias, orientación del celular, límites seguros, originales y base intactos, reinicio por lotes, exportación de variantes y control de acceso. Pasaron también las 28 comprobaciones anteriores: 10 de instalación/importación, 14 de filtrado/demos/imágenes y 4 de pestañas en Chromium con JavaScript real. Los informes QA están en esta carpeta del repositorio.
 
 No se ha instalado en tu nuevo cPanel ni se ha probado allí DNS, SSL, tus datos reales o impresoras físicas. Esas comprobaciones corresponden a los pasos anteriores.

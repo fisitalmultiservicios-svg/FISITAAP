@@ -12,7 +12,7 @@ function fm_media_paths(string $value,array $config,string $root,array &$paths):
         if(!str_starts_with($relative,'uploads/')||str_contains($relative,'..')||str_contains($relative,"\0")||str_contains($relative,'\\'))continue;
         $file=ROOT_PATH.'/'.$relative;$real=realpath($file);
         if($real===false){$relative=rtrim($relative,'.),;');$file=ROOT_PATH.'/'.$relative;$real=realpath($file);}
-        if($real!==false&&str_starts_with($real,$root.DIRECTORY_SEPARATOR)&&is_file($real)&&!is_link($file))$paths[$relative]=$real;
+        if($real!==false&&str_starts_with($real,$root.DIRECTORY_SEPARATOR)&&is_file($real)&&!is_link($file)){ $paths[$relative]=$real;foreach(['.optimized.webp','.thumb.webp'] as $suffix)if(is_file($real.$suffix)&&!is_link($real.$suffix))$paths[$relative.$suffix]=$real.$suffix; }
     }
 }
 function fm_media_archive(App $app):never {
