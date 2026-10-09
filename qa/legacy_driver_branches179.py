@@ -93,12 +93,12 @@ def main():
     assert final['rate_limits']['count'] == 0
     passed('original business/configuration hashes remain unchanged; temporary rate-limit counters are cleared by preparation')
     with zipfile.ZipFile(DELIVERY/'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip') as archive:
-        assert set(archive.namelist()) == {'app/data_tools179.php', 'mudanza-manifest.php'}
+        assert set(archive.namelist()) == {'app/data_tools179.php', 'app/demo_sandbox.php', 'mudanza-manifest.php'}
         helper = archive.read('app/data_tools179.php')
         assert helper == (DELIVERY/'web/app/data_tools179.php').read_bytes()
         manifest = json.loads(archive.read('mudanza-manifest.php').decode().split("<<<'MIGRATION_MANIFEST'\n",1)[1].split('\nMIGRATION_MANIFEST',1)[0])
         assert manifest['files']['app/data_tools179.php'] == hashlib.sha256(helper).hexdigest()
-    passed('corrective ZIP contains only the verified helper and matching manifest, preserving private configuration and uploads')
+    passed('cumulative corrective ZIP contains the verified helper/demo files and matching manifest, preserving private configuration and uploads')
     (DELIVERY/'QA-DRIVER-BRANCHES.json').write_text(json.dumps({'environment':'isolated PHP 8.3 / MariaDB 11.4; reported legacy columns and foreign keys, fake records only','passed':len(checks),'checks':checks},indent=2)+'\n')
 
 

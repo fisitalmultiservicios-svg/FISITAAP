@@ -34,6 +34,13 @@ function demo_insert(App $app,string $table,array $row):int {
     $cols=implode(',',array_map('fm_id',array_keys($row)));$placeholders=implode(',',array_fill(0,count($row),'?'));
     $app->exec('INSERT INTO '.fm_id($table).' ('.$cols.') VALUES('.$placeholders.')',array_values($row));return (int)$app->db->lastInsertId();
 }
+function demo_printer_reset(array $row):array {
+    foreach(['receipt_printer_host','receipt_printer_name','receipt_bridge_token','printer_points_json'] as $key)if(array_key_exists($key,$row))$row[$key]=null;
+    // Current installations store printers on branches. Older tenant-level
+    // fields may exist, but must never be inserted when absent from the schema.
+    foreach(['receipt_printer_type'=>'browser','receipt_autoprint'=>0] as $key=>$value)if(array_key_exists($key,$row))$row[$key]=$value;
+    return $row;
+}
 function demo_open(App $app,string $type,string $mode):string {
     require_once __DIR__.'/data_tools179.php';
     if($app->setting('demo_sandbox_active','0')!=='1')throw new DomainException('Primero completa la preparación de la copia nueva desde preparar-mudanza.php.');
@@ -53,8 +60,7 @@ function demo_open(App $app,string $type,string $mode):string {
             if(!$added)break;
         }
         $parent=(int)$template['id'];unset($template['id']);$template['slug']='demo-'.$type.'-'.$token;$template['is_listed']=0;$template['physical_store_enabled']=1;$template['expires_at']=null;$template['email']='demo-'.$token.'@sandbox.invalid';
-        foreach(['receipt_printer_host','receipt_printer_name','receipt_bridge_token'] as $key)if(array_key_exists($key,$template))$template[$key]=null;
-        $template['receipt_printer_type']='browser';$template['receipt_autoprint']=0;
+        $template=demo_printer_reset($template);
         $tenant=demo_insert($app,'tenants',$template);$mapping['tenants'][(string)$parent]=$tenant;$pending=[];$newOwner=0;
         foreach(DEMO_COPY_TABLES as $table)if(isset($sets[$table]))foreach($app->all('SELECT b.* FROM '.fm_id($table).' b JOIN '.fm_id($sets[$table]).' k ON '.fm_pkmatch('b','k',$meta['tables'][$table]['pk'])) as $row)$pending[]=[$table,$row];
         while($pending){
@@ -65,10 +71,7 @@ function demo_open(App $app,string $type,string $mode):string {
                     $row['email']='demo-'.$token.'-user-'.$old['id'].'@sandbox.invalid';$row['force_password_change']=0;$row['email_verified_at']=date('Y-m-d H:i:s');$row['password_hash']=password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT);
                     if(!in_array($row['role'],['tenant_admin','manager','editor','kitchen','cashier','customer'],true))$row['role']='manager';
                 }
-                if($table==='branches'){
-                    foreach(['receipt_printer_host','receipt_printer_name','receipt_bridge_token','printer_points_json'] as $key)if(array_key_exists($key,$row))$row[$key]=null;
-                    $row['receipt_printer_type']='browser';$row['receipt_autoprint']=0;
-                }
+                if($table==='branches')$row=demo_printer_reset($row);
                 if($table==='coupons')$row['uses_count']=0;
                 if($table==='fisitaap_r3_room_versions')$row['revision']=0;
                 $auto=$meta['tables'][$table]['auto']??null;$oldId=$auto?(string)$old[$auto]:null;if($auto)unset($row[$auto]);

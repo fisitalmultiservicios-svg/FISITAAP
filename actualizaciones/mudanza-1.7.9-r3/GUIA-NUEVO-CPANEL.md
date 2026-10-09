@@ -66,7 +66,7 @@ Las carpetas suelen usar permisos 755 y archivos 644. PHP debe poder escribir en
 
 La herramienta rechaza negocios ambiguos, demos ausentes y estructuras que no puede filtrar con seguridad. Si informa un error, no borres tablas manualmente ni continúes el traslado: guarda el mensaje para revisión. La limpieza de datos usa una transacción para evitar dejar una eliminación a medias; la tabla auxiliar de demos puede quedar creada si falla la preparación.
 
-**Corrección de driver_branches para instalaciones ya subidas:** algunas bases anteriores incluyen esta relación entre repartidores y sucursales, además de las afiliaciones actuales. Esta entrega la conserva por sucursal y mantiene los usuarios y perfiles asociados. Si tu preparación se detuvo diciendo que `driver_branches` no tiene un alcance conocido, descarga `FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip` y extráelo directamente en la raíz del sitio del **cPanel nuevo**, reemplazando sus dos archivos: `app/data_tools179.php` y `mudanza-manifest.php`. Vuelve a abrir preparar-mudanza.php, confirma el nombre de la base nueva y la frase, y repite la preparación. No borres tablas ni importes la base otra vez. El ZIP completo ya incorpora esta corrección. Si aparece otra tabla en el error, conserva el mensaje para revisar también su alcance.
+**Corrección de driver_branches para instalaciones ya subidas:** algunas bases anteriores incluyen esta relación entre repartidores y sucursales, además de las afiliaciones actuales. Esta entrega la conserva por sucursal y mantiene los usuarios y perfiles asociados. Si tu preparación se detuvo diciendo que `driver_branches` no tiene un alcance conocido, descarga `FISITAAP-CORREGIR-MUDANZA-DEMOS.zip` y extráelo directamente en la raíz del sitio del **cPanel nuevo**, reemplazando sus tres archivos: `app/data_tools179.php`, `app/demo_sandbox.php` y `mudanza-manifest.php`. Vuelve a abrir preparar-mudanza.php, confirma el nombre de la base nueva y la frase, y repite la preparación. No borres tablas ni importes la base otra vez. El ZIP completo ya incorpora esta corrección. Si aparece otra tabla en el error, conserva el mensaje para revisar también su alcance.
 
 ## 5. Optimizar fotos y llevar solo las imágenes necesarias
 
@@ -124,6 +124,8 @@ Reemplaza las rutas con las reales, no copies literalmente los ejemplos. La limp
 
 El comprobador puede advertir cambios en .htaccess cuando cPanel añade reglas PHP propias. Haz revisar esas reglas por el proveedor; no borres su manejador PHP para forzar una coincidencia. El informe no sustituye las pruebas funcionales.
 
+**Compatibilidad con campos antiguos de impresión:** si el informe solo dice que faltan los siete campos `receipt_*` de `tenants`, instala `FISITAAP-CORREGIR-MUDANZA-DEMOS.zip` en la raíz del sitio nuevo, reemplazando sus tres archivos. La impresión actual se configura por sucursal, en `branches`; el comprobador actualizado sigue exigiendo esos campos allí. Los demos ya no intentan insertar columnas antiguas que no existan en `tenants`, y sus impresoras se desactivan dentro de cada copia de prueba. Vuelve a abrir comprobar-mudanza.php y prueba los demos. Esta corrección modifica código; no necesita importar la base ni repetir la preparación selectiva. Si el informe menciona otros campos o tablas, conserva esos mensajes para revisión.
+
 ## 8. Hacer el traslado definitivo
 
 1. Coordina una pausa de ventas. Sincroniza **todas** las cajas Windows/Android y cierra turnos. No debe quedar ninguna venta local pendiente.
@@ -159,5 +161,7 @@ Conserva el hosting anterior y los respaldos al menos una semana. Antes de reali
 Probada en un servidor de laboratorio con PHP 8.3 y MariaDB 11.4, usando datos ficticios: importación completa, accesos, rutas y archivos; filtrado selectivo; conservación de registros financieros y equipos; ventas aisladas en demos, reinicio y limpieza. Además pasaron 10 comprobaciones de imágenes: compresión de una foto detallada, transparencias, orientación del celular, límites seguros, originales y base intactos, reinicio por lotes, exportación de variantes y control de acceso. Pasaron también las 28 comprobaciones anteriores: 10 de instalación/importación, 14 de filtrado/demos/imágenes y 4 de pestañas en Chromium con JavaScript real. Los informes QA están en esta carpeta del repositorio.
 
 Pasaron otras 9 comprobaciones específicas de esta revisión, incluyendo los casos de fotos y reversión ante fallos: **47 comprobaciones de laboratorio en total**.
+
+Las correcciones posteriores incluyen 8 comprobaciones de relaciones antiguas de repartidores y 8 de compatibilidad de impresión/demos, para **63 comprobaciones de laboratorio**. La segunda serie reproduce una base sin campos antiguos de impresión en `tenants`, prueba apertura y venta en demos, mantiene obligatorios los campos actuales de `branches` y restaura la copia de laboratorio al terminar.
 
 No se ha instalado en tu nuevo cPanel ni se ha probado allí DNS, SSL, tus datos reales o impresoras físicas. Esas comprobaciones corresponden a los pasos anteriores.

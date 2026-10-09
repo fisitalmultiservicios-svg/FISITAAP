@@ -9,6 +9,6 @@
     "a broken legacy user reference aborts and rolls back selective deletion",
     "an unexpected legacy column layout is rejected before any deletion",
     "original business/configuration hashes remain unchanged; temporary rate-limit counters are cleared by preparation",
-    "corrective ZIP contains only the verified helper and matching manifest, preserving private configuration and uploads"
+    "cumulative corrective ZIP contains the verified helper/demo files and matching manifest, preserving private configuration and uploads"
   ]
 }

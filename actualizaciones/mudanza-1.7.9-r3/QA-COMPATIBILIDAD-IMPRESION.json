@@ -1,0 +1,14 @@
+{
+  "environment": "isolated PHP 8.3 / MariaDB 11.4; reported absent tenant fields, synthetic rows only",
+  "passed": 8,
+  "checks": [
+    "read-only checker accepts the reported tenant layout without adding columns or changing rows",
+    "restaurant panel and store catalog demos both open through their public routes without legacy tenant fields",
+    "demo printers are disabled/reset by branch while real printer configuration and the clean tenant structure remain unchanged",
+    "a real demo sale succeeds without legacy tenant fields and remains separate from the second demo",
+    "discarding both demos restores baseline business rows, including sales, stock and printer settings; public request counters are allowed to change",
+    "checker still rejects a missing required branch printer field and remains read-only",
+    "cumulative corrective ZIP contains the reviewed demo/helper/manifest files and no private configuration or media",
+    "disposable database is fully restored and the original laboratory fixture never changes"
+  ]
+}

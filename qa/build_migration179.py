@@ -13,6 +13,12 @@ MANIFEST=WEB/'mudanza-manifest.php'
 def build():
     text=MANIFEST.read_text()
     data=json.loads(text.split("<<<'MIGRATION_MANIFEST'\n",1)[1].split('\nMIGRATION_MANIFEST',1)[0])
+    # Tenant-level printer fields belong to an older schema. The current runtime
+    # requires their branch-level counterparts; don't demand redundant columns.
+    legacy_print={'receipt_width','receipt_printer_type','receipt_printer_name','receipt_printer_host','receipt_printer_port','receipt_autoprint','receipt_bridge_token'}
+    if not legacy_print.issubset(data['tables']['branches']):
+        raise RuntimeError('Required branch printer fields must remain in the schema manifest.')
+    data['tables']['tenants']=[column for column in data['tables']['tenants'] if column not in legacy_print]
     files=sorted(p for p in WEB.rglob('*') if p.is_file())
     for p in files:
         relative=p.relative_to(WEB).as_posix()
@@ -28,7 +34,8 @@ def build():
     packages={
         'FISITAAP-1.7.9-R3-NUEVO-CPANEL.zip': files,
         'FISITAAP-COMPROBAR-MUDANZA.zip': [WEB/'comprobar-mudanza.php',MANIFEST],
-        'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip': [WEB/'app/data_tools179.php',MANIFEST],
+        'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip': [WEB/'app/data_tools179.php',WEB/'app/demo_sandbox.php',MANIFEST],
+        'FISITAAP-CORREGIR-MUDANZA-DEMOS.zip': [WEB/'app/data_tools179.php',WEB/'app/demo_sandbox.php',MANIFEST],
     }
     for name,selected in packages.items():
         target=DELIVERY/name;temp=target.with_suffix('.zip.tmp')
