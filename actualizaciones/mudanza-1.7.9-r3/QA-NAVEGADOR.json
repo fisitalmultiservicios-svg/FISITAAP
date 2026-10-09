@@ -1,0 +1,10 @@
+{
+  "environment": "Chromium with real JavaScript on isolated PHP 8.3 fixture",
+  "passed": 4,
+  "checks": [
+    "start sets tab storage and navigation remains in the private demo",
+    "a new tab without demo storage returns to the selector",
+    "entry after closing the demo starts a new disposable copy",
+    "explicit finish returns the browser to the demo selector"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "environment": "isolated PHP 8.3 / MariaDB 11.4 / Apache; synthetic data only",
+  "passed": 10,
+  "checks": [
+    "ZIP extracts into document root with current runtime and no credentials, data or obsolete update directories",
+    "all delivered PHP files pass PHP 8.3 syntax checks",
+    "all 82 tables preserve every fixture row, IDs, device tokens, snapshots, permissions and financial records through SQL export/import",
+    "original application key retained privately; uploaded media preserved",
+    "public landing, business page, catalog, CSS and uploaded media work on separate Apache server",
+    "configuration and manifest blocked, direct app entry blocked, PHP upload blocked; migration report requires authentication",
+    "store owner cannot read platform-wide migration totals",
+    "fresh master account can compare full schema, runtime hashes, uploads, row counts and balances without database changes",
+    "report detects an incomplete or altered deployed runtime",
+    "master and business screens, printing assets, desktop status and performance diagnostic work after migration"
+  ],
+  "limitations": [
+    "No access to new cPanel, DNS or real production backup.",
+    "No physical Windows/Android printer tested in this migration rehearsal.",
+    "New hosting latency must be measured after installation."
+  ]
+}

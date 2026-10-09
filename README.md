@@ -1,5 +1,14 @@
 # FISITAAP
 
+La entrega actual para un hosting nuevo es **1.7.9-R3**, con mudanza selectiva de La Ventanita y demos aislados por visitante.
+
+[Descargar archivos y guía para el nuevo cPanel](actualizaciones/mudanza-1.7.9-r3/README.md)
+
+[Instaladores Windows y Android 1.7.9](actualizaciones/1.7.9/README.md)
+
+Las siguientes referencias corresponden a entregas anteriores:
+
+
 La actualización actual es **1.7.5**, con **Windows 1.7.5**. Corrige la carga excesiva de consultas y mejora la comprobación de conexión del escritorio. Incluye las entregas anteriores del PDF y las 17 correcciones de la revisión QA.
 
 [**Descargar el ZIP completo, Windows y la guía de actualización**](actualizaciones/1.7.5/README.md)

@@ -1,0 +1,20 @@
+{
+  "environment": "isolated imported fake database; PHP 8.3 / MariaDB 11.4",
+  "passed": 14,
+  "checks": [
+    "selective migration requires fresh master, local enable flag and CSRF; failed authorization changes no rows",
+    "only La Ventanita and both templates remain; excluded owner/customer removed while all real fixture financial records and device data remain identical",
+    "preparation can be repeated without duplicate records or changes to La Ventanita",
+    "private media ZIP includes retained references and protection, excludes unused files, and changes no database rows",
+    "migration tool is blocked again when local migration mode is removed",
+    "two visitors have separate tenants, users, stock, linked options, rooms and roles; another browser cannot reuse a demo URL",
+    "demo menus and namespaced static assets work; real store, master and device pairing routes are inaccessible; normal owner session remains valid",
+    "real demo sale, payment and stock deduction are confined to one copy; second visitor and original template remain unchanged",
+    "customers created in the demo are owned by its disposable copy, without persistent global accounts",
+    "logout discards all demo users, sales, tickets and stock rows; old URL expires while other visitor stays active",
+    "new entry restores template stock and empty demo transactions",
+    "general store demo supports the separate customer/catalog mode",
+    "idle expiry and CLI cleanup remove abandoned copies and leave active sessions intact",
+    "La Ventanita financial/device hashes remain unchanged after all demo operations and cleanup; real directory has one business"
+  ]
+}
