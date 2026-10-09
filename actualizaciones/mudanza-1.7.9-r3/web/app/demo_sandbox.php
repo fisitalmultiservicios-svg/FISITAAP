@@ -86,6 +86,7 @@ function demo_open(App $app,string $type,string $mode):string {
         $app->exec('INSERT INTO fisitaap_demo_sessions(token,tenant_id,template_id,browser_hash,owner_id,customer_id,initial_mode,expires_at) VALUES(?,?,?,?,?,?,?,DATE_ADD(NOW(),INTERVAL 30 MINUTE))',[$token,$tenant,$parent,demo_browser_hash(),$newOwner,$customer,$mode]);
         $app->db->commit();return $token;
     }catch(Throwable $e){if($app->db->inTransaction())$app->db->rollBack();throw $e;}
+    finally{fm_drop_sets($app,$sets);}
 }
 function demo_runtime(App $app,string $token):void {
     $row=$app->one('SELECT s.*,t.slug FROM fisitaap_demo_sessions s JOIN tenants t ON t.id=s.tenant_id WHERE s.token=? AND s.expires_at>NOW() AND s.created_at>DATE_SUB(NOW(),INTERVAL 4 HOUR)',[$token]);
@@ -124,12 +125,14 @@ function demo_discard(App $app,array $session):void {
     }
     $app->db->beginTransaction();
     try{
+        fm_assert_delete_scope($app,$meta,$sets);
         $app->db->exec('SET FOREIGN_KEY_CHECKS=0');
         foreach($meta['tables'] as $table=>$m)$app->db->exec('DELETE b FROM '.fm_id($table).' b JOIN '.fm_id($sets[$table]).' k ON '.fm_pkmatch('b','k',$m['pk']));
         $app->db->exec('SET FOREIGN_KEY_CHECKS=1');$app->db->commit();
     }catch(Throwable $e){if($app->db->inTransaction())$app->db->rollBack();$app->db->exec('SET FOREIGN_KEY_CHECKS=1');throw $e;}
+    finally{fm_drop_sets($app,$sets);}
     $dir=ROOT_PATH.'/uploads/demo/'.$session['token'];
-    if(preg_match('/^[a-f0-9]{32}$/D',(string)$session['token'])&&is_dir($dir)){
+    if(preg_match('/^[a-f0-9]{32}$/D',(string)$session['token'])&&is_dir($dir)&&!is_link($dir)&&str_starts_with((string)realpath($dir),(string)realpath(ROOT_PATH.'/uploads').'/demo/')){
         foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir,FilesystemIterator::SKIP_DOTS),RecursiveIteratorIterator::CHILD_FIRST) as $file){if($file->isLink()||$file->isFile())unlink($file->getPathname());elseif($file->isDir())rmdir($file->getPathname());}rmdir($dir);
     }
 }

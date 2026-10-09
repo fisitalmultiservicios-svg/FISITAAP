@@ -29,6 +29,7 @@ foreach ($manifest['files'] as $path=>$hash) {
     if (!is_file(__DIR__.'/'.$path) || hash_file('sha256',__DIR__.'/'.$path)!==$hash) $issues[]='Archivo ausente o diferente: '.$path;
 }
 foreach (['pdo_mysql','mbstring','openssl','curl','fileinfo','gd','dom','libxml'] as $ext) if (!extension_loaded($ext)) $issues[]='Falta la extensión PHP '.$ext;
+if(!function_exists('imagewebp')||empty(gd_info()['WebP Support']))$issues[]='GD necesita soporte WebP para optimizar imágenes.';
 if (PHP_VERSION_ID<80300) $issues[]='Selecciona PHP 8.3 o 8.4 en cPanel: son las versiones objetivo de este paquete.';
 if (!empty($config['debug'])) $issues[]='Pon debug en false en config.php para el sitio público.';
 if (trim((string)($config['app_key']??''))==='') $issues[]='Falta app_key. Conserva exactamente la clave del config.php anterior.';

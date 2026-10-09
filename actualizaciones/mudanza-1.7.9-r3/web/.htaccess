@@ -5,12 +5,13 @@ RewriteCond %{HTTP_HOST} ^www\.fisitaap\.com$ [NC]
 RewriteRule ^ https://fisitaap.com%{REQUEST_URI} [R=301,L]
 RewriteCond %{REQUEST_METHOD} ^(?:TRACE|TRACK)$ [NC]
 RewriteRule ^ - [F,L]
+RewriteRule (^|/)\.(?!well-known(?:/|$)) - [F,L]
 RewriteRule ^(?:uploads-respaldo|app|database|actualizaciones|upgrade/(?:backups|package))(?:/|$) - [F,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]
 
-<FilesMatch "^(config(?:\.example)?\.php|mudanza-manifest\.php|\.env|composer\.(json|lock)|error_log|.*\.(?:sql|log|bak|zip|rar|md))$">
+<FilesMatch "(?i)^(config(?:\.example)?\.php|mudanza-manifest\.php|\..*|composer\.(json|lock)|error_log|.*\.(?:sql(?:\.(?:gz|bz2|xz))?|log|bak|zip|rar|7z|tar(?:\.(?:gz|bz2|xz))?|tgz|md))$">
   Require all denied
 </FilesMatch>
 
@@ -31,6 +32,7 @@ LimitRequestBody 52428800
   AddType text/css .css
   AddType application/javascript .js
   AddType image/svg+xml .svg
+  AddType image/webp .webp
 </IfModule>
 
 <IfModule mod_deflate.c>

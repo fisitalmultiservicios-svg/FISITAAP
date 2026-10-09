@@ -35,12 +35,23 @@ function fm_match(string $a,string $b,array $pairs):string {
 function fm_pkmatch(string $a,string $b,array $pk):string{return fm_match($a,$b,array_combine($pk,$pk));}
 function fm_sets(App $app,array $meta):array {
     $sets=[];$prefix='fm_'.bin2hex(random_bytes(4)).'_';
-    foreach($meta['tables'] as $table=>$m){
-        $temp=$prefix.count($sets);$pk=implode(',',array_map('fm_id',$m['pk']));
+    try{foreach($meta['tables'] as $table=>$m){
+        $temp=$prefix.count($sets);$pk=implode(',',array_map('fm_id',$m['pk']));$sets[$table]=$temp;
         $app->db->exec('CREATE TEMPORARY TABLE '.fm_id($temp).' ENGINE=InnoDB AS SELECT '.$pk.' FROM '.fm_id($table).' WHERE 1=0');
-        $app->db->exec('ALTER TABLE '.fm_id($temp).' ADD PRIMARY KEY ('.$pk.')');$sets[$table]=$temp;
-    }
+        $app->db->exec('ALTER TABLE '.fm_id($temp).' ADD PRIMARY KEY ('.$pk.')');
+    }}catch(Throwable $error){fm_drop_sets($app,$sets);throw $error;}
     return $sets;
+}
+function fm_drop_sets(App $app,array $sets):void {
+    if($sets)$app->db->exec('DROP TEMPORARY TABLE IF EXISTS '.implode(',',array_map('fm_id',array_values($sets))));
+}
+function fm_assert_delete_scope(App $app,array $meta,array $sets):void {
+    // A retained record must never lose a parent during disposable demo cleanup.
+    foreach($meta['refs'] as $ref){
+        $child=$ref['child'];$parent=$ref['parent'];
+        $sql='SELECT 1 FROM '.fm_id($child).' c JOIN '.fm_id($parent).' p ON '.fm_match('c','p',$ref['pairs']).' JOIN '.fm_id($sets[$parent]).' pk ON '.fm_pkmatch('p','pk',$meta['tables'][$parent]['pk']).' LEFT JOIN '.fm_id($sets[$child]).' ck ON '.fm_pkmatch('c','ck',$meta['tables'][$child]['pk']).' WHERE ck.'.fm_id($meta['tables'][$child]['pk'][0]).' IS NULL LIMIT 1';
+        if($app->one($sql))throw new RuntimeException('La copia temporal tiene referencias desde otros datos. Se canceló su limpieza para conservar esas relaciones.');
+    }
 }
 function fm_mark(App $app,array $meta,array $sets,string $table,string $where):int {
     $pk=implode(',',array_map(static fn($c)=>'b.'.fm_id($c),$meta['tables'][$table]['pk']));
@@ -86,7 +97,7 @@ function fm_orphans(App $app,array $meta):void {
         if($app->one($sql))throw new RuntimeException('La relación '.$ref['child'].' → '.$ref['parent'].' necesita revisión. La limpieza se canceló y se conservaron los datos.');
     }
 }
-function fm_filter(App $app,array $ids):array {
+function fm_filter(App $app,array $ids,bool $activateDemos=false):array {
     $meta=fm_meta($app);$sets=fm_sets($app,$meta);$counts=[];
     $app->db->beginTransaction();
     try{
@@ -96,6 +107,8 @@ function fm_filter(App $app,array $ids):array {
             $counts[$table]=$app->db->exec('DELETE b FROM '.fm_id($table).' b LEFT JOIN '.fm_id($sets[$table]).' k ON '.fm_pkmatch('b','k',$m['pk']).' WHERE k.'.fm_id($m['pk'][0]).' IS NULL');
         }
         fm_orphans($app,$meta);
+        if($activateDemos)$app->exec('INSERT INTO settings(`key`,`value`) VALUES("demo_sandbox_active","1") ON DUPLICATE KEY UPDATE `value`="1"');
         $app->db->exec('SET FOREIGN_KEY_CHECKS=1');$app->db->commit();return $counts;
     }catch(Throwable $e){if($app->db->inTransaction())$app->db->rollBack();$app->db->exec('SET FOREIGN_KEY_CHECKS=1');throw $e;}
+    finally{fm_drop_sets($app,$sets);}
 }

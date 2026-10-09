@@ -33,8 +33,7 @@ if(is_post()&&($_POST['action']??'')!=='media'){
             if(!$locked)throw new RuntimeException('Ya hay otra preparación en curso.');
             // Save the table schema before filtering; business records are transactional.
             demo_schema($app);
-            $deleted=fm_filter($app,$ids);
-            $app->exec('INSERT INTO settings(`key`,`value`) VALUES("demo_sandbox_active","1") ON DUPLICATE KEY UPDATE `value`="1"');
+            $deleted=fm_filter($app,$ids,true);
             $message='Preparación completada. Se conservaron La Ventanita, los dos demos y las cuentas maestras. Los demos ya abren copias independientes. Registros eliminados de la copia nueva: '.array_sum($deleted).'.';
             $remove=[];
         }catch(Throwable $error){$errors[]='No se completó la preparación: '.$error->getMessage();error_log('FISITAAP migration prepare: '.$error->getMessage());}
@@ -45,11 +44,11 @@ if(is_post()&&($_POST['action']??'')!=='media'){
 <h1>Preparar la base del servidor nuevo</h1>
 <p><strong>Usa esta página únicamente después de importar el respaldo en una base nueva.</strong> Eliminará de esta copia los otros negocios y sus registros. Conserva tu respaldo privado y el servidor anterior. No se utiliza en el sitio en funcionamiento.</p>
 <p>Base seleccionada: <strong><?=e($config['db_name'])?></strong></p>
-<?php if($message): ?><p class="success"><?=e($message)?></p><p>Ahora compara los datos de La Ventanita, prueba los demos y quita migration_mode del config.php. Elimina este archivo al terminar.</p><?php endif; ?>
+<?php if($message): ?><p class="success"><?=e($message)?></p><p>Ahora compara los datos de La Ventanita, optimiza las fotos y descarga uploads necesarios antes de abrir los demos. Al terminar todas las pruebas, quita migration_mode del config.php y elimina las herramientas temporales.</p><?php endif; ?>
 <?php if($errors): ?><ul class="error"><?php foreach($errors as $error): ?><li><?=e($error)?></li><?php endforeach; ?></ul><?php endif; ?>
 <h2>Se conservan</h2><ul><?php foreach($keep as $t): ?><li><?=e($t['name'])?> · /<?=e($t['slug'])?></li><?php endforeach; ?><li>Tu acceso maestro, configuración de plataforma y los clientes y colaboradores relacionados con los negocios conservados.</li></ul>
 <h2>Se retiran de esta copia</h2><ul><?php foreach($remove as $t): ?><li><?=e($t['name'])?> · /<?=e($t['slug'])?></li><?php endforeach; ?><?php if(!$remove): ?><li>No hay otros negocios.</li><?php endif; ?></ul>
 <?php if(!$message&&!$errors): ?><form method="post"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><label>Escribe el nombre completo de la base nueva<input name="database" required autocomplete="off"></label><label>Escribe SOLO LA VENTANITA Y DEMOS<input name="confirmation" required autocomplete="off"></label><button>Preparar esta copia nueva</button></form><?php endif; ?>
-<?php if(!$remove&&!$errors&&$app->setting('demo_sandbox_active','0')==='1'): ?><h2>Imágenes y documentos necesarios</h2><p>Este botón descarga los archivos locales de uploads que aparecen referenciados en los datos conservados. No borra las imágenes originales. Archivos enlazados externamente o agregados manualmente fuera de la base necesitan revisión aparte.</p><form method="post"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><input type="hidden" name="action" value="media"><button>Descargar uploads necesarios</button></form><?php endif; ?>
+<?php if(!$remove&&!$errors&&$app->setting('demo_sandbox_active','0')==='1'): ?><h2>Imágenes y documentos necesarios</h2><p><a href="<?=e(url('optimizar-imagenes.php'))?>">Optimizar fotos anteriores por lotes</a>. Completa ese paso antes de descargar las imágenes.</p><p>Este botón descarga los archivos locales de uploads que aparecen referenciados en los datos conservados. No borra las imágenes originales. Si faltan archivos locales, el ZIP incluirá FISITAAP-ARCHIVOS-FALTANTES.txt: revísalo antes de sustituir uploads. Archivos enlazados externamente o agregados manualmente fuera de la base necesitan revisión aparte.</p><form method="post"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><input type="hidden" name="action" value="media"><button>Descargar uploads necesarios</button></form><?php endif; ?>
 <p>No se borran imágenes automáticamente: pueden estar compartidas entre páginas. La guía explica cómo verificar y sustituir uploads usando el ZIP descargado.</p>
 </main></body></html>

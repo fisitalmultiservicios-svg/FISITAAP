@@ -1,4 +1,4 @@
-# Mudanza selectiva a cPanel · 1.7.9-R3
+# Mudanza selectiva a cPanel · 1.7.9-R3 revisada
 
 [Descargar sistema completo](FISITAAP-1.7.9-R3-NUEVO-CPANEL.zip) · [Guía paso a paso](GUIA-NUEVO-CPANEL.md)
 
@@ -8,4 +8,6 @@ Conserva La Ventanita y los dos demos desde un respaldo privado importado en la 
 
 Instala únicamente en el servidor nuevo y sigue la guía; no ejecutes la limpieza en el hosting anterior. Los clientes Windows y Android siguen siendo [1.7.9](../1.7.9/README.md).
 
-Validación: [instalación e importación](QA-MUDANZA.json), [filtrado y demos](QA-DEMOS.json), [pestañas en Chromium](QA-NAVEGADOR.json), [imágenes](QA-IMAGENES.json). Estas pruebas usan datos ficticios; no sustituyen la comparación de tu respaldo real ni las pruebas de impresión física.
+Validación: [instalación e importación](QA-MUDANZA.json), [filtrado y demos](QA-DEMOS.json), [pestañas en Chromium](QA-NAVEGADOR.json), [imágenes](QA-IMAGENES.json), [revisión adicional](QA-REVISION.json). Estas pruebas usan datos ficticios; no sustituyen la comparación de tu respaldo real ni las pruebas de impresión física.
+
+Para reconstruir los ZIP desde estos archivos: `python qa/build_migration179.py` desde la raíz del repositorio. El script rechaza configuración privada y fotos de negocios dentro del paquete público.

@@ -6,6 +6,7 @@ server with the imported copy. Private SQL/config stay outside the repository.
 """
 import hashlib
 import json
+import os
 import pathlib
 import re
 import shutil
@@ -79,6 +80,8 @@ def main():
     archive = DELIVERY / 'FISITAAP-1.7.9-R3-NUEVO-CPANEL.zip'
     STAGE.mkdir(exist_ok=True)
     STAGE.chmod(0o755)
+    if (STAGE/'uploads').exists() and subprocess.run(['docker','inspect',SERVER],capture_output=True).returncode==0:
+        run(['docker','exec',SERVER,'chown','-R',str(os.getuid())+':'+str(os.getgid()),'/var/www/html/uploads'])
     with zipfile.ZipFile(archive) as z:
         names = z.namelist()
         assert 'index.php' in names and '.htaccess' in names

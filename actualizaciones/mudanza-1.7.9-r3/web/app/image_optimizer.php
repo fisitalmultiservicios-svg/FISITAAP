@@ -2,21 +2,33 @@
 declare(strict_types=1);
 
 // Derivatives are generated on upload or explicitly in batches, never on page views.
-function image_local_file(string $value):?string {
+function media_relative_path(string $value):?string {
     global $config;
     $parts=parse_url($value);if($parts===false)return null;
+    if(isset($parts['scheme'])&&!in_array(strtolower($parts['scheme']),['http','https'],true))return null;
+    if(isset($parts['user'])||isset($parts['pass']))return null;
     if(isset($parts['host'])){
         $own=parse_url((string)($GLOBALS['demo_base_url']??$config['app_url']??''),PHP_URL_HOST);
-        if(strtolower((string)$parts['host'])!==strtolower((string)$own))return null;
+        if(preg_replace('/^www\./','',strtolower((string)$parts['host']))!==preg_replace('/^www\./','',strtolower((string)$own)))return null;
     }
     $path=rawurldecode((string)($parts['path']??''));
     $path=preg_replace('~^/demo/s/[a-f0-9]{32}/~','/',$path);
     $relative=ltrim($path,'/');
-    if(!str_starts_with($relative,'uploads/')||str_contains($relative,'..')||str_contains($relative,"\0")||str_contains($relative,'\\'))return null;
+    if($relative===''||str_contains($relative,'..')||str_contains($relative,"\0")||str_contains($relative,'\\'))return null;
+    return $relative;
+}
+function image_local_file(string $value):?string {
+    $relative=media_relative_path($value);
+    if($relative===null||!str_starts_with($relative,'uploads/'))return null;
     $root=realpath(ROOT_PATH.'/uploads');$file=ROOT_PATH.'/'.$relative;$real=realpath($file);
     return $root!==false&&$real!==false&&str_starts_with($real,$root.DIRECTORY_SEPARATOR)&&is_file($real)&&!is_link($file)?$real:null;
 }
 function image_variant_url(string $value,bool $thumbnail=false):string {
+    $key=($thumbnail?'thumb:':'full:').$value;
+    if(isset($GLOBALS['fisitaap_image_urls'][$key]))return $GLOBALS['fisitaap_image_urls'][$key];
+    return $GLOBALS['fisitaap_image_urls'][$key]=image_variant_resolve($value,$thumbnail);
+}
+function image_variant_resolve(string $value,bool $thumbnail):string {
     $file=image_local_file($value);if($file===null)return $value;
     $original=str_ends_with($file,'.optimized.webp')?substr($file,0,-strlen('.optimized.webp')):$file;
     $candidate=$original.($thumbnail?'.thumb.webp':'.optimized.webp');
@@ -95,6 +107,7 @@ function image_write_webp(GdImage $source,string $destination,int $maximum,int $
         if(filesize($temp)>$target&&$maximum>720&&max($w,$h)>720){image_write_webp($source,$destination,max(720,(int)floor($maximum*.75)),max(68,$quality-3),$target);return;}
         if(!is_file($temp)||filesize($temp)<1||!@getimagesize($temp))throw new RuntimeException('La imagen optimizada no es válida.');
         chmod($temp,0644);if(!rename($temp,$destination))throw new RuntimeException('No se pudo guardar la imagen optimizada.');
+        unset($GLOBALS['fisitaap_image_urls']);
     }finally{imagedestroy($canvas);if(is_file($temp))unlink($temp);}
 }
 function image_optimize_existing(string $file):array {

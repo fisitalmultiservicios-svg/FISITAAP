@@ -1,6 +1,6 @@
 # FISITAAP: instalar en el nuevo cPanel
 
-Esta entrega contiene el sistema completo **1.7.9-R3**, con sus correcciones anteriores, y las herramientas para la mudanza selectiva. No necesitas instalar los ZIP anteriores. **Es para una carpeta nueva del nuevo hosting, no para limpiar el servidor actual.**
+Esta entrega revisada contiene el sistema completo **1.7.9-R3**, con sus correcciones anteriores, y las herramientas para la mudanza selectiva. No necesitas instalar los ZIP anteriores. **Es para una carpeta nueva del nuevo hosting, no para limpiar el servidor actual.**
 
 Conservaremos **La Ventanita**, los dos demos originales, la cuenta maestra y los usuarios, clientes y registros necesarios para esos negocios. La Ventanita conserva productos, ventas, inventario, saldos y vinculaciones de equipos. Los otros negocios se eliminan solamente de la copia nueva. Las configuraciones generales y planes necesarios también se conservan.
 
@@ -86,7 +86,7 @@ Las tarjetas de productos, categorías y miniaturas del catálogo utilizan versi
 
 Hazlo **antes de abrir pruebas de demo**, mientras preparar-mudanza.php está habilitado.
 
-1. Después de preparar, pulsa **Descargar uploads necesarios**. Descarga un ZIP privado con los archivos locales referenciados por los datos conservados y la protección de uploads.
+1. Después de preparar, pulsa **Descargar uploads necesarios**. Descarga un ZIP privado con los archivos locales referenciados por los datos conservados y la protección de uploads. Si incluye **FISITAAP-ARCHIVOS-FALTANTES.txt**, ábrelo y revisa esas referencias contra tu respaldo completo antes de sustituir o borrar carpetas. El archivo avisa de enlaces cuyos archivos locales no se encontraron; las imágenes externas no se descargan ni se convierten.
 2. Conserva tu respaldo completo original en la computadora. En el servidor nuevo, renombra uploads como `uploads-respaldo`.
 3. Sube el ZIP descargado y extráelo en la raíz del sitio. Creará la nueva carpeta uploads. Evita una carpeta adicional uploads/uploads.
 4. Revisa logos, fotos de productos y documentos de La Ventanita y ambos demos. El selector solo conoce referencias en la base; archivos manuales o enlaces externos requieren revisión aparte.
@@ -143,8 +143,19 @@ No necesitas carpetas de actualizaciones antiguas, upgrade, fisichat-upgrade, qa
 
 Conserva el hosting anterior y los respaldos al menos una semana. Antes de realizar ventas nuevas puedes regresar el dominio al servidor anterior y retirar el bloqueo. **Después de vender en el servidor nuevo, regresar a una copia vieja perdería esas operaciones**: primero hay que trasladar los datos nuevos y sincronizar las cajas.
 
+## Mejoras de la revisión del paquete
+
+- Las fotos con parámetros, espacios, caracteres como ñ y direcciones con www conservan sus enlaces. La selección de imágenes reconoce también galerías JSON y fotos dentro de contenido HTML.
+- El ZIP privado de imágenes incluye un aviso si hay archivos referenciados que faltan. Su descarga libera la sesión para que otras pantallas no tengan que esperar al procesamiento del ZIP.
+- La limpieza del demo comprueba referencias desde otros datos antes de borrar y libera sus tablas auxiliares al terminar. Si existe una relación inesperada, conserva los datos para revisión.
+- La selección de negocios y la activación de demos forman una sola transacción: si falla la activación, se revierten las eliminaciones.
+- Los respaldos SQL comprimidos, archivos ocultos y archivos de configuración quedan protegidos por .htaccess. Los archivos necesarios para emitir el certificado SSL siguen accesibles.
+- El comprobador verifica que GD tenga soporte WebP, además de estar instalado. Las instrucciones del preparador indican optimizar y descargar imágenes antes de probar demos.
+
 ## Validación de esta entrega
 
 Probada en un servidor de laboratorio con PHP 8.3 y MariaDB 11.4, usando datos ficticios: importación completa, accesos, rutas y archivos; filtrado selectivo; conservación de registros financieros y equipos; ventas aisladas en demos, reinicio y limpieza. Además pasaron 10 comprobaciones de imágenes: compresión de una foto detallada, transparencias, orientación del celular, límites seguros, originales y base intactos, reinicio por lotes, exportación de variantes y control de acceso. Pasaron también las 28 comprobaciones anteriores: 10 de instalación/importación, 14 de filtrado/demos/imágenes y 4 de pestañas en Chromium con JavaScript real. Los informes QA están en esta carpeta del repositorio.
+
+Pasaron otras 9 comprobaciones específicas de esta revisión, incluyendo los casos de fotos y reversión ante fallos: **47 comprobaciones de laboratorio en total**.
 
 No se ha instalado en tu nuevo cPanel ni se ha probado allí DNS, SSL, tus datos reales o impresoras físicas. Esas comprobaciones corresponden a los pasos anteriores.

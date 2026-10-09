@@ -1,0 +1,15 @@
+{
+  "environment": "isolated PHP 8.3 / MariaDB 11.4; no production data",
+  "passed": 9,
+  "checks": [
+    "photo URLs with query strings, generated version parameters and www aliases remain valid",
+    "raw/encoded spaces, Unicode, JSON galleries and quoted HTML image references export correctly; unsafe/external paths stay excluded",
+    "compressed backups and hidden data are blocked while certificate challenge files remain accessible",
+    "temporary migration tables are actually released on the database connection",
+    "demo cleanup rejects references from another tenant without deleting rows and restores foreign-key checks",
+    "demo file cleanup does not follow a linked directory into another business",
+    "failed demo activation rolls back selective deletions in the same transaction",
+    "authenticated media ZIP includes a missing-files report and leaves database rows unchanged",
+    "media export releases the session before creating and streaming the archive"
+  ]
+}

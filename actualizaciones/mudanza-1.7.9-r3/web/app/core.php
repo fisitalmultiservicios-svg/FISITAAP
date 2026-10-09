@@ -93,7 +93,18 @@ final class App
 function e(mixed $value): string { return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'); }
 function ui_label_qa(string $value):string{return ['new'=>'Nuevo','open'=>'Abierto','closed'=>'Cerrado','suspended'=>'En espera','payment'=>'En cobro','pending'=>'Pendiente','paid'=>'Pagado','partial'=>'Pago parcial','completed'=>'Completado','credit'=>'A crédito','confirmed'=>'Confirmado','preparing'=>'En preparación','ready'=>'Listo','available'=>'Disponible','assigned'=>'Asignado','arrived'=>'En el negocio','picked_up'=>'Recogido','in_transit'=>'En camino','delivered'=>'Entregado','issue'=>'Incidencia','cancelled'=>'Cancelado','expired'=>'Vencido','pending_store'=>'Esperando aprobación del negocio','pending_driver'=>'Esperando aceptación del motorizado','paused'=>'Pausado','rejected'=>'Rechazado','blocked'=>'Bloqueado','active'=>'Activo','hidden'=>'Oculto','sold_out'=>'Agotado','tenant_admin'=>'Dueño de tienda','manager'=>'Gestor','editor'=>'Editor','kitchen'=>'Cocina','cashier'=>'Cajero','published'=>'Publicado','draft'=>'Borrador','Mon'=>'Lun','Tue'=>'Mar','Wed'=>'Mié','Thu'=>'Jue','Fri'=>'Vie','Sat'=>'Sáb','Sun'=>'Dom'][$value]??$value;}
 function money(float $value): string { return '₡' . number_format($value, 2, ',', ' '); }
-function public_media_url(?string $value,?string $fallback=null):string{$fallback??=url('assets/placeholder.svg');$value=trim((string)$value);if($value==='')return $fallback;if(str_starts_with($value,'data:'))return $value;$base=rtrim(url(),'/').'/';if(str_starts_with($value,$base)){$relative=ltrim(substr($value,strlen($base)),'/');return $relative!==''&&!str_contains($relative,'..')&&is_file(ROOT_PATH.'/'.$relative)?image_variant_url($value):$fallback;}if(!preg_match('~^https?://~i',$value)){$relative=ltrim($value,'/');return $relative!==''&&!str_contains($relative,'..')&&is_file(ROOT_PATH.'/'.$relative)?image_variant_url(url($relative)):$fallback;}return image_variant_url($value);}
+function public_media_url(?string $value,?string $fallback=null):string {
+    $fallback??=url('assets/placeholder.svg');$value=trim((string)$value);
+    if($value==='')return $fallback;if(str_starts_with($value,'data:'))return $value;
+    $parts=parse_url($value);if($parts===false)return $fallback;
+    $relative=media_relative_path($value);
+    if($relative===null)return isset($parts['host'])&&in_array(strtolower($parts['scheme']??'https'),['http','https'],true)?$value:$fallback;
+    $root=realpath(ROOT_PATH);$file=realpath(ROOT_PATH.'/'.$relative);
+    if($file===false||!str_starts_with($file,$root.DIRECTORY_SEPARATOR)||!is_file($file))return $fallback;
+    $resolved=isset($parts['host'])?$value:url(implode('/',array_map('rawurlencode',explode('/',$relative))));
+    if(!isset($parts['host'])){$resolved.=isset($parts['query'])?'?'.$parts['query']:'';$resolved.=isset($parts['fragment'])?'#'.$parts['fragment']:'';}
+    return image_variant_url($resolved);
+}
 function order_item_details_html(array $item): string { $options=json_decode((string)($item['options_json']??''),true);$html='';if(is_array($options)&&$options){$html.='<small class="item-options">';foreach($options as $option)$html.='<span>'.e(($option['group']??$option['group_name']??'Opción').': '.($option['name']??'')).'</span>';$html.='</small>';}if(!empty($item['notes']))$html.='<small class="item-note">Nota: '.e($item['notes']).'</small>';return $html; }
 function url(string $path = ''): string { global $config; return rtrim($config['app_url'], '/') . '/' . ltrim($path, '/'); }
 function redirect(string $to): never { header('Location: ' . $to); exit; }
