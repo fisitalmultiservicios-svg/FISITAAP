@@ -9,6 +9,7 @@ function demo_slug(string $slug):bool{return (bool)preg_match('/^demo-(?:restaur
 function demo_base():string{return $GLOBALS['demo_base_url']??rtrim(url(),'/');}
 function demo_fail(string $message,int $status=403):never {
     http_response_code($status);header('Cache-Control: private, no-store');
+    if(str_contains($_SERVER['HTTP_ACCEPT']??'','application/json'))json_response(['ok'=>false,'error'=>$message],$status);
     $base=demo_base();echo '<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Demo FISITAAP</title><body style="font:16px/1.5 system-ui;margin:40px"><h1>Demostración</h1><p>'.e($message).'</p><p><a href="'.e($base.'/demo').'">Abrir un demo nuevo</a></p></body></html>';exit;
 }
 function demo_browser_hash():string{return hash('sha256',(string)($_COOKIE['fisitaap_session']??session_id()));}
@@ -51,6 +52,10 @@ function demo_open(App $app,string $type,string $mode):string {
     if((int)$app->one('SELECT COUNT(*) n FROM fisitaap_demo_sessions WHERE expires_at>NOW()')['n']>=60)throw new DomainException('Hay muchas pruebas abiertas. Intenta nuevamente en unos minutos.');
     $owner=$app->one('SELECT id FROM users WHERE tenant_id=? AND role="tenant_admin" AND is_active=1 ORDER BY id LIMIT 1',[$template['id']]);
     if(!$owner)throw new DomainException('La plantilla necesita un dueño de demostración activo.');
+    // Auto-login is bound to the visitor's browser. These disposable accounts
+    // share one unknown, random password per copy, never a template credential.
+    // Hash once: repeated bcrypt work per collaborator slows shared hosting.
+    $demoPasswordHash=password_hash(bin2hex(random_bytes(32)),PASSWORD_DEFAULT);
     $meta=fm_meta($app);$sets=fm_sets($app,$meta);$mapping=['tenants'=>[]];$token=bin2hex(random_bytes(16));
     $app->db->beginTransaction();
     try{
@@ -68,7 +73,7 @@ function demo_open(App $app,string $type,string $mode):string {
             foreach($pending as [$table,$old]){
                 $row=demo_remap_row($old,$table,$meta,$mapping,$newOwner);if($row===null){$next[]=[$table,$old];continue;}
                 if($table==='users'){
-                    $row['email']='demo-'.$token.'-user-'.$old['id'].'@sandbox.invalid';$row['force_password_change']=0;$row['email_verified_at']=date('Y-m-d H:i:s');$row['password_hash']=password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT);
+                    $row['email']='demo-'.$token.'-user-'.$old['id'].'@sandbox.invalid';$row['force_password_change']=0;$row['email_verified_at']=date('Y-m-d H:i:s');$row['password_hash']=$demoPasswordHash;
                     if(!in_array($row['role'],['tenant_admin','manager','editor','kitchen','cashier','customer'],true))$row['role']='manager';
                 }
                 if($table==='branches')$row=demo_printer_reset($row);
@@ -84,7 +89,7 @@ function demo_open(App $app,string $type,string $mode):string {
             if(!$copied)throw new RuntimeException('No se pudieron copiar todas las relaciones del catálogo de demostración.');$pending=$next;
         }
         if(!$newOwner)throw new RuntimeException('No se copió el dueño del demo.');
-        $customer=demo_insert($app,'users',['tenant_id'=>$tenant,'name'=>'Cliente de prueba','email'=>'demo-'.$token.'-cliente@sandbox.invalid','phone'=>'88888888','password_hash'=>password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT),'role'=>'customer','is_active'=>1,'email_verified_at'=>date('Y-m-d H:i:s')]);
+        $customer=demo_insert($app,'users',['tenant_id'=>$tenant,'name'=>'Cliente de prueba','email'=>'demo-'.$token.'-cliente@sandbox.invalid','phone'=>'88888888','password_hash'=>$demoPasswordHash,'role'=>'customer','is_active'=>1,'email_verified_at'=>date('Y-m-d H:i:s')]);
         $app->exec('INSERT INTO tenant_customers(tenant_id,user_id) VALUES(?,?)',[$tenant,$customer]);
         $app->exec('INSERT INTO fisitaap_demo_sessions(token,tenant_id,template_id,browser_hash,owner_id,customer_id,initial_mode,expires_at) VALUES(?,?,?,?,?,?,?,DATE_ADD(NOW(),INTERVAL 30 MINUTE))',[$token,$tenant,$parent,demo_browser_hash(),$newOwner,$customer,$mode]);
         $app->db->commit();return $token;
@@ -155,6 +160,8 @@ function demo_dispatch(App $app,string $path):void {
         $type=($_POST['type']??'')==='restaurante'?'restaurante':'tienda';$mode=($_POST['mode']??'')==='cliente'?'cliente':'panel';
         try{$token=demo_open($app,$type,$mode);}catch(Throwable $e){error_log('FISITAAP demo open: '.get_class($e).': '.$e->getMessage());demo_fail('No se pudo abrir el demo. Revisa su preparación con la cuenta maestra.',503);}
         $slug='demo-'.$type.'-'.$token;$target=url('demo/s/'.$token.'/'.($mode==='cliente'?$slug.'/catalogo':'admin'));
+        session_write_close();
+        if(str_contains($_SERVER['HTTP_ACCEPT']??'','application/json'))json_response(['ok'=>true,'token'=>$token,'url'=>$target]);
         header('Cache-Control: private, no-store');header("Content-Security-Policy: default-src 'none'; script-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'self'");
         echo '<!doctype html><html lang="es"><meta charset="utf-8"><title>Abriendo demo</title><p>Abriendo tu prueba independiente…</p><script>try{sessionStorage.setItem("fisitaap-demo-tab",'.json_encode($token).');location.replace('.json_encode($target,JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT).')}catch(e){document.body.textContent="Activa el almacenamiento de este navegador para usar el demo."}</script><noscript>El demo necesita JavaScript para crear una sesión independiente.</noscript></html>';exit;
     }

@@ -93,7 +93,7 @@ def main():
     assert final['rate_limits']['count'] == 0
     passed('original business/configuration hashes remain unchanged; temporary rate-limit counters are cleared by preparation')
     with zipfile.ZipFile(DELIVERY/'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip') as archive:
-        assert set(archive.namelist()) == {'app/data_tools179.php', 'app/demo_sandbox.php', 'app/branches_v1.php', 'app/official_r3.php', 'mudanza-manifest.php'}
+        assert set(archive.namelist()) == {'app/data_tools179.php', 'app/demo_sandbox.php', 'app/branches_v1.php', 'app/official_r3.php', 'app/core.php', 'app/browser_migration179.php', 'assets/app.js', 'index.php', 'comprobar-servidor.php', 'mudanza-manifest.php'}
         helper = archive.read('app/data_tools179.php')
         assert helper == (DELIVERY/'web/app/data_tools179.php').read_bytes()
         manifest = json.loads(archive.read('mudanza-manifest.php').decode().split("<<<'MIGRATION_MANIFEST'\n",1)[1].split('\nMIGRATION_MANIFEST',1)[0])

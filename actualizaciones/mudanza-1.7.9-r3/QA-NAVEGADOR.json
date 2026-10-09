@@ -1,11 +1,12 @@
 {
   "environment": "Chromium with real JavaScript and nonpersistent browser contexts on isolated PHP 8.3 fixture; actual Brave deployment still requires user verification",
-  "passed": 14,
+  "passed": 15,
   "checks": [
     "start sets tab storage and navigation remains in the private demo",
     "a new tab without demo storage returns to the selector",
     "entry after closing the demo starts a new disposable copy",
     "explicit finish returns the browser to the demo selector",
+    "JavaScript demo entry stays on the selector until ready, without a visible intermediate page",
     "customer catalog return opens the public selector without a 403",
     "browser Back and customer/panel switching keep the same private copy",
     "older scoped selector links return safely; writes, other stores and device APIs stay blocked",

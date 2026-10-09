@@ -98,7 +98,7 @@ def main():
         passed('checker still rejects a missing required branch printer field and remains read-only')
 
         with zipfile.ZipFile(DELIVERY/'FISITAAP-CORREGIR-MUDANZA-DEMOS.zip') as archive:
-            assert set(archive.namelist()) == {'app/data_tools179.php','app/demo_sandbox.php','app/branches_v1.php','app/official_r3.php','mudanza-manifest.php'}
+            assert set(archive.namelist()) == {'app/data_tools179.php','app/demo_sandbox.php','app/branches_v1.php','app/official_r3.php','app/core.php','app/browser_migration179.php','assets/app.js','index.php','comprobar-servidor.php','mudanza-manifest.php'}
             for name in archive.namelist():
                 assert archive.read(name) == (DELIVERY/'web'/name).read_bytes()
         passed('cumulative corrective ZIP contains the reviewed demo/helper/manifest files and no private configuration or media')

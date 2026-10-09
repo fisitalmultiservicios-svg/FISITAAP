@@ -9,6 +9,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 DELIVERY=ROOT/'actualizaciones/mudanza-1.7.9-r3'
 WEB=DELIVERY/'web'
 MANIFEST=WEB/'mudanza-manifest.php'
+CORRECTIVE_FILES=('app/data_tools179.php','app/demo_sandbox.php','app/branches_v1.php','app/official_r3.php','app/core.php','app/browser_migration179.php','assets/app.js','index.php','comprobar-servidor.php','mudanza-manifest.php')
 
 def build():
     text=MANIFEST.read_text()
@@ -34,8 +35,9 @@ def build():
     packages={
         'FISITAAP-1.7.9-R3-NUEVO-CPANEL.zip': files,
         'FISITAAP-COMPROBAR-MUDANZA.zip': [WEB/'comprobar-mudanza.php',MANIFEST],
-        'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip': [WEB/'app/data_tools179.php',WEB/'app/demo_sandbox.php',WEB/'app/branches_v1.php',WEB/'app/official_r3.php',MANIFEST],
-        'FISITAAP-CORREGIR-MUDANZA-DEMOS.zip': [WEB/'app/data_tools179.php',WEB/'app/demo_sandbox.php',WEB/'app/branches_v1.php',WEB/'app/official_r3.php',MANIFEST],
+        'FISITAAP-CORREGIR-PREPARACION-DRIVERS.zip': [WEB/name for name in CORRECTIVE_FILES],
+        'FISITAAP-CORREGIR-MUDANZA-DEMOS.zip': [WEB/name for name in CORRECTIVE_FILES],
+        'FISITAAP-CORREGIR-CACHE-Y-DEMOS.zip': [WEB/name for name in CORRECTIVE_FILES],
     }
     for name,selected in packages.items():
         target=DELIVERY/name;temp=target.with_suffix('.zip.tmp')

@@ -26,6 +26,8 @@ try:
         browser=pw.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--no-proxy-server'])
         ctx=browser.new_context()
         page=ctx.new_page()
+        navigations=[]
+        page.on('framenavigated',lambda frame:navigations.append(frame.url) if frame==page.main_frame else None)
         page.goto(base+'/demo')
         page.get_by_role('button',name='Probar panel',exact=True).first.click()
         page.wait_for_url(re.compile(r'/demo/s/[a-f0-9]{32}/admin'))
@@ -50,6 +52,8 @@ try:
         other.get_by_role('button',name='Terminar y descartar',exact=True).click()
         other.wait_for_url(base+'/demo')
         passed('explicit finish returns the browser to the demo selector')
+        assert not any('/demo/iniciar' in url for url in navigations)
+        passed('JavaScript demo entry stays on the selector until ready, without a visible intermediate page')
 
         # Reproduce the reported customer-mode return, rather than only panel mode.
         page=other

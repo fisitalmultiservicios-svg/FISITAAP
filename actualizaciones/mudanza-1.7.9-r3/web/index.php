@@ -32,7 +32,13 @@ $decodedPath=rawurldecode($path);if(str_contains($decodedPath,'catálogo')){$cle
 if($path==='robots.txt'){robots_v12();}
 if($path==='sitemap.xml'){sitemap_v12($app);}
 
-if($path==='sw.js'){$cacheVersion=preg_replace('/[^a-zA-Z0-9_-]/','',$app->setting('cache_version','1'))?:'1';$assetVersion='?v='.rawurlencode($cacheVersion);header('Content-Type:application/javascript');header('Cache-Control:no-cache, no-store, must-revalidate');echo "const C='fisitapp-".$cacheVersion."',A=['".url()."','".url('assets/app.bundle.css'.$assetVersion)."','".url('assets/v12.css'.$assetVersion)."','".url('assets/fisitapp-logo.webp'.$assetVersion)."','".url('assets/app.js'.$assetVersion)."','".url('assets/placeholder.svg')."','".url('assets/icon.svg')."'];self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>Promise.all(A.map(u=>c.add(u).catch(()=>null)))).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const u=new URL(e.request.url);if(u.origin===location.origin&&u.pathname.includes('/assets/'))e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(n=>{if(n.ok)caches.open(C).then(c=>c.put(e.request,n.clone()));return n})));else if(e.request.mode==='navigate')e.respondWith(fetch(e.request).catch(()=>caches.match('".url()."')))});";exit;}
+if($path==='sw.js'){
+    header('Content-Type:application/javascript');header('Cache-Control:no-cache, no-store, must-revalidate');
+    // Upgrade previously installed workers to a pass-through worker and retire
+    // them. Offline selling is handled by the Windows/Android principal device.
+    echo "self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('fisitapp-')).map(key=>caches.delete(key)))).then(()=>self.registration.unregister())));";
+    exit;
+}
 
 if($path==='manifest.webmanifest' || str_ends_with($path,'/manifest.webmanifest')){
     header('Cache-Control: public, max-age=3600');

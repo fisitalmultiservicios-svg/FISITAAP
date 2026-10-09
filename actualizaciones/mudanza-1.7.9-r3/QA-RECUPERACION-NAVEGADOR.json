@@ -1,0 +1,15 @@
+{
+  "environment": "isolated PHP 8.3 / MariaDB / Chromium, including a synthetic cached HTML stylesheet and stale worker; live Chrome/Brave DNS and certificates require user verification",
+  "passed": 9,
+  "checks": [
+    "public server marker needs no credentials or database writes and reveals no private paths",
+    "each private copy performs one password hash and keeps it independent of template and other copies",
+    "separate browser sessions see the same server/revision marker without setting session cookies",
+    "a stale worker serving cached HTML as CSS reproduces the unstyled landing page",
+    "recovery restores styled landing and removes only old FISITAAP worker/cache, preserving other apps, cookies and cart",
+    "all landing stylesheet URLs carry the same new revision to bypass old HTTP cache entries",
+    "old worker update URLs serve a retiring worker that cannot substitute a cached homepage",
+    "demo entry uses JSON then opens the private catalog, without an unstyled opening page",
+    "all browser recovery operations preserve original business data and the source fixture"
+  ]
+}

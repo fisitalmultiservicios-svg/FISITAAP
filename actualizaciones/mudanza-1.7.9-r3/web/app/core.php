@@ -236,13 +236,15 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false)
     global $app;$primary = $admin ? '#203f57' : ($tenant['primary_color'] ?? ($app instanceof App?$app->setting('platform_primary_color','#1f7a45'):'#1f7a45'));
     $accent = $admin ? '#dce7ee' : ($tenant['accent_color'] ?? ($app instanceof App?$app->setting('platform_accent_color','#dfe9c8'):'#dfe9c8'));
     $name = $tenant['name'] ?? ($app instanceof App?$app->setting('site_name','FISITAPP'):'FISITAPP');
-    $cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-179m1';
+    $cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-179m2';
     header('Cache-Control: private, no-store, max-age=0');
     header('Pragma: no-cache');
     $bridgeConnect=in_array(request_path(),['admin/recibo','admin/impresion'],true)?' http://127.0.0.1:18765':'';
     header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-src https://www.google.com https://maps.google.com; connect-src 'self'{$bridgeConnect}");
     echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="'.e($primary).'"><title>'.e($title).' · '.e($name).'</title>'.(function_exists('seo_head_v12')&&$app instanceof App?seo_head_v12($app,$title,$tenant,$admin):'').'<link rel="manifest" href="'.url(($tenant? $tenant['slug'].'/':'').'manifest.webmanifest').'"><link rel="stylesheet" href="'.url('assets/app.bundle.css?v='.rawurlencode($cacheVersion)).'"><link rel="stylesheet" href="'.url('assets/v12.css?v='.rawurlencode($cacheVersion)).'">';
     if(!empty($GLOBALS['demo_context']))demo_header();
+    require_once __DIR__.'/browser_migration179.php';
+    browser_recovery179($GLOBALS['demo_base_url']??rtrim(url(),'/'));
     echo '<style>:root{--primary:'.e($primary).';--accent:'.e($accent).'}.store-name-brand>span{display:inline!important;font-size:16px;max-width:180px;overflow:hidden;text-overflow:ellipsis}</style>';
     if($admin)echo '<style id="admin-critical-v1451">.dash-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.dash-grid-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.8fr);gap:16px}.dash-grid-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.dash-welcome{display:flex;justify-content:space-between;gap:20px}.dash-kpi,.dash-chart-card,.dash-side-card,.dash-mini-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px}.dash-kpi{padding:16px;display:flex;gap:12px}.dash-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:240px;align-items:end}.dash-bar-track{height:170px;background:#eef1ed;border-radius:10px;position:relative;overflow:hidden}.dash-bar-track i{position:absolute;bottom:0;left:0;right:0;background:var(--primary);border-radius:10px}.dash-progress{height:6px;background:#eef1ed;border-radius:99px;overflow:hidden}.dash-progress i{display:block;height:100%;background:var(--primary)}@media(max-width:980px){.dash-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.dash-grid-main{grid-template-columns:1fr}}@media(max-width:700px){.dash-kpis,.dash-grid-secondary{grid-template-columns:1fr}.dash-welcome{flex-direction:column}}</style>';
     $path=request_path();
@@ -251,14 +253,14 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false)
     // 75 KB of CSS/JavaScript during each uncached navigation.
     $r2Screen=$admin||$path==='asistente';
     $r3Screen=true; // Required by official landing and public tenant pages too.
-    if(function_exists('r2_active') && r2_active($app) && $r2Screen) echo '<link rel="stylesheet" href="'.url('assets/restructure-r2.css?v=160r2').'"><script src="'.url('assets/restructure-r2.js?v=160r2').'" defer></script>';
-    if(function_exists('r3_active') && r3_active($app) && $r3Screen) echo '<link rel="stylesheet" href="'.url('assets/pdf-r3.css?v=170r3').'"><script src="'.url('assets/pdf-r3.js?v=170r3').'" defer></script>';
-    if($admin)echo '<link rel="stylesheet" href="'.url('assets/admin-refined.css?v=179r2').'">';
+    if(function_exists('r2_active') && r2_active($app) && $r2Screen) echo '<link rel="stylesheet" href="'.url('assets/restructure-r2.css?v='.rawurlencode($cacheVersion)).'"><script src="'.url('assets/restructure-r2.js?v='.rawurlencode($cacheVersion)).'" defer></script>';
+    if(function_exists('r3_active') && r3_active($app) && $r3Screen) echo '<link rel="stylesheet" href="'.url('assets/pdf-r3.css?v='.rawurlencode($cacheVersion)).'"><script src="'.url('assets/pdf-r3.js?v='.rawurlencode($cacheVersion)).'" defer></script>';
+    if($admin)echo '<link rel="stylesheet" href="'.url('assets/admin-refined.css?v='.rawurlencode($cacheVersion)).'">';
     echo '</head><body class="'.($admin?'admin-body':'public-body').'">';
     if(!empty($GLOBALS['demo_context']))demo_banner();
 }
 
 function layout_end(): void
 {
-    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-179m1';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v=179r2').'" defer></script>':'').'</body></html>';
+    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-179m2';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').'</body></html>';
 }

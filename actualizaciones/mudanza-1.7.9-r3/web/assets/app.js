@@ -1,3 +1,41 @@
+// Keep demo entry on its current page until the private copy is ready.
+// The regular POST response remains available if JavaScript is unavailable.
+(() => {
+  document.addEventListener('submit', async event => {
+    const form=event.target;
+    if(!(form instanceof HTMLFormElement))return;
+    const action=new URL(form.action,location.href);
+    if(action.origin!==location.origin||!action.pathname.endsWith('/demo/iniciar'))return;
+    event.preventDefault();
+    if(form.dataset.demoOpening)return;
+    const submitter=event.submitter,params=new URLSearchParams(new FormData(form));
+    if(submitter?.name)params.set(submitter.name,submitter.value);
+    const buttons=[...form.querySelectorAll('button[type="submit"],button:not([type])')];
+    const label=submitter?.textContent;
+    const notice=form.querySelector('[data-demo-error]')||document.createElement('p');
+    notice.dataset.demoError='';notice.setAttribute('role','alert');notice.hidden=true;
+    if(!notice.parentNode)form.appendChild(notice);
+    form.dataset.demoOpening='1';buttons.forEach(button=>button.disabled=true);
+    if(submitter)submitter.textContent='Preparando prueba…';
+    try{
+      try{sessionStorage.setItem('fisitaap-demo-check','1');sessionStorage.removeItem('fisitaap-demo-check');}
+      catch(_){throw new Error('El navegador bloquea el almacenamiento del demo. Permítelo para este sitio y vuelve a intentar.');}
+      const response=await fetch(action.href,{method:'POST',credentials:'same-origin',headers:{'Accept':'application/json'},body:params});
+      if(!response.headers.get('Content-Type')?.includes('application/json'))throw new Error('No se pudo abrir la prueba. Recarga esta página y vuelve a intentar.');
+      const out=await response.json();
+      if(!response.ok||!out.ok)throw new Error(out.error||'No se pudo abrir la prueba.');
+      const target=new URL(out.url,location.href);
+      if(!/^[a-f0-9]{32}$/.test(out.token)||target.origin!==location.origin||!target.pathname.includes('/demo/s/'+out.token+'/'))throw new Error('La dirección del demo no coincide con este sitio. Revisa la dirección configurada en cPanel.');
+      sessionStorage.setItem('fisitaap-demo-tab',out.token);
+      location.assign(target.href);
+    }catch(error){
+      notice.textContent=error.message||'No se pudo abrir la prueba.';notice.hidden=false;
+      delete form.dataset.demoOpening;buttons.forEach(button=>button.disabled=false);
+      if(submitter)submitter.textContent=label;
+    }
+  });
+})();
+
 (() => {
   const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
   const mobileMenu=$('[data-mobile-menu]'),mobileMenuToggle=$('[data-mobile-menu-toggle]');
@@ -86,7 +124,8 @@
   $('#customizerAdd')?.addEventListener('click',()=>{if(!customItem)return;const selected=selectedOptions();for(const group of customItem.groups){const count=selected.filter(option=>option.groupId===group.id).length,min=group.required?Math.max(1,group.min):group.min;if(count<min||count>group.max)return alert(`Revisa la selección de ${group.name}.`)}const ids=selected.map(o=>o.id).sort((a,b)=>a-b),note=customNote.value.trim(),qty=Math.max(Number(customQty.min),Number(customQty.value)),price=customItem.price+selected.reduce((sum,o)=>sum+o.delta,0),key=`${customItem.id}:${ids.join(',')}:${note.toLowerCase()}`,found=cart.find(item=>item.key===key);if(found)found.qty+=qty;else cart.push({...customItem,groups:undefined,price,options:selected,option_ids:ids,note,key,qty});save();closeCustomizer();cartNotice(customItem.name)});
   $$('[data-repeat-order]').forEach(btn=>btn.onclick=()=>{try{const payload=JSON.parse(btn.dataset.repeatOrder);localStorage.setItem(`fisitaap_cart_${payload.tenant}`,JSON.stringify(payload.items));location.href=payload.catalog}catch(e){alert('No se pudo preparar nuevamente este pedido.')}});
   const autoRefresh=$('[data-auto-refresh]');if(autoRefresh){const delay=Math.max(15000,Number(autoRefresh.dataset.autoRefresh)||30000);setInterval(()=>{if(!document.hidden&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))location.reload()},delay)}
-  if(!window.FISITAAP_DEMO&&!window.FISITAPP_CACHE_PURGE&&'serviceWorker' in navigator){const base=String(window.FISITAPP.base||'').replace(/\/$/,'');navigator.serviceWorker.register(`${base}/sw.js?v=${encodeURIComponent(window.FISITAPP.cacheVersion||'1')}`).catch(()=>{});}
+  // Static files use the browser's HTTP cache. Offline sales run in the native
+  // principal device; an old web worker must not substitute the home page.
 })();
 
 
