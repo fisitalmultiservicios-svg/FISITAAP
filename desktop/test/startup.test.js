@@ -45,6 +45,8 @@ test('Windows startup opens the real local POS when the web print bridge port is
  const result=await running.handlers.get('fisitaap:print')(posEvent,{id:'startup-test-sale',text:'Comprobante local'});
  assert.throws(()=>running.handlers.get('fisitaap:print')({senderFrame:{url:'https://attacker.test/admin/recibo',parent:null}},{}),/no autorizado/);
  assert.throws(()=>running.handlers.get('fisitaap:print')({senderFrame:{url,parent:{}}},{}),/no autorizado/);
+ assert.throws(()=>running.handlers.get('fisitaap:authorize')({senderFrame:{url:'https://attacker.test',parent:null}},{}),/autoriza/);
+ assert.throws(()=>running.handlers.get('fisitaap:authorize')({senderFrame:{url,parent:{}}},{}),/autoriza/);
  assert.equal(result.status,'pdf_created');
  assert.throws(()=>running.handlers.get('fisitaap:retry-print-bridge')(posEvent),/Configurar impresoras/);
  assert.throws(()=>running.handlers.get('fisitaap:retry-print-bridge')({senderFrame:{url:'https://attacker.test/print-settings.html',parent:null}}),/configuración/);

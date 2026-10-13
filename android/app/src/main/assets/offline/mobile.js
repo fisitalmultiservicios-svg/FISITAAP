@@ -2,7 +2,7 @@
   'use strict';
   const adapt=()=>{
     const login=document.querySelector('#loginForm');
-    if(login&&!login.dataset.mobileReady){login.dataset.mobileReady='1';const help=login.parentElement.querySelector('.small');if(help)help.textContent='La contraseña local se configura en Administración. Solo el dispositivo elegido como principal podrá cobrar aquí.';}
+    if(login&&!login.dataset.mobileReady){login.dataset.mobileReady='1';const help=login.parentElement.querySelector('.small');if(help)help.textContent='Usa tu usuario y contraseña habituales. Solo el equipo principal autorizado puede vender sin internet.';}
     const pair=document.querySelector('#pairForm');if(pair&&!pair.dataset.mobileReady){pair.dataset.mobileReady='1';pair.parentElement.querySelector('h1').textContent='Preparar Android para vender sin internet';}
     const backup=document.querySelector('#backupButton'),card=backup?.closest('section');
     if(card&&!card.dataset.mobileReady){

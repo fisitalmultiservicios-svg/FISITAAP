@@ -18,6 +18,7 @@
       FisitaapAndroid.postMessage(JSON.stringify({ requestId, action, ...data }));
     });
   }
+  window.fisitaapAndroid={trackWebPayment:data=>request('trackPayment',data),printLocal:data=>request('printLocal',data),printerInfo:()=>request('printerInfo'),flushPrint:()=>request('flushPrint'),print:job=>request('print',{job}),authorize:data=>request('authorize',data)};
   const uuid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + [...crypto.getRandomValues(new Uint8Array(16))].map(x=>x.toString(16).padStart(2,'0')).join('');
   function status(card, text, error = false) {
     const node = card.querySelector('[data-print-status]');
@@ -36,7 +37,7 @@
       const job = payload(card); if (copy) job.id = String(job.id).slice(0,170) + '-copy-' + uuid();
       status(card, 'Enviando desde Android a la impresora de red…');
       const result = await request('print', { job });
-      status(card, result.duplicate ? 'Este trabajo ya se envió. Usa Reimprimir copia si necesitas otro.' : 'Enviado desde Android. Revisa la salida del papel.');
+      status(card, result.status==='simulated'?'Demostración: vista previa, sin impresión física.':result.duplicate ? 'Este trabajo ya se envió. Usa Reimprimir copia si necesitas otro.' : 'Enviado desde Android. Revisa la salida del papel.');
     } catch (error) { status(card, error.message, true); }
     finally { card.dataset.androidPrinting = '0'; buttons.forEach(x=>x.disabled=false); }
   }
@@ -48,7 +49,7 @@
     if (!match) { alert('Abre el comprobante de la venta guardada antes de imprimir.'); return; }
     button.disabled = true;
     try {
-      const result = await request('print', { job: { id: 'local-' + match[1] + (copy ? '-copy-' + uuid() : ''), text } });
+      const result = await request('printLocal', {id:match[1],copy});
       alert(result.duplicate ? 'Este recibo ya se envió. Usa Reimprimir copia si necesitas otro.' : 'Recibo enviado desde Android. Revisa el papel.');
     } catch (error) { alert(error.message); }
     finally { button.disabled = false; }

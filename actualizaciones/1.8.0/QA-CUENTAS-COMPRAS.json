@@ -1,0 +1,14 @@
+{
+  "passed": 8,
+  "checks": [
+    "a purchase draft changes neither stock nor debt",
+    "receiving a purchase updates stock, cost and payable exactly once",
+    "cash payable payments debit the assigned shift, reject changed retries and preserve balance",
+    "an external payment reconciles its money account without touching cash",
+    "overdue is calculated from real due date; receivable payments restore credit and overpayment rolls back",
+    "cross-business debt references cannot receive payments",
+    "rotating or revoking the device connection immediately invalidates its cash authorization",
+    "closing reconciles purchase payments and receivable cash into the denomination count"
+  ],
+  "environment": "isolated HTTP/CSRF and MariaDB, fictitious money and inventory"
+}

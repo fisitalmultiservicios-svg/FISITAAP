@@ -1,0 +1,12 @@
+{
+  "passed": 6,
+  "checks": [
+    "automatic native resume requires a real authenticated binding; kitchen proof grants printing without cash",
+    "each document point saves an authorized branch device, network/Windows profile, paper and separate drawer setting",
+    "point tests move no cash, reject another business ACK and retain an uncertain delivery without automatic rerouting",
+    "cash payment atomically queues receipt and new kitchen items on their configured device; only the original cash receipt authorizes drawer",
+    "payment retries do not enqueue another receipt or resend old kitchen items",
+    "printing returns directly to sales without opening the receipt/FISITAAP Print screen"
+  ],
+  "environment": "isolated real PHP/MariaDB device API; physical printers/drawer not connected"
+}

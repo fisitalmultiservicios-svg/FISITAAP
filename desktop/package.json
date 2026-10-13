@@ -35,6 +35,7 @@
       "public/**/*",
       "package.json",
       "print-bridge.js",
+      "drawer.ps1",
       "preload.js",
       "web-preload.js"
     ],

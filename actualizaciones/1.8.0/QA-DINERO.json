@@ -1,0 +1,14 @@
+{
+  "passed": 8,
+  "checks": [
+    "activation is master-only and additive",
+    "a normal web browser cannot open a cash shift even with valid CSRF",
+    "native authorization is bound to a real device, assigned register, user, tenant and session nonce",
+    "shift opening is idempotent and rejects reuse for changed amounts",
+    "cash in/out affects only the assigned shift and each retry is received once",
+    "closing is blocked by an open account until it is safely settled or voided",
+    "denomination count closes once and reconciles sales plus cash movements",
+    "financial operations remain isolated from another business"
+  ],
+  "environment": "isolated PHP 8.3 / MariaDB, real HTTP/CSRF and simulated trusted native transport; no live business or printer"
+}

@@ -10,25 +10,29 @@ import java.util.concurrent.*;
 public final class NetworkPrinter {
     private final PrintLedger ledger;
     public NetworkPrinter(File files) { ledger=new PrintLedger(new File(files,"impresion")); }
-    public JSONObject print(JSONObject job,String defaultHost,int defaultPort,int defaultWidth,boolean cut) throws Exception {
-        String id=job.optString("id"), text=job.optString("text").replace("\u0000", "");
+    public JSONObject print(JSONObject job,String defaultHost,int defaultPort,int defaultWidth,boolean cut) throws Exception {return printInternal(job,defaultHost,defaultPort,defaultWidth,cut,false);}
+    JSONObject printVerified(JSONObject job,String defaultHost,int defaultPort,int defaultWidth,boolean cut) throws Exception {return printInternal(job,defaultHost,defaultPort,defaultWidth,cut,true);}
+    private JSONObject printInternal(JSONObject job,String defaultHost,int defaultPort,int defaultWidth,boolean cut,boolean verified) throws Exception {
+        if(job.optBoolean("demo"))return new JSONObject().put("ok",true).put("status","simulated").put("duplicate",false);
+        String id=job.optString("id"), text=job.optString("text").replaceAll("[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f-\\x9f]", "");
         if(text.trim().isEmpty() || text.length()>180000) throw new IOException("El comprobante está vacío o es demasiado grande.");
         JSONObject profile=job.optJSONObject("printer");
         String host=defaultHost; int port=defaultPort;
         if(profile!=null && "network".equals(profile.optString("type"))) { host=profile.optString("host").trim(); port=profile.optInt("port",9100); }
         if(!Addresses.privateIPv4(host) || port<1 || port>65535) throw new IOException("Configura la IP privada de la impresora de red en Ajustes. Si es una comanda, revisa también su zona de impresión en la web.");
         int width=job.optInt("width",defaultWidth); if(width!=58 && width!=80) throw new IOException("El papel debe ser de 58 u 80 mm.");
+        final boolean drawer=verified&&job.optBoolean("drawer")&&!job.optBoolean("copy")&&Arrays.asList("receipt","invoice").contains(job.optString("document"));
         final String printerHost=host; final int printerPort=port; final int paperWidth=width; final String content=text;
-        boolean duplicate=ledger.deliver(id,host+":"+port+"|"+width+"|"+cut+"|"+text,()->send(printerHost,printerPort,content,paperWidth,cut));
+        boolean duplicate=ledger.deliver(id,host+":"+port+"|"+width+"|"+cut+(drawer?"|drawer":"")+"|"+text,()->send(printerHost,printerPort,content,paperWidth,cut,drawer));
         return new JSONObject().put("ok",true).put("status","sent_to_printer").put("duplicate",duplicate);
     }
-    private void send(String host,int port,String text,int width,boolean cut) throws Exception {
+    private void send(String host,int port,String text,int width,boolean cut,boolean drawer) throws Exception {
         try(Socket socket=new Socket()) {
             socket.connect(new InetSocketAddress(host,port),5000);
             ScheduledExecutorService timer=Executors.newSingleThreadScheduledExecutor();
             ScheduledFuture<?> limit=timer.schedule(()->{try{socket.close();}catch(IOException ignored){}},20,TimeUnit.SECONDS);
             try {
-                OutputStream out=socket.getOutputStream(); out.write(new byte[]{27,64});
+                OutputStream out=socket.getOutputStream(); out.write(new byte[]{27,64});if(drawer)out.write(new byte[]{27,112,0,25,(byte)250});
                 // Raster preserves accents and ₡ without depending on the printer code page.
                 int dots=width==58?384:576; Paint paint=new Paint(); paint.setColor(Color.BLACK); paint.setTypeface(Typeface.MONOSPACE); paint.setTextSize(width==58?20:22); paint.setAntiAlias(false);
                 List<String> lines=wrap(text,paint,dots-16); int height=width==58?27:30;

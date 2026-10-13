@@ -12,3 +12,7 @@ android/app/build/
 android/build/
 *.jks
 *.keystore
+
+# Python QA bytecode
+__pycache__/
+*.pyc

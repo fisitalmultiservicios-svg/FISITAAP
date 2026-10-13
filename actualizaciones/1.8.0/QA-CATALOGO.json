@@ -1,0 +1,13 @@
+{
+  "passed": 7,
+  "checks": [
+    "an extra is created with individual name/price fields and inherited by every product of its category",
+    "POS receives the materialized options in a scoped batched lookup",
+    "category changes replace inherited extras while explicit product assignments remain until removed",
+    "a cross-business assignment rolls back the modifier and option writes",
+    "combo product rows merge duplicate components and calculate their actual estimated cost",
+    "product tabs, welcome and hidden blog routes match the new navigation",
+    "legacy mandatory single-choice rules still allow either choice and reject zero or two choices without changing stock"
+  ],
+  "environment": "isolated HTTP/CSRF and MariaDB"
+}

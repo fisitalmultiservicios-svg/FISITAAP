@@ -13,7 +13,7 @@ if(!app.requestSingleInstanceLock()) {
 app.on('second-instance', () => { const w=BrowserWindow.getAllWindows()[0]; if(w){w.restore();w.focus();} });
 app.whenReady().then(async () => {
   const dir=app.getPath('userData');
-  service=await createLocalServer({dataDir:dir, port:18766, tokenCodec:{
+  service=await createLocalServer({dataDir:dir, port:18766, requireNative:true, tokenCodec:{
     encode: token => {if(!safeStorage.isEncryptionAvailable())throw new Error('Windows no permite proteger la conexión. Revisa tu sesión de Windows.');return safeStorage.encryptString(token).toString('base64');},
     decode: value => safeStorage.decryptString(Buffer.from(value,'base64'))
   }});
@@ -22,6 +22,7 @@ app.whenReady().then(async () => {
   if(!printConfig.encryptedToken){if(!safeStorage.isEncryptionAvailable())throw new Error('Windows no permite proteger el código de impresión.');printConfig.encryptedToken=safeStorage.encryptString(crypto.randomBytes(32).toString('hex')).toString('base64');fs.writeFileSync(printFile,JSON.stringify(printConfig),{mode:0o600});}
   const token=()=>safeStorage.decryptString(Buffer.from(printConfig.encryptedToken,'base64'));
   printService=await createPrintBridge({dataDir:dir,allowPortConflict:true,getConfig:()=>({...printConfig,token:token()}),print:electronPrinter(require('electron'))});
+  service.setPrinter(job=>printService.printVerified(job));
   const trustedLocal=event=>{const u=new URL(event.senderFrame.url);if(!event.senderFrame.parent&&localOrigins.has(u.origin))return u;throw new Error('Abre la configuración desde el menú FISITAAP.');};
   const settingsOnly=event=>{const u=trustedLocal(event);if(u.origin!==new URL(service.url).origin||u.pathname!=='/print-settings.html')throw new Error('Abre Configurar impresoras en este equipo.');};
   const localOrigins=new Set([new URL(service.url).origin]);
@@ -36,22 +37,58 @@ app.whenReady().then(async () => {
     if(frame.parent || (!localOrigins.has(origin) && origin!==webOrigin))throw new Error('Sitio de impresión no autorizado.');
     return printService.print(job);
   });
+  ipcMain.handle('fisitaap:web-printers',async event=>{
+    const frame=event.senderFrame;if(frame.parent||event.sender!==workspace?.webView.webContents||!service.store.data.connection||new URL(frame.url).origin!==new URL(service.store.data.connection.url).origin)throw new Error('Abre el negocio autorizado en Windows.');return event.sender.getPrintersAsync();
+  });
+  ipcMain.handle('fisitaap:flush-print',event=>{
+    const frame=event.senderFrame;if(frame.parent||event.sender!==workspace?.webView.webContents||!service.store.data.connection||new URL(frame.url).origin!==new URL(service.store.data.connection.url).origin)throw new Error('Abre la aplicación del negocio autorizado.');return service.flushPrint();
+  });
+  ipcMain.handle('fisitaap:print-local',async(event,value)=>{
+    if(event.sender!==workspace.localView.webContents||event.senderFrame.parent||new URL(event.senderFrame.url).origin!==new URL(service.url).origin)throw new Error('Imprime la venta guardada desde este equipo.');
+    const current=await service.localRequest({path:'/api/state'});if(!current.body.ok)throw new Error('Inicia sesión en la caja para imprimir.');
+    const sale=service.store.data.sales.find(x=>x.id===value?.id&&x.user_id===current.body.user.id);if(!sale)throw new Error('La venta no pertenece a este cajero.');
+    const snapshot=service.store.data.snapshot,lines=[snapshot.tenant.name,snapshot.branch.name,'RECIBO · '+sale.id];if(snapshot.tenant.tax_id)lines.push('Identificación: '+snapshot.tenant.tax_id);
+    for(const line of sale.quote.lines){lines.push(line.quantity/1000+' × '+line.name+' · CRC '+((line.net+line.tax)/100).toFixed(2));lines.push(...(line.option_labels||[]));if(line.note)lines.push('Nota: '+line.note);}
+    lines.push('TOTAL CRC '+(sale.quote.total/100).toFixed(2),'Vuelto CRC '+(sale.change/100).toFixed(2),'Gracias por su compra.');
+    const printer=snapshot.branch.printers?.receipt||printConfig.printer,copy=value.copy===true;
+    return printService.printVerified({id:'local-'+sale.id+(copy?'-copy-'+crypto.randomUUID():''),document:'receipt',text:lines.join('\n'),printer,width:printer.width,copy,drawer:!copy&&sale.cashApplied>0&&snapshot.cash_state?.register?.drawer_enabled===true&&printer.drawer===true});
+  });
+  ipcMain.handle('fisitaap:track-payment',(event,data)=>{
+    const frame=event.senderFrame;if(frame.parent||event.sender!==workspace?.webView.webContents||!service.store.data.connection||new URL(frame.url).origin!==new URL(service.store.data.connection.url).origin)throw new Error('Confirma el cobro en el negocio autorizado.');return service.trackWebPayment(data);
+  });
+  ipcMain.handle('fisitaap:authorize',(event,data)=>{
+    const frame=event.senderFrame,configured=service.store.data.connection?.url;
+    if(frame.parent||!configured||event.sender!==workspace?.webView.webContents||new URL(frame.url).origin!==new URL(configured).origin)throw new Error('Conecta y autoriza este equipo en Administración → Equipos y cajas.');
+    return service.authorize(data);
+  });
   const modeFile=path.join(dir,'modo.json');
   const clientURL=value=>{const u=new URL(value);if(u.protocol!=='http:'||!/^\d{1,3}(\.\d{1,3}){3}$/.test(u.hostname)||u.port!=='18766'||u.username||u.password||u.hostname.split('.').some(x=>Number(x)>255)||! /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(u.hostname))throw new Error('El archivo debe señalar un equipo central de la red del local.');return u.origin;};
   let destination=service.url,cachedWebURL=null;
   if(fs.existsSync(modeFile)){try{const saved=JSON.parse(fs.readFileSync(modeFile,'utf8'));destination=clientURL(saved.url);if(saved.webUrl)cachedWebURL=webBase(saved.webUrl);}catch{fs.rmSync(modeFile,{force:true});destination=service.url;}}
+  if(service.store.data.connection){destination=service.url;cachedWebURL=service.store.data.connection.url;}
   localOrigins.add(new URL(destination).origin);
   workspace=new DesktopWorkspace({electron:require('electron'),service,localURL:destination,cachedWebURL,onWebURL:url=>{
     if(workspace.localURL!==service.url)fs.writeFileSync(modeFile,JSON.stringify({url:workspace.localURL,webUrl:url}),{mode:0o600});
   }});
   const shellOnly=event=>{const u=trustedLocal(event);if(event.sender!==workspace.win.webContents||u.pathname!=='/desktop-shell.html')throw new Error('Usa los botones del programa FISITAAP.');};
   ipcMain.handle('fisitaap:workspace-state',event=>{shellOnly(event);return workspace.snapshot();});
+  ipcMain.handle('fisitaap:local-request',(event,value)=>{
+    if(event.sender!==workspace.localView.webContents||event.senderFrame.parent||new URL(event.senderFrame.url).origin!==new URL(service.url).origin)throw new Error('Opera la caja desde la aplicación instalada de este equipo.');
+    return service.localRequest(value);
+  });
+  ipcMain.handle('fisitaap:export-connection',async event=>{
+    if(event.sender!==workspace.localView.webContents||event.senderFrame.parent||new URL(event.senderFrame.url).origin!==new URL(service.url).origin)throw new Error('Descarga la conexión desde el equipo autorizado.');
+    const setup=await service.localRequest({path:'/api/state'});if(!setup.body.ok)throw new Error('Inicia sesión antes de descargar la conexión.');
+    if(!service.isPrincipal())throw new Error('Descarga la conexión desde el equipo principal.');const address=setup.body.addresses[0];if(!address)throw new Error('Conecta el equipo al router del negocio.');
+    const selected=await dialog.showSaveDialog({title:'Guardar conexión del local',defaultPath:'Conexion-equipo-central.fisitaap',filters:[{name:'Conexión FISITAAP',extensions:['fisitaap']}]});if(selected.canceled)return {ok:true,canceled:true};
+    fs.writeFileSync(selected.filePath,JSON.stringify({url:address,webUrl:service.store.data.connection.url}),{mode:0o600});return {ok:true};
+  });
   ipcMain.handle('fisitaap:use-web',event=>{shellOnly(event);return workspace.useWeb();});
   ipcMain.handle('fisitaap:use-local',event=>{shellOnly(event);return workspace.useLocal();});
   Menu.setApplicationMenu(Menu.buildFromTemplate([
     {label:'FISITAAP',submenu:[
       {label:'Sistema completo con internet',click:()=>void workspace.useWeb()},
-      {label:'Caja local',click:()=>workspace.useLocal()},
+      {label:'Conectar este equipo al negocio',click:()=>void workspace.setLocalURL(service.url)},
       {type:'separator'},
       {label:'Usar este equipo como central',click:()=>{fs.rmSync(modeFile,{force:true});localOrigins.clear();localOrigins.add(new URL(service.url).origin);void workspace.setLocalURL(service.url);}},
       {label:'Conectar a otro equipo central',click:async()=>{

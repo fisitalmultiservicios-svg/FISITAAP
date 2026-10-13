@@ -4,6 +4,8 @@ const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
 const net=require('node:net');
+const {execFile}=require('node:child_process');
+function windowsDrawer(name){if(process.platform!=='win32')throw new Error('La gaveta USB requiere Windows.');return new Promise((resolve,reject)=>execFile('powershell.exe',['-NoProfile','-NonInteractive','-File',path.join(__dirname,'drawer.ps1')],{windowsHide:true,timeout:15000,env:{...process.env,FISITAAP_DRAWER_PRINTER:name}},error=>error?reject(new Error('Windows no confirmó la señal de gaveta. Revisa la impresora y el cable de la gaveta.')):resolve()));}
 
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function normalizeJob(raw,defaults={}) {
@@ -11,7 +13,7 @@ function normalizeJob(raw,defaults={}) {
   const p=raw.printer||{},width=Number(p.width||raw.width||defaults.width||80);
   if(![58,80].includes(width))throw new Error('El papel debe ser de 58 u 80 mm.');
   const type=p.type||defaults.type||'browser';if(!['browser','usb','bluetooth','network'].includes(type))throw new Error('Tipo de impresora no disponible.');
-  return {id:raw.id,document:String(raw.document||'receipt').slice(0,30),text:raw.text.replace(/\0/g,''),width,printer:{type,name:String(p.name||defaults.name||'').slice(0,150),host:String(p.host||'').slice(0,150),port:Number(p.port||9100)}};
+  return {id:raw.id,document:String(raw.document||'receipt').slice(0,30),text:raw.text.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/g,''),width,printer:{type,name:String(p.name||defaults.name||'').slice(0,150),host:String(p.host||'').slice(0,150),port:Number(p.port||9100)},...(raw.demo===true?{demo:true}:{}),...(raw.drawer===true?{drawer:true}:{})};
 }
 function receiptHTML(job) {
   return '<!doctype html><html lang="es"><meta charset="utf-8"><style>@page{size:'+job.width+'mm auto;margin:3mm}body{margin:0;width:'+(job.width-6)+'mm;font:11px "Consolas",monospace;color:#000}pre{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.35;margin:0}</style><body><pre>'+esc(job.text)+'</pre></body></html>';
@@ -24,7 +26,7 @@ function save(file,value) {
 function networkPrint(job) {
   const host=job.printer.host,port=job.printer.port;
   if(!net.isIPv4(host)||!(/^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(host))||!Number.isInteger(port)||port<1||port>65535)throw new Error('Usa la IP privada de la impresora del local y su puerto.');
-  const bytes=Buffer.concat([Buffer.from([0x1b,0x40,0x1b,0x74,0x10]),Buffer.from(job.text.replace(/₡/g,'CRC '),'latin1'),Buffer.from('\n\n\n'),Buffer.from([0x1d,0x56,0x42,0x00])]);
+  const bytes=Buffer.concat([Buffer.from([0x1b,0x40,0x1b,0x74,0x10]),...(job.drawer?[Buffer.from([0x1b,0x70,0x00,0x19,0xfa])]:[]),Buffer.from(job.text.replace(/₡/g,'CRC '),'latin1'),Buffer.from('\n\n\n'),Buffer.from([0x1d,0x56,0x42,0x00])]);
   return new Promise((resolve,reject)=>{const socket=net.createConnection({host,port});socket.setTimeout(7000);socket.once('error',reject);socket.once('timeout',()=>socket.destroy(new Error('La impresora no respondió. Revisa su conexión.')));socket.once('connect',()=>socket.end(bytes));socket.once('close',hadError=>{if(!hadError)resolve({status:'sent_to_printer'});});});
 }
 function electronPrinter(electron) {
@@ -42,6 +44,7 @@ function electronPrinter(electron) {
       }
       const printers=await win.webContents.getPrintersAsync();if(!job.printer.name||!printers.some(p=>p.name===job.printer.name))throw new Error('La impresora no aparece en Windows. Instala su controlador y selecciona su nombre exacto.');
       await new Promise((resolve,reject)=>win.webContents.print({silent:true,deviceName:job.printer.name,printBackground:true,margins:{marginType:'none'},pageSize:{width:job.width*1000,height:300000}},(ok,error)=>ok?resolve():reject(new Error(error||'Windows no aceptó el trabajo de impresión.'))));
+      if(job.drawer)await windowsDrawer(job.printer.name);
       return {status:'sent_to_printer'};
     }finally{win.destroy();}
   };
@@ -50,8 +53,10 @@ async function createPrintBridge(options) {
   const dir=path.join(options.dataDir,'impresion');fs.mkdirSync(dir,{recursive:true,mode:0o700});
   let queue=Promise.resolve();
   const config=()=>options.getConfig?.()||{};
-  async function processJob(raw) {
-    if(raw?.printer?.type==='browser' && config().printer?.name)raw={...raw,printer:{...raw.printer,...config().printer}};
+  async function processJob(raw,verified=false) {
+    raw={...raw};if(!verified||raw.demo||raw.copy||!['receipt','invoice'].includes(raw.document))delete raw.drawer;
+    if(raw?.demo===true)raw={...raw,printer:{type:'browser',name:'',host:'',width:raw.width||raw.printer?.width||80}};
+    else if(raw?.printer?.type==='browser' && config().printer?.name)raw={...raw,printer:{...raw.printer,...config().printer}};
     const job=normalizeJob(raw,config().printer||{}),key=crypto.createHash('sha256').update(job.id).digest('hex'),hash=crypto.createHash('sha256').update(JSON.stringify(job)).digest('hex'),file=path.join(dir,key+'.json'),pdfFile=path.join(dir,key+'.pdf');
     if(fs.existsSync(file)) {
       const previous=JSON.parse(fs.readFileSync(file,'utf8'));if(previous.hash!==hash)throw new Error('El identificador corresponde a otro contenido. Usa Reimprimir para generar una copia nueva.');
@@ -63,7 +68,7 @@ async function createPrintBridge(options) {
     if(!result||!['pdf_created','sent_to_printer'].includes(result.status))throw new Error('La impresora no confirmó el envío.');
     const output={ok:true,status:result.status,...(result.status==='pdf_created'?{pdf_url:'/pdf/'+key+'.pdf'}:{})};save(file,{hash,status:'completed',result:output,created_at:new Date().toISOString()});return output;
   }
-  const enqueue=raw=>{const pending=queue.then(()=>processJob(raw));queue=pending.catch(()=>{});return pending;};
+  const enqueue=(raw,verified=false)=>{const pending=queue.then(()=>processJob(raw,verified));queue=pending.catch(()=>{});return pending;};
   const server=http.createServer(async(req,res)=>{
     const origin=String(req.headers.origin||''),cfg=config(),allowed=Boolean(cfg.origin&&origin===cfg.origin);
     const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...(allowed?{'Access-Control-Allow-Origin':origin,'Vary':'Origin','Access-Control-Allow-Methods':'POST, GET, OPTIONS','Access-Control-Allow-Headers':'Content-Type, x-fisitaap-token','Access-Control-Allow-Private-Network':'true'}:{})};
@@ -107,6 +112,6 @@ async function createPrintBridge(options) {
     return pending;
   };
   await listen();
-  return {server,get port(){return status().port;},status,retry:listen,print:enqueue,close:()=>{closed=true;if(server.listening)server.close();}};
+  return {server,get port(){return status().port;},status,retry:listen,print:enqueue,printVerified:raw=>enqueue(raw,true),close:()=>{closed=true;if(server.listening)server.close();}};
 }
 module.exports={createPrintBridge,normalizeJob,receiptHTML,electronPrinter};

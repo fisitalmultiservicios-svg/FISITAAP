@@ -1,0 +1,35 @@
+/* Shared administration appearance; public business branding remains independent. */
+.admin-body{--primary:#203f57;--accent:#dce7ee;--bg:#f4f6f8;--surface:#fff;--line:#dbe2e8;--border:#dbe2e8;--text:#243442;--muted:#657580;background:var(--bg);color:var(--text);font:14px "Segoe UI",Arial,sans-serif}
+.admin-body :is(h1,h2,h3,h4,.nav-group summary){font-family:inherit}
+.admin-body :is(.dash-welcome,.dash-date,.dash-icon,.dash-rank-number,.dash-facts>div){border-radius:0!important}
+.admin-body .dash-welcome{background:#fff;box-shadow:none;border:1px solid var(--line)}
+.admin-body :is(.card,.btn,.input,.search,.chip,.status,.alert,.sidebar,.side-link,.nav-group,.nav-group-links,.icon-btn,.modal,.modal-content,dialog,.printer-point,.r2-floor,.r2-checks,.r2-pos-heading,.r2-quick-product img,.p148-product,.p148-product img,.p148-table-card,.p148-product-empty,.p148-empty-symbol,.p148-total,.dash-kpi,.dash-chart-card,.dash-side-card,.dash-mini-card,.dash-bar-track,.dash-bar-track i,.dash-progress,.dash-progress i){border-radius:0!important}
+.admin-body .card{border:1px solid var(--line);box-shadow:none}
+.admin-body .admin-card{padding:20px}
+.admin-body .btn{font-size:13px;font-weight:600;padding:10px 16px;box-shadow:none;min-height:38px}
+.admin-body .btn-accent{background:var(--primary);color:#fff}
+.admin-body .btn-light{background:#fff;color:var(--primary);border:1px solid var(--line)}
+.admin-body .input{border:1px solid var(--line);background:#fff;min-height:38px;font-size:14px}
+.admin-body .input:focus,.admin-body .btn:focus-visible{outline:2px solid #577a98;outline-offset:2px}
+.admin-body .admin-top{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px}
+.admin-body .admin-top h1{font-size:24px;font-weight:650;letter-spacing:-.4px}
+.admin-body .sidebar{background:#fff;border-right:1px solid var(--line);box-shadow:none}
+.admin-body .sidebar :is(.side-link,.nav-group summary,.sidebar-foot){color:var(--text)}
+.admin-body .side-link.active{background:#eaf0f5;color:var(--primary)!important;border-left:3px solid var(--primary)}
+.admin-body .nav-group{border-bottom:1px solid var(--line)}
+.admin-body .nav-group summary{font-size:12px;letter-spacing:.3px}
+.admin-body .admin-brand img{max-width:145px;max-height:48px;width:auto;object-fit:contain}
+.admin-body .admin-brand{gap:10px}
+.admin-body .table th{font-size:12px;background:#f4f6f8;font-weight:600}
+.admin-body .table :is(td,th){padding:11px 12px;border-color:var(--line)}
+.admin-body .stat-value{font-size:28px;font-variant-numeric:tabular-nums}
+.admin-body h2{font-size:19px;font-weight:600}
+.admin-body .p148-cart,.admin-body .p148-products{background:#fff}
+.admin-body :is(.r3-panel,.r3-button,.r3-input,.r3-search,.r3-method,.r3-pay-summary,.r3-change-panel,.r3-pay-amount,.r3-quick-product,.r3-payment-modal,.r3-dialog,.r3-table-modal,.r3-status){border-radius:0!important}
+.admin-body .r3-brand img{max-width:150px;max-height:40px;width:auto;object-fit:contain;background:#fff;padding:3px}
+.admin-body .r3-brand{font-size:17px;font-weight:600}
+.direct-print-notice{position:fixed;bottom:20px;right:20px;width:min(440px,calc(100vw - 40px));background:#fff;color:#243442;border:1px solid #b7c7d4;box-shadow:0 4px 18px #172b3a18;padding:18px;z-index:10000;font:14px/1.5 system-ui}
+.direct-print-notice p{margin:0 0 12px}
+.direct-print-notice button,.direct-print-notice a{display:inline-block;margin:4px 8px 0 0;padding:8px 12px;border:1px solid #b7c7d4;background:#fff;color:#203f57;font:inherit;cursor:pointer}
+.direct-print-notice [data-error]{color:#a02d2d}
+@media(max-width:700px){.admin-body .admin-card{padding:16px}.admin-body .admin-top h1{font-size:21px}.direct-print-notice{bottom:12px;right:12px;width:calc(100vw - 24px)}}

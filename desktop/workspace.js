@@ -48,7 +48,7 @@ class DesktopWorkspace {
       if(code===-3||mainFrame===false||this.closed)return;
       this.webFailed=true;this.state.available=false;
       this.notice='La web no pudo abrir. Puedes usar Caja local. Si estabas cobrando en la web, revisa esa venta antes de volver a cobrar.';
-      if(!this.webLoaded)this.show('local');else this.publish();
+      if(!this.webLoaded||this.automaticOffline())this.show('local');else this.publish();
     });
     this.win.on('resize',()=>this.resize());
     this.win.on('closed',()=>this.close());
@@ -59,6 +59,7 @@ class DesktopWorkspace {
     });
     if(monitorMs>0){this.timer=setInterval(()=>void this.refresh(),monitorMs);this.timer.unref();}
   }
+  automaticOffline(){return this.localURL===this.service.url&&this.service.isPrincipal?.()===true&&this.service.store.data.snapshot?.offline_policy?.version===180;}
   snapshot(){return {...this.state};}
   publish() {
     if(this.closed)return;
@@ -81,7 +82,7 @@ class DesktopWorkspace {
     if(this.closed)return;
     const view=mode==='web'?this.webView:this.localView;
     if(this.activeView!==view){if(this.activeView)this.win.contentView.removeChildView(this.activeView);this.win.contentView.addChildView(view);this.activeView=view;}
-    this.state.mode=mode;this.resize();this.publish();
+    this.state.mode=mode;this.resize();this.publish();if(mode==='local'&&this.state.primary)this.localView.webContents.send('fisitaap:resume-local');
   }
   async setup() {
     if(this.localURL===this.service.url)return {configured:!!this.service.store.data.snapshot,primary:this.service.isPrincipal?.()===true,webUrl:this.service.store.data.connection?.url||null,pending:this.service.store.data.sales.filter(s=>!s.synced).length};
@@ -116,7 +117,7 @@ class DesktopWorkspace {
         }catch(error){if(generation!==this.generation)return this.snapshot();this.state.available=false;this.connectionError=error?.name==='TimeoutError'?'La web tardó demasiado en responder.':'Sin conexión con la web. Comprueba internet y la dirección configurada.';}
       }else this.state.available=false;
       if(generation!==this.generation)return this.snapshot();
-      if(!wasAvailable&&this.state.available)this.notice='';
+      if(!wasAvailable&&this.state.available)this.notice='';if(wasAvailable&&!this.state.available&&this.state.mode==='web'&&this.automaticOffline()){this.notice='Sin internet · Ventas guardadas en este equipo. La venta web se conserva para revisión.';this.show('local');}
       this.publish();return this.snapshot();
     })().finally(()=>{this.refreshing=null;});
     return this.refreshing;
@@ -133,8 +134,8 @@ class DesktopWorkspace {
     if(this.closed||action!==this.action)return this.snapshot();
     if(!this.state.webUrl){this.notice='Conecta tu negocio desde la caja local para abrir el sistema completo.';this.publish();return this.snapshot();}
     if(!this.state.available){this.notice='La web no está disponible. Sigue trabajando en Caja local.';this.publish();return this.snapshot();}
-    if(this.state.pending>0){
-      if(this.localURL===this.service.url){try{await this.service.sync();await this.refresh();}catch{this.notice='No se pudieron sincronizar las ventas. Conserva la caja local abierta y vuelve a intentar.';this.publish();return this.snapshot();}}
+    if(this.state.pending>0||this.service.store.data.webPayments?.length){
+      if(this.localURL===this.service.url){try{await this.service.sync({resolveWeb:true});await this.refresh();}catch{this.notice='No se pudieron sincronizar las ventas. Conserva la caja local abierta y vuelve a intentar.';this.publish();return this.snapshot();}}
       if(this.closed||action!==this.action)return this.snapshot();
       if(this.state.pending>0){this.notice='Primero sincroniza las ventas pendientes desde Caja local. Después puedes volver al sistema completo.';this.publish();return this.snapshot();}
     }

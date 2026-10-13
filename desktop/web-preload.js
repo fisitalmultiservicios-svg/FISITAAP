@@ -1,6 +1,11 @@
 'use strict';
 const {contextBridge,ipcRenderer}=require('electron');
-// Only printing is exposed to the configured web; settings remain local-only.
+// The device secret stays in the main process. Web pages receive only a
+// short-lived proof bound to their existing user and server nonce.
 contextBridge.exposeInMainWorld('fisitaapWindows',{
-  print:job=>ipcRenderer.invoke('fisitaap:print',job)
+  trackWebPayment:data=>ipcRenderer.invoke('fisitaap:track-payment',data),
+  printerInfo:()=>ipcRenderer.invoke('fisitaap:web-printers'),
+  flushPrint:()=>ipcRenderer.invoke('fisitaap:flush-print'),
+  print:job=>ipcRenderer.invoke('fisitaap:print',job),
+  authorize:data=>ipcRenderer.invoke('fisitaap:authorize',data)
 });

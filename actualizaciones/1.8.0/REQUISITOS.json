@@ -1,0 +1,310 @@
+{
+  "version": "1.8.0",
+  "source": "QA-MANUAL.md",
+  "requirements": [
+    {
+      "id": "QA-01",
+      "module": "Web oficial y landing publica",
+      "request": "1. Boton verde Explorar FISITAAP",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-02",
+      "module": "Web oficial y landing publica",
+      "request": "2. Segmento Un catalogo que se adapta",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-03",
+      "module": "Web oficial y landing publica",
+      "request": "3. Eliminar frase Tienda fisica opcional",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-04",
+      "module": "Web oficial y landing publica",
+      "request": "4. FISI-CHAT publico",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-05",
+      "module": "Web oficial y landing publica",
+      "request": "5. Demos y tienda LA VENTANITA",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-06",
+      "module": "Web oficial y landing publica",
+      "request": "6. Eliminar blog",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-07",
+      "module": "Web oficial y landing publica",
+      "request": "7. Contactos como bandeja de correo",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-08",
+      "module": "Desktop Android offline equipos y cajas",
+      "request": "1. Usuarios como select",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-09",
+      "module": "Desktop Android offline equipos y cajas",
+      "request": "2. Quitar boton caja local",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-10",
+      "module": "Desktop Android offline equipos y cajas",
+      "request": "3. Windows y cajas",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-11",
+      "module": "Venta rapida POS y cobro",
+      "request": "1. Ventana de venta rapida",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-12",
+      "module": "Venta rapida POS y cobro",
+      "request": "2. Cierre de turno",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-13",
+      "module": "Venta rapida POS y cobro",
+      "request": "3. Entradas y salidas de dinero",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-14",
+      "module": "Venta rapida POS y cobro",
+      "request": "4. Gaveta de dinero",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-15",
+      "module": "Mesas salones y disenador grafico",
+      "request": "1. Runtime de mesas sin panel lateral",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-16",
+      "module": "Mesas salones y disenador grafico",
+      "request": "2. Unir mesas",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-17",
+      "module": "Mesas salones y disenador grafico",
+      "request": "3. Modulo salones y mesas",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-18",
+      "module": "Extras opcionales combos promociones",
+      "request": "1. Extras y opcionales individuales",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-19",
+      "module": "Extras opcionales combos promociones",
+      "request": "2. Tres formas de asignacion",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-20",
+      "module": "Extras opcionales combos promociones",
+      "request": "3. Combos",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-21",
+      "module": "Extras opcionales combos promociones",
+      "request": "4. Codigos de descuento",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-22",
+      "module": "Clientes credito fidelizacion CxC y CxP",
+      "request": "1. Fidelizacion",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-23",
+      "module": "Clientes credito fidelizacion CxC y CxP",
+      "request": "2. Credito de cliente",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-24",
+      "module": "Clientes credito fidelizacion CxC y CxP",
+      "request": "3. CxC y morosos",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-25",
+      "module": "Clientes credito fidelizacion CxC y CxP",
+      "request": "4. CxP",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-26",
+      "module": "Compras XML inventario proveedores",
+      "request": "1. Proveedor por cedula",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-27",
+      "module": "Compras XML inventario proveedores",
+      "request": "2. Compra a credito y CxP",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-28",
+      "module": "Compras XML inventario proveedores",
+      "request": "3. Comparacion de precio",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-29",
+      "module": "Compras XML inventario proveedores",
+      "request": "4. Enlace por SKU y productos nuevos",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-30",
+      "module": "Pedidos cocina y express",
+      "request": "1. Pantalla de pedidos tipo Kanban",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-31",
+      "module": "Pedidos cocina y express",
+      "request": "2. Pedidos desde catalogo",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-32",
+      "module": "Pedidos cocina y express",
+      "request": "3. Configuracion de pedidos web",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-33",
+      "module": "Pedidos cocina y express",
+      "request": "4. Express",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-34",
+      "module": "Administracion reportes impresion bitacora",
+      "request": "1. Cedula de empresa",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-35",
+      "module": "Administracion reportes impresion bitacora",
+      "request": "2. Diseno web del negocio",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-36",
+      "module": "Administracion reportes impresion bitacora",
+      "request": "3. Impresion en administracion",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-37",
+      "module": "Administracion reportes impresion bitacora",
+      "request": "4. Reportes",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-38",
+      "module": "Administracion reportes impresion bitacora",
+      "request": "5. Auditoria a Bitacora",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-39",
+      "module": "Seguridad y logica multi caja multi comanda",
+      "request": "Escenario requerido",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-40",
+      "module": "Inicio del panel despues de login",
+      "request": "Inicio del panel despues de login",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-41",
+      "module": "Cierre de sesion",
+      "request": "Cierre de sesion",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "QA-42",
+      "module": "Seguridad y logica multi caja multi comanda",
+      "request": "Seguridad y logica multi caja multi comanda",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "previous_requests": [
+    "Solo el principal vende sin internet, Windows o Android; secundarios usan web con conexión",
+    "Android puede ligarse a web o central Windows",
+    "Impresión directa con perfil por zona sin abrir FISITAAP Print",
+    "Menús completos conectados y aspecto administrativo independiente de la paleta pública",
+    "Logo de la tienda en negocio y catálogo, FISITAAP en icono y oferta pública",
+    "Demos independientes que se reinician al entrar nuevamente",
+    "Conservar La Ventanita, imágenes optimizadas y rendimiento",
+    "Resolver rutas/caché y validar SSL real con hosting antes de mudar DNS"
+  ]
+}

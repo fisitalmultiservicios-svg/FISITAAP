@@ -1,0 +1,13 @@
+{
+  "passed": 7,
+  "checks": [
+    "opening the quick-sale screen does not create empty accounts",
+    "an invalid mandatory product option rolls back the whole first-product account creation",
+    "the first product is reserved once and changed retries cannot alter the sale",
+    "authorized per-line price editing keeps its tax calculation and item identity",
+    "mixed cash/card/SINPE settles once, preserves all payment lines and closes the account",
+    "a free product can close a real sale once, with inventory and receipt history, without fake cash",
+    "settling a free line first preserves the remaining paid account and quantities"
+  ],
+  "environment": "isolated real PHP/MariaDB HTTP/native proof; no production"
+}

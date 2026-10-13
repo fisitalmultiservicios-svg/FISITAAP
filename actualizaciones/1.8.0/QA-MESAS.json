@@ -1,0 +1,11 @@
+{
+  "passed": 5,
+  "checks": [
+    "cashier runtime uses full floor/modal actions; configuration and basic ordering exist only in Salones y mesas",
+    "open accounts block service/layout edits and replaying a configuration POST on runtime is rejected",
+    "joining unpaid compatible tables keeps one principal bill, exact service, item identities and sent kitchen data without moving stock twice",
+    "a changed operation key payload is rejected and opening either joined table returns the same bill",
+    "voiding a joined group releases all seats once and inactive rooms cannot open new accounts"
+  ],
+  "environment": "isolated HTTP/CSRF and MariaDB"
+}
