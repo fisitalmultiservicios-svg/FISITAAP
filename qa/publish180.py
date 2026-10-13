@@ -1,8 +1,24 @@
 """Publish explicit reviewed public artifacts only; credentials never enter files/logs."""
-import base64,hashlib,json,os,pathlib,subprocess,sys,urllib.parse
-import requests
+import base64,hashlib,json,os,pathlib,subprocess,sys,urllib.parse,urllib.request,urllib.error
 root=pathlib.Path(__file__).resolve().parents[1];delivery=pathlib.Path('/workspace/entregas');repo='fisitalmultiservicios-svg/FISITAAP';tag='v1.8.0'
 names=['FISITAAP-1.8.0-CPANEL.zip','FISITAAP-Escritorio-1.8.0-Windows-x64.exe','FISITAAP-Android-1.8.0.apk','GUIA-CPANEL-1.8.0.md','INFORME-QA-1.8.0.md','SHA256SUMS-1.8.0.txt']
+class ApiResponse:
+    def __init__(self,status,body):self.status_code=status;self.body=body
+    def json(self):return json.loads(self.body)
+class ApiSession:
+    def __init__(self):self.headers={}
+    def request(self,method,url,params=None,headers=None,data=None,timeout=30,**kwargs):
+        merged={**self.headers,**(headers or {})}
+        if params:url+='?'+urllib.parse.urlencode(params)
+        if 'json' in kwargs:data=json.dumps(kwargs['json']).encode();merged['Content-Type']='application/json'
+        if hasattr(data,'read'):merged['Content-Length']=str(os.fstat(data.fileno()).st_size-data.tell())
+        req=urllib.request.Request(url,data=data,headers=merged,method=method)
+        try:
+            with urllib.request.urlopen(req,timeout=timeout[-1] if isinstance(timeout,tuple) else timeout) as response:return ApiResponse(response.status,response.read())
+        except urllib.error.HTTPError as error:return ApiResponse(error.code,error.read())
+    def get(self,url,**kwargs):return self.request('GET',url,**kwargs)
+    def post(self,url,**kwargs):return self.request('POST',url,**kwargs)
+    def patch(self,url,**kwargs):return self.request('PATCH',url,**kwargs)
 def main():
     token=os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
     if not token:raise RuntimeError('GitHub credential not available; artifacts remain local.')
@@ -21,7 +37,7 @@ def main():
     git(['push','origin','HEAD:refs/heads/qa-1.8.0-en-proceso'])
     if check.returncode==0:git(['push','origin','HEAD:refs/heads/main']);print('Reviewed source pushed to main by fast-forward.',flush=True)
     else:print('Main advanced separately; source is preserved on the QA branch without replacing main.',flush=True)
-    session=requests.Session();session.headers.update(Authorization='Bearer '+token,Accept='application/vnd.github+json',**{'X-GitHub-Api-Version':'2022-11-28'})
+    session=ApiSession();session.headers.update(Authorization='Bearer '+token,Accept='application/vnd.github+json',**{'X-GitHub-Api-Version':'2022-11-28','User-Agent':'FISITAAP-release-verification'})
     api='https://api.github.com/repos/'+repo
     response=session.get(api+'/releases/tags/'+tag,timeout=30)
     if response.status_code==404:
