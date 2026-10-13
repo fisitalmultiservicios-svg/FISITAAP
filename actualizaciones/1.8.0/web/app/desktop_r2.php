@@ -124,10 +124,10 @@ function r2_desktop_api(App $app,string $action):never {
         $headers=function_exists('getallheaders')?array_change_key_case(getallheaders(),CASE_LOWER):[];$auth=(string)($_SERVER['HTTP_AUTHORIZATION']??$_SERVER['REDIRECT_HTTP_AUTHORIZATION']??$headers['authorization']??'');$token=str_starts_with($auth,'Bearer ')?substr($auth,7):(string)($_SERVER['HTTP_X_FISITAAP_DEVICE']??'');if(!preg_match('/^[a-f0-9]{64}$/',$token))json_response(['ok'=>false,'error'=>'Equipo no autorizado.'],401);
         $d=$app->one('SELECT * FROM fisitaap_r2_devices WHERE token_hash=? AND is_active=1',[hash('sha256',$token)]);if(!$d)json_response(['ok'=>false,'error'=>'El equipo fue desactivado. Las ventas pendientes se conservan en Windows.'],401);
         $t=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$d['tenant_id']]);if(!$t||!physical_store_v14($t)||!module_enabled_v12($app,$t,'pos'))json_response(['ok'=>false,'error'=>'POS no está activo para el negocio.'],403);
-        if($action==='release') { primary179_release($app,$d);json_response(['ok'=>true]); }
+        if($action==='release') { if(qa180_active($app)){$actor=$app->one('SELECT * FROM users WHERE id=? AND tenant_id=? AND is_active=1',[(int)($data['user_id']??0),$d['tenant_id']]);if(!$actor)throw new DomainException('Inicia sesión con un usuario autorizado para configurar equipos.');qa180_permission($app,$actor,'configuracion','configure');}primary179_release($app,$d);json_response(['ok'=>true]); }
         if($action==='payment-status'&&qa180_active($app))json_response(qa180_web_payment_status($app,$d,$data));
         if(in_array($action,['print-claim','print-ack'],true)&&qa180_active($app))json_response(qa180_print_api($app,$d,$action,$data));
-        if($action==='web-session'&&qa180_active($app))json_response(qa180_proof($app,$d,$data));
+        if($action==='web-session'&&qa180_active($app)){$proof=qa180_proof($app,$d,$data);$app->exec('UPDATE fisitaap_r2_devices SET last_sync=NOW() WHERE id=?',[$d['id']]);json_response($proof);}
         if($action==='snapshot'){$snap=r2_snapshot($app,$d);$app->exec('UPDATE fisitaap_r2_devices SET last_sync=NOW() WHERE id=?',[$d['id']]);json_response(['ok'=>true,'snapshot'=>$snap]);}
         if($action==='sync'){$result=r2_sync_sales($app,$d,$data);$app->exec('UPDATE fisitaap_r2_devices SET last_sync=NOW() WHERE id=?',[$d['id']]);json_response(['ok'=>true]+$result);}
         throw new DomainException('Acción no disponible.');

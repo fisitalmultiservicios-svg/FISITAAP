@@ -31,7 +31,7 @@ function networkPrint(job) {
 }
 function electronPrinter(electron) {
   return async (job,{pdfFile})=>{
-    if(job.printer.type==='network'&&!job.printer.name)return networkPrint(job);
+    if(job.printer.type==='network')return networkPrint(job);
     const win=new electron.BrowserWindow({show:false,width:420,height:900,webPreferences:{sandbox:true,contextIsolation:true,nodeIntegration:false}});
     try{
       win.webContents.setWindowOpenHandler(()=>({action:'deny'}));
@@ -56,7 +56,7 @@ async function createPrintBridge(options) {
   async function processJob(raw,verified=false) {
     raw={...raw};if(!verified||raw.demo||raw.copy||!['receipt','invoice'].includes(raw.document))delete raw.drawer;
     if(raw?.demo===true)raw={...raw,printer:{type:'browser',name:'',host:'',width:raw.width||raw.printer?.width||80}};
-    else if(raw?.printer?.type==='browser' && config().printer?.name)raw={...raw,printer:{...raw.printer,...config().printer}};
+    else if(!verified&&raw?.printer?.type==='browser' && config().printer?.name)raw={...raw,printer:{...raw.printer,...config().printer}};
     const job=normalizeJob(raw,config().printer||{}),key=crypto.createHash('sha256').update(job.id).digest('hex'),hash=crypto.createHash('sha256').update(JSON.stringify(job)).digest('hex'),file=path.join(dir,key+'.json'),pdfFile=path.join(dir,key+'.pdf');
     if(fs.existsSync(file)) {
       const previous=JSON.parse(fs.readFileSync(file,'utf8'));if(previous.hash!==hash)throw new Error('El identificador corresponde a otro contenido. Usa Reimprimir para generar una copia nueva.');

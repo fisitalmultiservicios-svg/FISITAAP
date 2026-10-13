@@ -23,6 +23,7 @@ function primary179_select(App $app,array $tenant,int $id): void {
         if ($old && $old['device_id'] && (int)$old['device_id']!==$id) throw new DomainException('Libera primero el equipo principal anterior desde su caja local, después de cerrar y sincronizar sus turnos.');
         $device=$app->one('SELECT id FROM fisitaap_r2_devices WHERE id=? AND tenant_id=? AND is_active=1 AND token_hash IS NOT NULL',[$id,$tenant['id']]);
         if (!$device) throw new DomainException('Conecta primero este equipo Windows o Android con su código.');
+        if(qa180_active($app)){ $full=$app->one('SELECT * FROM fisitaap_r2_devices WHERE id=? AND tenant_id=?',[$id,$tenant['id']]);if(!qa180_offline_register($app,$full)||!qa180_snapshot_users($app,$full))throw new DomainException('Asigna primero una caja activa y un cajero autorizado a este equipo.');}
         if (!$old || !$old['device_id']) {
             $app->exec('INSERT INTO fisitaap_primary179(tenant_id,device_id,generation) VALUES(?,?,1) ON DUPLICATE KEY UPDATE device_id=VALUES(device_id),generation=generation+1',[$tenant['id'],$id]);
             audit($app,(int)$tenant['id'],(int)current_user()['id'],'primary179_assign','device',$id);

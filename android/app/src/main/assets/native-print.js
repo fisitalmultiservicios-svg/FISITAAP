@@ -37,7 +37,7 @@
       const job = payload(card); if (copy) job.id = String(job.id).slice(0,170) + '-copy-' + uuid();
       status(card, 'Enviando desde Android a la impresora de red…');
       const result = await request('print', { job });
-      status(card, result.status==='simulated'?'Demostración: vista previa, sin impresión física.':result.duplicate ? 'Este trabajo ya se envió. Usa Reimprimir copia si necesitas otro.' : 'Enviado desde Android. Revisa la salida del papel.');
+      status(card, result.status==='pdf_created'?'PDF guardado en este Android, sin impresión física.':result.status==='simulated'?'Demostración: vista previa, sin impresión física.':result.duplicate ? 'Este trabajo ya se envió. Usa Reimprimir copia si necesitas otro.' : 'Enviado desde Android. Revisa la salida del papel.');
     } catch (error) { status(card, error.message, true); }
     finally { card.dataset.androidPrinting = '0'; buttons.forEach(x=>x.disabled=false); }
   }

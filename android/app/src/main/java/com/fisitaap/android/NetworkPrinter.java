@@ -8,8 +8,8 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public final class NetworkPrinter {
-    private final PrintLedger ledger;
-    public NetworkPrinter(File files) { ledger=new PrintLedger(new File(files,"impresion")); }
+    private final PrintLedger ledger;private final File printDir;
+    public NetworkPrinter(File files) { printDir=new File(files,"impresion");ledger=new PrintLedger(printDir); }
     public JSONObject print(JSONObject job,String defaultHost,int defaultPort,int defaultWidth,boolean cut) throws Exception {return printInternal(job,defaultHost,defaultPort,defaultWidth,cut,false);}
     JSONObject printVerified(JSONObject job,String defaultHost,int defaultPort,int defaultWidth,boolean cut) throws Exception {return printInternal(job,defaultHost,defaultPort,defaultWidth,cut,true);}
     private JSONObject printInternal(JSONObject job,String defaultHost,int defaultPort,int defaultWidth,boolean cut,boolean verified) throws Exception {
@@ -17,6 +17,8 @@ public final class NetworkPrinter {
         String id=job.optString("id"), text=job.optString("text").replaceAll("[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f-\\x9f]", "");
         if(text.trim().isEmpty() || text.length()>180000) throw new IOException("El comprobante está vacío o es demasiado grande.");
         JSONObject profile=job.optJSONObject("printer");
+        if(profile!=null&&"usb".equals(profile.optString("type")))throw new IOException("Este punto usa una impresora de Windows. Asigna un equipo Windows o cambia el punto a impresora de red para Android.");
+        if(profile!=null&&"browser".equals(profile.optString("type")))return savePDF(id,text,job.optInt("width",defaultWidth));
         String host=defaultHost; int port=defaultPort;
         if(profile!=null && "network".equals(profile.optString("type"))) { host=profile.optString("host").trim(); port=profile.optInt("port",9100); }
         if(!Addresses.privateIPv4(host) || port<1 || port>65535) throw new IOException("Configura la IP privada de la impresora de red en Ajustes. Si es una comanda, revisa también su zona de impresión en la web.");
@@ -25,6 +27,13 @@ public final class NetworkPrinter {
         final String printerHost=host; final int printerPort=port; final int paperWidth=width; final String content=text;
         boolean duplicate=ledger.deliver(id,host+":"+port+"|"+width+"|"+cut+(drawer?"|drawer":"")+"|"+text,()->send(printerHost,printerPort,content,paperWidth,cut,drawer));
         return new JSONObject().put("ok",true).put("status","sent_to_printer").put("duplicate",duplicate);
+    }
+    private static String hexDigest(String value) throws Exception {StringBuilder hex=new StringBuilder();for(byte b:java.security.MessageDigest.getInstance("SHA-256").digest(value.getBytes(java.nio.charset.StandardCharsets.UTF_8)))hex.append(String.format(Locale.ROOT,"%02x",b&255));return hex.toString();}
+    private JSONObject savePDF(String id,String text,int width) throws Exception {
+        if(width!=58&&width!=80)throw new IOException("El papel debe ser de 58 u 80 mm.");String digest=hexDigest(id);File target=new File(printDir,digest+".pdf");
+        boolean duplicate=ledger.deliver(id,"PDF|"+width+"|"+text,()->{
+            int dots=width==58?384:576,lineHeight=width==58?27:30;Paint paint=new Paint();paint.setColor(Color.BLACK);paint.setTypeface(Typeface.MONOSPACE);paint.setTextSize(width==58?20:22);paint.setAntiAlias(false);List<String> lines=wrap(text,paint,dots-16);ReceiptPdf.write(target,lines,paint,width,dots,lineHeight);
+        });return new JSONObject().put("ok",true).put("status","pdf_created").put("duplicate",duplicate);
     }
     private void send(String host,int port,String text,int width,boolean cut,boolean drawer) throws Exception {
         try(Socket socket=new Socket()) {

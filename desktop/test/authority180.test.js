@@ -49,3 +49,24 @@ test('an authoritative web close cannot silently allow more sales in the adopted
   adoptCashState(state,{version:180,tenant_id:1,branch_id:2,device_id:3,shifts:[],acknowledged:[]});
   assert.equal(state.shifts[0].server_closed,true);assert.equal(state.sales[0].synced,false);
 });
+
+test('a confirmed web payment clears its uncertainty marker with the same authoritative cash snapshot',()=>{
+ const {adoptCashState,expectedCash}=require('../server'),id=crypto.randomUUID(),key=crypto.randomBytes(16).toString('hex');
+ const state={snapshot:{id:'cat',tenant:{id:1},branch:{id:2}},shifts:[],sales:[],webPayments:[{key,user_id:4}]};
+ adoptCashState(state,{version:180,tenant_id:1,branch_id:2,device_id:3,shifts:[{id,user_id:4,server_id:10,register:'Caja',opening_cash:100,opened_at:new Date().toISOString(),server_cash_net:5000,confirmed_max:20}],acknowledged:[],web_payments:[key]});
+ assert.deepEqual(state.webPayments,[]);assert.equal(expectedCash(state,state.shifts[0]),5100);
+});
+
+test('offline 180 honors action permissions and uses the assigned box rather than a typed register name',async t=>{
+ const bcrypt=require('bcryptjs'),dir=fs.mkdtempSync(path.join(os.tmpdir(),'fisitaap-offline-permissions-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const service=await createLocalServer({dataDir:dir,port:0,host:'127.0.0.1',autoSync:false,requireNative:true});t.after(()=>service.close());const password=crypto.randomBytes(12).toString('hex'),id=crypto.randomUUID();
+ const snapshot={id:'catalog',tenant:{id:1,name:'Test',tax_included:false},branch:{id:2,name:'Principal'},offline_policy:{version:180,allowed:true,generation:1},cash_state:{version:180,device_id:3,tenant_id:1,branch_id:2,register:{name:'Assigned box'},shifts:[],acknowledged:[]},users:[{id:4,name:'Cashier',password_hash:bcrypt.hashSync(password,4),permissions:{shift:false,discount:false,create_customer:false,release:false}}],categories:[],customers:[],products:[{id:1,name:'Item',price:1000,rate:0,min:1000,step:1000,stock:10000,track:true,groups:[],components:[]}]};
+ service.store.commit({...service.store.data,snapshot,stocks:{1:10000},shifts:[{id,user_id:4,register:'Assigned box',opening_cash:0,opened_at:new Date().toISOString(),closed_at:null,syncedClosed:false}]});
+ const login=await service.localRequest({path:'/api/login',data:{user_id:4,password,register:'An arbitrary second box'}});assert.equal(login.status,200);const csrf=login.body.csrf;
+ const read=await service.localRequest({path:'/api/state'});assert.equal(read.body.register,'Assigned box');assert.equal(read.body.user.permissions.discount,false);
+ for(const [route,data]of [['/api/shift/open',{opening_cash:0}],['/api/shift/close',{closing_cash:0}],['/api/primary/release',{}]]){const out=await service.localRequest({path:route,csrf,data});assert.equal(out.status,422);assert.match(out.body.error,/rol no permite/);}
+ const sale={id:crypto.randomUUID(),items:[{id:1,quantity:1000,options:[]}],payments:{cash:1000,card:0,sinpe:0},customer:{}};
+ const discount=await service.localRequest({path:'/api/sales',csrf,data:{...sale,discount:100}});assert.equal(discount.status,422);assert.match(discount.body.error,/rol no permite/);assert.equal(service.store.data.sales.length,0);assert.equal(service.store.data.stocks[1],10000);
+ const create=await service.localRequest({path:'/api/sales',csrf,data:{...sale,customer:{name:'New',phone:'88888888'}}});assert.equal(create.status,422);assert.equal(service.store.data.sales.length,0);
+ const permitted=await service.localRequest({path:'/api/sales',csrf,data:sale});assert.equal(permitted.status,200);assert.equal(service.store.data.sales.length,1);
+});

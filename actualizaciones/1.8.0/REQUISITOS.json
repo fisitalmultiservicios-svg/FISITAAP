@@ -6,29 +6,37 @@
       "id": "QA-01",
       "module": "Web oficial y landing publica",
       "request": "1. Boton verde Explorar FISITAAP",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "web/assets/qa180.css"
+      ]
     },
     {
       "id": "QA-02",
       "module": "Web oficial y landing publica",
       "request": "2. Segmento Un catalogo que se adapta",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "web/app/official_r3.php"
+      ]
     },
     {
       "id": "QA-03",
       "module": "Web oficial y landing publica",
       "request": "3. Eliminar frase Tienda fisica opcional",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "web/app/official_r3.php"
+      ]
     },
     {
       "id": "QA-04",
       "module": "Web oficial y landing publica",
       "request": "4. FISI-CHAT publico",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "web/app/chat180.php"
+      ]
     },
     {
       "id": "QA-05",
@@ -41,106 +49,138 @@
       "id": "QA-06",
       "module": "Web oficial y landing publica",
       "request": "6. Eliminar blog",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-CATALOGO.json"
+      ]
     },
     {
       "id": "QA-07",
       "module": "Web oficial y landing publica",
       "request": "7. Contactos como bandeja de correo",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "web/app/panel180.php"
+      ]
     },
     {
       "id": "QA-08",
       "module": "Desktop Android offline equipos y cajas",
       "request": "1. Usuarios como select",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-CONTINUIDAD.json"
+      ]
     },
     {
       "id": "QA-09",
       "module": "Desktop Android offline equipos y cajas",
       "request": "2. Quitar boton caja local",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "desktop/public/desktop-shell.html",
+        "android/app/src/main/java/com/fisitaap/android/MainActivity.java"
+      ]
     },
     {
       "id": "QA-10",
       "module": "Desktop Android offline equipos y cajas",
       "request": "3. Windows y cajas",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "web/app/devices180.php"
+      ]
     },
     {
       "id": "QA-11",
       "module": "Venta rapida POS y cobro",
       "request": "1. Ventana de venta rapida",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-POS.json"
+      ]
     },
     {
       "id": "QA-12",
       "module": "Venta rapida POS y cobro",
       "request": "2. Cierre de turno",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-DINERO.json",
+        "QA-CONTINUIDAD.json"
+      ]
     },
     {
       "id": "QA-13",
       "module": "Venta rapida POS y cobro",
       "request": "3. Entradas y salidas de dinero",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-CUENTAS-COMPRAS.json"
+      ]
     },
     {
       "id": "QA-14",
       "module": "Venta rapida POS y cobro",
       "request": "4. Gaveta de dinero",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-IMPRESION.json"
+      ]
     },
     {
       "id": "QA-15",
       "module": "Mesas salones y disenador grafico",
       "request": "1. Runtime de mesas sin panel lateral",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-MESAS.json"
+      ]
     },
     {
       "id": "QA-16",
       "module": "Mesas salones y disenador grafico",
       "request": "2. Unir mesas",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-MESAS.json"
+      ]
     },
     {
       "id": "QA-17",
       "module": "Mesas salones y disenador grafico",
       "request": "3. Modulo salones y mesas",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-MESAS.json"
+      ]
     },
     {
       "id": "QA-18",
       "module": "Extras opcionales combos promociones",
       "request": "1. Extras y opcionales individuales",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-CATALOGO.json"
+      ]
     },
     {
       "id": "QA-19",
       "module": "Extras opcionales combos promociones",
       "request": "2. Tres formas de asignacion",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-CATALOGO.json"
+      ]
     },
     {
       "id": "QA-20",
       "module": "Extras opcionales combos promociones",
       "request": "3. Combos",
-      "status": "pending",
-      "evidence": []
+      "status": "in_progress",
+      "evidence": [
+        "QA-CATALOGO.json"
+      ]
     },
     {
       "id": "QA-21",

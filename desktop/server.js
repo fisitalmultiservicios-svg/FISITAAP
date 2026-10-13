@@ -46,6 +46,7 @@ function adoptCashState(next,state){
     if(next.sales.some(x=>x.shift_id===shift.id&&!x.synced))shift.server_closed=true;
     else{shift.closed_at=new Date().toISOString();shift.syncedClosed=true;shift.closedExternally=true;}
   }
+  if(Array.isArray(state.web_payments))next.webPayments=(next.webPayments||[]).filter(x=>!state.web_payments.includes(x.key));
   next.snapshot.cash_state=state;next.authorityCheckedAt=new Date().toISOString();
 }
 function expectedCash(state,shift){
@@ -81,6 +82,11 @@ async function createLocalServer(options){
     const user=store.data.snapshot?.users.find(x=>x.id===session.user.id);
     if(!user||user.password_hash!==session.hash){sessions.delete(sid);throw Object.assign(new Error('El acceso local cambió. Vuelve a ingresar.'),{status:401});}
     if(write&&req.headers['x-csrf-token']!==session.csrf)throw Object.assign(new Error('Recarga la caja.'),{status:403});return session;
+  };
+  const permission=(session,action)=>{
+    if(store.data.snapshot?.offline_policy?.version!==180)return;
+    const user=store.data.snapshot.users.find(x=>x.id===session.user.id);
+    if(user?.permissions?.[action]!==true)throw new Error('Tu rol no permite esta operación. El dueño puede revisar tus permisos en la web.');
   };
   const webResponse=async(response,endpoint,action)=>{
     const invalid=()=>{
@@ -159,6 +165,7 @@ async function createLocalServer(options){
           if(!loopback(req))return send(res,403,{ok:false,error:'Conecta el negocio desde el equipo central.'});
           if(pairing||busy)throw new Error('Hay una conexión o sincronización en curso. Espera a que termine.');
           if(store.data.connection&&primaryAllowed())throw new Error('Libera primero la función principal antes de cambiar la conexión.');
+          if(store.data.webPayments?.length)throw new Error('Comprueba los cobros web pendientes antes de cambiar la conexión.');
           if(printBusy||store.data.printAcks?.length)throw new Error('Espera y sincroniza los resultados de impresión antes de cambiar de negocio.');
           if(store.data.sales.some(s=>!s.synced))throw new Error('Sincroniza las ventas pendientes antes de cambiar la conexión.');
           if(store.data.shifts.some(s=>!s.syncedClosed))throw new Error('Cierra y sincroniza los turnos locales antes de cambiar la conexión.');
@@ -187,25 +194,25 @@ async function createLocalServer(options){
         }
         const session=auth(req,true);
         if(pathname==='/api/primary/release'){
-          if(!loopback(req))throw new Error('Libera la función desde el equipo principal.');
+          permission(session,'release');if(!loopback(req))throw new Error('Libera la función desde el equipo principal.');
           if(busy||pairing)throw new Error('Espera a que termine la sincronización.');
           if(store.data.sales.some(s=>!s.synced)||store.data.shifts.some(s=>!s.syncedClosed))throw new Error('Cierra y sincroniza todos los turnos y ventas antes de liberar el equipo.');
           busy=true;
           try {
             const next=jsonClone(store.data);next.releasePending=true;next.releaseBlockedGeneration=next.snapshot?.offline_policy?.generation??0;store.commit(next);
-            await remote('release',{});
+            await remote('release',store.data.snapshot?.offline_policy?.version===180?{user_id:session.user.id}:{});
             const done=jsonClone(store.data);done.releasePending=false;if(done.snapshot.offline_policy)done.snapshot.offline_policy.allowed=false;store.commit(done);
             return send(res,200,{ok:true});
           }finally{busy=false;}
         }
         if(pathname==='/api/logout'){const next=jsonClone(store.data);next.authorizedWebUser=null;next.authorizedWebAt=null;store.commit(next);for(const [id,s]of sessions)if(s===session)sessions.delete(id);return send(res,200,{ok:true},{'Set-Cookie':'fisitaap_local=; Max-Age=0; HttpOnly; SameSite=Strict; Path=/'});}
         if(pathname==='/api/shift/open'){
-          requirePrimary(req);
+          permission(session,'shift');requirePrimary(req);
           const next=jsonClone(store.data);if(next.shifts.some(s=>!s.closed_at&&(next.snapshot.offline_policy?.version===180||s.register===session.register||s.user_id===session.user.id)))throw new Error('Ya hay un turno abierto para esta caja o cajero.');
           next.shifts.push({id:crypto.randomUUID(),user_id:session.user.id,register:session.register,snapshot_id:next.snapshot.id,opening_cash:integer(data.opening_cash),opened_at:new Date().toISOString(),closed_at:null,syncedClosed:false});store.commit(next);return send(res,200,{ok:true});
         }
         if(pathname==='/api/shift/close'){
-          const next=jsonClone(store.data);if(next.webPayments?.length)throw new Error('Hay un cobro web sin confirmar. Recupera la conexión y sincroniza antes de cerrar.');const shift=next.shifts.find(s=>s.user_id===session.user.id&&s.register===session.register&&!s.closed_at);if(!shift)throw new Error('No tienes un turno abierto.');shift.closed_at=new Date().toISOString();shift.closing_cash=integer(data.closing_cash);if(shift.server_closed)throw new Error('El turno se cerró en la web. Sincroniza las operaciones para revisión.');if(shift.pending_accounts)throw new Error('Cierra las cuentas abiertas en la web antes de cerrar el turno.');shift.expected_cash=expectedCash(next,shift);if(data.denominations){const coins=[5,10,25,50,100,500,1000,2000,5000,10000,20000];let counted=integer(data.other_cash||0);for(const value of coins)counted+=value*100*integer(data.denominations[value]||0,0,100000);if(counted!==shift.closing_cash)throw new Error('El conteo de billetes y monedas no coincide.');shift.denominations=data.denominations;shift.other_cash=data.other_cash||0;}shift.difference=shift.closing_cash-shift.expected_cash;store.commit(next);return send(res,200,{ok:true,shift});
+          permission(session,'shift');const next=jsonClone(store.data);if(next.webPayments?.length)throw new Error('Hay un cobro web sin confirmar. Recupera la conexión y sincroniza antes de cerrar.');const shift=next.shifts.find(s=>s.user_id===session.user.id&&s.register===session.register&&!s.closed_at);if(!shift)throw new Error('No tienes un turno abierto.');shift.closed_at=new Date().toISOString();shift.closing_cash=integer(data.closing_cash);if(shift.server_closed)throw new Error('El turno se cerró en la web. Sincroniza las operaciones para revisión.');if(shift.pending_accounts)throw new Error('Cierra las cuentas abiertas en la web antes de cerrar el turno.');shift.expected_cash=expectedCash(next,shift);if(data.denominations){const coins=[5,10,25,50,100,500,1000,2000,5000,10000,20000];let counted=integer(data.other_cash||0);for(const value of coins)counted+=value*100*integer(data.denominations[value]||0,0,100000);if(counted!==shift.closing_cash)throw new Error('El conteo de billetes y monedas no coincide.');shift.denominations=data.denominations;shift.other_cash=data.other_cash||0;}shift.difference=shift.closing_cash-shift.expected_cash;store.commit(next);return send(res,200,{ok:true,shift});
         }
         if(pathname==='/api/sales'){
           const id=uuid(data.id);saleRequestId=id;const next=jsonClone(store.data),old=next.sales.find(s=>s.id===id);
@@ -213,6 +220,7 @@ async function createLocalServer(options){
           if(old){if(old.fingerprint!==fingerprint)throw new Error('El identificador ya corresponde a otra venta.');return send(res,200,{ok:true,sale:{id:old.id,quote:old.quote,change:old.change,synced:old.synced}});}
           requirePrimary(req);
           const shift=next.shifts.find(s=>s.user_id===session.user.id&&s.register===session.register&&!s.closed_at);if(!shift)throw new Error('Abre tu turno antes de cobrar.');if(shift.server_closed)throw new Error('El turno fue cerrado en la web. Sincroniza para revisar las ventas.');
+          if(data.discount)permission(session,'discount');if(!data.customer?.id&&(data.customer?.name||data.customer?.phone))permission(session,'create_customer');
           const createdAt=new Date().toISOString();const calculated=quote(next.snapshot,data.items,Date.parse(createdAt),data.discount||0);if(data.expected_total!==undefined&&data.expected_total!==calculated.total)throw new Error('El precio o la promoción cambió. Actualiza la caja y revisa el total antes de cobrar.');for(const [pid,qty]of Object.entries(calculated.stock)){const p=next.snapshot.products.find(p=>p.id===Number(pid))||next.snapshot.products.flatMap(p=>p.components).find(p=>p.id===Number(pid));if((next.stocks[pid]||0)-qty<0&&!p?.allow_negative)throw new Error('Existencia insuficiente: '+(p?.name||pid));}
           const payments={cash:integer(data.payments?.cash||0),card:integer(data.payments?.card||0),sinpe:integer(data.payments?.sinpe||0)};const cashApplied=calculated.total-payments.card-payments.sinpe;if(cashApplied<0||payments.cash<cashApplied)throw new Error('Falta completar el pago o los montos superan el total.');
           const customer=data.customer||{};if(customer.id&&!next.snapshot.customers.some(c=>Number(c.id)===Number(customer.id)))throw new Error('Cliente no disponible.');if(!customer.id&&(customer.name||customer.phone)&&(!String(customer.name||'').trim()||!/^(506)?\d{8}$/.test(String(customer.phone||'').replace(/\D/g,''))))throw new Error('Escribe nombre y teléfono de 8 dígitos para el nuevo cliente.');
@@ -230,7 +238,7 @@ async function createLocalServer(options){
       if(pathname==='/api/state'){
         const s=auth(req);const snap=jsonClone(store.data.snapshot);delete snap.users;
         if(snap.offline_policy)snap.offline_policy.allowed=primaryAllowed()&&loopback(req);
-        return send(res,200,{ok:true,snapshot:snap,stocks:store.data.stocks,user:s.user,register:s.register,csrf:s.csrf,shift:(()=>{const shift=store.data.shifts.find(x=>x.user_id===s.user.id&&x.register===s.register&&!x.closed_at);return shift?{...shift,expected_cash:expectedCash(store.data,shift)}:null;})(),sales:store.data.sales.filter(x=>x.user_id===s.user.id&&x.register===s.register).slice(-100).reverse().map(x=>({id:x.id,created_at:x.created_at,total:x.quote.total,synced:x.synced,error:x.error,conflicts:x.conflicts,quote:x.quote,change:x.change})),pending:store.data.sales.filter(s=>!s.synced).length,webPayments:(store.data.webPayments||[]).length,lastSync:store.data.lastSync,syncMessage:store.data.syncMessage,addresses:interfaces.map(ip=>'http://'+ip+':'+port),canManage:loopback(req)});
+        return send(res,200,{ok:true,snapshot:snap,stocks:store.data.stocks,user:{...s.user,permissions:store.data.snapshot.users.find(x=>x.id===s.user.id)?.permissions||{}},register:s.register,csrf:s.csrf,shift:(()=>{const shift=store.data.shifts.find(x=>x.user_id===s.user.id&&x.register===s.register&&!x.closed_at);return shift?{...shift,expected_cash:expectedCash(store.data,shift)}:null;})(),sales:store.data.sales.filter(x=>x.user_id===s.user.id&&x.register===s.register).slice(-100).reverse().map(x=>({id:x.id,created_at:x.created_at,total:x.quote.total,synced:x.synced,error:x.error,conflicts:x.conflicts,quote:x.quote,change:x.change})),pending:store.data.sales.filter(s=>!s.synced).length,webPayments:(store.data.webPayments||[]).length,lastSync:store.data.lastSync,syncMessage:store.data.syncMessage,addresses:interfaces.map(ip=>'http://'+ip+':'+port),canManage:loopback(req)});
       }
       if(pathname==='/conexion.fisitaap'){
         auth(req);if(!loopback(req))throw new Error('Descarga la conexión desde el equipo central.');const address=interfaces[0];if(!address)throw new Error('Conecta el equipo al router.');return send(res,200,{url:'http://'+address+':'+port,webUrl:store.data.connection?.url||null},{'Content-Disposition':'attachment; filename="Conexion-equipo-central.fisitaap"'});
@@ -252,7 +260,7 @@ async function createLocalServer(options){
       try{
         const connection=store.data.connection,previousUser=store.data.authorizedWebUser;
         const pending=store.data.sales.filter(x=>!x.synced||!(x.webSale&&x.webSale<=(store.data.shifts.find(s=>s.id===x.shift_id)?.confirmed_max||0))).map(x=>x.id).slice(-1000);
-        const out=await remote('web-session',{nonce:data.nonce,user_id:data.user_id,...(data.confirm===true?{confirm:true}:{}),...(pending.length?{pending}:{})});
+        const out=await remote('web-session',{nonce:data.nonce,user_id:data.user_id,...(store.data.webPayments?.length?{web_payment_keys:store.data.webPayments.map(x=>x.key).slice(0,100)}:{}),...(data.confirm===true?{confirm:true}:{}),...(pending.length?{pending}:{})});
         if(store.data.connection?.url!==connection?.url||store.data.connection?.token!==connection?.token)throw new Error('La conexión cambió mientras se comprobaba la caja.');
         if(out.cash_state){const next=jsonClone(store.data);adoptCashState(next,out.cash_state);if(out.offline_policy)next.snapshot.offline_policy=out.offline_policy;if(out.bound){next.authorizedWebUser=out.cash?data.user_id:null;next.authorizedWebAt=new Date().toISOString();next.authorizedWebHash=next.snapshot.users.find(x=>x.id===data.user_id)?.password_hash||null;}store.commit(next);}
         if(previousUser!==data.user_id){sessions.clear();nativeCookie='';}

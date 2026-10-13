@@ -19,7 +19,7 @@ function qa180_cash_state(App $app,array $device,array $pending=[]):array {
 function qa180_snapshot_users(App $app,array $device):array {
     $register=qa180_offline_register($app,$device);if(!$register)return [];$users=[];
     foreach($app->all('SELECT * FROM users WHERE tenant_id=? AND is_active=1 AND force_password_change=0 AND (id=? OR ?=0 OR role="tenant_admin") ORDER BY name',[$device['tenant_id'],(int)($register['user_id']??0),(int)($register['user_id']??0)]) as $user)
-        if(r2_offline_allowed($app,$user)&&preg_match('/^\$2[aby]\$/',$user['password_hash']))$users[]=['id'=>(int)$user['id'],'name'=>$user['name'],'email'=>$user['email'],'password_hash'=>$user['password_hash']];
+        if(r2_offline_allowed($app,$user)&&preg_match('/^\$2[aby]\$/',$user['password_hash'])){$permissions=[];foreach(['shift'=>['turnos','write'],'discount'=>['ventas','discount'],'create_customer'=>['clientes','write'],'release'=>['configuracion','configure']] as $key=>[$section,$action]){try{qa180_permission($app,$user,$section,$action);$permissions[$key]=true;}catch(DomainException){$permissions[$key]=false;}}$users[]=['id'=>(int)$user['id'],'name'=>$user['name'],'email'=>$user['email'],'password_hash'=>$user['password_hash'],'permissions'=>$permissions];}
     return $users;
 }
 function qa180_catalog_payload(array $snapshot):array {

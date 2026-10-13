@@ -66,4 +66,8 @@ public final class PrinterIntegrationTest {
         job.put("width",72);assertThrows(IOException.class,()->printer.print(job,"192.168.1.50",9100,80,true));
         assertEquals(0,Objects.requireNonNull(new File(dir,"impresion").list()).length);
     }
+    @Test public void pdfPointWritesARealPdfWithoutConnectingTheDefaultNetworkPrinter() throws Exception {
+        File files=temp.newFolder();NetworkPrinter printer=new NetworkPrinter(files);JSONObject profile=new JSONObject().put("type","browser").put("width",58);JSONObject job=new JSONObject().put("id","pdf-only").put("document","receipt").put("text","Recibo\nCafé y piña ₡1.000,00").put("width",58).put("printer",profile).put("drawer",true);
+        JSONObject result=printer.printVerified(job,"8.8.8.8",1,80,true);assertEquals("pdf_created",result.getString("status"));File[] pdfs=new File(files,"impresion").listFiles((dir,name)->name.endsWith(".pdf"));assertNotNull(pdfs);assertEquals(1,pdfs.length);byte[] content=java.nio.file.Files.readAllBytes(pdfs[0].toPath());assertTrue(content.length>100);assertEquals("%PDF",new String(content,0,4,java.nio.charset.StandardCharsets.US_ASCII));assertTrue(printer.printVerified(job,"8.8.8.8",1,80,true).getBoolean("duplicate"));
+    }
 }

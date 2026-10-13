@@ -20,3 +20,9 @@ test('a lost server print ACK is durable and retried after restart without print
  const result=await service.flushPrint();assert.equal(result.ok,false);assert.equal(printed,1);assert.equal(service.store.data.printAcks.length,1);await new Promise(resolve=>service.server.close(resolve));
  service=await createLocalServer({dataDir:dir,port:0,host:'127.0.0.1',autoSync:false,fetch:remote,print:async()=>{printed++;return {status:'sent_to_printer'};}});ackLost=false;await service.flushPrint();assert.equal(printed,1);assert.equal(received,1);assert.equal(service.store.data.printAcks.length,0);
 });
+
+test('a configured web PDF point remains PDF even when Windows has a different local default printer',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'fisitaap-pdf-point-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));let output;
+ const bridge=await createPrintBridge({dataDir:dir,port:0,getConfig:()=>({printer:{type:'usb',name:'Physical Windows printer',width:58}}),print:async job=>{output=job;return {status:job.printer.type==='browser'?'pdf_created':'sent_to_printer'};}});t.after(()=>bridge.close());
+ const result=await bridge.printVerified({id:'web-pdf-only',text:'Receipt',printer:{type:'browser',width:80}});assert.equal(result.status,'pdf_created');assert.equal(output.printer.type,'browser');assert.equal(output.width,80);
+});

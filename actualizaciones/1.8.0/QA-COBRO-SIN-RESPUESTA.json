@@ -1,0 +1,10 @@
+{
+  "passed": 4,
+  "checks": [
+    "a definitive cancellation prevents a delayed original POST from charging and preserves its unpaid account",
+    "checking a received payment after losing its response returns the original sale and cannot create another charge",
+    "fresh native authorization immediately confirms the received key together with its authoritative cash balance",
+    "another business user cannot inspect or cancel this register payment"
+  ],
+  "environment": "isolated real PHP/MariaDB API; no production"
+}
