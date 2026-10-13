@@ -1,0 +1,9 @@
+{
+  "passed": 3,
+  "checks": [
+    "two independent device/user/session registers can open separate online shifts",
+    "concurrent different-key charges against one revision create exactly one sale, payment and stock reservation; the other cashier receives a human conflict",
+    "both shifts close independently with cash credited only to the register that won the charge"
+  ],
+  "environment": "two concurrent real PHP/MariaDB HTTP requests with distinct users/cookies/devices; fake money and no printers"
+}

@@ -6,35 +6,51 @@
       "id": "QA-01",
       "module": "Web oficial y landing publica",
       "request": "1. Boton verde Explorar FISITAAP",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "web/assets/qa180.css"
+        "QA-NAVEGADOR.json",
+        "QA-DEMOS.json",
+        "QA-PANEL.json",
+        "web/app/official_r3.php",
+        "web/app/chat180.php"
       ]
     },
     {
       "id": "QA-02",
       "module": "Web oficial y landing publica",
       "request": "2. Segmento Un catalogo que se adapta",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "web/app/official_r3.php"
+        "QA-NAVEGADOR.json",
+        "QA-DEMOS.json",
+        "QA-PANEL.json",
+        "web/app/official_r3.php",
+        "web/app/chat180.php"
       ]
     },
     {
       "id": "QA-03",
       "module": "Web oficial y landing publica",
       "request": "3. Eliminar frase Tienda fisica opcional",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "web/app/official_r3.php"
+        "QA-NAVEGADOR.json",
+        "QA-DEMOS.json",
+        "QA-PANEL.json",
+        "web/app/official_r3.php",
+        "web/app/chat180.php"
       ]
     },
     {
       "id": "QA-04",
       "module": "Web oficial y landing publica",
       "request": "4. FISI-CHAT publico",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
+        "QA-NAVEGADOR.json",
+        "QA-DEMOS.json",
+        "QA-PANEL.json",
+        "web/app/official_r3.php",
         "web/app/chat180.php"
       ]
     },
@@ -42,299 +58,431 @@
       "id": "QA-05",
       "module": "Web oficial y landing publica",
       "request": "5. Demos y tienda LA VENTANITA",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-NAVEGADOR.json",
+        "QA-DEMOS.json",
+        "QA-PANEL.json",
+        "web/app/official_r3.php",
+        "web/app/chat180.php"
+      ]
     },
     {
       "id": "QA-06",
       "module": "Web oficial y landing publica",
       "request": "6. Eliminar blog",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-CATALOGO.json"
+        "QA-NAVEGADOR.json",
+        "QA-DEMOS.json",
+        "QA-PANEL.json",
+        "web/app/official_r3.php",
+        "web/app/chat180.php"
       ]
     },
     {
       "id": "QA-07",
       "module": "Web oficial y landing publica",
       "request": "7. Contactos como bandeja de correo",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "web/app/panel180.php"
+        "QA-NAVEGADOR.json",
+        "QA-DEMOS.json",
+        "QA-PANEL.json",
+        "web/app/official_r3.php",
+        "web/app/chat180.php"
       ]
     },
     {
       "id": "QA-08",
       "module": "Desktop Android offline equipos y cajas",
       "request": "1. Usuarios como select",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-CONTINUIDAD.json"
+        "QA-CONTINUIDAD.json",
+        "QA-ANDROID-UI.json",
+        "QA-PERMISOS.json",
+        "desktop/server.js",
+        "android/app/src/main/java/com/fisitaap/android/OfflineStorage.java"
       ]
     },
     {
       "id": "QA-09",
       "module": "Desktop Android offline equipos y cajas",
       "request": "2. Quitar boton caja local",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "desktop/public/desktop-shell.html",
-        "android/app/src/main/java/com/fisitaap/android/MainActivity.java"
+        "QA-CONTINUIDAD.json",
+        "QA-ANDROID-UI.json",
+        "QA-PERMISOS.json",
+        "desktop/server.js",
+        "android/app/src/main/java/com/fisitaap/android/OfflineStorage.java"
       ]
     },
     {
       "id": "QA-10",
       "module": "Desktop Android offline equipos y cajas",
       "request": "3. Windows y cajas",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "web/app/devices180.php"
+        "QA-CONTINUIDAD.json",
+        "QA-ANDROID-UI.json",
+        "QA-PERMISOS.json",
+        "desktop/server.js",
+        "android/app/src/main/java/com/fisitaap/android/OfflineStorage.java"
       ]
     },
     {
       "id": "QA-11",
       "module": "Venta rapida POS y cobro",
       "request": "1. Ventana de venta rapida",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-POS.json"
+        "QA-POS.json",
+        "QA-DINERO.json",
+        "QA-DOS-CAJAS.json",
+        "QA-IMPRESION.json"
       ]
     },
     {
       "id": "QA-12",
       "module": "Venta rapida POS y cobro",
       "request": "2. Cierre de turno",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
+        "QA-POS.json",
         "QA-DINERO.json",
-        "QA-CONTINUIDAD.json"
+        "QA-DOS-CAJAS.json",
+        "QA-IMPRESION.json"
       ]
     },
     {
       "id": "QA-13",
       "module": "Venta rapida POS y cobro",
       "request": "3. Entradas y salidas de dinero",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-CUENTAS-COMPRAS.json"
+        "QA-POS.json",
+        "QA-DINERO.json",
+        "QA-DOS-CAJAS.json",
+        "QA-IMPRESION.json"
       ]
     },
     {
       "id": "QA-14",
       "module": "Venta rapida POS y cobro",
       "request": "4. Gaveta de dinero",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
+        "QA-POS.json",
+        "QA-DINERO.json",
+        "QA-DOS-CAJAS.json",
         "QA-IMPRESION.json"
-      ]
+      ],
+      "remaining_validation": "Real printer/driver/drawer test on the customer hardware; no physical printer was used."
     },
     {
       "id": "QA-15",
       "module": "Mesas salones y disenador grafico",
       "request": "1. Runtime de mesas sin panel lateral",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-MESAS.json"
+        "QA-MESAS.json",
+        "QA-FLUJOS-USO.json"
       ]
     },
     {
       "id": "QA-16",
       "module": "Mesas salones y disenador grafico",
       "request": "2. Unir mesas",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-MESAS.json"
+        "QA-MESAS.json",
+        "QA-FLUJOS-USO.json"
       ]
     },
     {
       "id": "QA-17",
       "module": "Mesas salones y disenador grafico",
       "request": "3. Modulo salones y mesas",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-MESAS.json"
+        "QA-MESAS.json",
+        "QA-FLUJOS-USO.json"
       ]
     },
     {
       "id": "QA-18",
       "module": "Extras opcionales combos promociones",
       "request": "1. Extras y opcionales individuales",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-CATALOGO.json"
+        "QA-CATALOGO.json",
+        "QA-CUPONES.json"
       ]
     },
     {
       "id": "QA-19",
       "module": "Extras opcionales combos promociones",
       "request": "2. Tres formas de asignacion",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-CATALOGO.json"
+        "QA-CATALOGO.json",
+        "QA-CUPONES.json"
       ]
     },
     {
       "id": "QA-20",
       "module": "Extras opcionales combos promociones",
       "request": "3. Combos",
-      "status": "in_progress",
+      "status": "implemented_and_checked_in_fixture",
       "evidence": [
-        "QA-CATALOGO.json"
+        "QA-CATALOGO.json",
+        "QA-CUPONES.json"
       ]
     },
     {
       "id": "QA-21",
       "module": "Extras opcionales combos promociones",
       "request": "4. Codigos de descuento",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-CATALOGO.json",
+        "QA-CUPONES.json"
+      ]
     },
     {
       "id": "QA-22",
       "module": "Clientes credito fidelizacion CxC y CxP",
       "request": "1. Fidelizacion",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-FIDELIZACION.json",
+        "QA-CUENTAS-COMPRAS.json",
+        "QA-PERMISOS.json"
+      ]
     },
     {
       "id": "QA-23",
       "module": "Clientes credito fidelizacion CxC y CxP",
       "request": "2. Credito de cliente",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-FIDELIZACION.json",
+        "QA-CUENTAS-COMPRAS.json",
+        "QA-PERMISOS.json"
+      ]
     },
     {
       "id": "QA-24",
       "module": "Clientes credito fidelizacion CxC y CxP",
       "request": "3. CxC y morosos",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-FIDELIZACION.json",
+        "QA-CUENTAS-COMPRAS.json",
+        "QA-PERMISOS.json"
+      ]
     },
     {
       "id": "QA-25",
       "module": "Clientes credito fidelizacion CxC y CxP",
       "request": "4. CxP",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-FIDELIZACION.json",
+        "QA-CUENTAS-COMPRAS.json",
+        "QA-PERMISOS.json"
+      ]
     },
     {
       "id": "QA-26",
       "module": "Compras XML inventario proveedores",
       "request": "1. Proveedor por cedula",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-XML.json",
+        "QA-CUENTAS-COMPRAS.json"
+      ]
     },
     {
       "id": "QA-27",
       "module": "Compras XML inventario proveedores",
       "request": "2. Compra a credito y CxP",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-XML.json",
+        "QA-CUENTAS-COMPRAS.json"
+      ]
     },
     {
       "id": "QA-28",
       "module": "Compras XML inventario proveedores",
       "request": "3. Comparacion de precio",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-XML.json",
+        "QA-CUENTAS-COMPRAS.json"
+      ]
     },
     {
       "id": "QA-29",
       "module": "Compras XML inventario proveedores",
       "request": "4. Enlace por SKU y productos nuevos",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-XML.json",
+        "QA-CUENTAS-COMPRAS.json"
+      ]
     },
     {
       "id": "QA-30",
       "module": "Pedidos cocina y express",
       "request": "1. Pantalla de pedidos tipo Kanban",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-PEDIDOS.json",
+        "QA-FLUJOS-USO.json"
+      ]
     },
     {
       "id": "QA-31",
       "module": "Pedidos cocina y express",
       "request": "2. Pedidos desde catalogo",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-PEDIDOS.json",
+        "QA-FLUJOS-USO.json"
+      ]
     },
     {
       "id": "QA-32",
       "module": "Pedidos cocina y express",
       "request": "3. Configuracion de pedidos web",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-PEDIDOS.json",
+        "QA-FLUJOS-USO.json"
+      ]
     },
     {
       "id": "QA-33",
       "module": "Pedidos cocina y express",
       "request": "4. Express",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-PEDIDOS.json",
+        "QA-FLUJOS-USO.json"
+      ]
     },
     {
       "id": "QA-34",
       "module": "Administracion reportes impresion bitacora",
       "request": "1. Cedula de empresa",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-CONFIGURACION.json",
+        "QA-REPORTES.json",
+        "QA-IMPRESION.json",
+        "QA-PANEL.json"
+      ]
     },
     {
       "id": "QA-35",
       "module": "Administracion reportes impresion bitacora",
       "request": "2. Diseno web del negocio",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-CONFIGURACION.json",
+        "QA-REPORTES.json",
+        "QA-IMPRESION.json",
+        "QA-PANEL.json"
+      ]
     },
     {
       "id": "QA-36",
       "module": "Administracion reportes impresion bitacora",
       "request": "3. Impresion en administracion",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-CONFIGURACION.json",
+        "QA-REPORTES.json",
+        "QA-IMPRESION.json",
+        "QA-PANEL.json"
+      ],
+      "remaining_validation": "Real printer/driver/drawer test on the customer hardware; no physical printer was used."
     },
     {
       "id": "QA-37",
       "module": "Administracion reportes impresion bitacora",
       "request": "4. Reportes",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-CONFIGURACION.json",
+        "QA-REPORTES.json",
+        "QA-IMPRESION.json",
+        "QA-PANEL.json",
+        "QA-SUCURSAL-NATIVA.json"
+      ]
     },
     {
       "id": "QA-38",
       "module": "Administracion reportes impresion bitacora",
       "request": "5. Auditoria a Bitacora",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-CONFIGURACION.json",
+        "QA-REPORTES.json",
+        "QA-IMPRESION.json",
+        "QA-PANEL.json"
+      ]
     },
     {
       "id": "QA-39",
       "module": "Seguridad y logica multi caja multi comanda",
       "request": "Escenario requerido",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-DOS-CAJAS.json",
+        "QA-MESAS.json",
+        "QA-IMPRESION.json",
+        "QA-PERMISOS.json"
+      ],
+      "remaining_validation": "Real printer/driver/drawer test on the customer hardware; no physical printer was used."
     },
     {
       "id": "QA-40",
       "module": "Inicio del panel despues de login",
       "request": "Inicio del panel despues de login",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-PANEL.json",
+        "QA-NAVEGADOR.json"
+      ]
     },
     {
       "id": "QA-41",
       "module": "Cierre de sesion",
       "request": "Cierre de sesion",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-PANEL.json",
+        "QA-ANDROID-UI.json",
+        "desktop/public/app.js"
+      ]
     },
     {
       "id": "QA-42",
       "module": "Seguridad y logica multi caja multi comanda",
       "request": "Seguridad y logica multi caja multi comanda",
-      "status": "pending",
-      "evidence": []
+      "status": "implemented_and_checked_in_fixture",
+      "evidence": [
+        "QA-DOS-CAJAS.json",
+        "QA-MESAS.json",
+        "QA-IMPRESION.json",
+        "QA-PERMISOS.json"
+      ],
+      "remaining_validation": "Real printer/driver/drawer test on the customer hardware; no physical printer was used."
     }
   ],
   "previous_requests": [
@@ -346,5 +494,7 @@
     "Demos independientes que se reinician al entrar nuevamente",
     "Conservar La Ventanita, imágenes optimizadas y rendimiento",
     "Resolver rutas/caché y validar SSL real con hosting antes de mudar DNS"
-  ]
+  ],
+  "review_date": "2026-10-13",
+  "scope": "Canonical source implemented and checked in fictional fixtures; physical Windows/Android, printers, live hosting and live AI provider are not certified."
 }

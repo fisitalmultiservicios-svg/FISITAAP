@@ -1,0 +1,115 @@
+{
+  "passed": 6,
+  "checks": [
+    "KPIs presents dated sales and order charts separately and rejects another business branch",
+    "FISIChat honors the custom role and never includes denied inventory, product or financial context",
+    "four simultaneous checkout retries create one order and reserve one product",
+    "Express can publish only a ready order and duplicate publication preserves its assignment and payout",
+    "the driver needs the correct PIN; delivery retries count once and leave the original unpaid account available for collection",
+    "loaded POS, checkout, occupied-table modal, floor designer and KPI charts work at 1366/768/390/360 without overflow or JavaScript errors"
+  ],
+  "layout": [
+    {
+      "screen": "loaded-pos",
+      "width": 1366,
+      "overflow": false
+    },
+    {
+      "screen": "checkout",
+      "width": 1366,
+      "overflow": false
+    },
+    {
+      "screen": "floor-modal",
+      "width": 1366,
+      "overflow": false
+    },
+    {
+      "screen": "floor-designer",
+      "width": 1366,
+      "overflow": false
+    },
+    {
+      "screen": "kpis",
+      "width": 1366,
+      "overflow": false
+    },
+    {
+      "screen": "loaded-pos",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "screen": "checkout",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "screen": "floor-modal",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "screen": "floor-designer",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "screen": "kpis",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "screen": "loaded-pos",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "screen": "checkout",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "screen": "floor-modal",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "screen": "floor-designer",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "screen": "kpis",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "screen": "loaded-pos",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "screen": "checkout",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "screen": "floor-modal",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "screen": "floor-designer",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "screen": "kpis",
+      "width": 360,
+      "overflow": false
+    }
+  ],
+  "page_errors": [],
+  "environment": "real fictional PHP/MariaDB HTTP and Chromium; no physical drivers, printers or live AI"
+}

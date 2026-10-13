@@ -13,13 +13,21 @@ def main():
     status,s=api('snapshot',{},token);assert status==200,s;s=s['snapshot'];assert s['offline_policy']['version']==180 and s['offline_policy']['allowed'];assert {u['id'] for u in s['users']}=={202}
     assert s['cash_state']['register']['device_id']==did
     passed('snapshot uses the existing assigned active users and the authorized principal register')
+    second=secrets.token_hex(32);otherhash=hashlib.sha256(second.encode()).hexdigest();sql('INSERT INTO fisitaap_r2_devices(tenant_id,branch_id,name,token_hash) VALUES(101,301,"SECOND CATALOG QA",?)',[otherhash]);secondid=sql('SELECT id FROM fisitaap_r2_devices WHERE token_hash=?',[otherhash])[0]['id'];sql('INSERT INTO fisitaap_registers180(tenant_id,branch_id,name,device_id,user_id) VALUES(101,301,"SECOND CATALOG BOX",?,202)',[secondid]);_,other=api('snapshot',{},second)
+    a=json.loads(sql('SELECT data FROM fisitaap_r2_snapshots WHERE id=?',[s['id']])[0]['data']);b=json.loads(sql('SELECT data FROM fisitaap_r2_snapshots WHERE id=?',[other['snapshot']['id']])[0]['data']);assert 'products' not in a and 'customers' not in a;assert a['blob_refs180']==b['blob_refs180'];assert len(sql('SELECT hash FROM fisitaap_catalog_blobs180 WHERE hash IN(?,?)',list(a['blob_refs180'].values())))==2
+    if len(s['products'])>=1000:assert len(json.dumps(a))<len(json.dumps(s))*.2
+    passed('two assigned boxes reuse one product list and one client list while keeping their device authorizations separate')
+
     sid=s['id'];before=len(sql('SELECT id FROM fisitaap_r2_snapshots WHERE device_id=?',[did]));sql('UPDATE product_inventory SET quantity=quantity+1 WHERE product_id=501 AND branch_id=301')
     status,fresh=api('snapshot',{},token);assert status==200 and fresh['snapshot']['id']==sid;assert len(sql('SELECT id FROM fisitaap_r2_snapshots WHERE device_id=?',[did]))==before
     p=lambda snap:next(x for x in snap['products'] if x['id']==501)
     assert p(fresh['snapshot'])['stock']==p(s)['stock']+1000
     passed('stock changes update the response without storing another full catalog')
+    _,delta=api('snapshot',{'known_snapshot_id':sid},token);assert 'snapshot' not in delta and delta['snapshot_delta180']['id']==sid;assert delta['snapshot_delta180']['stocks'][str(501)]==p(fresh['snapshot'])['stock'];assert not any(key in delta['snapshot_delta180'] for key in ['products','users','customers']);
+    if len(s['products'])>=1000:assert len(json.dumps(delta))<len(json.dumps(s))*.2
+    passed('an unchanged catalog returns only current stock and cash metadata, without downloading client lists or password hashes again')
     oldprice=sql('SELECT price FROM products WHERE id=501')[0]['price'];sql('UPDATE products SET price=price+1 WHERE id=501')
-    status,changed=api('snapshot',{},token);assert status==200 and changed['snapshot']['id']!=sid;sql('UPDATE products SET price=? WHERE id=501',[oldprice])
+    status,changed=api('snapshot',{'known_snapshot_id':sid},token);assert status==200 and 'snapshot_delta180' not in changed and changed['snapshot']['id']!=sid;sql('UPDATE products SET price=? WHERE id=501',[oldprice])
     passed('price changes create a new immutable catalog while the old pending-sale catalog remains available')
     _,html=request('owner','/admin/turnos');ctx=json.loads(re.search(r'window.FISITAAP180=(\{[^<]+\})</script>',html)[1]);_,proof=api('web-session',{'nonce':ctx['nonce'],'user_id':202},token)
     assert proof['cash'] and proof['cash_state']['device_id']==did

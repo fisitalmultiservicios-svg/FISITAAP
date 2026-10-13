@@ -1,0 +1,13 @@
+{
+  "passed": 7,
+  "checks": [
+    "a secondary Android cannot open an offline shift; approved users and register are selected from its actual assignment",
+    "the principal Android searches and sells without internet, saves once and sends the configured receipt without opening a preview",
+    "restart preserves the pending sale, its stock and shared shift",
+    "uncertain storage failures keep the prior sale intact and do not invite a duplicate charge",
+    "repeated reconnection receives the pending sale exactly once and reconciles stock",
+    "the shared Android shift closes and synchronizes with the same cash total and no JavaScript errors",
+    "Android offline logout returns to its approved-user login without a public landing page or raw JSON"
+  ],
+  "environment": "actual bundled JS/UI plus real PHP/MariaDB; native bridge substitute; encryption/CAS/printing tested separately with Android JUnit; no physical Android"
+}

@@ -1,0 +1,11 @@
+{
+  "passed": 5,
+  "checks": [
+    "foreign reward products, foreign branches and percentages over 100 cannot become a program",
+    "two partial payments below the point threshold earn the correct cumulative point on the same account",
+    "the generated reward can be redeemed once and its repeat produces no second ledger event",
+    "splitting one customer account never multiplies the number of purchases for a reward",
+    "the owner can follow points, canje and reward history from the client card and the built-in manual"
+  ],
+  "environment": "isolated real PHP/MariaDB HTTP; virtual fixture customers"
+}

@@ -18,6 +18,7 @@ require_once __DIR__.'/orders180.php';
 require_once __DIR__.'/reports180.php';
 require_once __DIR__.'/settings180.php';
 require_once __DIR__.'/loyalty180.php';
+require_once __DIR__.'/kpis180.php';
 
 function qa180_ui_context(App $app):array {
     $user=current_user();$context=['base'=>url(),'enabled'=>true,'user_id'=>(int)($user['id']??0),'nonce'=>$_SESSION['native_nonce180']??null,'native'=>null];
@@ -41,8 +42,11 @@ function qa180_activate(App $app):void {
     if(is_post()){
         verify_csrf();try{
             if(($_POST['backup']??'')!=='yes')throw new DomainException('Confirma el respaldo y la actualización de las cajas.');
-            if($app->one('SELECT id FROM pos_shifts WHERE status="open" LIMIT 1'))throw new DomainException('Cierra y sincroniza todos los turnos antes de activar la actualización.');
-            if($app->one('SELECT t.id FROM pos_tickets t JOIN pos_ticket_items i ON i.ticket_id=t.id WHERE t.status NOT IN("paid","void","merged") LIMIT 1'))throw new DomainException('Cobra o cancela las cuentas con productos antes de activar, para actualizar las opciones de catálogo con seguridad.');
+            $demoTable=$app->one('SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME="fisitaap_demo_sessions"');
+            $real=$demoTable?' AND NOT EXISTS(SELECT 1 FROM fisitaap_demo_sessions d WHERE d.tenant_id=s.tenant_id)':'';
+            if($app->one('SELECT s.id FROM pos_shifts s WHERE s.status="open"'.$real.' LIMIT 1'))throw new DomainException('Cierra y sincroniza todos los turnos antes de activar la actualización.');
+            $real=$demoTable?' AND NOT EXISTS(SELECT 1 FROM fisitaap_demo_sessions d WHERE d.tenant_id=t.tenant_id)':'';
+            if($app->one('SELECT t.id FROM pos_tickets t JOIN pos_ticket_items i ON i.ticket_id=t.id WHERE t.status NOT IN("paid","void","merged")'.$real.' LIMIT 1'))throw new DomainException('Cobra o cancela las cuentas con productos antes de activar, para actualizar las opciones de catálogo con seguridad.');
             schema180($app);
             qa180_modifiers_upgrade($app);
             qa180_register_upgrade($app);
@@ -59,7 +63,7 @@ function qa180_activate(App $app):void {
 function qa180_dispatch(App $app,string $path):void {
     if($path==='master/actualizar-180'){qa180_activate($app);exit;}
     if(!qa180_active($app))return;
-    if(preg_match('~(?:^|/)blog(?:/|$)~',$path)){http_response_code(404);simple_error('Página no disponible','Vuelve al catálogo o al inicio.');exit;}
+    if(preg_match('~(?:^|/)blog(?:/|$)|^(?:admin|master)/posts(?:/|$)~',$path)){http_response_code(404);simple_error('Página no disponible','Vuelve al catálogo o al inicio.');exit;}
     if($path==='logout'){
         if(!is_post())redirect(url('owner-login'));verify_csrf();$user=current_user();if($user)audit($app,$user['tenant_id']?(int)$user['tenant_id']:null,(int)$user['id'],'logout','user',(int)$user['id']);$_SESSION=[];session_regenerate_id(true);redirect(url('owner-login'));
     }
@@ -91,7 +95,7 @@ function qa180_dispatch(App $app,string $path):void {
         elseif($section==='configuracion')qa180_settings($app,$user,$tenant);
         elseif($section==='contenido')qa180_design($app,$user,$tenant);
         elseif($section==='reportes')qa180_reports($app,$user,$tenant);
-        elseif($section==='kpis')tenant_dashboard($app,$user,$tenant);
+        elseif($section==='kpis')qa180_kpis($app,$user,$tenant);
         elseif(in_array($section,['clientes','clientes-crear','clientes-buscar','clientes-historial','credito'],true))qa180_customers($app,$user,$tenant,$section);
         elseif(in_array($section,['extras','opcionales'],true))qa180_modifiers($app,$user,$tenant,$section==='extras'?'extra':'optional');
         elseif(in_array($section,['producto-extras','categoria-extras'],true))qa180_modifier_assignment($app,$user,$tenant,$section==='categoria-extras');

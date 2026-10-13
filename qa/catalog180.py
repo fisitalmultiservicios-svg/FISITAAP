@@ -6,6 +6,7 @@ checks=[]
 def passed(message):checks.append(message);print('PASS',message,flush=True)
 def post(path,data):return request('owner',path,{'csrf':csrf('owner',path),**data})
 def main():
+    assert request('owner','/admin/posts')[0]==404 and request('master','/master/posts')[0]==404
     suffix=secrets.token_hex(4);name='QA Cheese '+suffix
     post('/admin/extras',{'action':'save','name':name,'price':75,'categories[]':401})
     mod=sql('SELECT * FROM fisitaap_r2_modifiers WHERE tenant_id=101 AND name=?',[name]);assert len(mod)==1 and json.loads(mod[0]['choices_json'])==[{'name':name,'price':75}]

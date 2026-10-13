@@ -34,6 +34,17 @@ public class OfflineStorageTest {
         try(OfflineStorage store=new OfflineStorage(context,failing)){assertFalse(new JSONObject(store.commit(state,1)).getBoolean("ok"));assertEquals(1,new JSONObject(store.read()).getLong("revision"));assertEquals(state,new JSONObject(store.read()).getString("state"));}
     }
     @Test public void fingerprintUsesStandardSha256() {try(OfflineStorage store=new OfflineStorage(context,codec)){assertEquals("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",store.digest("abc"));}}
+    @Test public void largeCatalogIsStoredOnceAndBackupIncludesItsCompleteContents() throws Exception {
+        org.json.JSONArray products=new org.json.JSONArray();for(int i=0;i<1000;i++)products.put(new JSONObject().put("id",i+1).put("name","Product "+i).put("stock",1000).put("components",new org.json.JSONArray().put(new JSONObject().put("id",2000+i).put("stock",1000))));
+        JSONObject snapshot=new JSONObject().put("id","first").put("products",products).put("offline_policy",new JSONObject().put("allowed",true)),state=new JSONObject().put("version",1).put("sales",new org.json.JSONArray().put(new JSONObject().put("id","pending"))).put("shifts",new org.json.JSONArray()).put("snapshot",snapshot);
+        try(OfflineStorage store=new OfflineStorage(context,codec)){
+            assertTrue(new JSONObject(store.commit(state.toString(),0)).getBoolean("ok"));snapshot.put("id","second").put("generated_at","later");products.getJSONObject(0).put("stock",900).getJSONArray("components").getJSONObject(0).put("stock",800);snapshot.getJSONObject("offline_policy").put("allowed",false);assertTrue(new JSONObject(store.commit(state.toString(),1)).getBoolean("ok"));
+            try(android.database.Cursor row=store.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM catalogs180",null)){assertTrue(row.moveToFirst());assertEquals(1,row.getInt(0));}
+            JSONObject saved=new JSONObject(new JSONObject(store.read()).getString("state"));assertEquals(1000,saved.getJSONObject("snapshot").getJSONArray("products").length());assertEquals(900,saved.getJSONObject("snapshot").getJSONArray("products").getJSONObject(0).getInt("stock"));assertEquals(1,new JSONObject(store.pending()).getInt("pending"));assertTrue(new JSONObject(store.backup()).getBoolean("ok"));
+            try(android.database.Cursor row=store.getReadableDatabase().rawQuery("SELECT data FROM backups ORDER BY id DESC LIMIT 1",null)){assertTrue(row.moveToFirst());JSONObject backup=new JSONObject(codec.open(row.getBlob(0)));assertFalse(backup.has("storage180"));assertEquals(1000,backup.getJSONObject("snapshot").getJSONArray("products").length());assertEquals("pending",backup.getJSONArray("sales").getJSONObject(0).getString("id"));}
+        }
+        try(OfflineStorage store=new OfflineStorage(context,codec)){assertEquals("second",new JSONObject(new JSONObject(store.read()).getString("state")).getJSONObject("snapshot").getString("id"));}
+    }
     @Test public void metadataMigrationPreservesEncryptedJournalAndPendingCount() throws Exception {
         String state="{\"version\":1,\"sales\":[{\"id\":\"pending\"},{\"id\":\"received\",\"synced\":true}],\"shifts\":[]}";
         try(android.database.sqlite.SQLiteDatabase db=context.openOrCreateDatabase("offline179.db",0,null)){

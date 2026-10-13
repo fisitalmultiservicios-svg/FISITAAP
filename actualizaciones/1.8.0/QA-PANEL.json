@@ -1,0 +1,11 @@
+{
+  "passed": 5,
+  "checks": [
+    "the inbox displays full escaped messages, changes status and isolates store/platform contacts",
+    "human audit contains actual contact actions while reading it adds no technical noise",
+    "the master controls the shared welcome screen and the owner cannot alter it",
+    "the owner AI context selects the same branch as the operational panel",
+    "expired logout stays human-readable and valid web logout returns to the business login"
+  ],
+  "environment": "fictional PHP/MariaDB HTTP; branch helper actual code; no live AI or real contacts"
+}

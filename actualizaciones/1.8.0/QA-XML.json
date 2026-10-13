@@ -1,0 +1,11 @@
+{
+  "passed": 5,
+  "checks": [
+    "XML 4.4 multipart upload detects an existing supplier by normalized ID and saves a mapped-SKU draft without stock or debt effects",
+    "applying the XML receives stock, new cost and payable exactly once across a retry",
+    "an approved new XML supplier and missing SKU can be created alongside an existing product, with initial plus received stock and branch availability",
+    "a second-tab XML replacement cannot silently save a different invoice under the first invoice operation key",
+    "external-entity XML is rejected before parsing or contacting an external endpoint"
+  ],
+  "environment": "real multipart HTTP plus PHP/MariaDB fictional invoices; no real suppliers or tax services"
+}

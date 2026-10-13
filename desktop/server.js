@@ -9,6 +9,14 @@ const jsonClone=value=>structuredClone(value);
 const integer=(value,min=0,max=99999999999)=>{if(!Number.isSafeInteger(value)||value<min||value>max)throw new Error('Revisa las cantidades y los importes.');return value;};
 const uuid=value=>{if(!/^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/.test(value||''))throw new Error('Identificador de operación no válido.');return value;};
 const round=value=>Math.floor(value+0.5);
+function snapshotResponse(current,response){
+  if(response.snapshot){if(current&&(response.snapshot.tenant?.id!==current.tenant.id||response.snapshot.branch?.id!==current.branch.id))throw new Error('El catálogo no corresponde a esta caja. Se conservaron los datos locales.');return response.snapshot;}
+  const delta=response.snapshot_delta180;
+  if(!current||!delta||delta.id!==current.id||delta.tenant_id!==current.tenant.id||delta.branch_id!==current.branch.id||!delta.stocks||Array.isArray(delta.stocks))throw new Error('La actualización del catálogo no corresponde a esta caja. Se conservaron los datos locales.');
+  const next=jsonClone(current),stock=id=>{const value=delta.stocks[String(id)];if(!Object.hasOwn(delta.stocks,String(id))||!Number.isSafeInteger(value))throw new Error('Faltan existencias válidas en la actualización. Se conservó el catálogo anterior.');return value;};
+  for(const product of next.products){product.stock=stock(product.id);for(const component of product.components)component.stock=stock(component.id);}
+  next.generated_at=delta.generated_at;next.cash_state=delta.cash_state;next.offline_policy=delta.offline_policy;return next;
+}
 function quote(snapshot,items,at=Date.now(),discount=0){
   if(!Array.isArray(items)||!items.length||items.length>100)throw new Error('Agrega entre 1 y 100 líneas.');
   let net=0,tax=0;const stock={},lines=[];
@@ -52,19 +60,7 @@ function adoptCashState(next,state){
 function expectedCash(state,shift){
   return shift.opening_cash+(shift.server_cash_net||0)+state.sales.filter(x=>x.shift_id===shift.id&&!(x.webSale&&x.webSale<=(shift.confirmed_max||0))).reduce((sum,x)=>sum+x.cashApplied,0);
 }
-class LocalStore {
-  constructor(dir){
-    this.dir=dir;fs.mkdirSync(dir,{recursive:true,mode:0o700});fs.mkdirSync(path.join(dir,'backups'),{recursive:true,mode:0o700});this.file=path.join(dir,'operaciones.json');
-    this.data=fs.existsSync(this.file)?JSON.parse(fs.readFileSync(this.file,'utf8')):{version:1,connection:null,snapshot:null,stocks:{},sales:[],shifts:[],lastSync:null,syncMessage:'Conecta primero el equipo central.'};
-    if(this.data.version!==1||!Array.isArray(this.data.sales)||!Array.isArray(this.data.shifts))throw new Error('El archivo de operaciones necesita revisión. Se conservó sin cambios.');
-  }
-  commit(next){
-    const serialized=JSON.stringify(next),temp=this.file+'.nuevo';let fd;
-    try{fd=fs.openSync(temp,'w',0o600);fs.writeFileSync(fd,serialized);fs.fsyncSync(fd);fs.closeSync(fd);fd=null;fs.renameSync(temp,this.file);try{const d=fs.openSync(this.dir,'r');fs.fsyncSync(d);fs.closeSync(d);}catch{}this.data=next;}
-    finally{if(fd!==null&&fd!==undefined)fs.closeSync(fd);}
-  }
-  backup(){const target=path.join(this.dir,'backups','FISITAAP-'+new Date().toISOString().replace(/[:.]/g,'-')+'.json');fs.copyFileSync(this.file,target);fs.chmodSync(target,0o600);return target;}
-}
+const {LocalStore}=require('./local-store');
 async function createLocalServer(options){
   const store=new LocalStore(options.dataDir),codec=options.tokenCodec||{encode:v=>v,decode:v=>v};
   const nativeSecret=crypto.randomBytes(32).toString('hex');let nativeCookie='';
@@ -97,6 +93,7 @@ async function createLocalServer(options){
     let out;try{out=await response.json();}catch{throw invalid();}
     if(!out||typeof out!=='object'||Array.isArray(out)||typeof out.ok!=='boolean')throw invalid();
     if(!response.ok||!out.ok)throw Object.assign(new Error(typeof out.error==='string'?out.error.slice(0,500):'No se pudo conectar con la web.'),{status:response.status});
+    if(action==='snapshot')out={...out,snapshot:snapshotResponse(store.data.snapshot,out)};
     if(action==='pair'||action==='snapshot'){
       const snap=out.snapshot;
       if(!snap||typeof snap.id!=='string'||!snap.id||!snap.tenant||!snap.branch||!['products','users','categories','customers'].every(key=>Array.isArray(snap[key]))||!snap.products.every(p=>p&&Array.isArray(p.components))||(action==='pair'&&(typeof out.token!=='string'||!out.token)))throw new Error('La web devolvió datos incompletos. Comprueba que la actualización web esté instalada y vuelve a conectar.');
@@ -127,7 +124,7 @@ async function createLocalServer(options){
       next.lastSync=new Date().toISOString();next.syncMessage=out.errors?.length?'Hay operaciones pendientes que necesitan revisión.':'Conexión activa. Ventas recibidas por la web.';store.commit(next);
       // Refresh only after pending sales were accepted. Never overwrite local sales created during a request.
       if(!store.data.sales.some(s=>!s.synced)){
-        const fresh=await remote('snapshot',{});next=jsonClone(store.data);const snap=fresh.snapshot;const stocks={};
+        const fresh=await remote('snapshot',{known_snapshot_id:store.data.snapshot.id});next=jsonClone(store.data);const snap=fresh.snapshot;const stocks={};
         for(const p of snap.products){stocks[p.id]=p.stock;for(const c of p.components)stocks[c.id]=c.stock;}
         for(const sale of next.sales.filter(s=>!s.synced))for(const [id,qty]of Object.entries(sale.stock))stocks[id]=(stocks[id]||0)-qty;
         next.snapshot=snap;next.stocks=stocks;if(snap.cash_state)adoptCashState(next,snap.cash_state);store.commit(next);
@@ -236,7 +233,7 @@ async function createLocalServer(options){
       if(req.method!=='GET')return send(res,405,{ok:false,error:'Método no disponible.'});
       if(pathname==='/api/setup'){return send(res,200,{ok:true,configured:!!store.data.snapshot,canPair:loopback(req),primary:primaryAllowed()&&loopback(req),secondary:!loopback(req),webUrl:store.data.connection?.url||null,pending:store.data.sales.filter(s=>!s.synced).length,register:store.data.snapshot?.cash_state?.register?.name||null,users:store.data.snapshot?.users.map(u=>({id:u.id,name:u.name}))||[]});}
       if(pathname==='/api/state'){
-        const s=auth(req);const snap=jsonClone(store.data.snapshot);delete snap.users;if(snap.offline_policy)snap.offline_policy.allowed=primaryAllowed();
+        const s=auth(req);const snap=jsonClone(store.data.snapshot);delete snap.users;for(const p of snap.products||[]){delete p.cost;delete p.cost_cents;for(const c of p.components||[]){delete c.cost;delete c.cost_cents;}}if(snap.offline_policy)snap.offline_policy.allowed=primaryAllowed();
         if(snap.offline_policy)snap.offline_policy.allowed=primaryAllowed()&&loopback(req);
         return send(res,200,{ok:true,snapshot:snap,stocks:store.data.stocks,user:{...s.user,permissions:store.data.snapshot.users.find(x=>x.id===s.user.id)?.permissions||{}},register:s.register,csrf:s.csrf,shift:(()=>{const shift=store.data.shifts.find(x=>x.user_id===s.user.id&&x.register===s.register&&!x.closed_at);return shift?{...shift,expected_cash:expectedCash(store.data,shift)}:null;})(),sales:store.data.sales.filter(x=>x.user_id===s.user.id&&x.register===s.register).slice(-100).reverse().map(x=>({id:x.id,created_at:x.created_at,total:x.quote.total,synced:x.synced,error:x.error,conflicts:x.conflicts,quote:x.quote,change:x.change})),pending:store.data.sales.filter(s=>!s.synced).length,primary:primaryAllowed(),releasePending:!!store.data.releasePending,webPayments:(store.data.webPayments||[]).length,lastSync:store.data.lastSync,syncMessage:store.data.syncMessage,addresses:interfaces.map(ip=>'http://'+ip+':'+port),canManage:loopback(req)});
       }
@@ -279,4 +276,4 @@ async function createLocalServer(options){
   };
   return {trackWebPayment,flushPrint,setPrinter:handler=>{printHandler=handler;},url:'http://127.0.0.1:'+port,port,store,sync,authorize,localRequest,isPrincipal:primaryAllowed,close:()=>{clearInterval(timer);server.close();},server};
 }
-module.exports={createLocalServer,LocalStore,quote,adoptCashState,expectedCash};
+module.exports={createLocalServer,LocalStore,quote,adoptCashState,expectedCash,snapshotResponse};

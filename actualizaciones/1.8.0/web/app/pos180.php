@@ -37,3 +37,7 @@ function qa180_open_hash(array $user,array $branch,string $type,?int $table,arra
 function qa180_open_record(App $app,array $tenant,array $branch,array $user,string $key,string $hash,int $id):void {
     $app->exec('INSERT INTO fisitaap_operations180(tenant_id,branch_id,user_id,operation_key,payload_hash,kind,result_id) VALUES(?,?,?,?,?,"account_open",?)',[$tenant['id'],$branch['id'],$user['id'],$key,$hash,$id]);
 }
+
+function qa180_item_display(array $items):array {
+    foreach($items as &$item)unset($item['unit_cost']);unset($item);return $items;
+}

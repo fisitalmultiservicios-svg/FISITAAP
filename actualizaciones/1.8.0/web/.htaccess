@@ -6,6 +6,7 @@ RewriteRule ^ https://fisitaap.com%{REQUEST_URI} [R=301,L]
 RewriteCond %{REQUEST_METHOD} ^(?:TRACE|TRACK)$ [NC]
 RewriteRule ^ - [F,L]
 RewriteRule (^|/)\.(?!well-known(?:/|$)) - [F,L]
+RewriteRule ^actualizador-180/(?:payload|backups)(?:/|$) - [F,L]
 RewriteRule ^(?:uploads-respaldo|app|database|actualizaciones|upgrade/(?:backups|package))(?:/|$) - [F,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

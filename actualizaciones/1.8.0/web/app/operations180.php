@@ -46,7 +46,7 @@ function qa180_bind(App $app):never {
         $claims=json_decode((string)hex2bin($parts[0]),true,32,JSON_THROW_ON_ERROR);
         if($claims['expires']<time()||$claims['user']!==(int)$user['id']||$claims['tenant']!==(int)$user['tenant_id']||!hash_equals((string)($_SESSION['native_nonce180']??''),(string)$claims['nonce']))throw new DomainException('La autorización venció o pertenece a otra sesión.');
         $_SESSION['native180']=$claims+['session_expires'=>time()+900];
-        $_SESSION['physical_branch'][(int)$user['tenant_id']]=(int)$claims['branch'];
+        if(empty($_SESSION['physical_branch'][(int)$user['tenant_id']]))$_SESSION['physical_branch'][(int)$user['tenant_id']]=(int)$claims['branch'];
         $register=qa180_native($app,$user,true,'print');$app->exec('INSERT INTO fisitaap_operations180(tenant_id,branch_id,user_id,operation_key,payload_hash,kind,result_id) VALUES(?,?,?,?,?,"native_binding",?) ON DUPLICATE KEY UPDATE result_id=VALUES(result_id),branch_id=VALUES(branch_id),created_at=NOW()',[$user['tenant_id'],$register['branch_id'],$user['id'],substr(hash('sha256','native|'.$claims['nonce']),0,32),hash('sha256',$claims['nonce']),$register['device_id']]);json_response(['ok'=>true,'cash'=>(bool)($claims['cash']??false),'register'=>$register['name'],'device_id'=>(int)$register['device_id'],'branch_id'=>(int)$register['branch_id']]);
     }catch(Throwable $error){unset($_SESSION['native180']);json_response(['ok'=>false,'error'=>$error instanceof PDOException?'No se pudo comprobar el equipo.':$error->getMessage()],403);}
 }

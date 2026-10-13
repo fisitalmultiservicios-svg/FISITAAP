@@ -6,7 +6,7 @@ if (!isset($app)) exit;
 if (request_path()==='api/desktop/status' && ($_SERVER['REQUEST_METHOD']??'GET')==='GET') {
     header('Cache-Control: no-store, max-age=0');
     if ($app->setting('restructure_r2_active','0')!=='1') json_response(['ok'=>false,'error'=>'La actualización de cajas todavía no está activa.'],503);
-    json_response(['ok'=>true,'system'=>'fisitaap','desktop_protocol'=>1,'version'=>'1.7.9']);
+    json_response(['ok'=>true,'system'=>'fisitaap','desktop_protocol'=>1,'version'=>$app->setting('qa180_active','0')==='1'?'1.8.0':'1.7.9']);
 }
 require_once __DIR__.'/app/admin.php';
 require_once __DIR__.'/app/v1.php';

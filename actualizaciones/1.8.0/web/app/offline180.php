@@ -36,7 +36,7 @@ function qa180_snapshot_save(App $app,array $device,array $snapshot):array {
     $stored=$canonical+['id'=>$snapshot['id'],'generated_at'=>$snapshot['generated_at']];
     // Stock and cash counters are current response overlays. They do not
     // duplicate a complete immutable price/catalog copy for every sale.
-    $app->exec('INSERT INTO fisitaap_r2_snapshots(id,device_id,data,catalog_hash180) VALUES(?,?,?,?)',[$snapshot['id'],$device['id'],json_encode($stored,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR),$hash]);return $snapshot;
+    $stored=qa180_snapshot_pack($app,$stored);$app->exec('INSERT INTO fisitaap_r2_snapshots(id,device_id,data,catalog_hash180) VALUES(?,?,?,?)',[$snapshot['id'],$device['id'],json_encode($stored,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR),$hash]);return $snapshot;
 }
 function qa180_sync_shift(App $app,array $device,array $meta,array $snapshot):void {
     $uuid=(string)$meta['id'];$uid=(int)$meta['user_id'];$opening=(int)r2_number($meta['opening_cash']??0,0,99999999999);$opened=strtotime((string)($meta['opened_at']??''));
@@ -79,4 +79,14 @@ function qa180_web_payment_status(App $app,array $device,array $data):array {
         }
         $app->db->commit();return ['ok'=>true,'payments'=>$results];
     }catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();throw $error;}
+}
+
+function qa180_snapshot_pack(App $app,array $snapshot):array {
+    $refs=[];foreach(['products','customers'] as $kind){$raw=json_encode($snapshot[$kind],JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR);$branch=$kind==='products'?(int)$snapshot['branch']['id']:null;$hash=hash('sha256',$snapshot['tenant']['id'].'|'.($branch??0).'|'.$kind.'|'.$raw);$app->exec('INSERT IGNORE INTO fisitaap_catalog_blobs180(hash,tenant_id,branch_id,kind,data) VALUES(?,?,?,?,?)',[$hash,$snapshot['tenant']['id'],$branch,$kind,$raw]);$refs[$kind]=$hash;unset($snapshot[$kind]);}$snapshot['blob_refs180']=$refs;return $snapshot;
+}
+function qa180_snapshot_data(App $app,string $text):array {
+    $snapshot=json_decode($text,true,512,JSON_THROW_ON_ERROR);if(empty($snapshot['blob_refs180']))return $snapshot;
+    foreach(['products','customers'] as $kind){$hash=(string)($snapshot['blob_refs180'][$kind]??'');if(!preg_match('/^[a-f0-9]{64}$/D',$hash))throw new DomainException('El catálogo de esta operación necesita revisión. Se conservaron sus datos.');$tenant=(int)$snapshot['tenant']['id'];$branch=$kind==='products'?(int)$snapshot['branch']['id']:null;
+        $snapshot[$kind]=$app->cached('catalog-blob180:'.$tenant.':'.($branch??0).':'.$kind.':'.$hash,function()use($app,$hash,$tenant,$branch,$kind){$row=$app->one('SELECT data FROM fisitaap_catalog_blobs180 WHERE hash=? AND tenant_id=? AND kind=? AND branch_id<=>?',[$hash,$tenant,$kind,$branch]);if(!$row||!hash_equals($hash,hash('sha256',$tenant.'|'.($branch??0).'|'.$kind.'|'.$row['data'])))throw new DomainException('Falta una versión del catálogo. Conserva el respaldo y las ventas pendientes.');return json_decode($row['data'],true,512,JSON_THROW_ON_ERROR);});
+    }unset($snapshot['blob_refs180']);return $snapshot;
 }

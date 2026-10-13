@@ -1,0 +1,7 @@
+{
+  "passed": 1,
+  "checks": [
+    "native binding preserves an explicitly selected administration branch while keeping cash restricted to the assigned physical register branch"
+  ],
+  "environment": "real fictional PHP/MariaDB HTTP native proof; no production"
+}

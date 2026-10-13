@@ -155,6 +155,7 @@ function fisichat_text(array $r):string{
     return trim(implode("\n",$parts))?:'No pude generar una respuesta.';
 }
 function fisichat_branch(App $app,array $tenant,array $user):array{
+    if(function_exists('qa180_active')&&qa180_active($app))return physical_branch_v14($app,$tenant);
     $bid=(int)($_SESSION['physical_branch_id']??$_SESSION['branch_id']??0);
     if($bid){$b=$app->one('SELECT * FROM branches WHERE id=? AND tenant_id=? AND is_active=1',[$bid,$tenant['id']]);if($b)return $b;}
     return $app->one('SELECT * FROM branches WHERE tenant_id=? AND is_active=1 ORDER BY is_default DESC,id LIMIT 1',[$tenant['id']])?:['id'=>0,'name'=>'Principal'];

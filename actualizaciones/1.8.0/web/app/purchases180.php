@@ -40,6 +40,8 @@ function qa180_purchase_data(App $app,array $tenant,array $input,?array $xml):ar
 }
 function qa180_save_draft(App $app,array $user,array $tenant,array $branch,array $input,?array $xml):int {
     qa180_permission($app,$user,'compras','write');$key=(string)($input['purchase_key']??'');if(!preg_match('/^[a-f0-9]{32,64}$/D',$key))throw new DomainException('Recarga el formulario de compra.');
+    if($xml&&(!isset($xml['key'])||!hash_equals((string)$xml['key'],$key)))throw new DomainException('El XML cambió en otra pestaña. Vuelve a cargar y revisar la factura antes de guardar.');
+    if(!empty($input['create_supplier']))qa180_permission($app,$user,'proveedores','write');
     $app->db->beginTransaction();try{
         $app->one('SELECT id FROM branches WHERE id=? AND tenant_id=? AND is_active=1 FOR UPDATE',[$branch['id'],$tenant['id']]);
         $old=$app->one('SELECT * FROM fisitaap_purchase_drafts180 WHERE tenant_id=? AND operation_key=? FOR UPDATE',[$tenant['id'],$key]);
@@ -63,11 +65,13 @@ function qa180_apply_purchase(App $app,array $user,array $tenant,int $draftId,in
         if($draft['status']!=='draft'||(int)$draft['revision']!==$revision)throw new DomainException('El borrador cambió. Ábrelo y revisa la nueva versión antes de aplicar.');
         $data=json_decode($draft['data'],true,512,JSON_THROW_ON_ERROR);$created=[];$app->one('SELECT id FROM tenants WHERE id=? FOR UPDATE',[$tenant['id']]);
         foreach($data['lines'] as &$line)if(!empty($line['new'])){
+            qa180_permission($app,$user,'productos','write');
             $spec=$line['new'];$sku=$spec['sku'];
             if(isset($created[$sku])){if($created[$sku]['spec']!==$spec)throw new DomainException('Dos líneas usan el mismo SKU con datos de producto diferentes.');$line['product_id']=$created[$sku]['id'];unset($line['new']);continue;}
             if($app->one('SELECT id FROM products WHERE tenant_id=? AND sku=?',[$tenant['id'],$sku]))throw new DomainException('El SKU '.$sku.' ya existe. Edita el borrador y enlaza su producto.');
             if(!$app->one('SELECT id FROM categories WHERE id=? AND tenant_id=?',[$spec['category_id'],$tenant['id']]))throw new DomainException('La categoría del producto nuevo ya no está disponible.');
             $app->exec('INSERT INTO products(tenant_id,category_id,name,slug,sku,price,cost,tax_rate,product_type,track_inventory,status) VALUES(?,?,?,?,?,?,?,?,"simple",1,"active")',[$tenant['id'],$spec['category_id'],$spec['name'],slugify($spec['name']).'-'.bin2hex(random_bytes(3)),$sku,$spec['price'],$line['unit_cost'],$spec['tax_rate']]);$pid=(int)$app->db->lastInsertId();
+            $app->exec('INSERT INTO branch_products(branch_id,product_id,is_active) VALUES(?,?,1)',[$branch['id'],$pid]);
             $created[$sku]=['id'=>$pid,'spec'=>$spec];$line['product_id']=$pid;
             if($spec['initial_stock']>0)stock_change_v14($app,(int)$tenant['id'],(int)$branch['id'],$pid,(float)$spec['initial_stock'],'adjustment','purchase_draft',$draftId,(int)$user['id'],'Existencia inicial anterior a la compra',(float)$line['unit_cost']);
             unset($line['new']);

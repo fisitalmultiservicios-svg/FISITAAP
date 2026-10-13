@@ -94,7 +94,7 @@ function e(mixed $value): string { return htmlspecialchars((string)$value, ENT_Q
 function ui_label_qa(string $value):string{return ['new'=>'Nuevo','open'=>'Abierto','closed'=>'Cerrado','suspended'=>'En espera','payment'=>'En cobro','pending'=>'Pendiente','paid'=>'Pagado','partial'=>'Pago parcial','completed'=>'Completado','credit'=>'A crédito','confirmed'=>'Confirmado','preparing'=>'En preparación','ready'=>'Listo','available'=>'Disponible','assigned'=>'Asignado','arrived'=>'En el negocio','picked_up'=>'Recogido','in_transit'=>'En camino','delivered'=>'Entregado','issue'=>'Incidencia','cancelled'=>'Cancelado','expired'=>'Vencido','pending_store'=>'Esperando aprobación del negocio','pending_driver'=>'Esperando aceptación del motorizado','paused'=>'Pausado','rejected'=>'Rechazado','blocked'=>'Bloqueado','active'=>'Activo','hidden'=>'Oculto','sold_out'=>'Agotado','tenant_admin'=>'Dueño de tienda','manager'=>'Gestor','editor'=>'Editor','kitchen'=>'Cocina','cashier'=>'Cajero','published'=>'Publicado','draft'=>'Borrador','Mon'=>'Lun','Tue'=>'Mar','Wed'=>'Mié','Thu'=>'Jue','Fri'=>'Vie','Sat'=>'Sáb','Sun'=>'Dom'][$value]??$value;}
 function money(float $value): string { return '₡' . number_format($value, 2, ',', ' '); }
 function public_media_url(?string $value,?string $fallback=null):string {
-    $fallback??=url('assets/placeholder.svg');$value=trim((string)$value);
+    $fallback??=url('assets/product-placeholder.svg');$value=trim((string)$value);
     if($value==='')return $fallback;if(str_starts_with($value,'data:'))return $value;
     $parts=parse_url($value);if($parts===false)return $fallback;
     $relative=media_relative_path($value);
@@ -249,7 +249,7 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false)
     global $app;$primary = $admin ? '#203f57' : ($tenant['primary_color'] ?? ($app instanceof App?$app->setting('platform_primary_color','#1f7a45'):'#1f7a45'));
     $accent = $admin ? '#dce7ee' : ($tenant['accent_color'] ?? ($app instanceof App?$app->setting('platform_accent_color','#dfe9c8'):'#dfe9c8'));
     $name = $tenant['name'] ?? ($app instanceof App?$app->setting('site_name','FISITAPP'):'FISITAPP');
-    $cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-179m2';
+    $cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';
     header('Cache-Control: private, no-store, max-age=0');
     header('Pragma: no-cache');
     $bridgeConnect=in_array(request_path(),['admin/recibo','admin/impresion'],true)?' http://127.0.0.1:18765':'';
@@ -269,13 +269,13 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false)
     if(function_exists('r2_active') && r2_active($app) && $r2Screen) echo '<link rel="stylesheet" href="'.url('assets/restructure-r2.css?v='.rawurlencode($cacheVersion)).'"><script src="'.url('assets/restructure-r2.js?v='.rawurlencode($cacheVersion)).'" defer></script>';
     if(function_exists('r3_active') && r3_active($app) && $r3Screen) echo '<link rel="stylesheet" href="'.url('assets/pdf-r3.css?v='.rawurlencode($cacheVersion)).'"><script src="'.url('assets/pdf-r3.js?v='.rawurlencode($cacheVersion)).'" defer></script>';
     if($admin)echo '<link rel="stylesheet" href="'.url('assets/admin-refined.css?v='.rawurlencode($cacheVersion)).'">';
-    if(function_exists('qa180_active')&&qa180_active($app))echo '<link rel="stylesheet" href="'.url('assets/qa180.css?v=180a').'">';
+    if(function_exists('qa180_active')&&qa180_active($app))echo '<link rel="stylesheet" href="'.url('assets/qa180.css?v=180').'">';
     echo '</head><body class="'.($admin?'admin-body':'public-body').'">';
     if(!empty($GLOBALS['demo_context']))demo_banner();
 }
 
 function layout_end(): void
 {
-    if(function_exists('qa180_active')&&qa180_active($GLOBALS['app']))echo '<script>window.FISITAAP180='.r3_json(qa180_ui_context($GLOBALS['app'])).'</script><script src="'.url('assets/qa180.js?v=180a').'" defer></script>';
-    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-179m2';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').'</body></html>';
+    if(function_exists('qa180_active')&&qa180_active($GLOBALS['app']))echo '<script>window.FISITAAP180='.r3_json(qa180_ui_context($GLOBALS['app'])).'</script><script src="'.url('assets/qa180.js?v=180').'" defer></script>';
+    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').'</body></html>';
 }

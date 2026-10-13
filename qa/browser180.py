@@ -1,0 +1,38 @@
+"""Real Chromium UI at four sizes and seven roles, on a fictional 1000-item fixture."""
+import json,pathlib,re,subprocess,sys,time
+from playwright.sync_api import sync_playwright
+sys.path.insert(0,'/workspace/fisitaap-env/tests')
+from r3_helpers import PASSWORD,sql
+base='http://localhost:18080';output=pathlib.Path('/workspace/fisitaap-env/browser180');output.mkdir(exist_ok=True)
+seed='''require '/var/www/html/app/bootstrap.php';$app->db->beginTransaction();$hash=$app->one('SELECT password_hash FROM users WHERE id=202')['password_hash'];
+for($i=0;$i<1000;$i++){$code='PERF180-'.str_pad((string)$i,4,'0',STR_PAD_LEFT);if(!$app->one('SELECT id FROM products WHERE tenant_id=101 AND sku=?',[$code])){$app->exec('INSERT INTO products(tenant_id,category_id,name,slug,sku,price,cost,tax_rate,track_inventory) VALUES(101,401,?,?,?,1000,100,13,1)',['Producto '.$code,strtolower($code),$code]);$id=$app->db->lastInsertId();$app->exec('INSERT INTO branch_products(branch_id,product_id,is_active) VALUES(301,?,1)',[$id]);$app->exec('INSERT INTO product_inventory(tenant_id,branch_id,product_id,quantity) VALUES(101,301,?,100)',[$id]);}$email=strtolower($code).'@example.invalid';if(!$app->one('SELECT id FROM users WHERE email=?',[$email])){$app->exec('INSERT INTO users(name,email,phone,password_hash,role,is_active) VALUES(?,?,?,?,' . '"customer",1)', ['Cliente '.$code,$email,'8888'.str_pad((string)$i,4,'0',STR_PAD_LEFT),$hash]);$app->exec('INSERT INTO tenant_customers(tenant_id,user_id) VALUES(101,?)',[$app->db->lastInsertId()]);}}
+$app->db->commit();echo '1000 fictional products and customers ready';'''
+def main():
+    subprocess.run(['docker','exec','fisitaap-r2-web','php','-r',seed],capture_output=True,check=True)
+    routes=['/','/demo','/laventanita','/laventanita/catalogo','/owner-login'];admin=['/admin','/admin/productos','/admin/mesas','/admin/salones','/admin/ventas','/admin/pedidos','/admin/clientes','/admin/compras','/admin/impresion','/admin/escritorio','/admin/contenido','/admin/configuracion','/admin/reportes?dataset=sales','/admin/fidelizacion','/admin/cxc','/admin/cxp']
+    results=[];roles=[];errors=[];cssErrors=[]
+    with sync_playwright() as pw:
+        browser=pw.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--no-proxy-server'])
+        ctx=browser.new_context();page=ctx.new_page();page.on('pageerror',lambda error:errors.append(str(error)));page.on('response',lambda response:cssErrors.append(response.url) if response.request.resource_type in ['stylesheet','script'] and response.status>=400 else None)
+        for width,height in [(1366,900),(768,1024),(390,844),(360,800)]:
+            page.set_viewport_size({'width':width,'height':height})
+            for route in routes:
+                begin=time.monotonic();response=page.goto(base+route,wait_until='networkidle');assert response.status==200,(route,response.status);body=page.inner_text('body');assert not re.search('Fatal error|SQLSTATE',body),route
+                metrics=page.evaluate('''() => ({width:innerWidth,document:Math.max(document.documentElement.scrollWidth,document.body.scrollWidth),scrollX:scrollX,font:getComputedStyle(document.body).fontFamily})''');results.append({'route':route,'width':width,'overflow':metrics['document']>width+1 or abs(metrics.get('scrollX',0))>1,'elapsed_ms':round((time.monotonic()-begin)*1000,1),'html_bytes':len(response.body()),'server_timing':response.headers.get('server-timing','')})
+                if width in [360,1366] and route in ['/','/laventanita','/laventanita/catalogo']:page.screenshot(path=str(output/(str(width)+'-'+(route.replace('/','-').strip('-') or 'portada')+'.png')),full_page=True)
+        page.goto(base+'/owner-login');page.locator('[name=email]').fill('owner@r2.invalid');page.locator('[name=password]').fill(PASSWORD);page.locator('form button[type=submit],form button.btn').first.click();page.wait_for_url('**/admin')
+        for width,height in [(1366,900),(768,1024),(390,844),(360,800)]:
+            page.set_viewport_size({'width':width,'height':height})
+            for route in admin:
+                begin=time.monotonic();response=page.goto(base+route,wait_until='networkidle');assert response.status==200,(route,response.status);assert not re.search('Fatal error|SQLSTATE',page.inner_text('body')),route
+                metrics=page.evaluate('''() => ({width:innerWidth,document:Math.max(document.documentElement.scrollWidth,document.body.scrollWidth),scrollX:scrollX})''');results.append({'route':route,'width':width,'overflow':metrics['document']>width+1 or abs(metrics.get('scrollX',0))>1,'elapsed_ms':round((time.monotonic()-begin)*1000,1),'html_bytes':len(response.body()),'server_timing':response.headers.get('server-timing','')})
+                if width in [360,1366] and (metrics['document']>width+1 or abs(metrics.get('scrollX',0))>1 or route in ['/admin/ventas','/admin/mesas','/admin/pedidos','/admin/contenido']):page.screenshot(path=str(output/(str(width)+'-'+route.replace('/','-').replace('?','-').replace('=','-').strip('-')+'.png')),full_page=True)
+        page.goto(base+'/admin/contenido');frame=page.frame_locator('iframe.qa180-design-preview');assert frame.locator('h1').inner_text()=='MI NEGOCIO QA';page.screenshot(path=str(output/'design-preview.png'),full_page=True)
+        for role,email,home in [('master','master@r2.invalid','/master'),('owner','owner@r2.invalid','/admin'),('manager','manager@r2.invalid','/admin'),('cashier','cashiera@r2.invalid','/admin'),('kitchen','kitchen@r2.invalid','/admin/cocina'),('driver','driver@r2.invalid','/driver'),('customer','customer@r2.invalid','/account')]:
+            local=browser.new_context(viewport={'width':390,'height':844});tab=local.new_page();tab.on('pageerror',lambda error:errors.append(str(error)));tab.goto(base+('/login' if role=='customer' else '/owner-login'));tab.locator('[name=email]').fill(email);tab.locator('[name=password]').fill(PASSWORD);tab.locator('form button[type=submit],form button.btn').first.click();tab.wait_for_url(lambda url:'/owner-login' not in str(url) and '/login' not in str(url));response=tab.goto(base+home,wait_until='networkidle');assert response.status==200,(role,response.status);roles.append({'role':role,'status':200,'home':home});tab.screenshot(path=str(output/('role-'+role+'.png')),full_page=True);local.close()
+        native=browser.new_context();native.add_init_script("window.fisitaapWindows={loginUsers:async()=>({users:[{id:202,name:'Dueño autorizado',email:'owner@r2.invalid'}]})}");tab=native.new_page();tab.goto(base+'/owner-login');tab.locator('#nativeLoginUser').wait_for();tab.locator('#nativeLoginUser').select_option('202');assert tab.locator('[name=email]').input_value()=='owner@r2.invalid';assert tab.locator('[name=email]').get_attribute('type')=='hidden';native.close();browser.close()
+    report={'cases':len(results),'roles':roles,'layout':results,'page_errors':errors,'missing_scripts_or_css':cssErrors,'overflow_cases':[r for r in results if r['overflow']],'environment':'private localhost Chromium with 1000 fictional products/clients; not production; login selector UI uses a minimal native DTO'}
+    pathlib.Path('actualizaciones/1.8.0/QA-NAVEGADOR.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');assert not errors,errors;assert not cssErrors,cssErrors
+    print('PASS',len(results),'real browser pages at desktop/tablet/390/360; seven roles; saved preview and native login selector',flush=True);print('REVIEW overflow cases:',len(report['overflow_cases']),flush=True)
+    assert not report['overflow_cases'],report['overflow_cases']
+if __name__=='__main__':main()

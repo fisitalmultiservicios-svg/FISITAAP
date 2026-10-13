@@ -29,7 +29,8 @@ async function showEntry(){
 async function refresh(initial=false){try{state=await api('/api/state');csrf=state.csrf;if(initial)loadCart();if(pendingPayment&&state.sales.some(s=>s.id===pendingPayment.id)){clearPayment();message('El equipo central confirmó la venta anterior. Puedes consultar y reimprimirla en el historial.');}render();}catch(error){if(error.status===401)return showEntry();message(error.message,true);}}
 function render(){
   if(loading)return;
-  $('#businessName').textContent=state.snapshot.tenant.name+' · '+state.snapshot.branch.name;
+  if($('#localBrand'))$('#localBrand').textContent=state.snapshot.tenant.name;
+  $('#businessName').textContent=state.snapshot.branch.name;
   $('#connectionStatus').textContent=state.pending+' ventas pendientes · '+(state.lastSync?'Última conexión '+new Date(state.lastSync).toLocaleTimeString():'Conexión web pendiente');
   const totals=estimate();
   const authorized=state.snapshot.offline_policy?.allowed===true;

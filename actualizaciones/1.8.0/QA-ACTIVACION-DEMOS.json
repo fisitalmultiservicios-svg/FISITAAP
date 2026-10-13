@@ -1,0 +1,8 @@
+{
+  "passed": 2,
+  "checks": [
+    "an actual disposable demo virtual turn does not block explicit activation",
+    "an open real-business turn still blocks activation, and demo cleanup preserves the real business"
+  ],
+  "environment": "real HTTP activation on fictional data and disposable demo; no production"
+}

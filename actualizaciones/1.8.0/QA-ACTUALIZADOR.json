@@ -1,0 +1,9 @@
+{
+  "passed": 3,
+  "checks": [
+    "1.7.8: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry, config preservation, rollback before activation and block after activation",
+    "1.7.9-r2: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry, config preservation, rollback before activation and block after activation",
+    "mudanza-1.7.9-r3: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry, config preservation, rollback before activation and block after activation"
+  ],
+  "environment": "three prior file versions on independent fictional PHP/MariaDB database; no production"
+}

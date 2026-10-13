@@ -12,7 +12,12 @@
     createHash:()=>({update(text){this.text=text;return this;},digest(){return OfflineStorage.digest(this.text);}})};
   let handler;
   const http={createServer:fn=>{handler=fn;return {once(){},listen(_p,_host,done){done();},address:()=>({port:18766}),close(){}};}};
-  const modules={'node:http':http,'node:fs':fs,'node:path':{join:(...parts)=>parts.join('/'),basename:x=>x.split('/').pop()},'node:os':{networkInterfaces:()=>({})},'node:crypto':cryptoModule,bcryptjs:window.bcrypt};
+  class AndroidLocalStore {
+    constructor(){this.data=current!==null?JSON.parse(current):{version:1,connection:null,snapshot:null,stocks:{},sales:[],shifts:[],lastSync:null,syncMessage:'Conecta primero el equipo principal.'};if(this.data.version!==1||!Array.isArray(this.data.sales)||!Array.isArray(this.data.shifts))throw Error('El diario necesita revisión. No se borró nada.');}
+    commit(next){const text=JSON.stringify(next);try{const saved=checked(OfflineStorage.commit(text,revision));current=text;revision=saved.revision;this.data=next;}catch(error){ambiguousWrite=true;throw error;}}
+    backup(){checked(OfflineStorage.backup());return '/private/respaldo-fisitaap';}
+  }
+  const modules={'./local-store':{LocalStore:AndroidLocalStore},'node:http':http,'node:fs':fs,'node:path':{join:(...parts)=>parts.join('/'),basename:x=>x.split('/').pop()},'node:os':{networkInterfaces:()=>({})},'node:crypto':cryptoModule,bcryptjs:window.bcrypt};
   window.offlineRequire=name=>{if(!modules[name])throw Error('Módulo no disponible: '+name);return modules[name];};
   window.Buffer={byteLength:text=>new TextEncoder().encode(text).length};
   let cookie='',sequence=0;const waiting=new Map();

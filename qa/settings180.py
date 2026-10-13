@@ -1,7 +1,7 @@
 """Business identification, reception preference and public-only design."""
 import json,pathlib,sys
 sys.path.insert(0,'/workspace/fisitaap-env/tests')
-from r3_helpers import request,csrf,sql
+from r3_helpers import request,csrf,sql,PASSWORD
 checks=[]
 def passed(x):checks.append(x);print('PASS',x,flush=True)
 def main():
@@ -11,6 +11,7 @@ def main():
     passed('required identification cannot be empty and invalid settings do not partially change branch reception')
     request('owner','/admin/configuracion',{**data,'tax_id':'3-101-123456'});row=sql('SELECT tax_id,tax_id_required FROM tenants WHERE id=101')[0];assert row=={'tax_id':'3-101-123456','tax_id_required':1};assert sql('SELECT web_order_acceptance FROM branches WHERE id=301')[0]['web_order_acceptance']==0
     passed('company identification and automatic reception can be stored together in the selected branch')
+    if request('cashier','/owner-login')[0]==200:request('cashier','/owner-login',{'csrf':csrf('cashier','/owner-login'),'email':'cashiera@r2.invalid','password':PASSWORD})
     assert request('cashier','/admin/configuracion',{**data,'tax_id':'1-1111-1111'})[0]==403;assert sql('SELECT tax_id FROM tenants WHERE id=101')[0]['tax_id']=='3-101-123456'
     passed('a limited cashier cannot alter general business or fiscal settings')
     design={'csrf':csrf('owner','/admin/contenido'),'hero_title':'MI NEGOCIO QA','hero_text':'Textos simples','about_title':'Nosotros QA','about_text':'Atención','services_title':'Productos QA','contact_title':'Contacto QA','contact_text':'Visítanos','hero_button_label':'Abrir mi menú','catalog_button_label':'Todo mi menú','primary_color':'#9b1122','accent_color':'#2255cc'};request('owner','/admin/contenido',design)

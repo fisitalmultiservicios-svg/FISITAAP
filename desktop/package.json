@@ -1,6 +1,6 @@
 {
   "name": "fisitaap-escritorio",
-  "version": "1.7.9",
+  "version": "1.8.0",
   "description": "FISITAAP: cajas Windows conectadas a un equipo central local",
   "main": "main.js",
   "author": "FISITAL",
@@ -28,10 +28,13 @@
     "directories": {
       "output": "dist"
     },
+    "extraFiles": ["icon.ico"],
     "files": [
       "main.js",
       "workspace.js",
       "server.js",
+      "local-store.js",
+      "icon.ico",
       "public/**/*",
       "package.json",
       "print-bridge.js",
@@ -40,6 +43,7 @@
       "web-preload.js"
     ],
     "win": {
+      "icon": "icon.ico",
       "target": "nsis",
       "signAndEditExecutable": false,
       "artifactName": "FISITAAP-Escritorio-${version}-Windows-x64.${ext}"

@@ -13,7 +13,8 @@ class DesktopWorkspace {
     this.state={mode:'local',available:false,configured:false,centralReady:true,pending:0,webUrl:cachedWebURL?webBase(cachedWebURL):null,message:'Comprobando la conexión…'};
     this.closed=false;this.refreshing=null;this.webLoaded=false;this.webFailed=false;this.notice='';this.connectionError='';this.action=0;this.generation=0;
     const prefs={nodeIntegration:false,contextIsolation:true,sandbox:true};
-    this.win=new electron.BrowserWindow({width:1360,height:950,minWidth:900,minHeight:700,webPreferences:{...prefs,preload:require('node:path').join(__dirname,'preload.js')}});
+    const icon=electron.app?.isPackaged?require('node:path').resolve(process.resourcesPath,'..','icon.ico'):require('node:path').join(__dirname,'icon.ico');
+    this.win=new electron.BrowserWindow({width:1360,height:950,minWidth:900,minHeight:700,icon,webPreferences:{...prefs,preload:require('node:path').join(__dirname,'preload.js')}});
     this.localView=new electron.WebContentsView({webPreferences:{...prefs,preload:require('node:path').join(__dirname,'preload.js')}});
     // The live web has a persistent session and a restricted printing-only preload.
     this.webView=new electron.WebContentsView({webPreferences:{...prefs,partition:'persist:fisitaap-web',preload:require('node:path').join(__dirname,'web-preload.js')}});

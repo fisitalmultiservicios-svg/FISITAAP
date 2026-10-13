@@ -33,6 +33,13 @@ def main():
     passed('cancelling an unpaid received order releases inventory and prepaid gift exactly once')
     sql('UPDATE branches SET web_order_acceptance=0 WHERE id=301');oid3=checkout({});sql('UPDATE branches SET web_order_acceptance=1 WHERE id=301');assert len(sql('SELECT ticket_id FROM fisitaap_order_receipts180 WHERE order_id=?',[oid3]))==1;assert len(sql('SELECT id FROM fisitaap_print_jobs180 WHERE operation_key LIKE ?',['web-order-'+str(oid3)+'-command-%']))==1;state(oid3,'cancelled')
     passed('direct reception respects the branch setting and commits the web order, account and kitchen job together')
+    sql('UPDATE tenants SET physical_store_enabled=0 WHERE id=101')
+    try:
+        oid4=checkout({});receive(oid4);assert sql('SELECT status FROM orders WHERE id=?',[oid4])[0]['status']=='confirmed';assert not sql('SELECT ticket_id FROM fisitaap_order_receipts180 WHERE order_id=?',[oid4]);state(oid4,'cancelled');assert float(stock())==before-1
+    finally:sql('UPDATE tenants SET physical_store_enabled=1 WHERE id=101')
+    passed('a catalog-only business accepts and cancels an order without creating an inaccessible cash account or reserving stock twice')
+    old_order=checkout({});sql('UPDATE orders SET status="confirmed" WHERE id=?',[old_order]);receive(old_order);assert len(sql('SELECT ticket_id FROM fisitaap_order_receipts180 WHERE order_id=?',[old_order]))==1;assert not sql('SELECT id FROM fisitaap_print_jobs180 WHERE operation_key LIKE ?',['web-order-'+str(old_order)+'-command-%']);receive(old_order);state(old_order,'cancelled');assert float(stock())==before-1
+    passed('an accepted legacy web order can be linked once to its unpaid account without repeating old kitchen instructions or inventory')
     status,board=request('owner','/admin/pedidos');assert status==200 and 'qa180-kanban' in board and all(label in board for label in ['Preparación','Aceptado','Despacho / Express']);assert post('/admin/pedidos',{'action':'receive','id':99999999,'revision':0})[0]==302
     post('/admin/turnos',{'action':'close','id':shift,'closing_key':secrets.token_hex(16),'other_cash':1030});assert sql('SELECT status FROM pos_shifts WHERE id=?',[shift])[0]['status']=='closed'
     passed('Kanban exposes the operational columns and rejects an unavailable order without affecting another business')

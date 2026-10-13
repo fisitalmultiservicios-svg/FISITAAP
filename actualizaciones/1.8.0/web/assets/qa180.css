@@ -5,3 +5,7 @@
 .qa180-kanban{display:flex;gap:12px;overflow-x:auto;align-items:flex-start;padding:12px 0}.qa180-kanban-column{flex:0 0 260px;min-width:0}.qa180-kanban-column>h2{font-size:16px;margin:8px}.qa180-kanban-column .admin-card{padding:14px;margin:8px 0;border-radius:2px}.qa180-kanban-column h3{font-size:15px}.qa180-kanban-column form{display:inline-block;margin:4px 2px}.qa180-kanban-column .btn{padding:7px 10px}
 
 .qa180-design{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,420px);gap:20px}.qa180-design-section{border-bottom:1px solid #d9e2e5;padding:14px 0}.qa180-design-section summary{cursor:pointer;font-weight:600;margin-bottom:12px}.qa180-design-preview{display:block;width:100%;height:660px;border:1px solid #cbd5e1;margin-top:14px;background:white}.qa180-design label{display:block;margin:10px 0}@media(max-width:800px){.qa180-design{grid-template-columns:1fr}.qa180-design-preview{height:520px}}
+
+.r3-pos-grid>*,.r3-cart-panel,.r3-quick{min-width:0}.r3-quick-product>div{min-width:0;overflow-wrap:anywhere}.r3-search{max-width:100%}@media(max-width:1000px){.r3-pos-grid{grid-template-columns:minmax(0,1fr)}}
+
+@media(max-width:900px){.r3-pos-nav{flex-wrap:wrap}.r3-topbar{flex-wrap:wrap;gap:8px}.r3-header-right{margin-left:0;flex:1 1 100%;flex-wrap:wrap;gap:10px}}

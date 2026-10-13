@@ -1,0 +1,57 @@
+{
+  "passed": 6,
+  "measures": [
+    {
+      "route": "/laventanita/catalogo",
+      "median_php_ms": 8.9,
+      "queries": 9,
+      "body_bytes": 9683,
+      "median_local_round_trip_ms": 137.7
+    },
+    {
+      "route": "/admin/ventas",
+      "median_php_ms": 21.4,
+      "queries": 17,
+      "body_bytes": 73364,
+      "median_local_round_trip_ms": 177.5
+    },
+    {
+      "route": "/admin/clientes",
+      "median_php_ms": 9.1,
+      "queries": 9,
+      "body_bytes": 84953,
+      "median_local_round_trip_ms": 125.6
+    },
+    {
+      "route": "/admin/mesas?room=3",
+      "median_php_ms": 15.6,
+      "queries": 23,
+      "body_bytes": 67005,
+      "median_local_round_trip_ms": 122.7
+    },
+    {
+      "route": "/admin/reportes?dataset=sales&from=2020-01-01&to=2030-01-01",
+      "median_php_ms": 12.9,
+      "queries": 34,
+      "body_bytes": 86142,
+      "median_local_round_trip_ms": 139.4
+    },
+    {
+      "route": "/admin/reportes?dataset=inventory&from=2020-01-01&to=2030-01-01",
+      "median_php_ms": 27.3,
+      "queries": 34,
+      "body_bytes": 96980,
+      "median_local_round_trip_ms": 137.2
+    }
+  ],
+  "volumes": {
+    "products": 1007,
+    "clients": 1002,
+    "additional_rooms": 20,
+    "additional_tables": 200,
+    "additional_sectors": 60,
+    "additional_objects": 100
+  },
+  "environment": "PHP/MariaDB fictional fixture, three samples per route; local process/HTTP time, not production speed; long report period 2020-2030",
+  "ai_session_release": "code verified before the external AI call; live provider latency is untested without production API configuration"
+}

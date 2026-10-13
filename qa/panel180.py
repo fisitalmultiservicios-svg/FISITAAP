@@ -1,0 +1,20 @@
+"""Inbox, welcome, human audit, selected AI branch and logout on fake accounts."""
+import json,pathlib,re,secrets,subprocess,sys
+sys.path.insert(0,'/workspace/fisitaap-env/tests')
+from r3_helpers import request,csrf,sql
+checks=[]
+def passed(x):checks.append(x);print('PASS',x,flush=True)
+def main():
+    tag=secrets.token_hex(6)
+    for tenant,name in [(101,'CONTACT QA '+tag),(102,'FOREIGN CONTACT '+tag),(None,'PLATFORM CONTACT '+tag)]:sql('INSERT INTO contacts(tenant_id,name,email,phone,subject,message) VALUES(?,?,"qa@example.invalid","88888888",?,?)',[tenant,name,tag,'Mensaje completo <script>no ejecutar</script>'])
+    cid=sql('SELECT id FROM contacts WHERE tenant_id=101 AND subject=?',[tag])[0]['id'];other=sql('SELECT id FROM contacts WHERE tenant_id=102 AND subject=?',[tag])[0]['id'];status,body=request('owner','/admin/contactos?id='+str(cid));assert status==200 and 'qa180-inbox' in body and '&lt;script&gt;' in body and 'FOREIGN CONTACT' not in body
+    for state in ['read','resolved']:request('owner','/admin/contactos',{'csrf':csrf('owner','/admin/contactos'),'id':cid,'status':state})
+    assert sql('SELECT status FROM contacts WHERE id=?',[cid])[0]['status']=='resolved';request('owner','/admin/contactos',{'csrf':csrf('owner','/admin/contactos'),'id':other,'status':'resolved'});assert sql('SELECT status FROM contacts WHERE id=?',[other])[0]['status']=='new';assert 'PLATFORM CONTACT' in request('master','/master/contactos?q='+tag)[1];passed('the inbox displays full escaped messages, changes status and isolates store/platform contacts')
+    before=len(sql('SELECT id FROM audit_logs WHERE tenant_id=101'));status,body=request('owner','/admin/auditoria');assert status==200 and 'Bitácora' in body and 'Cambió el estado de un contacto' in body;request('owner','/admin/auditoria');assert len(sql('SELECT id FROM audit_logs WHERE tenant_id=101'))==before;passed('human audit contains actual contact actions while reading it adds no technical noise')
+    assert request('owner','/master/bienvenida')[0]==403;request('master','/master/bienvenida',{'csrf':csrf('master','/master/bienvenida'),'clear':'yes'});assert 'qa180-welcome' in request('owner','/admin')[1] and 'Imagen de bienvenida' in request('master','/master/bienvenida')[1];passed('the master controls the shared welcome screen and the owner cannot alter it')
+    # Invoke the actual AI branch selector with the same per-tenant session shape.
+    code="require '/var/www/html/app/bootstrap.php';require '/var/www/html/app/admin.php';require '/var/www/html/app/v1.php';require '/var/www/html/app/admin_v1.php';require '/var/www/html/app/branches_v1.php';require '/var/www/html/app/modules_v12.php';require '/var/www/html/app/physical_v14.php';require '/var/www/html/app/pos_v141.php';require '/var/www/html/app/manuals_v142.php';require '/var/www/html/app/fisichat_v143.php';require '/var/www/html/app/restructure_r1.php';require '/var/www/html/app/restructure_r2.php';require '/var/www/html/app/qa180.php';$_SESSION['physical_branch'][101]=303;$u=$app->one('SELECT * FROM users WHERE id=202');$t=$app->one('SELECT * FROM tenants WHERE id=101');echo fisichat_branch($app,$t,$u)['id'];"
+    assert subprocess.run(['docker','exec','fisitaap-r2-web','php','-r',code],capture_output=True,check=True).stdout.strip()==b'303';passed('the owner AI context selects the same branch as the operational panel')
+    status,body=request('owner','/logout',{'csrf':'expired-form'});assert status==302 and not body.startswith('{');request('owner','/logout',{'csrf':csrf('owner','/admin/turnos')});assert request('owner','/admin')[0]==302;status,body=request('owner','/owner-login');assert status==200 and 'name="password"' in body and 'ok:false' not in body;passed('expired logout stays human-readable and valid web logout returns to the business login')
+    pathlib.Path('actualizaciones/1.8.0/QA-PANEL.json').write_text(json.dumps({'passed':len(checks),'checks':checks,'environment':'fictional PHP/MariaDB HTTP; branch helper actual code; no live AI or real contacts'},indent=2)+'\n')
+if __name__=='__main__':main()

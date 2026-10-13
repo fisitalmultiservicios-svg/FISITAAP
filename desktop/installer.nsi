@@ -1,7 +1,6 @@
 ; Complete per-user Windows installer. NSIS generates its uninstaller directly;
 ; building this script does not require executing Windows programs on Linux.
-SetCompressor /SOLID lzma
-SetCompressorDictSize 32
+SetCompressor /SOLID zlib
 !include "MUI2.nsh"
 !include "x64.nsh"
 Name "FISITAAP Escritorio"
@@ -9,6 +8,12 @@ InstallDir "$LOCALAPPDATA\Programs\FISITAAP Escritorio"
 InstallDirRegKey HKCU "Software\FISITAL\FISITAAP" "InstallDir"
 RequestExecutionLevel user
 !define MUI_ABORTWARNING
+!ifndef MUI_ICON
+!define MUI_ICON "${PROJECT_DIR}/icon.ico"
+!endif
+!ifndef MUI_UNICON
+!define MUI_UNICON "${PROJECT_DIR}/icon.ico"
+!endif
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -32,8 +37,8 @@ Section "Instalar"
   File /r "${PROJECT_DIR}/dist/win-unpacked/*"
   WriteUninstaller "$INSTDIR\Desinstalar.exe"
   CreateDirectory "$SMPROGRAMS\FISITAAP"
-  CreateShortcut "$SMPROGRAMS\FISITAAP\FISITAAP Escritorio.lnk" "$INSTDIR\FISITAAP Escritorio.exe"
-  CreateShortcut "$DESKTOP\FISITAAP Escritorio.lnk" "$INSTDIR\FISITAAP Escritorio.exe"
+  CreateShortcut "$SMPROGRAMS\FISITAAP\FISITAAP Escritorio.lnk" "$INSTDIR\FISITAAP Escritorio.exe" "" "$INSTDIR\icon.ico"
+  CreateShortcut "$DESKTOP\FISITAAP Escritorio.lnk" "$INSTDIR\FISITAAP Escritorio.exe" "" "$INSTDIR\icon.ico"
   WriteRegStr HKCU "Software\FISITAL\FISITAAP" "InstallDir" "$INSTDIR"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\FISITAAP" "DisplayName" "FISITAAP Escritorio"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\FISITAAP" "DisplayVersion" "${VERSION}"

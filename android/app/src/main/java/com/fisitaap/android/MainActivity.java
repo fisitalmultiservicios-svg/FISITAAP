@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.*;
-import android.print.PrintManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import androidx.core.content.FileProvider;
 import android.view.*;
 import android.webkit.*;
 import android.widget.*;
@@ -68,7 +70,7 @@ public final class MainActivity extends Activity {
         status=new TextView(this);status.setTextSize(12);status.setPadding(dp(10),dp(5),dp(10),dp(5));status.setText("FISITAAP Android · Comprobando conexión…");
         views=new FrameLayout(this);root.addView(bar);root.addView(status);root.addView(views,new LinearLayout.LayoutParams(-1,0,1));setContentView(root);
         webButton.setOnClickListener(v->useWeb());localButton.setOnClickListener(v->{action++;useLocal();});
-        settings.setOnClickListener(v->new AlertDialog.Builder(this).setItems(new String[]{"Ajustes de conexión e impresora","Conectar y autorizar este equipo","Imprimir página / guardar PDF","Recargar pantalla"},(dialog,which)->{if(which==0)settings();else if(which==1){action++;useLocal();}else if(which==2)pagePrint(active);else new AlertDialog.Builder(this).setMessage("Recargar puede borrar cambios que no hayas guardado en esta pantalla.").setPositiveButton("Recargar",(d,w)->active.reload()).setNegativeButton("Cancelar",null).show();}).show());
+        settings.setOnClickListener(v->new AlertDialog.Builder(this).setItems(new String[]{"Ajustes de conexión e impresora","Conectar y autorizar este equipo","Guardar pantalla como PDF","Ver comprobantes PDF","Recargar pantalla"},(dialog,which)->{if(which==0)settings();else if(which==1){action++;useLocal();}else if(which==2)pagePrint(active);else if(which==3)showPdfFiles();else new AlertDialog.Builder(this).setMessage("Recargar puede borrar cambios que no hayas guardado en esta pantalla.").setPositiveButton("Recargar",(d,w)->active.reload()).setNegativeButton("Cancelar",null).show();}).show());
     }
     private void createViews() {
         generation++;webLoaded=false;webFailed=false;localLoaded=false;localFailed=false;
@@ -194,7 +196,22 @@ public final class MainActivity extends Activity {
     private void setStatus(String value){if(status!=null)status.setText(value);}
     private void toast(String value){new AlertDialog.Builder(this).setMessage(value).setPositiveButton("Aceptar",null).show();}
     private void external(String url){try{Uri target=Uri.parse(url);if(Arrays.asList("https","mailto","tel","geo").contains(target.getScheme()))startActivity(new Intent(Intent.ACTION_VIEW,target));}catch(Exception e){toast("No hay una aplicación para abrir este enlace.");}}
-    private void pagePrint(WebView view){if(view==null)return;try{((PrintManager)getSystemService(PRINT_SERVICE)).print("FISITAAP",view.createPrintDocumentAdapter("FISITAAP"),null);}catch(Exception e){toast("No se pudo abrir el servicio de impresión de Android.");}}
+    private void showPdfFiles(){
+        File directory=new File(getFilesDir(),"impresion");File[] files=directory.listFiles((folder,name)->name.endsWith(".pdf"));
+        if(files==null||files.length==0){toast("Todavía no hay comprobantes PDF. El punto de impresión debe estar configurado como PDF.");return;}
+        Arrays.sort(files,(a,b)->Long.compare(b.lastModified(),a.lastModified()));String[] names=new String[Math.min(100,files.length)];for(int i=0;i<names.length;i++)names[i]=new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss",java.util.Locale.ROOT).format(new java.util.Date(files[i].lastModified()))+" · Comprobante "+(i+1);
+        new AlertDialog.Builder(this).setTitle("Comprobantes PDF recientes").setItems(names,(dialog,index)->openPdf(files[index])).setNegativeButton("Cerrar",null).show();
+    }
+    private void openPdf(File file){
+        try{Uri uri=FileProvider.getUriForFile(this,getPackageName()+".printedfiles",file);Intent intent=new Intent(Intent.ACTION_VIEW).setDataAndType(uri,"application/pdf").addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);startActivity(intent);}catch(ActivityNotFoundException e){toast("Instala un lector de PDF para ver el comprobante. El archivo continúa guardado en FISITAAP.");}catch(Exception e){toast("No se pudo abrir este comprobante PDF.");}
+    }
+    private void pagePrint(WebView view){
+        if(view==null)return;
+        try{
+            int original=view.getWidth(),originalHeight=view.getHeight();if(original<1||originalHeight<1)throw new IOException("Tamaño no disponible");int width=Math.min(1280,original),height=(int)Math.round(originalHeight*width/(double)original);if(height<1||width*(long)height>4000000)throw new IOException("Pantalla demasiado grande");File directory=new File(getFilesDir(),"impresion");if(!directory.isDirectory()&&!directory.mkdirs())throw new IOException("Directorio no disponible");File file=new File(directory,"pantalla-"+UUID.randomUUID()+".pdf");Bitmap bitmap=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);Canvas canvas=new Canvas(bitmap);canvas.drawColor(Color.WHITE);canvas.scale(width/(float)original,width/(float)original);view.draw(canvas);
+            printing.execute(()->{try{ReceiptPdf.writeBitmap(file,bitmap);ui.post(()->openPdf(file));}catch(Exception e){ui.post(()->toast("No se pudo guardar esta pantalla como PDF."));}finally{bitmap.recycle();}});
+        }catch(Exception e){toast("No se pudo guardar esta pantalla como PDF.");}
+    }
     private EditText field(LinearLayout form,String label,String value,int type){TextView text=new TextView(this);text.setText(label);form.addView(text);EditText input=new EditText(this);input.setText(value);input.setInputType(type);input.setSingleLine(true);form.addView(input);return input;}
     private void settings(){
         ScrollView scroll=new ScrollView(this);LinearLayout form=new LinearLayout(this);form.setPadding(dp(18),dp(8),dp(18),dp(8));form.setOrientation(LinearLayout.VERTICAL);scroll.addView(form);
