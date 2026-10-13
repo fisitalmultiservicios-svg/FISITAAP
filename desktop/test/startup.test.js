@@ -62,3 +62,11 @@ test('failure of the central sales service still stops startup with an explanati
  const running=launch({localError:new Error('El equipo central no pudo abrir sus datos.')});await running.completion;
  assert.equal(running.quitCalls,1);assert.equal(running.windows.length,0);assert.equal(running.errors[0].message,'El equipo central no pudo abrir sus datos.');
 });
+
+test('paired web login receives only approved user choices and never password hashes or the device token',async t=>{
+ const dataDir=fs.mkdtempSync(path.join(os.tmpdir(),'fisitaap-login-users-'));t.after(()=>fs.rmSync(dataDir,{recursive:true,force:true}));const running=launch({dataDir,printPort:0});t.after(()=>running.app.emit('before-quit'));await running.completion;
+ const service=running.localServices[0];service.store.commit({...service.store.data,connection:{url:'https://web.test',token:'protected-device-token'},snapshot:{users:[{id:42,name:'Cashier',email:'cashier@example.invalid',password_hash:'must-remain-private'}]}});
+ const handler=running.handlers.get('fisitaap:login-users'),event={sender:running.views[1].webContents,senderFrame:{url:'https://web.test/owner-login',parent:null}};
+ const result=handler(event);assert.deepEqual(JSON.parse(JSON.stringify(result)),{ok:true,users:[{id:42,name:'Cashier',email:'cashier@example.invalid'}]});assert.equal(JSON.stringify(result).includes('must-remain-private'),false);assert.equal(JSON.stringify(result).includes('protected-device-token'),false);
+ assert.throws(()=>handler({...event,senderFrame:{url:'https://attacker.test/owner-login',parent:null}}),/Conecta/);assert.throws(()=>handler({...event,senderFrame:{url:'https://web.test/owner-login',parent:{}}}),/Conecta/);assert.throws(()=>handler({...event,senderFrame:{url:'https://web.test/',parent:null}}),/Conecta/);
+});

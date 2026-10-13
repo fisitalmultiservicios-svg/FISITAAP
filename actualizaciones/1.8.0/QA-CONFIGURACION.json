@@ -1,0 +1,11 @@
+{
+  "passed": 5,
+  "checks": [
+    "required identification cannot be empty and invalid settings do not partially change branch reception",
+    "company identification and automatic reception can be stored together in the selected branch",
+    "a limited cashier cannot alter general business or fiscal settings",
+    "section editor publishes the requested texts and buttons and provides a same-origin saved-page preview",
+    "invalid public colors roll back the design changes without affecting the owner-panel style"
+  ],
+  "environment": "isolated real HTTP/MariaDB; visual browser checks separate"
+}

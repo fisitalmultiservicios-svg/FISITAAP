@@ -25,12 +25,17 @@ def main(reset=False):
     STAGE.chmod(0o755)
     state=ENV/'fixture.json'
     info=json.loads(state.read_text()) if state.exists() else {'password':secrets.token_hex(18),'app_key':secrets.token_hex(32),'web':'fisitaap-r2-web'}
-    state.write_text(json.dumps(info));state.chmod(0o600)
+    info.setdefault('app_url','http://localhost:18080');state.write_text(json.dumps(info));state.chmod(0o600)
     def q(s):return "'"+s.replace('\\','\\\\').replace("'","\\'")+"'"
-    (STAGE/'config.php').write_text("<?php return ['db_host'=>'fisitaap-db','db_name'=>'fisitaap_r2_test','db_user'=>'root','db_pass'=>'','app_url'=>'http://localhost','debug'=>false,'app_key'=>"+q(info['app_key'])+"];")
+    (STAGE/'config.php').write_text("<?php return ['db_host'=>'fisitaap-db','db_name'=>'fisitaap_r2_test','db_user'=>'root','db_pass'=>'','app_url'=>"+q(info['app_url'])+",'debug'=>false,'app_key'=>"+q(info['app_key'])+"];")
     for p in STAGE.rglob('*'):p.chmod(0o755 if p.is_dir() else 0o644)
+    if exists('fisitaap-r2-web'):
+        container=json.loads(run(['docker','inspect','fisitaap-r2-web']))[0]
+        if not container['HostConfig'].get('PortBindings',{}).get('80/tcp'):
+            if not any(m.get('Source')==str(STAGE) and m.get('Destination')=='/var/www/html' for m in container['Mounts']):raise RuntimeError('Refusing to recreate an unexpected container')
+            run(['docker','rm','-f','fisitaap-r2-web'])
     if not exists('fisitaap-r2-web'):
-        run(['docker','run','-d','--name','fisitaap-r2-web','--network','fisitaap-dev','-v',str(STAGE)+':/var/www/html','fisitaap-dev:php83'])
+        run(['docker','run','-d','--name','fisitaap-r2-web','--network','fisitaap-dev','-p','127.0.0.1:18080:80','-v',str(STAGE)+':/var/www/html','fisitaap-dev:php83'])
     else:run(['docker','start','fisitaap-r2-web'])
     run(['docker','exec','fisitaap-r2-web','chgrp','www-data','/var/www/html/uploads'])
     run(['docker','exec','fisitaap-r2-web','chmod','775','/var/www/html/uploads'])

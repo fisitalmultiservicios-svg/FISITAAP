@@ -89,6 +89,7 @@ function demo_open(App $app,string $type,string $mode):string {
             if(!$copied)throw new RuntimeException('No se pudieron copiar todas las relaciones del catálogo de demostración.');$pending=$next;
         }
         if(!$newOwner)throw new RuntimeException('No se copió el dueño del demo.');
+        if(function_exists('qa180_active')&&qa180_active($app))qa180_demo_references($app,$tenant,$mapping);
         $customer=demo_insert($app,'users',['tenant_id'=>$tenant,'name'=>'Cliente de prueba','email'=>'demo-'.$token.'-cliente@sandbox.invalid','phone'=>'88888888','password_hash'=>$demoPasswordHash,'role'=>'customer','is_active'=>1,'email_verified_at'=>date('Y-m-d H:i:s')]);
         $app->exec('INSERT INTO tenant_customers(tenant_id,user_id) VALUES(?,?)',[$tenant,$customer]);
         $app->exec('INSERT INTO fisitaap_demo_sessions(token,tenant_id,template_id,browser_hash,owner_id,customer_id,initial_mode,expires_at) VALUES(?,?,?,?,?,?,?,DATE_ADD(NOW(),INTERVAL 30 MINUTE))',[$token,$tenant,$parent,demo_browser_hash(),$newOwner,$customer,$mode]);
@@ -120,7 +121,7 @@ function demo_runtime(App $app,string $token):void {
         redirect(url($user['role']==='customer'?$row['slug'].'/catalogo':'admin'));
     }
     if($path==='')redirect(url($row['slug']));
-    $allowed=$path==='admin'||str_starts_with($path,'admin/')||$path==='account'||str_starts_with($path,'account/')||$path===$row['slug']||str_starts_with($path,$row['slug'].'/')||in_array($path,['api/checkout','api/coupon-preview','api/search-log','api/pos-options','api/pos-quote-r3','api/native/print-test'],true);
+    $allowed=$path==='admin'||str_starts_with($path,'admin/')||$path==='account'||str_starts_with($path,'account/')||$path===$row['slug']||str_starts_with($path,$row['slug'].'/')||in_array($path,['api/checkout','api/coupon-preview','api/search-log','api/pos-options','api/pos-quote-r3','api/native/print-test','api/gift-preview'],true);
     if(!$allowed)demo_fail('Esta función conecta servicios o cuentas reales y no se ejecuta en la demostración.');
     if(in_array($path,['admin/escritorio','admin/asistente'],true))demo_fail('Puedes probar los menús, las ventas y la impresión de ejemplo. La vinculación de equipos y los servicios externos se configuran en un negocio real.',200);
     foreach(['email','customer_email','driver_email'] as $field)if(!empty($_POST[$field])&&is_string($_POST[$field]))$_POST[$field]='demo-'.$token.'-'.substr(hash('sha256',strtolower($_POST[$field])),0,16).'@sandbox.invalid';
@@ -183,4 +184,10 @@ function demo_header():void {
 function demo_banner():void {
     if(empty($GLOBALS['demo_context']))return;
     echo '<aside style="padding:10px 18px;background:#e7eef3;color:#203f57;border-bottom:1px solid #cbd7e0;font:14px/1.5 system-ui"><strong>Demo privada</strong> · Los cambios son temporales. <form method="post" action="'.e(url('demo/modo')).'" style="display:inline">'.csrf_field().'<button name="mode" value="panel">Probar panel</button> <button name="mode" value="cliente">Probar compra</button></form> <form method="post" action="'.e(url('logout')).'" style="display:inline">'.csrf_field().'<button>Terminar y descartar</button></form></aside>';
+}
+
+function qa180_demo_references(App $app,int $tenant,array $mapping):void {
+    // JSON scopes and legacy choice families do not have foreign keys.
+    foreach($app->all('SELECT id,applicable_products,applicable_categories FROM coupons WHERE tenant_id=?',[$tenant]) as $coupon){$values=[];foreach(['products','categories'] as $table){$ids=json_decode((string)$coupon['applicable_'.$table],true)?:[];$new=[];foreach($ids as $id){if(!isset($mapping[$table][(string)$id]))throw new DomainException('La plantilla contiene un cupón ligado a un artículo de otro negocio.');$new[]=$mapping[$table][(string)$id];}$values[]=json_encode($new,JSON_THROW_ON_ERROR);}$app->exec('UPDATE coupons SET applicable_products=?,applicable_categories=? WHERE id=? AND tenant_id=?',[...$values,$coupon['id'],$tenant]);}
+    foreach($app->all('SELECT id,legacy_family180 FROM fisitaap_r2_modifiers WHERE tenant_id=? AND legacy_family180 IS NOT NULL',[$tenant]) as $modifier){$id=$mapping['fisitaap_r2_modifiers'][(string)$modifier['legacy_family180']]??null;if(!$id)throw new DomainException('Revisa las opciones antiguas de la plantilla demo antes de crear la copia.');$app->exec('UPDATE fisitaap_r2_modifiers SET legacy_family180=? WHERE id=? AND tenant_id=?',[$id,$modifier['id'],$tenant]);}
 }

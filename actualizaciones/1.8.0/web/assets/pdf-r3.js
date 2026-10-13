@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
         for(const [key,label] of [['net','Subtotal'],['tax','Impuestos'],['service','Servicio'],['discount','Descuento'],['total','Total de la venta']]){if(!q[key]&&key!=='total'&&key!=='net')continue;const row=document.createElement('p'),value=document.createElement('b');row.textContent=label;value.textContent=money(q[key]);row.append(value);if(key==='total')row.className='r3-grand-total';totals.append(row);}
         $('[data-pay-total]',payment).textContent=money(q.total);
         let gift=0;const code=payment.elements.gift_code.value.trim().toUpperCase();
-        if(code){const card=paymentData.gifts.find(g=>g.code===code&&Number(g.customer_id)===customer());gift=amount('gift_amount');if(!card)throw Error('La tarjeta de regalo no está disponible para este cliente.');if(!gift){gift=Math.min(cents(card.balance),q.total);payment.elements.gift_amount.value=(gift/100).toFixed(2);}if(gift>cents(card.balance))throw Error('El monto de regalo supera el saldo de la tarjeta.');$('[data-gift-status]').textContent='Saldo disponible: '+money(cents(card.balance));}
-        const noncash=amount('card')+amount('sinpe')+amount('credit')+gift,cash=amount('cash'),change=cash-(q.total-noncash),missing=Math.max(0,-change);
+        if(code){const card=paymentData.gifts.find(g=>g.code===code&&Number(g.customer_id)===customer());gift=amount('gift_amount');if(!card)throw Error('La tarjeta de regalo no está disponible para este cliente.');if(!gift){gift=Math.min(cents(card.balance),Math.max(0,q.total-Number(paymentData.prepaid180||0)));payment.elements.gift_amount.value=(gift/100).toFixed(2);}if(gift>cents(card.balance))throw Error('El monto de regalo supera el saldo de la tarjeta.');$('[data-gift-status]').textContent='Saldo disponible: '+money(cents(card.balance));}
+        const noncash=Math.min(q.total,Number(paymentData.prepaid180||0))+amount('card')+amount('sinpe')+amount('credit')+gift,cash=amount('cash'),change=cash-(q.total-noncash),missing=Math.max(0,-change);
         $('[data-pay-received]',payment).textContent=money(cash);$('[data-pay-change]',payment).textContent=money(Math.max(0,change));$('[data-pay-change-summary]',payment).textContent=money(Math.max(0,change));$('[data-pay-missing]',payment).textContent='Saldo pendiente: '+money(missing);
         const cp=profile(),creditAllowed=cp&&Number(cp.credit_enabled)&&cents(cp.credit_limit)-cents(cp.current_balance)>0;
         $('[data-payment-method=credit]',payment).disabled=!creditAllowed;
@@ -63,9 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
         $('[data-payment-message]',payment).textContent=message;$('[data-confirm-payment]',payment).disabled=!valid||submitted;
       }catch(error){$('[data-payment-message]',payment).textContent=error.message||'Revisa los datos de cobro.';$('[data-confirm-payment]',payment).disabled=true;}
     }
+    if(window.FISITAAP180?.enabled){
+      let lookupTimer,lookupVersion=0;
+      const lookup=()=>{clearTimeout(lookupTimer);const code=payment.elements.gift_code.value.trim().toUpperCase(),cid=customer(),version=++lookupVersion;if(!code)return;lookupTimer=setTimeout(async()=>{try{$('[data-gift-status]',payment).textContent='Comprobando saldo…';const base=window.FISITAPP.base.replace(/\/$/,''),response=await fetch(base+'/api/gift-preview',{method:'POST',headers:{Accept:'application/json'},body:new URLSearchParams({csrf:window.FISITAPP.csrf,code,customer_id:cid})}),out=await response.json();if(version!==lookupVersion)return;if(!response.ok||!out.ok)throw new Error(out.error||'No se confirmó el saldo.');paymentData.gifts=paymentData.gifts.filter(card=>!(card.code===code&&Number(card.customer_id)===cid));paymentData.gifts.push(out.card);refreshPayment();}catch(error){if(version===lookupVersion){$('[data-gift-status]',payment).textContent=error.message;$('[data-confirm-payment]',payment).disabled=true;}}},300);};
+      payment.elements.gift_code.addEventListener('input',lookup);payment.elements.customer_id?.addEventListener('change',lookup);
+    }
     function method(key) {
       selectedMethod=key;$$('[data-payment-method]',payment).forEach(b=>b.classList.toggle('active',b.dataset.paymentMethod===key));
-      const q=lastQuote?.total||0;for(const k of ['cash','card','sinpe','credit'])payment.elements[k].value=key===k?(q/100).toFixed(2):'0';
+      const q=Math.max(0,(lastQuote?.total||0)-Number(paymentData.prepaid180||0));for(const k of ['cash','card','sinpe','credit'])payment.elements[k].value=key===k?(q/100).toFixed(2):'0';
       payment.elements.gift_code.value='';payment.elements.gift_amount.value='0';$('[data-gift-status]',payment).textContent='';
       $$('[data-pay-field]',payment).forEach(el=>el.hidden=key!=='mixed'&&el.dataset.payField!==key);
       $('[data-payment-title]',payment).textContent={cash:'Pago en efectivo',card:'Pago con tarjeta',sinpe:'Pago con SINPE',mixed:'Pago mixto',credit:'Pago a crédito',gift:'Tarjeta de regalo'}[key];
@@ -73,14 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     $$('[data-payment-method]',payment).forEach(b=>b.onclick=()=>method(b.dataset.paymentMethod));
     $$('[data-cash-amount]',payment).forEach(b=>b.onclick=()=>{payment.elements.cash.value=b.dataset.cashAmount;refreshPayment();});
-    $('[data-cash-exact]',payment).onclick=()=>{payment.elements.cash.value=((lastQuote?.total||0)/100).toFixed(2);refreshPayment();};
+    $('[data-cash-exact]',payment).onclick=()=>{payment.elements.cash.value=(Math.max(0,(lastQuote?.total||0)-Number(paymentData.prepaid180||0))/100).toFixed(2);refreshPayment();};
     $('[data-split-toggle]',payment).onclick=()=>{$('[data-split-panel]',payment).hidden=!$('[data-split-panel]',payment).hidden;};
     if(new URL(location.href).searchParams.has('divide'))$('[data-split-panel]',payment).hidden=false;
     $('[data-split-none]',payment).onclick=()=>{payment.elements.split_mode.value='items';$$('[data-r3-pick]',payment).forEach(i=>i.value='0');refreshPayment();};
     $$('[data-split-move]',payment).forEach(b=>b.onclick=()=>{payment.elements.split_mode.value='items';const i=$('[data-r3-pick="'+b.dataset.splitMove+'"]',payment);i.value=Number(i.value)?'0':i.max;refreshPayment();});
     payment.addEventListener('input',refreshPayment);payment.addEventListener('change',event=>{
       if(event.target.name==='split_mode'||event.target.name==='parts'){
-        refreshPayment();if(selectedMethod!=='mixed'&&['cash','card','sinpe','credit'].includes(selectedMethod))payment.elements[selectedMethod].value=((lastQuote?.total||0)/100).toFixed(2);
+        refreshPayment();if(selectedMethod!=='mixed'&&['cash','card','sinpe','credit'].includes(selectedMethod))payment.elements[selectedMethod].value=(Math.max(0,(lastQuote?.total||0)-Number(paymentData.prepaid180||0))/100).toFixed(2);
       }
       refreshPayment();
     });

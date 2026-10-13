@@ -1,0 +1,14 @@
+{
+  "passed": 8,
+  "checks": [
+    "manual reception creates one unpaid POS account and never reserves web inventory twice, including a double click",
+    "reception sends a single durable kitchen command and copies the original customer, prices and options",
+    "settlement recognizes prepaid gift plus cash without debiting the gift again or allowing original-order edits",
+    "a received paid order cannot be cancelled with an unpaid-order refund",
+    "preparation transitions reject stale revisions and synchronize the linked account through delivery",
+    "cancelling an unpaid received order releases inventory and prepaid gift exactly once",
+    "direct reception respects the branch setting and commits the web order, account and kitchen job together",
+    "Kanban exposes the operational columns and rejects an unavailable order without affecting another business"
+  ],
+  "environment": "isolated real PHP/MariaDB HTTP; no live printers or customer data"
+}

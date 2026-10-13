@@ -13,6 +13,11 @@ require_once __DIR__.'/pos180.php';
 require_once __DIR__.'/floor180.php';
 require_once __DIR__.'/offline180.php';
 require_once __DIR__.'/printing180.php';
+require_once __DIR__.'/coupons180.php';
+require_once __DIR__.'/orders180.php';
+require_once __DIR__.'/reports180.php';
+require_once __DIR__.'/settings180.php';
+require_once __DIR__.'/loyalty180.php';
 
 function qa180_ui_context(App $app):array {
     $user=current_user();$context=['base'=>url(),'enabled'=>true,'user_id'=>(int)($user['id']??0),'nonce'=>$_SESSION['native_nonce180']??null,'native'=>null];
@@ -42,6 +47,7 @@ function qa180_activate(App $app):void {
             qa180_modifiers_upgrade($app);
             qa180_register_upgrade($app);
             qa180_floor_upgrade($app);
+            qa180_roles_upgrade($app);
             $app->exec('INSERT INTO settings(`key`,`value`) VALUES("qa180_active","1") ON DUPLICATE KEY UPDATE `value`="1"');
             audit($app,null,(int)$user['id'],'activate180','configuration',null);
             $message='Actualización 1.8.0 activada. Revisa las cajas asignadas a cada equipo antes de cobrar.';
@@ -65,25 +71,32 @@ function qa180_dispatch(App $app,string $path):void {
     if($path==='master/escritorio'){qa180_devices($app,require_login(['master']),null);exit;}
     if(in_array($path,['admin','admin/bienvenida'],true)){$user=require_login(['tenant_admin','manager','editor','cashier','kitchen']);$tenant=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$user['tenant_id']]);if(!$tenant)throw new DomainException('Negocio no disponible.');qa180_welcome($app,$user,$tenant);exit;}
     if($path==='api/native/bind'&&is_post())qa180_bind($app);
+    if($path==='api/gift-preview'&&is_post())qa180_gift_preview($app);
     if($path==='api/native/print-test'&&is_post())qa180_print_test($app);
+    if($path==='api/coupon-preview'&&is_post())qa180_coupon_preview($app);
     if($path==='api/pos-options')qa180_pos_options($app);
-    $handlers=['turnos','caja-movimiento','cxc','cxp','cuentas-dinero','compras','contactos','auditoria','kpis','clientes','clientes-crear','clientes-buscar','clientes-historial','credito','extras','opcionales','producto-extras','categoria-extras','escritorio','salones','impresion'];
+    $handlers=['turnos','caja-movimiento','cxc','cxp','cuentas-dinero','compras','contactos','auditoria','kpis','clientes','clientes-crear','clientes-buscar','clientes-historial','credito','extras','opcionales','producto-extras','categoria-extras','escritorio','salones','impresion','cupones','pedidos','cocina','reportes','configuracion','contenido'];
     if(!str_starts_with($path,'admin/'))return;
     $section=explode('/',$path)[1];if(!in_array($section,$handlers,true))return;
     try{
-        [$user,$tenant]=qa180_business($app,['caja-movimiento'=>'turnos','cuentas-dinero'=>'configuracion','producto-extras'=>'productos','categoria-extras'=>'categorias'][$section]??$section);
-        if($section==='turnos')qa180_shifts($app,$user,$tenant);
+        [$user,$tenant]=qa180_business($app,['cupones'=>'promociones','caja-movimiento'=>'turnos','cuentas-dinero'=>'configuracion','producto-extras'=>'productos','categoria-extras'=>'categorias'][$section]??$section);
+        if(in_array($section,['pedidos','cocina'],true))qa180_orders($app,$user,$tenant,$section);
+        elseif($section==='turnos')qa180_shifts($app,$user,$tenant);
         elseif($section==='caja-movimiento')qa180_cash_move($app,$user,$tenant);
         elseif(in_array($section,['cxc','cxp'],true))qa180_accounts($app,$user,$tenant,$section);
         elseif($section==='cuentas-dinero')qa180_money_accounts($app,$user,$tenant);
         elseif($section==='compras')qa180_purchases($app,$user,$tenant);
         elseif($section==='contactos')qa180_contacts($app,$user,$tenant);
         elseif($section==='auditoria')qa180_log($app,$user,$tenant);
+        elseif($section==='configuracion')qa180_settings($app,$user,$tenant);
+        elseif($section==='contenido')qa180_design($app,$user,$tenant);
+        elseif($section==='reportes')qa180_reports($app,$user,$tenant);
         elseif($section==='kpis')tenant_dashboard($app,$user,$tenant);
         elseif(in_array($section,['clientes','clientes-crear','clientes-buscar','clientes-historial','credito'],true))qa180_customers($app,$user,$tenant,$section);
         elseif(in_array($section,['extras','opcionales'],true))qa180_modifiers($app,$user,$tenant,$section==='extras'?'extra':'optional');
         elseif(in_array($section,['producto-extras','categoria-extras'],true))qa180_modifier_assignment($app,$user,$tenant,$section==='categoria-extras');
         elseif($section==='escritorio')qa180_devices($app,$user,$tenant);
+        elseif($section==='cupones')qa180_coupons($app,$user,$tenant);
         elseif($section==='impresion')qa180_printers($app,$user,$tenant);
         elseif($section==='salones')r3_floor($app,$user,$tenant);
     }catch(Throwable $error){http_response_code(422);simple_error('Revisa la operación',$error instanceof PDOException?'No se pudo completar la operación. Revisa su estado antes de volver a intentar.':$error->getMessage());}

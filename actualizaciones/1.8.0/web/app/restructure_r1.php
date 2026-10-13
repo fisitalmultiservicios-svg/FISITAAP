@@ -23,23 +23,23 @@ function restructure_sections_r1(): array
         'repartidor'=>'Seguimiento de entregas', 'blog'=>'Blog', 'contactos'=>'Contactos', 'auditoria'=>'Auditoría',
         'fisichat'=>'FISIChat',
     ] + (function_exists('r2_sections') ? r2_sections() : []);
-    if(function_exists('qa180_active')&&qa180_active($GLOBALS['app'])){unset($sections['blog']);$sections['auditoria']='Bitácora';$sections['dashboard']='Bienvenida';}return $sections;
+    if(function_exists('qa180_active')&&qa180_active($GLOBALS['app'])){unset($sections['blog'],$sections['cobro']);$sections['auditoria']='Bitácora';$sections['dashboard']='Bienvenida';}return $sections;
 }
 
 function restructure_actions_r1(): array
 {
-    return ['view'=>'Consultar', 'write'=>'Crear y modificar', 'delete'=>'Eliminar / anular', 'charge'=>'Cobrar', 'credit'=>'Autorizar crédito', 'configure'=>'Configurar','price'=>'Modificar precio de una venta','credit_sale'=>'Usar crédito ya autorizado'];
+    return ['view'=>'Consultar', 'write'=>'Crear y modificar', 'delete'=>'Eliminar / anular', 'charge'=>'Cobrar', 'credit'=>'Autorizar crédito', 'configure'=>'Configurar','price'=>'Modificar precio de una venta','discount'=>'Aplicar descuento manual','credit_sale'=>'Usar crédito ya autorizado'];
 }
 
 function restructure_available_actions_r1(string $section): array
 {
     if ($section === 'credito') return ['view','credit'];
     if (in_array($section, ['dashboard','reportes','recibo','auditoria','fisichat','kpis','clientes-historial','entregas-historial'], true)) return ['view'];
-    $actions = ['view', 'write'];if(function_exists('qa180_active')&&qa180_active($GLOBALS['app'])&&in_array($section,['ventas','cobro'],true))array_push($actions,'price','credit_sale');
+    $actions = ['view', 'write'];if(function_exists('qa180_active')&&qa180_active($GLOBALS['app'])&&in_array($section,['ventas','cobro'],true))array_push($actions,'price','discount','credit_sale');
     if (in_array($section, ['categorias','productos','opciones','extras','opcionales','combos','promociones','proveedores','cupones','delivery','contenido','blog','ventas','pedidos','cocina'], true)) $actions[] = 'delete';
     if (in_array($section, ['ventas','cobro','express-pendientes'], true)) $actions[] = 'charge';
     if ($section === 'clientes') $actions[] = 'credit';
-    if (in_array($section,['ventas','mesas','salones'],true)) $actions[] = 'configure';
+    if (in_array($section,['ventas','mesas','salones','escritorio','impresion','configuracion','cuentas-dinero'],true)) $actions[] = 'configure';
     return $actions;
 }
 
@@ -51,6 +51,7 @@ function restructure_assignment_r1(App $app, array $user): ?array
 
 function restructure_can_r1(App $app, array $user, string $section, string $action='view'): ?bool
 {
+    if(function_exists('qa180_active')&&qa180_active($app)&&$section==='cobro')$section='ventas';
     if (!restructure_active_r1($app) || in_array($user['role'], ['master','tenant_admin','customer','driver'], true)) return null;
     static $cache = [];
     $cacheKey = (int)$user['id'].':'.(int)($user['tenant_id']??0);
@@ -157,7 +158,7 @@ function restructure_guard_r1(App $app, string $path): void
         return;
     }
     $section = $path === 'api/pos-options' ? 'ventas' : (explode('/', $path)[1]??'dashboard');
-    if(function_exists('qa180_active')&&qa180_active($app))$section=['producto-extras'=>'productos','categoria-extras'=>'categorias','cuentas-dinero'=>'configuracion','caja-movimiento'=>'turnos','turno-resumen'=>'turnos'][$section]??$section;
+    if(function_exists('qa180_active')&&qa180_active($app))$section=['cobro'=>'ventas','producto-extras'=>'productos','categoria-extras'=>'categorias','cuentas-dinero'=>'configuracion','caja-movimiento'=>'turnos','turno-resumen'=>'turnos'][$section]??$section;
     $action = 'view';
     if (is_post()) {
         $action = 'write';
@@ -170,7 +171,7 @@ function restructure_guard_r1(App $app, string $path): void
         if ($section === 'ventas' && $operation === 'void') $action = 'delete';
         if ($section === 'ventas' && in_array($operation,['save_table','save_group'],true)) $action = 'configure';
         if (in_array($section,['pedidos','cocina'],true) && ($_POST['status']??'') === 'cancelled') $action = 'delete';
-        if ($section === 'cobro' || ($section === 'ventas' && ($_GET['screen']??'') === 'checkout')) $action = 'charge';
+        if ($section === 'cobro' || $path==='admin/cobro' || ($section === 'ventas' && ($_GET['screen']??'') === 'checkout')) $action = 'charge';
         if (in_array($section, ['ventas','cobro'], true) && (float)($_POST['credit']??0)>0 && restructure_can_r1($app,$user,qa180_active($app)?'ventas':(function_exists('r2_active')&&r2_active($app)?'credito':'clientes'),qa180_active($app)?'credit_sale':'credit') === false) {
             http_response_code(403); simple_error('Crédito restringido','Tu rol no permite registrar ventas a crédito.'); exit;
         }

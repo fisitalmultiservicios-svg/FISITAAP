@@ -33,11 +33,13 @@ function qa180_move_table(App $app,array $user,array $tenant,array $branch,int $
         $app->one('SELECT id FROM branches WHERE id=? AND tenant_id=? FOR UPDATE',[$branch['id'],$tenant['id']]);
         $prior=$app->one('SELECT * FROM fisitaap_operations180 WHERE tenant_id=? AND operation_key=?',[$tenant['id'],$key]);if($prior){if(!hash_equals($prior['payload_hash'],$hash))throw new DomainException('Esta referencia ya se usó para otra operación.');$app->db->commit();return (int)$prior['result_id'];}
         $main=pos_ticket_get_148($app,$tenant,$branch,$id,true);if(in_array($main['status'],['paid','void','merged'],true)||(int)$main['revision']!==(int)($_POST['revision']??-1))throw new DomainException('La cuenta cambió. Revisa su estado y recarga antes de continuar.');
+        if($main['source_order_id'])throw new DomainException('El pedido web mantiene una cuenta independiente.');
         $destination=qa180_table($app,$tenant,$branch,$target,true);$original=$main['table_id']?qa180_table($app,$tenant,$branch,(int)$main['table_id'],true):null;
         $joined=array_column($app->all('SELECT table_id FROM fisitaap_ticket_tables180 WHERE ticket_id=? AND tenant_id=?',[$id,$tenant['id']]),'table_id');$oldTables=array_unique(array_filter([...(array)$joined,(int)$main['table_id']]));
         if($join){
             if(!$original||$original['space_type']==='bar'||$destination['space_type']==='bar')throw new DomainException('La barra mantiene cuentas por comensal. Une mesas del mismo salón.');
             if(!$original['room_id']||(int)$original['room_id']!==(int)$destination['room_id'])throw new DomainException('Solo puedes unir mesas del mismo salón y sucursal.');
+            if($main['source_order_id'])throw new DomainException('El pedido web conserva su cuenta original. No se puede unir o mover a otra mesa.');
             if((float)$main['paid_total']>0)throw new DomainException('Esta cuenta tiene pagos parciales. Completa su cobro antes de unirla.');
             if($main['coupon_id'])throw new DomainException('Quita el código de descuento antes de unir mesas; podrás aplicarlo a la cuenta unificada.');
             if(abs(r2_table_rate($app,$target,(bool)$destination['service_enabled'])-(float)$main['service_rate'])>.00001)throw new DomainException('Las mesas tienen reglas de servicio distintas. Conserva sus cuentas separadas.');

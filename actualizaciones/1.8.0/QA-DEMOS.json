@@ -1,0 +1,12 @@
+{
+  "passed": 6,
+  "checks": [
+    "two visitors receive independent tenants and cannot reuse each other demo sessions",
+    "coupon product/category scopes and legacy mandatory option families are remapped to the private copy",
+    "virtual demo cash can sell with inherited choices and all receipt/command jobs remain simulated",
+    "demo blocks real equipment services and Other demos exits to the public selector",
+    "finishing removes all private cash/history/print records and a new session starts from the frozen template",
+    "demo disposal and new entry leave La Ventanita and both source templates unchanged"
+  ],
+  "environment": "isolated fictional templates, real HTTP/MariaDB"
+}

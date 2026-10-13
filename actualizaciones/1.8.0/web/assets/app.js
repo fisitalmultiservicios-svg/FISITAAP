@@ -95,7 +95,7 @@
       const subtotal=cart.reduce((sum,item)=>sum+(Number(item.price||0)+Number(item.option_delta||0))*Number(item.qty||0),0);
       if(status)status.textContent='Validando cupón…';
       try{
-        const r=await fetch(String(window.FISITAPP?.base||'').replace(/\/$/,'')+'/api/coupon-preview',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRF-Token':window.FISITAPP.csrf,'Accept':'application/json'},body:JSON.stringify({tenant:checkout.elements.tenant.value,coupon:code,subtotal,csrf:window.FISITAPP.csrf})});
+        const r=await fetch(String(window.FISITAPP?.base||'').replace(/\/$/,'')+'/api/coupon-preview',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRF-Token':window.FISITAPP.csrf,'Accept':'application/json'},body:JSON.stringify({tenant:checkout.elements.tenant.value,coupon:code,subtotal,items:cart,branch_id:Number(checkout.elements.branch_id?.value||0),csrf:window.FISITAPP.csrf})});
         const out=await r.json();
         if(!out.ok)throw new Error(out.error||'No se pudo validar.');
         if(out.valid===true){

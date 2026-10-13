@@ -18,7 +18,7 @@
       FisitaapAndroid.postMessage(JSON.stringify({ requestId, action, ...data }));
     });
   }
-  window.fisitaapAndroid={trackWebPayment:data=>request('trackPayment',data),printLocal:data=>request('printLocal',data),printerInfo:()=>request('printerInfo'),flushPrint:()=>request('flushPrint'),print:job=>request('print',{job}),authorize:data=>request('authorize',data)};
+  window.fisitaapAndroid={loginUsers:()=>request('loginUsers'),trackWebPayment:data=>request('trackPayment',data),printLocal:data=>request('printLocal',data),printerInfo:()=>request('printerInfo'),flushPrint:()=>request('flushPrint'),print:job=>request('print',{job}),authorize:data=>request('authorize',data)};
   const uuid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + [...crypto.getRandomValues(new Uint8Array(16))].map(x=>x.toString(16).padStart(2,'0')).join('');
   function status(card, text, error = false) {
     const node = card.querySelector('[data-print-status]');

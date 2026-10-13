@@ -1,0 +1,14 @@
+{
+  "passed": 8,
+  "checks": [
+    "the preview derives the eligible discount from real prices and ignores a forged browser subtotal",
+    "foreign business products cannot be used for coupon configuration or preview",
+    "POS applies the eligible server-calculated discount without consuming a use before payment",
+    "two partial payments and a retry consume one use; the remaining agreed balance survives coupon expiry/deactivation",
+    "new carts cannot reuse an exhausted or deactivated coupon",
+    "partial payment of an excluded article receives no coupon discount; the entire discount stays on the eligible item",
+    "a real customer web checkout records the eligible discount and its use once across retries",
+    "a new web order cannot take the already exhausted last coupon use"
+  ],
+  "environment": "isolated PHP/MariaDB HTTP; no production"
+}

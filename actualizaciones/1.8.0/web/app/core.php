@@ -253,7 +253,7 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false)
     header('Cache-Control: private, no-store, max-age=0');
     header('Pragma: no-cache');
     $bridgeConnect=in_array(request_path(),['admin/recibo','admin/impresion'],true)?' http://127.0.0.1:18765':'';
-    header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-src https://www.google.com https://maps.google.com; connect-src 'self'{$bridgeConnect}");
+    header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self'{$bridgeConnect}");
     echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="'.e($primary).'"><title>'.e($title).' · '.e($name).'</title>'.(function_exists('seo_head_v12')&&$app instanceof App?seo_head_v12($app,$title,$tenant,$admin):'').'<link rel="manifest" href="'.url(($tenant? $tenant['slug'].'/':'').'manifest.webmanifest').'"><link rel="stylesheet" href="'.url('assets/app.bundle.css?v='.rawurlencode($cacheVersion)).'"><link rel="stylesheet" href="'.url('assets/v12.css?v='.rawurlencode($cacheVersion)).'">';
     if(!empty($GLOBALS['demo_context']))demo_header();
     require_once __DIR__.'/browser_migration179.php';

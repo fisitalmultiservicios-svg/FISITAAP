@@ -111,6 +111,7 @@ function order_status_qa(App $app,int $tenantId,int $orderId,string $status,int 
     try{
         $order=$app->one('SELECT * FROM orders WHERE id=? AND tenant_id=? FOR UPDATE',[$orderId,$tenantId]);
         if(!$order)throw new DomainException('Pedido no disponible para esta empresa.');
+        if(qa180_active($app))qa180_order_before_status($app,$order,$status,$userId);
         if($order['status']==='cancelled'&&$status!=='cancelled')throw new DomainException('Un pedido cancelado no se puede reabrir. Crea un pedido nuevo.');
         if($order['status']==='delivered'&&$status==='cancelled')throw new DomainException('Una entrega finalizada requiere revisar la devolución con administración.');
         if($status==='cancelled'){
@@ -124,7 +125,7 @@ function order_status_qa(App $app,int $tenantId,int $orderId,string $status,int 
                 if($job['assigned_driver_id'])$app->exec('UPDATE driver_profiles SET completed_deliveries=completed_deliveries+1 WHERE user_id=?',[$job['assigned_driver_id']]);
             }
         }
-        $app->exec('UPDATE orders SET status=?,updated_at=NOW() WHERE id=? AND tenant_id=?',[$status,$orderId,$tenantId]);
+        $app->exec('UPDATE orders SET status=?,updated_at=NOW()'.(qa180_active($app)?',revision180=revision180+1':'').' WHERE id=? AND tenant_id=?',[$status,$orderId,$tenantId]);
         if($own)$app->db->commit();
     }catch(Throwable $e){if($own&&$app->db->inTransaction())$app->db->rollBack();throw $e;}
 }

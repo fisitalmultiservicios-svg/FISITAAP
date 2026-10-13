@@ -1,0 +1,38 @@
+{
+  "passed": 5,
+  "checks": [
+    "all 24 operational module reports and real CSV exports execute successfully against MariaDB",
+    "foreign branch and client filters are rejected; searches never expose another business rows",
+    "report access alone cannot unlock product costs or credit; granted sales reports remain available",
+    "CSV neutralizes spreadsheet formulas from customer-controlled text",
+    "the master summary uses timestamp ranges and omits a received web order from the combined sales total"
+  ],
+  "datasets": 24,
+  "fixture_http_round_trip_ms": {
+    "products": 246.4,
+    "sales": 119.2,
+    "items": 125.5,
+    "orders": 432.6,
+    "tables": 189.5,
+    "shifts": 137.4,
+    "cash": 106.9,
+    "payments": 108.2,
+    "purchases": 114.0,
+    "inventory": 103.9,
+    "inventory_moves": 112.4,
+    "suppliers": 119.3,
+    "cxc": 126.6,
+    "cxp": 105.1,
+    "customers": 107.5,
+    "credit": 121.8,
+    "loyalty": 133.7,
+    "gifts": 387.6,
+    "delivery": 417.1,
+    "users": 435.2,
+    "devices": 274.9,
+    "registers": 604.0,
+    "contacts": 172.0,
+    "audit": 178.7
+  },
+  "environment": "isolated MariaDB/PHP, no production performance claim"
+}

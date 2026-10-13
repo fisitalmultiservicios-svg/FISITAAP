@@ -56,6 +56,10 @@ app.whenReady().then(async () => {
   ipcMain.handle('fisitaap:track-payment',(event,data)=>{
     const frame=event.senderFrame;if(frame.parent||event.sender!==workspace?.webView.webContents||!service.store.data.connection||new URL(frame.url).origin!==new URL(service.store.data.connection.url).origin)throw new Error('Confirma el cobro en el negocio autorizado.');return service.trackWebPayment(data);
   });
+  ipcMain.handle('fisitaap:login-users',event=>{
+    const frame=event.senderFrame;if(frame.parent||event.sender!==workspace?.webView.webContents||!service.store.data.connection||new URL(frame.url).origin!==new URL(service.store.data.connection.url).origin||!new URL(frame.url).pathname.endsWith('/owner-login'))throw new Error('Conecta el equipo y abre su acceso habitual.');
+    return {ok:true,users:(service.store.data.snapshot?.users||[]).filter(user=>typeof user.email==='string'&&user.email.includes('@')).map(user=>({id:user.id,name:user.name,email:user.email}))};
+  });
   ipcMain.handle('fisitaap:authorize',(event,data)=>{
     const frame=event.senderFrame,configured=service.store.data.connection?.url;
     if(frame.parent||!configured||event.sender!==workspace?.webView.webContents||new URL(frame.url).origin!==new URL(configured).origin)throw new Error('Conecta y autoriza este equipo en Administración → Equipos y cajas.');

@@ -3,7 +3,10 @@ declare(strict_types=1);
 require_once __DIR__.'/schema180.php';
 
 function qa180_permission(App $app,array $user,string $section,string $action='write'):void {
+    if($section==='cobro')$section='ventas';
+    if($action==='read')$action='view';
     $fresh=$app->one('SELECT * FROM users WHERE id=? AND tenant_id=? AND is_active=1',[$user['id'],$user['tenant_id']]);
+    if($fresh&&!empty($fresh['force_password_change']))throw new DomainException('Actualiza tu contraseña antes de realizar esta operación.');
     if(!$fresh)throw new DomainException('Tu acceso cambió. Inicia sesión nuevamente.');
     $allowed=restructure_can_r1($app,$fresh,$section,$action);
     $default=role_can($fresh['role'],r2_alias($section));
@@ -98,4 +101,10 @@ function qa180_pending_shift(App $app,array $shift):bool {
     // Include pre-update web tickets belonging to this cashier. Accounts from
     // other devices/cashiers do not block an independent register's closing.
     return (bool)$app->one('SELECT id FROM pos_tickets WHERE tenant_id=? AND branch_id=? AND status NOT IN("paid","void","merged") AND (shift_id=? OR (shift_id IS NULL AND opened_by=? AND source_order_id IS NULL)) AND (table_id IS NOT NULL OR paid_total>0 OR EXISTS(SELECT 1 FROM pos_ticket_items i WHERE i.ticket_id=pos_tickets.id)) LIMIT 1',[$shift['tenant_id'],$shift['branch_id'],$shift['id'],$shift['user_id']]);
+}
+
+function qa180_roles_upgrade(App $app):void {
+    // Legacy billing grants now belong to the single Sales permission set.
+    $app->exec('INSERT IGNORE INTO fisitaap_r1_permissions(role_id,section_key,action_key) SELECT role_id,"ventas","view" FROM fisitaap_r1_permissions WHERE section_key="cobro" AND action_key="view"');
+    $app->exec('INSERT IGNORE INTO fisitaap_r1_permissions(role_id,section_key,action_key) SELECT p.role_id,"ventas","charge" FROM fisitaap_r1_permissions p JOIN fisitaap_r1_permissions v ON v.role_id=p.role_id AND v.section_key="cobro" AND v.action_key="view" WHERE p.section_key="cobro" AND p.action_key="charge"');
 }

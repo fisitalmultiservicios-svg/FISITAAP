@@ -68,3 +68,9 @@ function qa180_print_test(App $app):never {
     [$user,$tenant]=qa180_business($app,'impresion');qa180_permission($app,$user,'impresion','configure');verify_csrf();$branch=physical_branch_v14($app,$tenant);$point=(string)($_POST['point']??'');
     try{$app->db->beginTransaction();$id=qa180_print_enqueue($app,$tenant,$branch,$user,$point,'test-'.bin2hex(random_bytes(12)),"PRUEBA DE IMPRESIÓN\n".$tenant['name']."\n".$branch['name']."\n".(r3_print_points($app,$tenant)[$point]??'')."\n58 / 80 mm · ₡ · áéíóú ñ\nSIN COBRO · SIN GAVETA",false);$app->db->commit();json_response(['ok'=>true,'id'=>$id]);}catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();json_response(['ok'=>false,'error'=>$error instanceof PDOException?'No se pudo guardar la prueba.':$error->getMessage()],422);}
 }
+function qa180_gift_preview(App $app):never {
+    [$user,$tenant]=qa180_business($app,'ventas');verify_csrf();
+    try{qa180_permission($app,$user,'ventas','charge');qa180_native($app,$user,true);$customer=(int)($_POST['customer_id']??0);$code=strtoupper(trim((string)($_POST['code']??'')));if(!preg_match('/^[A-Z0-9-]{6,40}$/D',$code))throw new DomainException('Escribe el código de la tarjeta.');
+        $card=$app->one('SELECT c.balance,c.customer_id FROM fisitaap_r3_gift_cards c JOIN tenant_customers tc ON tc.tenant_id=c.tenant_id AND tc.user_id=c.customer_id JOIN users u ON u.id=tc.user_id AND u.role="customer" AND u.is_active=1 WHERE c.tenant_id=? AND c.customer_id=? AND c.code=? AND c.status="active" AND c.expires_at>=NOW()',[$tenant['id'],$customer,$code]);if(!$card)throw new DomainException('La tarjeta no está disponible para este cliente.');json_response(['ok'=>true,'card'=>['customer_id'=>$customer,'code'=>$code,'balance'=>$card['balance']]]);
+    }catch(Throwable $error){json_response(['ok'=>false,'error'=>$error instanceof PDOException?'No se pudo comprobar el saldo.':$error->getMessage()],403);}
+}

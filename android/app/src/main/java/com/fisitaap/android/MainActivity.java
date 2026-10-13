@@ -89,6 +89,8 @@ public final class MainActivity extends Activity {
                 if("print".equals(command)) {
                     JSONObject job=request.getJSONObject("job");String host=preferences.getString("printer_host","");int port=preferences.getInt("printer_port",9100),width=preferences.getInt("printer_width",80);boolean cut=preferences.getBoolean("printer_cut",true);
                     printing.execute(()->{JSONObject result;try{result=printer.print(job,host,port,width,cut);}catch(Exception e){result=error(e.getMessage());}respond(reply,id,result,version);});
+                } else if("loginUsers".equals(command)&&sender==web&&android.net.Uri.parse(sender.getUrl()).getPath().endsWith("/owner-login")){
+                    network.execute(()->{JSONObject result;try{JSONArray users=nativeState().getJSONObject("snapshot").getJSONArray("users"),choices=new JSONArray();for(int i=0;i<users.length();i++){JSONObject user=users.getJSONObject(i);choices.put(new JSONObject().put("id",user.getLong("id")).put("name",user.getString("name")).put("email",user.getString("email")));}result=new JSONObject().put("ok",true).put("users",choices);}catch(Exception e){result=error("Conecta y autoriza este equipo para elegir el cajero.");}respond(reply,id,result,version);});
                 } else if("trackPayment".equals(command)&&sender==web){
                     network.execute(()->{JSONObject result;try(OfflineStorage storage=new OfflineStorage(this)){storage.trackPayment(request);result=new JSONObject().put("ok",true);}catch(Exception e){result=error(e.getMessage());}respond(reply,id,result,version);});
                 } else if("printerInfo".equals(command)&&sender==web){

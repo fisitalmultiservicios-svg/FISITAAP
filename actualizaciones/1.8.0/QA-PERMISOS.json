@@ -1,0 +1,14 @@
+{
+  "passed": 8,
+  "checks": [
+    "a custom cashier with sales view/charge can bind its device without acquiring administration or kitchen permissions",
+    "offline action flags mirror the exact custom-role permissions",
+    "denied manual price and discount edits leave the ticket and its stock reservation unchanged",
+    "denied credit and inline client creation roll back the entire payment",
+    "cashier HTML contains neither other gift-card secrets nor unauthorized credit balances",
+    "a supplied gift code returns only its own customer balance and rejects another business customer",
+    "the authorized cashier can settle a supplied gift plus cash without unrelated credit permissions",
+    "a forced password change immediately invalidates monetary authority even while the old browser session is open"
+  ],
+  "environment": "isolated real PHP/MariaDB HTTP, custom cashier, trusted device transport"
+}
