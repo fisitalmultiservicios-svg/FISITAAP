@@ -1,4 +1,16 @@
-# Informe QA · FISITAAP 1.8.0-R2
+# Informe QA · FISITAAP 1.8.0-R3
+
+## Corrección visual · R3 · 14 de octubre de 2026
+
+Se reprodujeron ambos defectos en el navegador con el código R2. A 1317 px, el computador empezaba en y=211 mientras el título terminaba en y=241 y los botones en y=348: cubría texto y controles. El contenedor medía 385 px, pero la ilustración crecía a 554 px. En La Ventanita la navegación, presentación y tarjetas se mostraban como bloques sin diseño; el banner medía 0 px de altura mínima porque no se cargaba restructure-r2.css.
+
+La ilustración ahora participa en una cuadrícula que reserva su altura real y conserva el límite de 940 px, con computador y teléfono alineados abajo. La página del negocio solicita explícitamente sus estilos compartidos (5.4 KB), conservando el JavaScript de POS/salones para las pantallas que lo necesitan. El ejemplo de FISIChat responde directamente: «Tienes dos productos con poco stock: crema facial (3 unidades) y botella térmica (8 unidades). Te recomiendo reponerlos esta semana».
+
+QA-PUBLICO-R3.json verifica 36 vistas públicas en total: portada y La Ventanita en nueve anchos (1366, 1317, 1024, 900, 768, 621, 620, 390 y 360), tanto con código fuente como con el payload exacto publicado en releases/1.8.0-r3. Comprueba que la ilustración no cubra título/botones, que los botones se puedan pulsar, que la tienda tenga navegación/banner/tarjetas adaptados, que conserve su logo, que el catálogo abra, que no se agregue JavaScript de POS a la tienda y que el administrador conserve su tema. También se verifica el diseño de un negocio pendiente en 1.7.9. No hubo errores JavaScript, recursos faltantes ni desbordamiento horizontal. Las imágenes del laboratorio usan datos y un logo ficticios, restaurados al terminar; no se modificó el contenido de la tienda real.
+
+QA-ACTUALIZADOR-R3.json prueba R3 sobre el ZIP R2 publicado con un negocio180, otro179 y un turno abierto. Conserva las versiones, turnos, modificadores, usuarios/productos/ventas, config, uploads y archivos R2; cambia la entrada al nuevo directorio al terminar la copia. Rechaza código R2 modificado fuera del paquete conocido. La repetición no duplica respaldos. QA-PERMISOS-ZIP-R3.json verifica la extracción sobre R2 y en carpeta nueva bajo umask077, sin reparar permisos después, con Apache UID33 y payload protegido.
+
+R3 no cambia cálculos, base de datos, turnos, impresión ni código nativo. Se ejecutaron pruebas centradas en las vistas y el empaquetado afectados. La evidencia de las 24 suites y las pruebas nativas siguientes corresponde a R2 y a los instaladores1.8.0 sin cambios; no se presenta como una nueva ejecución completa en R3. No se accedió a cPanel ni se probó un Brave físico.
 
 ## Corrección de permisos del ZIP · R1 · 14 de octubre de 2026
 
@@ -49,7 +61,7 @@ Se separan los tiempos PHP de proceso/red; no se incluye el retraso de 500 ms de
 
 schema180.php agrega las tablas 180 de cajas, colas de impresión, dinero, borradores, asignaciones de modificadores, mesas vinculadas, usos de cupón, pedidos vinculados, listas compartidas y operaciones idempotentes, y los campos/índices de los módulos relacionados. Se ejecuta por publicación explícita, fuera de las consultas normales. Cada negocio tiene un estado independiente en fisitaap_tenant_updates180, consultado por clave primaria y almacenado en memoria durante la solicitud. La conversión de modificadores, cajas, mesas y roles se limita al negocio que activa y su versión cambia al final de la transacción. No hay DDL durante esa activación individual. Se conservan tablas y registros anteriores.
 
-MANIFEST-ARCHIVOS.json enumera los 112 archivos funcionales instalados en R2 y su SHA-256. Native: desktop/ y android/ contienen el motor compartido, protección de vistas/credenciales, persistencia, impresión y recursos 1.8.0. El ZIP evita config.php, claves privadas, SQL y archivos cargados del negocio.
+MANIFEST-ARCHIVOS.json enumera los 112 archivos funcionales instalados en R3 y su SHA-256. Native: desktop/ y android/ contienen el motor compartido, protección de vistas/credenciales, persistencia, impresión y recursos 1.8.0. El ZIP evita config.php, claves privadas, SQL y archivos cargados del negocio.
 
 ## Revisión de las solicitudes
 
@@ -95,3 +107,7 @@ La velocidad previa del hosting y el certificado del nuevo servidor no pueden ve
 - [QA-ACTUALIZACION-POR-NEGOCIO.json](QA-ACTUALIZACION-POR-NEGOCIO.json): 10 comprobaciones de actualización por negocio y versiones mixtas.
 - [QA-ACTUALIZACION-UI.json](QA-ACTUALIZACION-UI.json): menú, estados, recursos y concurrencia por negocio.
 - [QA-PERMISOS-ZIP-R2.json](QA-PERMISOS-ZIP-R2.json): dos extracciones sin reparar permisos y 112 hashes.
+
+- [QA-PUBLICO-R3.json](QA-PUBLICO-R3.json): 36 vistas públicas, nueve anchos y comprobaciones de CTA, logo, catálogo, versión pendiente y tema administrativo.
+- [QA-ACTUALIZADOR-R3.json](QA-ACTUALIZADOR-R3.json): instalación sobre R2 con estado mixto y turno abierto.
+- [QA-PERMISOS-ZIP-R3.json](QA-PERMISOS-ZIP-R3.json): dos extracciones, 112 hashes y acceso Apache UID33.

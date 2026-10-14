@@ -1,6 +1,6 @@
 """Extracted ZIP installation and rollback, exclusively in a second fictional DB."""
 import hashlib,json,os,pathlib,re,shutil,subprocess,sys,urllib.parse,zipfile
-sys.path.insert(0,str(pathlib.Path(__file__).parent));from package180 import build
+sys.path.insert(0,str(pathlib.Path(__file__).parent));from package180 import build,code_prefix
 repo=pathlib.Path(__file__).resolve().parents[1];stage=pathlib.Path('/workspace/fisitaap-updater180-test');web='fisitaap-updater180-web';db='fisitaap_updater180_test';checks=[]
 def run(args,data=None):return subprocess.run(args,input=data,capture_output=True,check=True).stdout
 def php(code,data=None):return run(['docker','exec','-i',web,'php','-r',code],data)
@@ -54,15 +54,15 @@ def main():
             sql('INSERT INTO settings(`key`,`value`) VALUES("modifiers180_migrated","1") ON DUPLICATE KEY UPDATE `value`="1"')
         for actor,email in [('master','master@r2.invalid'),('owner','owner@r2.invalid')]:assert request(actor,'/owner-login',{'csrf':csrf(actor,'/owner-login'),'email':email,'password':password})[0]==302
         path='/actualizador-180/';assert request('anon',path)[0]==302;assert request('owner',path)[0]==403
-        for suffix in ['manifest.json','files.php','payload/releases/1.8.0-r2/app/schema180.php']:assert request('anon',path+suffix)[0]==403
+        for suffix in ['manifest.json','files.php','payload/'+code_prefix+'/app/schema180.php']:assert request('anon',path+suffix)[0]==403
         token=csrf('master',path);assert request('master',path,{'csrf':'','operation':'apply','backup':'yes'})[0]==403
-        payload=stage/'actualizador-180/payload/releases/1.8.0-r2/app/schema180.php';saved=payload.read_bytes();payload.write_bytes(saved+b'\n// damaged\n');assert 'integridad' in request('master',path,{'csrf':token,'operation':'apply','backup':'yes'})[1];assert not json.loads(php("echo json_encode(glob('/var/www/html/actualizador-180/backups/*/record.json'));"));payload.write_bytes(saved)
+        payload=stage/'actualizador-180/payload'/code_prefix/'app/schema180.php';saved=payload.read_bytes();payload.write_bytes(saved+b'\n// damaged\n');assert 'integridad' in request('master',path,{'csrf':token,'operation':'apply','backup':'yes'})[1];assert not json.loads(php("echo json_encode(glob('/var/www/html/actualizador-180/backups/*/record.json'));"));payload.write_bytes(saved)
         core=stage/'app/core.php';before=core.read_bytes();core.write_bytes(before+b'\n// private modification\n');assert 'archivos modificados' in request('master',path,{'csrf':token,'operation':'apply','backup':'yes'})[1];core.write_bytes(before)
         sql('INSERT INTO pos_shifts(tenant_id,branch_id,user_id,name,opening_cash,status,opened_at) VALUES(101,301,202,"OPEN DURING PUBLICATION",10,"open",NOW())')
         config_hash=hashlib.sha256((stage/'config.php').read_bytes()).hexdigest();status,body=request('master',path,{'csrf':token,'operation':'apply','backup':'yes'});assert status==200 and 'Archivos 1.8.0 instalados' in body,re.findall(r'<p class="notice error">(.*?)</p>',body)
         manifest=json.loads((stage/'actualizador-180/manifest.json').read_text());assert all(hashlib.sha256((stage/name).read_bytes()).hexdigest()==v['new'] for name,v in manifest['files'].items());assert hashlib.sha256((stage/'config.php').read_bytes()).hexdigest()==config_hash;assert sql('SELECT `value` FROM settings WHERE `key`="qa180_rollout"')[0]['value']=='1';assert sql('SELECT version FROM fisitaap_tenant_updates180 WHERE tenant_id=101')[0]['version']==(180 if version=='1.8.0-R1-active' else 179);assert len(sql('SELECT id FROM pos_shifts WHERE name="OPEN DURING PUBLICATION" AND status="open"'))==1;assert core.read_bytes()==before;assert request('owner','/admin')[0]==200
         if version=='1.8.0-R1-active':assert 'Tu negocio ya está actualizado' in request('owner','/admin/actualizar-sistema')[1]
-        assert request('anon','/releases/1.8.0-r2/index.php')[0]==403;assert request('anon','/releases/1.8.0-r2/app/core.php')[0]==403;assert request('anon','/releases/1.8.0-r2/assets/app.js')[0]==200;assert 'Actualizar sistema' in request('owner','/admin/actualizar-sistema')[1]
+        assert request('anon','/'+code_prefix+'/index.php')[0]==403;assert request('anon','/'+code_prefix+'/app/core.php')[0]==403;assert request('anon','/'+code_prefix+'/assets/app.js')[0]==200;assert 'Actualizar sistema' in request('owner','/admin/actualizar-sistema')[1]
         records=json.loads(php("echo json_encode(glob('/var/www/html/actualizador-180/backups/*/record.json'));"));assert len(records)==1,records;private_status,private_body=request('anon',path+'backups/'+pathlib.Path(records[0]).parent.name+'/record.json');assert private_status==403,(private_status,private_body[:60])
         assert 'ya están instalados' in request('master',path,{'csrf':token,'operation':'apply','backup':'yes'})[1];assert len(json.loads(php("echo json_encode(glob('/var/www/html/actualizador-180/backups/*/record.json'));")))==1
         assert 'ya se publicó' in request('master',path,{'csrf':token,'operation':'rollback','backup':'yes'})[1]

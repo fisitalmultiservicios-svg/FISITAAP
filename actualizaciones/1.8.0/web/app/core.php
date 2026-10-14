@@ -248,7 +248,7 @@ function tenant_by_slug(App $app, string $slug): ?array
     return $app->one('SELECT * FROM tenants WHERE slug=? LIMIT 1', [$slug]);
 }
 
-function layout_start(string $title, ?array $tenant = null, bool $admin = false): void
+function layout_start(string $title, ?array $tenant = null, bool $admin = false, bool $businessLanding = false): void
 {
     if(function_exists('qa180_prepare_native'))qa180_prepare_native($GLOBALS['app']);
     global $app;$primary = $admin ? '#203f57' : ($tenant['primary_color'] ?? ($app instanceof App?$app->setting('platform_primary_color','#1f7a45'):'#1f7a45'));
@@ -266,12 +266,14 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false)
     echo '<style>:root{--primary:'.e($primary).';--accent:'.e($accent).'}.store-name-brand>span{display:inline!important;font-size:16px;max-width:180px;overflow:hidden;text-overflow:ellipsis}</style>';
     if($admin)echo '<style id="admin-critical-v1451">.dash-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.dash-grid-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.8fr);gap:16px}.dash-grid-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.dash-welcome{display:flex;justify-content:space-between;gap:20px}.dash-kpi,.dash-chart-card,.dash-side-card,.dash-mini-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px}.dash-kpi{padding:16px;display:flex;gap:12px}.dash-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:240px;align-items:end}.dash-bar-track{height:170px;background:#eef1ed;border-radius:10px;position:relative;overflow:hidden}.dash-bar-track i{position:absolute;bottom:0;left:0;right:0;background:var(--primary);border-radius:10px}.dash-progress{height:6px;background:#eef1ed;border-radius:99px;overflow:hidden}.dash-progress i{display:block;height:100%;background:var(--primary)}@media(max-width:980px){.dash-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.dash-grid-main{grid-template-columns:1fr}}@media(max-width:700px){.dash-kpis,.dash-grid-secondary{grid-template-columns:1fr}.dash-welcome{flex-direction:column}}</style>';
     $path=request_path();
-    // Load the POS/table designer bundles only on screens that use them.
-    // Loading them on every catalog and admin page needlessly parses about
-    // 75 KB of CSS/JavaScript during each uncached navigation.
+    // The business landing needs the shared R2 styles; its POS/designer script
+    // remains limited to administration and the assistant.
     $r2Screen=$admin||$path==='asistente';
     $r3Screen=true; // Required by official landing and public tenant pages too.
-    if(function_exists('r2_active') && r2_active($app) && $r2Screen) echo '<link rel="stylesheet" href="'.url('assets/restructure-r2.css?v='.rawurlencode($cacheVersion)).'"><script src="'.url('assets/restructure-r2.js?v='.rawurlencode($cacheVersion)).'" defer></script>';
+    if(function_exists('r2_active') && r2_active($app)){
+        if($r2Screen||$businessLanding)echo '<link rel="stylesheet" href="'.url('assets/restructure-r2.css?v='.rawurlencode($cacheVersion)).'">';
+        if($r2Screen)echo '<script src="'.url('assets/restructure-r2.js?v='.rawurlencode($cacheVersion)).'" defer></script>';
+    }
     if(function_exists('r3_active') && r3_active($app) && $r3Screen) echo '<link rel="stylesheet" href="'.url('assets/pdf-r3.css?v='.rawurlencode($cacheVersion)).'"><script src="'.url('assets/pdf-r3.js?v='.rawurlencode($cacheVersion)).'" defer></script>';
     if($admin)echo '<link rel="stylesheet" href="'.url('assets/admin-refined.css?v='.rawurlencode($cacheVersion)).'">';
     if(function_exists('qa180_active')&&qa180_active($app))echo '<link rel="stylesheet" href="'.url('assets/qa180.css?v=180').'">';

@@ -1,0 +1,361 @@
+{
+  "phases": [
+    {
+      "name": "canonical",
+      "public_pages": 18,
+      "cases": [
+        {
+          "page": "official",
+          "width": 1366,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 409.46875,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 1366,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 1317,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 409.46875,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 1317,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 1024,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 409.46875,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 1024,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 900,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 365.46875,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 900,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 768,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 307.390625,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 768,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 621,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 290,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 621,
+          "styled_navigation": true,
+          "hero_height": 430,
+          "service_columns": 1,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 620,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 334.328125,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 620,
+          "styled_navigation": true,
+          "hero_height": 430,
+          "service_columns": 1,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 390,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 230,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 390,
+          "styled_navigation": true,
+          "hero_height": 430,
+          "service_columns": 1,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 360,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 230,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 360,
+          "styled_navigation": true,
+          "hero_height": 430,
+          "service_columns": 1,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        }
+      ],
+      "javascript_errors": [],
+      "missing_assets": [],
+      "script_or_style_responses": 184,
+      "catalog_cta_checked_at": [
+        1317,
+        390
+      ],
+      "legacy_business_styled": true,
+      "admin_theme_preserved": true,
+      "store_logo_restored_after_test": true
+    },
+    {
+      "name": "packaged",
+      "public_pages": 18,
+      "cases": [
+        {
+          "page": "official",
+          "width": 1366,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 409.46875,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 1366,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 1317,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 409.46875,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 1317,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 1024,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 409.46875,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 1024,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 900,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 365.46875,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 900,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 768,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 307.390625,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 768,
+          "styled_navigation": true,
+          "hero_height": 480,
+          "service_columns": 3,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 621,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 290,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 621,
+          "styled_navigation": true,
+          "hero_height": 430,
+          "service_columns": 1,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 620,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 334.328125,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 620,
+          "styled_navigation": true,
+          "hero_height": 430,
+          "service_columns": 1,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 390,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 230,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 390,
+          "styled_navigation": true,
+          "hero_height": 430,
+          "service_columns": 1,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        },
+        {
+          "page": "official",
+          "width": 360,
+          "controls_visible": true,
+          "devices_clear_of_title": true,
+          "device_height": 230,
+          "overflow": false
+        },
+        {
+          "page": "laventanita",
+          "width": 360,
+          "styled_navigation": true,
+          "hero_height": 430,
+          "service_columns": 1,
+          "store_logo": true,
+          "extra_pos_script": false,
+          "overflow": false
+        }
+      ],
+      "javascript_errors": [],
+      "missing_assets": [],
+      "script_or_style_responses": 184,
+      "catalog_cta_checked_at": [
+        1317,
+        390
+      ],
+      "legacy_business_styled": true,
+      "admin_theme_preserved": true,
+      "store_logo_restored_after_test": true
+    }
+  ],
+  "scope": "real Chromium, PHP/MariaDB fictional fixture; public screenshots and live geometry, not production or physical Brave"
+}

@@ -1,6 +1,8 @@
-# Instalar FISITAAP 1.8.0-R2 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R3 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
+
+R3 corrige el título tapado de la portada, restaura el diseño de La Ventanita y otras páginas de negocios, y cambia el ejemplo de FISIChat por una respuesta directa sobre productos con poco stock. Estas correcciones visuales se aplican al instalar los archivos, también para negocios pendientes. La elección individual de cuándo activar 1.8.0 se mantiene. Windows y Android conservan sus instaladores 1.8.0.
 
 Hay dos pasos: tú publicas los archivos una vez en cPanel; después cada dueño activa los cambios de su negocio desde **Administración → Actualizar sistema**, cuando pueda. Los negocios pendientes conservan el funcionamiento compatible con 1.7.9. No es necesario cerrar los turnos de todos los clientes para publicar.
 
@@ -13,8 +15,8 @@ Hay dos pasos: tú publicas los archivos una vez en cPanel; después cada dueño
 
 ## B. Publicar los archivos en cPanel
 
-5. Descarga **FISITAAP-1.8.0-CPANEL-R2.zip** de GitHub. El nombre FISITAAP-1.8.0-CPANEL.zip también contiene R2. No uses R1 para este procedimiento nuevo.
-6. En **public_html**, pulsa **Cargar** y sube R2. Selecciona el ZIP → **Extraer**. Debe aparecer **public_html/actualizador-180/index.php**. Permite reemplazar los archivos anteriores de actualizador-180; conserva cualquier carpeta de respaldo que ya exista dentro.
+5. Descarga **FISITAAP-1.8.0-CPANEL-R3.zip** de GitHub. El nombre FISITAAP-1.8.0-CPANEL.zip también contiene R3. Usa R3 para esta corrección, aunque ya hayas instalado R1 o R2.
+6. En **public_html**, pulsa **Cargar** y sube R3. Selecciona el ZIP → **Extraer**. Debe aparecer **public_html/actualizador-180/index.php**. Permite reemplazar los archivos anteriores de actualizador-180; conserva cualquier carpeta de respaldo que ya exista dentro.
 7. No muevas payload ni copies su contenido manualmente sobre el sitio. El actualizador comprueba los archivos y decide dónde instalarlos.
 8. Revisa **PHP 8.2 o 8.3**, PDO MySQL, mbstring, SimpleXML/XML y GD. GD con WebP permite optimizar imágenes. El ZIP contiene archivos **644** y carpetas **755**. Si cPanel conserva permisos viejos, corrige únicamente los del actualizador a esos valores; nunca uses 777.
 9. Abre **https://fisitaap.com/owner-login** e ingresa como **maestro**.
@@ -24,16 +26,16 @@ Hay dos pasos: tú publicas los archivos una vez en cPanel; después cada dueño
 13. Si aparece **distinto**, se detectó un archivo modificado fuera de los paquetes conocidos. Guarda el respaldo y los nombres que señala; no fuerces la copia. Si falla la preparación de la base, conserva los archivos instalados y el respaldo, revisa el registro con soporte y repite después de corregir la causa. Repetir una instalación correcta no duplica datos ni activa negocios pendientes.
 14. En el panel maestro, **Administración → Actualizar sistema**, puedes ver los negocios actualizados y pendientes. También abre **https://fisitaap.com/master/actualizar-sistema**. **Comprobar publicación** revisa la preparación; no activa clientes. Para ayudar a uno, selecciona únicamente ese negocio y confirma su preparación.
 
-La aplicación nueva se instala en **public_html/releases/1.8.0-r2**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
+La aplicación nueva se instala en **public_html/releases/1.8.0-r3**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
 
-Si el negocio ya tenía 1.8.0 activada antes de R2, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
+Si el negocio ya tenía 1.8.0 activada antes de R3, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
 
 ## C. Lo que hará cada dueño cuando pueda actualizar
 
 15. El dueño entra a su panel → **Administración → Actualizar sistema**. Mientras esté pendiente puede seguir trabajando y volver después.
 16. En **cada caja de su negocio**, pulsa **Sincronizar** y confirma que quedan **cero ventas pendientes**. Hazlo también en las sucursales. El servidor no puede comprobar una cola que siga guardada en un equipo sin conexión: el dueño confirma esa parte.
 17. Cobra o cancela las cuentas abiertas y cierra los turnos de **ese negocio**. Un turno es la sesión de trabajo del cajero con su fondo y ventas; cerrarlo guarda su arqueo. No significa eliminar ventas ni borrar usuarios. Los demás negocios pueden mantener sus turnos abiertos.
-18. Actualiza sus Windows a **FISITAAP-Escritorio-1.8.0-Windows-x64.exe**, con FISITAAP cerrado, sobre la instalación anterior. No desinstales ni borres sus datos locales. Requiere Windows 10 o posterior de 64 bits. Si ya tienen 1.8.0 no necesitan reinstalarla por R2.
+18. Actualiza sus Windows a **FISITAAP-Escritorio-1.8.0-Windows-x64.exe**, con FISITAAP cerrado, sobre la instalación anterior. No desinstales ni borres sus datos locales. Requiere Windows 10 o posterior de 64 bits. Si ya tienen 1.8.0 no necesitan reinstalarla por R3.
 19. Para un Android nuevo instala **FISITAAP-Android-1.8.0.apk**; requiere Android 8 o posterior. Autoriza instalar desde ese navegador cuando Android lo solicite. Si ya tiene nuestra versión 1.8.0 puede conservarla. Guarda el APK y el respaldo privado de su firma; la clave privada nunca va en cPanel ni GitHub.
 20. Durante esta preparación, las cajas **de ese negocio** deben dejar de vender. Con todas sincronizadas, turnos cerrados y aplicaciones actualizadas, marca la confirmación y pulsa **Actualizar sistema**.
 21. Espera **Actualización 1.8.0 activada para este negocio**. La configuración se convierte dentro de una transacción y solo se marca actualizada al terminar. El servidor vuelve a revisar turnos y cuentas; si queda alguno, lo indicará sin cerrar ni borrar nada por su cuenta.
@@ -58,7 +60,7 @@ El botón prepara y activa el negocio en la web. Los instaladores de Windows/And
 32. Confirma que una caja secundaria necesita conexión y que compras, cuentas, mesas, reportes y permisos funcionan según lo que use el negocio.
 33. Si un navegador conserva un diseño anterior, recarga con **Ctrl+F5**. Los archivos nuevos se sirven desde una carpeta de versión propia.
 34. Descarga y conserva **actualizador-180/backups** fuera del sitio. Cuando lo hayas comprobado, elimina **solo** el ZIP subido y la carpeta **actualizador-180**. Los dueños podrán seguir actualizando después desde Administración.
-35. **No borres releases ni releases/1.8.0-r2**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
+35. **No borres releases ni releases/1.8.0-r3**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
 
 ## Volver atrás
 
@@ -68,4 +70,4 @@ Después de publicar, la restauración de archivos antiguos se bloquea, incluso 
 
 ## Alcance de las pruebas
 
-Se verificaron PHP/MariaDB reales, navegador, venta con cliente 1.7.9 junto a un negocio 1.8.0, actualización individual, sincronización repetida, aislamiento entre negocios, permisos del ZIP e instalación sobre copias ficticias. Windows y Android conservan los instaladores 1.8.0 ya construidos; R2 cambia la web y el proceso de actualización. La entrega no instala nada en tu cPanel. Deben comprobarse allí la velocidad del hosting, HTTPS y la impresión/gaveta con equipos físicos.
+Se verificaron PHP/MariaDB reales, navegador, venta con cliente 1.7.9 junto a un negocio 1.8.0, actualización individual, sincronización repetida, aislamiento entre negocios, permisos del ZIP e instalación sobre copias ficticias. Windows y Android conservan los instaladores 1.8.0 ya construidos; R3 cambia la web y el proceso de actualización. La entrega no instala nada en tu cPanel. Deben comprobarse allí la velocidad del hosting, HTTPS y la impresión/gaveta con equipos físicos.
