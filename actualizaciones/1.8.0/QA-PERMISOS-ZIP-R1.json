@@ -1,0 +1,64 @@
+{
+  "checks": [
+    {
+      "variant": "before",
+      "apache_uid": 33,
+      "probe_responses": [
+        {
+          "path": "/prueba-ruta-180.txt",
+          "http": 403
+        },
+        {
+          "path": "/actualizador-180/prueba-ruta-180.txt",
+          "http": 403
+        },
+        {
+          "path": "/comprobar-ruta-180.php",
+          "http": 500
+        }
+      ],
+      "updater_http": 403
+    },
+    {
+      "variant": "fixed-over-existing",
+      "apache_uid": 33,
+      "probe_responses": [
+        {
+          "path": "/prueba-ruta-180.txt",
+          "http": 200
+        },
+        {
+          "path": "/actualizador-180/prueba-ruta-180.txt",
+          "http": 200
+        },
+        {
+          "path": "/comprobar-ruta-180.php",
+          "http": 200
+        }
+      ],
+      "updater_http": 302
+    },
+    {
+      "variant": "fresh-fixed",
+      "apache_uid": 33,
+      "probe_responses": [
+        {
+          "path": "/prueba-ruta-180.txt",
+          "http": 200
+        },
+        {
+          "path": "/actualizador-180/prueba-ruta-180.txt",
+          "http": 200
+        },
+        {
+          "path": "/comprobar-ruta-180.php",
+          "http": 200
+        }
+      ],
+      "updater_http": 302
+    }
+  ],
+  "functional_payload_files_unchanged": 109,
+  "extraction": "old ZIP under umask 022 matching reported 755 directories/600 files; corrected ZIP under umask 077 both over existing files and fresh; no chmod/chown after extraction",
+  "scope": "isolated Apache www-data fixture; updater auth entry mocked; no production access or database"
+}

@@ -2,7 +2,9 @@
 
 Entrega para actualizar la instalación existente de cPanel y sus aplicaciones Windows/Android. El código web funcional está en `web/`; `updater/` contiene el instalador que verifica los archivos antes de copiarlos. Las versiones anteriores permanecen disponibles como referencia.
 
-Descargas de la entrega: [ZIP cPanel](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL.zip), [Windows x64](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.0-Windows-x64.exe), [Android 8+](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk). Sigue la [guía de cPanel](GUIA-CPANEL.md) antes de instalar.
+Descargas de la entrega: [ZIP cPanel R1](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R1.zip), [Windows x64](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.0-Windows-x64.exe), [Android 8+](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk). Sigue la [guía de cPanel](GUIA-CPANEL.md) antes de instalar.
+
+R1 corrige el empaquetado para hosting compartido: archivos 644 y carpetas explícitas 755 dentro del ZIP, independientes de la umask. Los 109 archivos funcionales son idénticos a la entrega inicial. La prueba QA-PERMISOS-ZIP-R1.json extrae con unzip, sin reparar permisos después, y sirve los archivos como www-data; la prueba de instalación también conserva los permisos de la extracción.
 
 ## Cambios por módulo
 

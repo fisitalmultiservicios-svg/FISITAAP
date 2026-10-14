@@ -1,5 +1,6 @@
 """Assemble the reviewed updater from canonical sources; no private files included."""
 import hashlib,json,pathlib,shutil,zipfile
+from portable_zip180 import write_portable_zip
 root=pathlib.Path(__file__).resolve().parents[1];release=root/'actualizaciones/1.8.0';web=release/'web';staging=pathlib.Path('/workspace/fisitaap-env/package180');folder=staging/'actualizador-180'
 def build():
     if folder.exists():shutil.rmtree(folder)
@@ -18,13 +19,12 @@ def build():
     guide=release/'GUIA-CPANEL.md'
     if guide.exists():shutil.copyfile(guide,staging/'LEEME-CPANEL.md')
     out=pathlib.Path('/workspace/entregas');out.mkdir(exist_ok=True);target=out/'FISITAAP-1.8.0-CPANEL.zip'
-    with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
-        for p in sorted(staging.rglob('*')):
-            if p.is_file():archive.write(p,p.relative_to(staging).as_posix())
+    write_portable_zip(staging,target)
     with zipfile.ZipFile(target) as archive:
         assert archive.testzip() is None
         for name,info in files.items():assert hashlib.sha256(archive.read('actualizador-180/payload/'+name)).hexdigest()==info['new']
     for p in staging.rglob('*'):p.chmod(0o755 if p.is_dir() else 0o644)
+    shutil.copyfile(target,out/'FISITAAP-1.8.0-CPANEL-R1.zip')
     (release/'MANIFEST-ARCHIVOS.json').write_text(json.dumps({'version':'1.8.0','files':{n:i['new'] for n,i in files.items()}},indent=2)+'\n')
     print('Verified cPanel updater ZIP:',len(files),'functional files, no config, private keys or business uploads.')
     return folder

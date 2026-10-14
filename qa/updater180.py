@@ -31,8 +31,12 @@ def main():
             if p.is_dir():shutil.rmtree(p)
             else:p.unlink()
         shutil.copytree(repo/'actualizaciones/mudanza-1.7.9-r3/web',stage,dirs_exist_ok=True);shutil.copytree(repo/'actualizaciones'/version/'web',stage,dirs_exist_ok=True);(stage/'config.php').write_text(config)
-        with zipfile.ZipFile('/workspace/entregas/FISITAAP-1.8.0-CPANEL.zip') as archive:archive.extractall(stage)
-        run(['docker','exec',web,'chown','-R',str(os.getuid())+':'+str(os.getgid()),'/var/www/html']);run(['docker','exec',web,'chmod','-R','u+rwX,go+rX','/var/www/html']);run(['docker','exec',web,'chmod','755','/var/www/html']);run(['docker','restart',web])
+        # Existing fixture files are prepared before extraction. The ZIP must carry its own permissions.
+        run(['docker','exec',web,'chown','-R',str(os.getuid())+':'+str(os.getgid()),'/var/www/html']);run(['docker','exec',web,'chmod','-R','u+rwX,go+rX','/var/www/html']);run(['docker','exec',web,'chmod','755','/var/www/html'])
+        with zipfile.ZipFile('/workspace/entregas/FISITAAP-1.8.0-CPANEL.zip') as archive:
+            assert all((e.external_attr>>16)&0o777==(0o755 if e.is_dir() else 0o644) for e in archive.infolist())
+        run(['unzip','-oq','/workspace/entregas/FISITAAP-1.8.0-CPANEL.zip','-d',str(stage)])
+        run(['docker','restart',web])
         sql('UPDATE pos_shifts SET status="closed",closed_at=NOW() WHERE status="open"');sql('UPDATE pos_tickets SET status="void" WHERE status NOT IN("paid","void","merged")');sql('INSERT INTO settings(`key`,`value`) VALUES("qa180_active","0") ON DUPLICATE KEY UPDATE `value`="0"');run(['docker','exec',web,'sh','-c','rm -f /tmp/update-*.cookies'])
         for actor,email in [('master','master@r2.invalid'),('owner','owner@r2.invalid')]:assert request(actor,'/owner-login',{'csrf':csrf(actor,'/owner-login'),'email':email,'password':password})[0]==302
         path='/actualizador-180/';assert request('anon',path)[0]==302;assert request('owner',path)[0]==403

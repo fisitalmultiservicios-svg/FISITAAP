@@ -13,9 +13,11 @@ Esta entrega actualiza tu FISITAAP existente. Conserva tus negocios, usuarios, p
 
 ## 2. Subir el actualizador
 
-7. Descarga **FISITAAP-1.8.0-CPANEL.zip** de la entrega de GitHub.
+7. Descarga **FISITAAP-1.8.0-CPANEL-R1.zip** de la carpeta de descargas de GitHub. R1 corrige los permisos del ZIP: archivos 644 y carpetas 755. El nombre original FISITAAP-1.8.0-CPANEL.zip también contiene el paquete corregido.
 8. En el Administrador de archivos, dentro de la carpeta del sitio, pulsa **Cargar** y sube ese ZIP.
 9. Selecciona el ZIP → **Extraer**. Debe aparecer una carpeta llamada **actualizador-180**, al lado de index.php. Dentro están index.php, manifest.json, files.php y payload. No muevas payload ni copies su contenido manualmente encima del sitio.
+
+Si ya extrajiste el ZIP anterior, extrae R1 en el mismo lugar y permite reemplazar los archivos de actualizador-180. Conserva la carpeta y cualquier respaldo que contenga. Comprueba en la columna Permisos que actualizador-180 tenga 755 y su index.php/.htaccess tengan 644. Si cPanel conserva los permisos anteriores, usa Cambiar permisos únicamente sobre los archivos/carpetas del actualizador: 644 para archivos y 755 para carpetas; nunca 777. R1 contiene los mismos 109 archivos funcionales de la entrega; esta corrección es de empaquetado.
 10. Confirma en cPanel que el dominio usa **PHP 8.2 o 8.3**, con PDO MySQL, mbstring, SimpleXML/XML y GD. GD con WebP permite optimizar imágenes. No uses permisos 777 en el sitio: las carpetas suelen ser 755 y los archivos 644, con el propietario correcto del hosting.
 11. Abre **https://fisitaap.com/owner-login** e ingresa con tu cuenta **maestro**.
 12. Abre **https://fisitaap.com/actualizador-180/** en ese mismo navegador.
