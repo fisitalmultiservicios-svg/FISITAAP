@@ -12,9 +12,12 @@ def api(action,data,token):
     body,status=p.stdout.rsplit(b'\n',1);return int(status),json.loads(body)
 def main():
     assert request('owner','/activar-180.php',{'csrf':csrf('owner','/admin/turnos'),'backup':'yes'})[0]==403
-    status,body=post('master','/activar-180.php',{'backup':'yes'})
-    assert status==200 and '1.8.0 activada' in body
-    passed('activation is master-only and additive')
+    status,body=post('master','/activar-180.php',{'backup':'yes','action':'publish'})
+    assert status==200 and 'publicada' in body
+    for tenant in sql('SELECT id FROM tenants WHERE is_active=1 ORDER BY id'):
+        status,body=post('master','/master/actualizar-sistema',{'action':'activate','tenant_id':tenant['id'],'ready':'yes'})
+        assert status==200 and 'activada para este negocio' in body
+    passed('publication is master-only and additive; each fictitious business is explicitly activated')
     key=secrets.token_hex(16)
     assert post('owner','/admin/turnos',{'action':'open','opening_key':key,'opening_cash':100})[0]==302
     assert not sql('SELECT id FROM pos_shifts WHERE opening_key=?',[key])

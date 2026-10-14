@@ -1,10 +1,14 @@
-# FISITAAP 1.8.0 · QA manual y actualización acumulativa
+# FISITAAP 1.8.0-R2 · QA y actualización por negocio
 
 Entrega para actualizar la instalación existente de cPanel y sus aplicaciones Windows/Android. El código web funcional está en `web/`; `updater/` contiene el instalador que verifica los archivos antes de copiarlos. Las versiones anteriores permanecen disponibles como referencia.
 
-Descargas de la entrega: [ZIP cPanel R1](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R1.zip), [Windows x64](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.0-Windows-x64.exe), [Android 8+](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk). Sigue la [guía de cPanel](GUIA-CPANEL.md) antes de instalar.
+Descargas de la entrega: [ZIP cPanel R2](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R2.zip), [Windows x64](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.0-Windows-x64.exe), [Android 8+](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk). Sigue la [guía de cPanel](GUIA-CPANEL.md) antes de instalar.
 
-R1 corrige el empaquetado para hosting compartido: archivos 644 y carpetas explícitas 755 dentro del ZIP, independientes de la umask. Los 109 archivos funcionales son idénticos a la entrega inicial. La prueba QA-PERMISOS-ZIP-R1.json extrae con unzip, sin reparar permisos después, y sirve los archivos como www-data; la prueba de instalación también conserva los permisos de la extracción.
+R2 permite publicar sin cerrar los turnos de todos los negocios. El dueño encuentra **Administración → Actualizar sistema**, prepara solo sus cajas y activa su negocio cuando pueda. Los pendientes conservan comportamiento y API 1.7.9; los ya activados reciben 1.8.0. La preparación compartida agrega tablas/campos/índices y la conversión de cada negocio se completa en una transacción. El maestro puede consultar estados y ayudar a un negocio seleccionado.
+
+El ZIP instala 112 archivos funcionales en `releases/1.8.0-r2` y cambia el index.php de entrada al terminar de copiar. Conserva app/assets anteriores, config.php y uploads. La aplicación utiliza la carpeta releases; no debe borrarse. La carpeta actualizador-180 puede retirarse después de descargar su respaldo; el botón de los dueños continúa funcionando. Windows/APK mantienen los instaladores 1.8.0 existentes.
+
+Se mantienen los permisos 644 para archivos y 755 para carpetas explícitas, independientes de la umask. QA-PERMISOS-ZIP-R2.json verifica la extracción con unzip bajo umask 077 y Apache UID 33, sin reparar permisos después. R1 y su evidencia histórica se conservan aparte.
 
 ## Cambios por módulo
 
@@ -19,7 +23,7 @@ R1 corrige el empaquetado para hosting compartido: archivos 644 y carpetas expl�
 - **Compras/XML:** emisor por identificación normalizada, proveedor nuevo con confirmación, mapeo SKU, producto nuevo o existente, comparación de costos y borrador sin stock/deuda. Recepción una vez con inventario/costo/CxP. Un XML reemplazado en otra pestaña se rechaza. Los productos creados al recibir quedan activos en esa sucursal. XML con entidades externas se rechaza.
 - **Pedidos/Express:** Kanban por origen y estado, recepción manual/automática, cuenta sin reservar stock otra vez, regalos prepagados reconocidos y estado separado del cobro. Negocios sin caja aceptan pedidos sin crear una cuenta inaccesible. Pedidos aceptados anteriores pueden vincularse sin repetir comanda. Express publica pedidos listos, valida afiliación/estados/PIN y registra entrega una vez.
 - **Administración:** identificación fiscal en recibos, reportes filtrados/paginados y CSV por 24 conjuntos operativos, rango de fechas mediante índices y permisos del módulo. Pedidos solicitados y ventas registradas se presentan separados. Bitácora con acciones comprensibles. Logout devuelve al acceso correspondiente con mensajes humanos.
-- **Instalación:** ZIP acumulativo con 109 archivos funcionales, hashes, acceso maestro y CSRF, respaldo protegido, copia comprobada, repetición sin duplicados y restauración antes de activar. Conserva config.php, imágenes y datos. La migración agrega tablas/campos/índices; no elimina tablas históricas ni ventas.
+- **Instalación:** ZIP acumulativo con 112 archivos funcionales, hashes, acceso maestro y CSRF, respaldo protegido, copia comprobada y repetición sin duplicados. La restauración de archivos se permite únicamente antes de publicar/preparar la base. Conserva config.php, imágenes y datos. La migración agrega tablas/campos/índices; no elimina tablas históricas ni ventas.
 
 ## Evidencia y alcance
 
@@ -31,6 +35,6 @@ No se modificaron el hosting, DNS, certificados, config.php privado ni la base d
 
 ## Reproducir las pruebas
 
-`python qa/gold180.py` prepara y reinicia **solo** `fisitaap_r2_test` y ejecuta las suites secuenciales con credenciales ficticias. `python qa/updater180.py` prueba el ZIP en otro contenedor/base ficticios. `node --test desktop/test/*.test.js qa/local_deep.test.js qa/windows_print.test.js` valida el motor local. `python qa/run_android180.py` ejecuta JUnit/lint con el SDK fijado. Estos guiones no son herramientas para probar producción cambiando una URL.
+`python qa/gold180.py` prepara y reinicia **solo** `fisitaap_r2_test` y ejecuta las suites secuenciales con credenciales ficticias. `python qa/updater180.py` prueba el ZIP en otro contenedor/base ficticios. `node --test desktop/test/*.test.js qa/local_deep.test.js qa/windows_print.test.js` valida el motor local. `python qa/run_android180.py` ejecuta JUnit/lint con el SDK fijado. `python qa/rollout180.py` verifica versiones mixtas sobre la misma base ficticia recién preparada; `python qa/update_ui180.py` verifica la interfaz versionada después de esa suite. `python qa/archive_permissions_r2.py` verifica la extracción del ZIP. Estos guiones no son herramientas para probar producción cambiando una URL.
 
 El APK de actualización necesita conservar la misma clave privada. `qa/build_android180.py` exige restaurarla si falta; crear otra requiere una primera instalación expresamente autorizada. La configuración del entorno cloud queda guardada como borrador para revisión/publicación en Codex.

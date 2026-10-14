@@ -2,14 +2,14 @@
 declare(strict_types=1);
 
 function qa180_groups(array $user,?array $tenant):array {
-    if($user['role']==='master')return ['Plataforma'=>['dashboard'=>'Bienvenida','empresas'=>'Negocios','planes'=>'Planes y suscripciones','modules'=>'Planes y módulos','escritorio'=>'Equipos y cajas'],'Web oficial'=>['contenido'=>'Diseño y página','bienvenida'=>'Imagen de bienvenida','contactos'=>'Contactos'],'Analítica'=>['kpis'=>'KPIs','reportes'=>'Reportes'],'Administración'=>['auditoria'=>'Bitácora','configuracion'=>'Configuración','qa'=>'Comprobar sitio','cache'=>'Caché']];
+    if($user['role']==='master')return ['Plataforma'=>['dashboard'=>'Bienvenida','empresas'=>'Negocios','planes'=>'Planes y suscripciones','modules'=>'Planes y módulos','escritorio'=>'Equipos y cajas'],'Web oficial'=>['contenido'=>'Diseño y página','bienvenida'=>'Imagen de bienvenida','contactos'=>'Contactos'],'Analítica'=>['kpis'=>'KPIs','reportes'=>'Reportes'],'Administración'=>['auditoria'=>'Bitácora','configuracion'=>'Configuración','qa'=>'Comprobar sitio','cache'=>'Caché','actualizar-sistema'=>'Actualizar sistema']];
     $physical=$tenant&&physical_store_v14($tenant);$groups=['Inicio'=>['dashboard'=>'Bienvenida'],'Catálogo'=>['categorias'=>'Categorías','productos'=>'Productos','extras'=>'Extras','opcionales'=>'Opcionales','combos'=>'Combos','promociones'=>'Promociones','pedidos'=>'Pedidos','cocina'=>'Cocina / monitor']];
     if($physical){$groups['Ventas']=['ventas'=>'Venta rápida','turnos'=>'Turnos'];if(($tenant['catalog_label']??'')==='Menú')$groups['Ventas']+=['mesas'=>'Mesas','cobro'=>'Cobrar cuentas','express-pendientes'=>'Express pendientes'];}
     $groups['Clientes']=['clientes-crear'=>'Crear cliente','clientes-buscar'=>'Buscar clientes','clientes-historial'=>'Historial','fidelizacion'=>'Fidelización'];if($physical)$groups['Clientes']+=['credito'=>'Crédito','cxc'=>'Cuentas por cobrar'];
     if($physical)$groups['Compras']=['proveedores'=>'Proveedores','compras'=>'Compras','cxp'=>'Cuentas por pagar','inventario'=>'Inventario'];
     $groups['Analítica']=['kpis'=>'KPIs','reportes'=>'Reportes'];$groups['Administración']=['configuracion'=>'Generales','sucursales'=>'Sucursales','contenido'=>'Diseño web','roles'=>'Roles y permisos','usuarios'=>'Usuarios','delivery'=>'Zonas de envío'];
     if($physical){$groups['Administración']+=['salones'=>'Salones y mesas','impresion'=>'Impresión','escritorio'=>'Equipos y cajas','cuentas-dinero'=>'Cuentas de dinero'];$groups['Entregas']=['afiliados'=>'Afiliados','invitaciones'=>'Invitaciones','entregas-historial'=>'Historial'];}
-    $groups['Otros recursos']=['contactos'=>'Contactos','auditoria'=>'Bitácora'];return $groups;
+    $groups['Otros recursos']=['contactos'=>'Contactos','auditoria'=>'Bitácora'];if($user['role']==='tenant_admin')$groups['Administración']['actualizar-sistema']='Actualizar sistema';return $groups;
 }
 
 function qa180_welcome(App $app,array $user,?array $tenant):void {
@@ -37,7 +37,7 @@ function qa180_contacts(App $app,array $user,?array $tenant):void {
     else echo '<h2>Bandeja de mensajes</h2><p>Selecciona un contacto para leerlo y cambiar su estado.</p>';echo '</section></div>';admin_shell_end();
 }
 function qa180_audit_label(string $action):string {
-    return ['login'=>'Inició sesión','logout'=>'Cerró sesión','pos_payment'=>'Cobró una venta','pos_open'=>'Abrió una cuenta de venta','pos_quantity'=>'Cambió la cantidad de un producto','pos_void'=>'Canceló una venta','pos_send_kitchen'=>'Envió una comanda','r2_purchase'=>'Recibió una compra','r2_account_payment'=>'Registró un abono','update_settings'=>'Actualizó la configuración del negocio','r2_combo'=>'Guardó un combo','r2_modifier'=>'Guardó un extra u opcional','r3_print_copy'=>'Reimprimió una copia','print_copy'=>'Reimprimió una copia','contact_status'=>'Cambió el estado de un contacto','welcome_image'=>'Cambió la imagen de bienvenida','activate180'=>'Activó la actualización 1.8.0'][$action]??ucfirst(str_replace('_',' ',preg_replace('/^r\d+_/','',$action)??$action));
+    return ['login'=>'Inició sesión','logout'=>'Cerró sesión','pos_payment'=>'Cobró una venta','pos_open'=>'Abrió una cuenta de venta','pos_quantity'=>'Cambió la cantidad de un producto','pos_void'=>'Canceló una venta','pos_send_kitchen'=>'Envió una comanda','r2_purchase'=>'Recibió una compra','r2_account_payment'=>'Registró un abono','update_settings'=>'Actualizó la configuración del negocio','r2_combo'=>'Guardó un combo','r2_modifier'=>'Guardó un extra u opcional','r3_print_copy'=>'Reimprimió una copia','print_copy'=>'Reimprimió una copia','contact_status'=>'Cambió el estado de un contacto','welcome_image'=>'Cambió la imagen de bienvenida','activate180'=>'Activó la actualización 1.8.0','update180'=>'Actualizó el negocio a 1.8.0','publish180'=>'Publicó la actualización 1.8.0'][$action]??ucfirst(str_replace('_',' ',preg_replace('/^r\d+_/','',$action)??$action));
 }
 function qa180_log(App $app,array $user,?array $tenant):void {
     [$from,$to]=valid_report_dates_v1();$who=(int)($_GET['user_id']??0);$q=mb_substr(trim((string)($_GET['q']??'')),0,100);$tid=$tenant?(int)$tenant['id']:(int)($_GET['tenant_id']??0);

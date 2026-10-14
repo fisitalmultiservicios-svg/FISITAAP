@@ -1,7 +1,7 @@
 {
   "passed": 8,
   "checks": [
-    "activation is master-only and additive",
+    "publication is master-only and additive; each fictitious business is explicitly activated",
     "a normal web browser cannot open a cash shift even with valid CSRF",
     "native authorization is bound to a real device, assigned register, user, tenant and session nonce",
     "shift opening is idempotent and rejects reuse for changed amounts",

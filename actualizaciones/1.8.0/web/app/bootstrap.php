@@ -3,7 +3,8 @@ declare(strict_types=1);
 $performanceStart179=hrtime(true);
 $sessionStart179=hrtime(true);
 
-define('ROOT_PATH', dirname(__DIR__));
+define('CODE_PATH', dirname(__DIR__));
+define('ROOT_PATH', defined('FISITAAP_SITE_ROOT') ? FISITAAP_SITE_ROOT : CODE_PATH);
 
 if (!file_exists(ROOT_PATH . '/config.php')) {
     if (!str_starts_with($_SERVER['REQUEST_URI'] ?? '/', '/install')) {
@@ -63,9 +64,9 @@ if (($_SERVER['REQUEST_METHOD']??'GET')==='GET'
     });
 }
 
-require_once ROOT_PATH . '/app/core.php';
-require_once ROOT_PATH . '/app/session_reads176.php';
+require_once CODE_PATH . '/app/core.php';
+require_once CODE_PATH . '/app/session_reads176.php';
 
 $db = Database::connect($config);
 $app = new App($db, $config);
-if($demoToken179){require_once ROOT_PATH.'/app/demo_sandbox.php';demo_runtime($app,$demoToken179);}
+if($demoToken179){require_once CODE_PATH.'/app/demo_sandbox.php';demo_runtime($app,$demoToken179);}

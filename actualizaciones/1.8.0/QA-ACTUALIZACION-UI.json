@@ -1,0 +1,55 @@
+{
+  "passed": 5,
+  "pages": [
+    {
+      "actor": "pending",
+      "http": 200,
+      "width": 390,
+      "administration_menu_present": true,
+      "expected_state": "Tu negocio continúa en 1.7.9"
+    },
+    {
+      "actor": "updated",
+      "http": 200,
+      "width": 390,
+      "administration_menu_present": true,
+      "expected_state": "Tu negocio ya está actualizado"
+    },
+    {
+      "actor": "master",
+      "http": 200,
+      "width": 390,
+      "administration_menu_present": true,
+      "expected_state": "Estado de los negocios"
+    }
+  ],
+  "javascript_errors": [],
+  "versioned_assets": 81,
+  "concurrent_requests": [
+    {
+      "business": "A",
+      "action": "read",
+      "http": 200,
+      "seconds": 0.1
+    },
+    {
+      "business": "B",
+      "action": "read",
+      "http": 200,
+      "seconds": 0.09
+    },
+    {
+      "business": "B",
+      "action": "update",
+      "http": 200,
+      "seconds": 0.09
+    },
+    {
+      "business": "A",
+      "action": "update",
+      "http": 409,
+      "seconds": 5.09
+    }
+  ],
+  "scope": "real Chromium and PHP/MariaDB; exact R2 payload and fictional tenants only; held activation mutex on business A"
+}

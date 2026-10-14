@@ -103,8 +103,8 @@ function qa180_pending_shift(App $app,array $shift):bool {
     return (bool)$app->one('SELECT id FROM pos_tickets WHERE tenant_id=? AND branch_id=? AND status NOT IN("paid","void","merged") AND (shift_id=? OR (shift_id IS NULL AND opened_by=? AND source_order_id IS NULL)) AND (table_id IS NOT NULL OR paid_total>0 OR EXISTS(SELECT 1 FROM pos_ticket_items i WHERE i.ticket_id=pos_tickets.id)) LIMIT 1',[$shift['tenant_id'],$shift['branch_id'],$shift['id'],$shift['user_id']]);
 }
 
-function qa180_roles_upgrade(App $app):void {
+function qa180_roles_upgrade(App $app,int $tenantId=0):void {
     // Legacy billing grants now belong to the single Sales permission set.
-    $app->exec('INSERT IGNORE INTO fisitaap_r1_permissions(role_id,section_key,action_key) SELECT role_id,"ventas","view" FROM fisitaap_r1_permissions WHERE section_key="cobro" AND action_key="view"');
-    $app->exec('INSERT IGNORE INTO fisitaap_r1_permissions(role_id,section_key,action_key) SELECT p.role_id,"ventas","charge" FROM fisitaap_r1_permissions p JOIN fisitaap_r1_permissions v ON v.role_id=p.role_id AND v.section_key="cobro" AND v.action_key="view" WHERE p.section_key="cobro" AND p.action_key="charge"');
+    $app->exec('INSERT IGNORE INTO fisitaap_r1_permissions(role_id,section_key,action_key) SELECT p.role_id,"ventas","view" FROM fisitaap_r1_permissions p JOIN fisitaap_r1_roles r ON r.id=p.role_id WHERE p.section_key="cobro" AND p.action_key="view"'.($tenantId?' AND r.tenant_id=?':''),$tenantId?[$tenantId]:[]);
+    $app->exec('INSERT IGNORE INTO fisitaap_r1_permissions(role_id,section_key,action_key) SELECT p.role_id,"ventas","charge" FROM fisitaap_r1_permissions p JOIN fisitaap_r1_roles r ON r.id=p.role_id JOIN fisitaap_r1_permissions v ON v.role_id=p.role_id AND v.section_key="cobro" AND v.action_key="view" WHERE p.section_key="cobro" AND p.action_key="charge"'.($tenantId?' AND r.tenant_id=?':''),$tenantId?[$tenantId]:[]);
 }

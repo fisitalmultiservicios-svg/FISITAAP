@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/operations180.php';
+require_once __DIR__.'/updates180.php';
 require_once __DIR__.'/cash180.php';
 require_once __DIR__.'/finance180.php';
 require_once __DIR__.'/purchases180.php';
@@ -36,32 +37,10 @@ function qa180_business(App $app,string $section):array {
     require_section_permission($user,$section);require_module_v12($app,$tenant,section_module_v12($section));
     return [$user,$tenant];
 }
-function qa180_activate(App $app):void {
-    $user=require_login(['master']);$message='';
-    if(!$app->one('SELECT id FROM users WHERE id=? AND role="master" AND is_active=1',[$user['id']]))throw new DomainException('Acceso no autorizado.');
-    if(is_post()){
-        verify_csrf();try{
-            if(($_POST['backup']??'')!=='yes')throw new DomainException('Confirma el respaldo y la actualización de las cajas.');
-            $demoTable=$app->one('SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME="fisitaap_demo_sessions"');
-            $real=$demoTable?' AND NOT EXISTS(SELECT 1 FROM fisitaap_demo_sessions d WHERE d.tenant_id=s.tenant_id)':'';
-            if($app->one('SELECT s.id FROM pos_shifts s WHERE s.status="open"'.$real.' LIMIT 1'))throw new DomainException('Cierra y sincroniza todos los turnos antes de activar la actualización.');
-            $real=$demoTable?' AND NOT EXISTS(SELECT 1 FROM fisitaap_demo_sessions d WHERE d.tenant_id=t.tenant_id)':'';
-            if($app->one('SELECT t.id FROM pos_tickets t JOIN pos_ticket_items i ON i.ticket_id=t.id WHERE t.status NOT IN("paid","void","merged")'.$real.' LIMIT 1'))throw new DomainException('Cobra o cancela las cuentas con productos antes de activar, para actualizar las opciones de catálogo con seguridad.');
-            schema180($app);
-            qa180_modifiers_upgrade($app);
-            qa180_register_upgrade($app);
-            qa180_floor_upgrade($app);
-            qa180_roles_upgrade($app);
-            $app->exec('INSERT INTO settings(`key`,`value`) VALUES("qa180_active","1") ON DUPLICATE KEY UPDATE `value`="1"');
-            audit($app,null,(int)$user['id'],'activate180','configuration',null);
-            $message='Actualización 1.8.0 activada. Revisa las cajas asignadas a cada equipo antes de cobrar.';
-        }catch(Throwable $error){$message=$error instanceof PDOException?'No se completó la activación. Conserva el respaldo y revisa el registro de errores del hosting. Puedes repetir este paso.':$error->getMessage();}
-    }
-    layout_start('Actualizar FISITAAP 1.8.0');
-    echo '<main class="auth-page"><section class="card auth-card"><h1>Actualizar 1.8.0</h1><p>Incluye las correcciones del QA manual. Los cobros y movimientos de efectivo se realizan desde Windows o Android autorizados.</p><p role="status">'.e($message).'</p><form method="post" action="'.e(url('activar-180.php')).'">'.csrf_field().'<label><input type="checkbox" name="backup" value="yes" required> Guardé respaldo, cerré y sincronicé los turnos y actualicé las aplicaciones de las cajas.</label><button class="btn">Aplicar actualización</button></form></section></main>';layout_end();
-}
+function qa180_activate(App $app):void { qa180_updates_page($app,true); }
 function qa180_dispatch(App $app,string $path):void {
-    if($path==='master/actualizar-180'){qa180_activate($app);exit;}
+    if(in_array($path,['master/actualizar-180','master/actualizar-sistema'],true)){qa180_updates_page($app,true);exit;}
+    if($path==='admin/actualizar-sistema'){qa180_updates_page($app,false);exit;}
     if(!qa180_active($app))return;
     if(preg_match('~(?:^|/)blog(?:/|$)|^(?:admin|master)/posts(?:/|$)~',$path)){http_response_code(404);simple_error('Página no disponible','Vuelve al catálogo o al inicio.');exit;}
     if($path==='logout'){

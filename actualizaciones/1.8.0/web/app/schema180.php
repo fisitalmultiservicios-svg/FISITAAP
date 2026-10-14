@@ -1,10 +1,22 @@
 <?php
 declare(strict_types=1);
 
-function qa180_active(App $app):bool { return $app->setting('qa180_active','0')==='1'; }
+function qa180_active(App $app,?int $tenantId=null):bool {
+    if($app->setting('qa180_active','0')!=='1')return false;
+    if($app->setting('qa180_rollout','0')!=='1')return true;
+    $tenantId??=(int)($GLOBALS['qa180_tenant_scope']??(current_user()['tenant_id']??0));
+    if(!$tenantId)return true;
+    $key=spl_object_id($app).':'.$tenantId;
+    if(!array_key_exists($key,$GLOBALS['qa180_version_cache']??[])){
+        $row=$app->one('SELECT version FROM fisitaap_tenant_updates180 WHERE tenant_id=?',[$tenantId]);
+        $GLOBALS['qa180_version_cache'][$key]=(int)($row['version']??179);
+    }
+    return $GLOBALS['qa180_version_cache'][$key]>=180;
+}
 function schema180(App $app):void {
     // Run only during explicit activation, never on ordinary page requests.
     $tables=[
+        'fisitaap_tenant_updates180'=>'tenant_id BIGINT UNSIGNED NOT NULL PRIMARY KEY,version INT UNSIGNED NOT NULL DEFAULT 179,modifiers_migrated TINYINT NOT NULL DEFAULT 0,activated_by BIGINT UNSIGNED NULL,activated_at DATETIME NULL',
         'fisitaap_print_jobs180'=>'id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,tenant_id BIGINT UNSIGNED NOT NULL,branch_id BIGINT UNSIGNED NOT NULL,device_id BIGINT UNSIGNED NULL,user_id BIGINT UNSIGNED NOT NULL,operation_key VARCHAR(200) NOT NULL,payload_hash CHAR(64) NOT NULL,point VARCHAR(30) NOT NULL,payload LONGTEXT NOT NULL,status VARCHAR(24) NOT NULL DEFAULT "queued",claim_token CHAR(32) NULL,lease_expires DATETIME NULL,attempts INT NOT NULL DEFAULT 0,error VARCHAR(500) NULL,created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,completed_at DATETIME NULL,UNIQUE KEY operation(tenant_id,operation_key),INDEX queue(tenant_id,branch_id,device_id,status,id)',
         'fisitaap_registers180'=>'id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,tenant_id BIGINT UNSIGNED NOT NULL,branch_id BIGINT UNSIGNED NOT NULL,name VARCHAR(100) NOT NULL,device_id BIGINT UNSIGNED NULL,user_id BIGINT UNSIGNED NULL,is_active TINYINT NOT NULL DEFAULT 1,drawer_enabled TINYINT NOT NULL DEFAULT 0,created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,UNIQUE KEY device(device_id),INDEX scope(tenant_id,branch_id,is_active)',
         'fisitaap_money_accounts180'=>'id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,tenant_id BIGINT UNSIGNED NOT NULL,name VARCHAR(100) NOT NULL,kind VARCHAR(16) NOT NULL DEFAULT "bank",balance DECIMAL(15,2) NOT NULL DEFAULT 0,is_active TINYINT NOT NULL DEFAULT 1,UNIQUE KEY named(tenant_id,name)',
@@ -54,6 +66,8 @@ function schema180(App $app):void {
         ['fisitaap_money_entries180','period180','tenant_id,created_at',false],
         ['inventory_movements','period180','tenant_id,created_at',false],
         ['pos_shifts','period180','tenant_id,opened_at',false],
+        ['pos_shifts','status180','tenant_id,status,branch_id',false],
+        ['pos_tickets','migration180','tenant_id,status',false],
         ['delivery_jobs','period180','tenant_id,created_at',false],
         ['orders','kanban180','tenant_id,branch_id,status,created_at',false],
         ['product_option_groups','modifier180','tenant_id,product_id,modifier_id180',true],

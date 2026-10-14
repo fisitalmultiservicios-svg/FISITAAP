@@ -42,7 +42,7 @@
       "route": "/",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 6454.6,
+      "elapsed_ms": 1074.5,
       "html_bytes": 18529,
       "server_timing": ""
     },
@@ -50,7 +50,7 @@
       "route": "/demo",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 832.7,
+      "elapsed_ms": 669.8,
       "html_bytes": 7590,
       "server_timing": ""
     },
@@ -58,7 +58,7 @@
       "route": "/laventanita",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 658.2,
+      "elapsed_ms": 632.8,
       "html_bytes": 5589,
       "server_timing": ""
     },
@@ -66,7 +66,7 @@
       "route": "/laventanita/catalogo",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 707.2,
+      "elapsed_ms": 660.9,
       "html_bytes": 6462,
       "server_timing": ""
     },
@@ -74,7 +74,7 @@
       "route": "/owner-login",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 631.8,
+      "elapsed_ms": 641.4,
       "html_bytes": 4476,
       "server_timing": ""
     },
@@ -82,7 +82,7 @@
       "route": "/",
       "width": 768,
       "overflow": false,
-      "elapsed_ms": 849.4,
+      "elapsed_ms": 635.3,
       "html_bytes": 18529,
       "server_timing": ""
     },
@@ -90,7 +90,7 @@
       "route": "/demo",
       "width": 768,
       "overflow": false,
-      "elapsed_ms": 670.3,
+      "elapsed_ms": 643.5,
       "html_bytes": 7590,
       "server_timing": ""
     },
@@ -98,7 +98,7 @@
       "route": "/laventanita",
       "width": 768,
       "overflow": false,
-      "elapsed_ms": 697.1,
+      "elapsed_ms": 625.7,
       "html_bytes": 5589,
       "server_timing": ""
     },
@@ -106,7 +106,7 @@
       "route": "/laventanita/catalogo",
       "width": 768,
       "overflow": false,
-      "elapsed_ms": 618.1,
+      "elapsed_ms": 642.9,
       "html_bytes": 6462,
       "server_timing": ""
     },
@@ -114,7 +114,7 @@
       "route": "/owner-login",
       "width": 768,
       "overflow": false,
-      "elapsed_ms": 686.2,
+      "elapsed_ms": 626.5,
       "html_bytes": 4476,
       "server_timing": ""
     },
@@ -122,7 +122,7 @@
       "route": "/",
       "width": 390,
       "overflow": false,
-      "elapsed_ms": 661.7,
+      "elapsed_ms": 637.3,
       "html_bytes": 18529,
       "server_timing": ""
     },
@@ -130,7 +130,7 @@
       "route": "/demo",
       "width": 390,
       "overflow": false,
-      "elapsed_ms": 686.2,
+      "elapsed_ms": 615.9,
       "html_bytes": 7590,
       "server_timing": ""
     },
@@ -138,7 +138,7 @@
       "route": "/laventanita",
       "width": 390,
       "overflow": false,
-      "elapsed_ms": 735.1,
+      "elapsed_ms": 632.5,
       "html_bytes": 5589,
       "server_timing": ""
     },
@@ -146,7 +146,7 @@
       "route": "/laventanita/catalogo",
       "width": 390,
       "overflow": false,
-      "elapsed_ms": 616.8,
+      "elapsed_ms": 620.9,
       "html_bytes": 6462,
       "server_timing": ""
     },
@@ -154,7 +154,7 @@
       "route": "/owner-login",
       "width": 390,
       "overflow": false,
-      "elapsed_ms": 645.2,
+      "elapsed_ms": 610.2,
       "html_bytes": 4476,
       "server_timing": ""
     },
@@ -162,7 +162,7 @@
       "route": "/",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 665.9,
+      "elapsed_ms": 639.4,
       "html_bytes": 18529,
       "server_timing": ""
     },
@@ -170,7 +170,7 @@
       "route": "/demo",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 673.1,
+      "elapsed_ms": 673.6,
       "html_bytes": 7590,
       "server_timing": ""
     },
@@ -186,7 +186,7 @@
       "route": "/laventanita/catalogo",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 618.1,
+      "elapsed_ms": 609.1,
       "html_bytes": 6462,
       "server_timing": ""
     },
@@ -194,7 +194,7 @@
       "route": "/owner-login",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 655.2,
+      "elapsed_ms": 602.5,
       "html_bytes": 4476,
       "server_timing": ""
     },
@@ -202,23 +202,23 @@
       "route": "/admin",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 1061.8,
-      "html_bytes": 27360,
+      "elapsed_ms": 734.7,
+      "html_bytes": 27459,
       "server_timing": ""
     },
     {
       "route": "/admin/productos",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 1318.1,
-      "html_bytes": 59411,
+      "elapsed_ms": 791.9,
+      "html_bytes": 59522,
       "server_timing": ""
     },
     {
       "route": "/admin/mesas",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 900.5,
+      "elapsed_ms": 652.4,
       "html_bytes": 16154,
       "server_timing": ""
     },
@@ -226,7 +226,7 @@
       "route": "/admin/salones",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 743.3,
+      "elapsed_ms": 677.2,
       "html_bytes": 44157,
       "server_timing": ""
     },
@@ -234,375 +234,375 @@
       "route": "/admin/ventas",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 758.7,
-      "html_bytes": 73155,
+      "elapsed_ms": 733.0,
+      "html_bytes": 73126,
       "server_timing": ""
     },
     {
       "route": "/admin/pedidos",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 642.6,
-      "html_bytes": 40861,
+      "elapsed_ms": 728.9,
+      "html_bytes": 42551,
       "server_timing": ""
     },
     {
       "route": "/admin/clientes",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 1109.7,
-      "html_bytes": 84890,
+      "elapsed_ms": 1004.6,
+      "html_bytes": 84989,
       "server_timing": ""
     },
     {
       "route": "/admin/compras",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 838.9,
-      "html_bytes": 84243,
+      "elapsed_ms": 665.6,
+      "html_bytes": 84392,
       "server_timing": ""
     },
     {
       "route": "/admin/impresion",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 691.3,
-      "html_bytes": 39104,
+      "elapsed_ms": 668.0,
+      "html_bytes": 39585,
       "server_timing": ""
     },
     {
       "route": "/admin/escritorio",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 683.2,
-      "html_bytes": 61427,
+      "elapsed_ms": 721.1,
+      "html_bytes": 64419,
       "server_timing": ""
     },
     {
       "route": "/admin/contenido",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 959.9,
-      "html_bytes": 31796,
+      "elapsed_ms": 1024.3,
+      "html_bytes": 31895,
       "server_timing": ""
     },
     {
       "route": "/admin/configuracion",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 653.0,
-      "html_bytes": 31437,
+      "elapsed_ms": 766.8,
+      "html_bytes": 31536,
       "server_timing": ""
     },
     {
       "route": "/admin/reportes?dataset=sales",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 725.9,
-      "html_bytes": 85588,
+      "elapsed_ms": 756.0,
+      "html_bytes": 86601,
       "server_timing": ""
     },
     {
       "route": "/admin/fidelizacion",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 982.9,
-      "html_bytes": 139054,
+      "elapsed_ms": 764.1,
+      "html_bytes": 139203,
       "server_timing": ""
     },
     {
       "route": "/admin/cxc",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 766.2,
-      "html_bytes": 28357,
+      "elapsed_ms": 764.7,
+      "html_bytes": 28456,
       "server_timing": ""
     },
     {
       "route": "/admin/cxp",
       "width": 1366,
       "overflow": false,
-      "elapsed_ms": 644.5,
-      "html_bytes": 28855,
+      "elapsed_ms": 682.0,
+      "html_bytes": 28954,
       "server_timing": ""
     },
     {
       "route": "/admin",
       "width": 768,
       "overflow": false,
-      "elapsed_ms": 696.3,
-      "html_bytes": 27360,
+      "elapsed_ms": 694.0,
+      "html_bytes": 27459,
       "server_timing": ""
     },
     {
       "route": "/admin/productos",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 809.3,
-      "html_bytes": 59411,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/mesas",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 733.4,
-      "html_bytes": 16154,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/salones",
       "width": 768,
       "overflow": false,
       "elapsed_ms": 700.9,
-      "html_bytes": 44157,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/ventas",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 793.6,
-      "html_bytes": 73155,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/pedidos",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 819.5,
-      "html_bytes": 40861,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/clientes",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 1038.3,
-      "html_bytes": 84890,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/compras",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 764.6,
-      "html_bytes": 84243,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/impresion",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 689.6,
-      "html_bytes": 39104,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/escritorio",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 700.2,
-      "html_bytes": 61427,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/contenido",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 978.5,
-      "html_bytes": 31796,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/configuracion",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 905.8,
-      "html_bytes": 31437,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/reportes?dataset=sales",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 870.8,
-      "html_bytes": 85588,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/fidelizacion",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 823.9,
-      "html_bytes": 139054,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/cxc",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 773.6,
-      "html_bytes": 28357,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/cxp",
-      "width": 768,
-      "overflow": false,
-      "elapsed_ms": 701.1,
-      "html_bytes": 28855,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 771.8,
-      "html_bytes": 27360,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/productos",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 967.6,
-      "html_bytes": 59411,
+      "html_bytes": 59522,
       "server_timing": ""
     },
     {
       "route": "/admin/mesas",
-      "width": 390,
+      "width": 768,
       "overflow": false,
-      "elapsed_ms": 726.1,
+      "elapsed_ms": 722.2,
       "html_bytes": 16154,
       "server_timing": ""
     },
     {
       "route": "/admin/salones",
-      "width": 390,
+      "width": 768,
       "overflow": false,
-      "elapsed_ms": 728.6,
+      "elapsed_ms": 732.7,
       "html_bytes": 44157,
       "server_timing": ""
     },
     {
       "route": "/admin/ventas",
-      "width": 390,
+      "width": 768,
       "overflow": false,
-      "elapsed_ms": 811.7,
-      "html_bytes": 73155,
+      "elapsed_ms": 687.6,
+      "html_bytes": 73126,
       "server_timing": ""
     },
     {
       "route": "/admin/pedidos",
-      "width": 390,
+      "width": 768,
       "overflow": false,
-      "elapsed_ms": 962.0,
-      "html_bytes": 40861,
+      "elapsed_ms": 629.1,
+      "html_bytes": 42554,
       "server_timing": ""
     },
     {
       "route": "/admin/clientes",
-      "width": 390,
+      "width": 768,
       "overflow": false,
-      "elapsed_ms": 959.6,
-      "html_bytes": 84890,
+      "elapsed_ms": 652.1,
+      "html_bytes": 84989,
       "server_timing": ""
     },
     {
       "route": "/admin/compras",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 771.6,
-      "html_bytes": 84243,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/impresion",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 708.5,
-      "html_bytes": 39104,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/escritorio",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 764.2,
-      "html_bytes": 61427,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/contenido",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 876.3,
-      "html_bytes": 31796,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/configuracion",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 703.3,
-      "html_bytes": 31437,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/reportes?dataset=sales",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 835.8,
-      "html_bytes": 85588,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/fidelizacion",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 926.4,
-      "html_bytes": 139054,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/cxc",
-      "width": 390,
-      "overflow": false,
-      "elapsed_ms": 750.7,
-      "html_bytes": 28357,
-      "server_timing": ""
-    },
-    {
-      "route": "/admin/cxp",
-      "width": 390,
+      "width": 768,
       "overflow": false,
       "elapsed_ms": 698.1,
-      "html_bytes": 28855,
+      "html_bytes": 84392,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/impresion",
+      "width": 768,
+      "overflow": false,
+      "elapsed_ms": 657.5,
+      "html_bytes": 39585,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/escritorio",
+      "width": 768,
+      "overflow": false,
+      "elapsed_ms": 638.5,
+      "html_bytes": 64419,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/contenido",
+      "width": 768,
+      "overflow": false,
+      "elapsed_ms": 725.1,
+      "html_bytes": 31895,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/configuracion",
+      "width": 768,
+      "overflow": false,
+      "elapsed_ms": 761.6,
+      "html_bytes": 31536,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/reportes?dataset=sales",
+      "width": 768,
+      "overflow": false,
+      "elapsed_ms": 866.8,
+      "html_bytes": 86601,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/fidelizacion",
+      "width": 768,
+      "overflow": false,
+      "elapsed_ms": 725.9,
+      "html_bytes": 139203,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/cxc",
+      "width": 768,
+      "overflow": false,
+      "elapsed_ms": 740.0,
+      "html_bytes": 28456,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/cxp",
+      "width": 768,
+      "overflow": false,
+      "elapsed_ms": 757.0,
+      "html_bytes": 28954,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 655.8,
+      "html_bytes": 27459,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/productos",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 734.7,
+      "html_bytes": 59522,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/mesas",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 690.8,
+      "html_bytes": 16154,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/salones",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 639.3,
+      "html_bytes": 44157,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/ventas",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 708.7,
+      "html_bytes": 73126,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/pedidos",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 715.4,
+      "html_bytes": 42555,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/clientes",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 807.3,
+      "html_bytes": 84989,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/compras",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 761.4,
+      "html_bytes": 84392,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/impresion",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 736.7,
+      "html_bytes": 39585,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/escritorio",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 663.9,
+      "html_bytes": 64419,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/contenido",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 764.1,
+      "html_bytes": 31895,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/configuracion",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 643.5,
+      "html_bytes": 31536,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/reportes?dataset=sales",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 735.8,
+      "html_bytes": 86601,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/fidelizacion",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 730.8,
+      "html_bytes": 139203,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/cxc",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 743.8,
+      "html_bytes": 28456,
+      "server_timing": ""
+    },
+    {
+      "route": "/admin/cxp",
+      "width": 390,
+      "overflow": false,
+      "elapsed_ms": 706.9,
+      "html_bytes": 28954,
       "server_timing": ""
     },
     {
       "route": "/admin",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 707.6,
-      "html_bytes": 27360,
+      "elapsed_ms": 639.3,
+      "html_bytes": 27459,
       "server_timing": ""
     },
     {
       "route": "/admin/productos",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 743.6,
-      "html_bytes": 59411,
+      "elapsed_ms": 658.0,
+      "html_bytes": 59522,
       "server_timing": ""
     },
     {
       "route": "/admin/mesas",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 740.2,
+      "elapsed_ms": 660.9,
       "html_bytes": 16154,
       "server_timing": ""
     },
@@ -610,7 +610,7 @@
       "route": "/admin/salones",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 731.0,
+      "elapsed_ms": 637.5,
       "html_bytes": 44157,
       "server_timing": ""
     },
@@ -618,96 +618,96 @@
       "route": "/admin/ventas",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 717.0,
-      "html_bytes": 73155,
+      "elapsed_ms": 681.9,
+      "html_bytes": 73126,
       "server_timing": ""
     },
     {
       "route": "/admin/pedidos",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 726.6,
-      "html_bytes": 40861,
+      "elapsed_ms": 674.0,
+      "html_bytes": 42557,
       "server_timing": ""
     },
     {
       "route": "/admin/clientes",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 772.8,
-      "html_bytes": 84890,
+      "elapsed_ms": 691.5,
+      "html_bytes": 84989,
       "server_timing": ""
     },
     {
       "route": "/admin/compras",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 785.4,
-      "html_bytes": 84243,
+      "elapsed_ms": 682.9,
+      "html_bytes": 84392,
       "server_timing": ""
     },
     {
       "route": "/admin/impresion",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 727.4,
-      "html_bytes": 39104,
+      "elapsed_ms": 646.9,
+      "html_bytes": 39585,
       "server_timing": ""
     },
     {
       "route": "/admin/escritorio",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 890.3,
-      "html_bytes": 61427,
+      "elapsed_ms": 655.2,
+      "html_bytes": 64419,
       "server_timing": ""
     },
     {
       "route": "/admin/contenido",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 869.1,
-      "html_bytes": 31796,
+      "elapsed_ms": 774.1,
+      "html_bytes": 31895,
       "server_timing": ""
     },
     {
       "route": "/admin/configuracion",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 728.2,
-      "html_bytes": 31437,
+      "elapsed_ms": 632.4,
+      "html_bytes": 31536,
       "server_timing": ""
     },
     {
       "route": "/admin/reportes?dataset=sales",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 728.7,
-      "html_bytes": 85588,
+      "elapsed_ms": 755.8,
+      "html_bytes": 86601,
       "server_timing": ""
     },
     {
       "route": "/admin/fidelizacion",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 884.0,
-      "html_bytes": 139054,
+      "elapsed_ms": 737.8,
+      "html_bytes": 139203,
       "server_timing": ""
     },
     {
       "route": "/admin/cxc",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 759.9,
-      "html_bytes": 28357,
+      "elapsed_ms": 685.1,
+      "html_bytes": 28456,
       "server_timing": ""
     },
     {
       "route": "/admin/cxp",
       "width": 360,
       "overflow": false,
-      "elapsed_ms": 744.3,
-      "html_bytes": 28855,
+      "elapsed_ms": 638.2,
+      "html_bytes": 28954,
       "server_timing": ""
     }
   ],

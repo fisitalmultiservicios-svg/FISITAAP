@@ -106,7 +106,12 @@ function public_media_url(?string $value,?string $fallback=null):string {
     return image_variant_url($resolved);
 }
 function order_item_details_html(array $item): string { $options=json_decode((string)($item['options_json']??''),true);$html='';if(is_array($options)&&$options){$html.='<small class="item-options">';foreach($options as $option)$html.='<span>'.e(($option['group']??$option['group_name']??'Opción').': '.($option['name']??'')).'</span>';$html.='</small>';}if(!empty($item['notes']))$html.='<small class="item-note">Nota: '.e($item['notes']).'</small>';return $html; }
-function url(string $path = ''): string { global $config; return rtrim($config['app_url'], '/') . '/' . ltrim($path, '/'); }
+function url(string $path = ''): string {
+    global $config;$path=ltrim($path,'/');
+    if(defined('FISITAAP_CODE_PREFIX')&&str_starts_with($path,'assets/'))
+        return rtrim($GLOBALS['demo_base_url']??$config['app_url'],'/').'/'.FISITAAP_CODE_PREFIX.'/'.$path;
+    return rtrim($config['app_url'],'/').'/'.$path;
+}
 function redirect(string $to): never { header('Location: ' . $to); exit; }
 function json_response(array $data, int $status = 200): never { http_response_code($status); header('Content-Type: application/json; charset=utf-8'); echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); exit; }
 function request_path(): string { $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH); return trim((string)$path, '/'); }

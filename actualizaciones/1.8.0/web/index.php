@@ -22,6 +22,10 @@ require_once __DIR__.'/app/restructure_r2.php';
 require_once __DIR__.'/app/qa180.php';
 
 $path=request_path();
+try{qa180_request_context($app,$path);}catch(DomainException $error){
+    if(str_starts_with($path,'api/'))json_response(['ok'=>false,'error'=>$error->getMessage()],409);
+    http_response_code(409);simple_error('Vuelve a intentar',$error->getMessage());exit;
+}
 if(empty($GLOBALS['demo_context'])&&(str_starts_with($path,'demo')||in_array(explode('/',$path)[0],['restaurante-demo','tienda-demo'],true)||(is_post()&&in_array($path,['owner-login','login'],true)&&in_array(strtolower(trim((string)($_POST['email']??''))),['restaurante.demo@fisitaap.com','negocio.demo@fisitaap.com','cliente.demo@fisitaap.com'],true)))){
     require_once __DIR__.'/app/demo_sandbox.php';demo_dispatch($app,$path);
 }

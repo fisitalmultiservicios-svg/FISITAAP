@@ -1,0 +1,16 @@
+{
+  "passed": 10,
+  "checks": [
+    "publication succeeds with two open businesses and preserves shifts/catalogs at 1.7.9",
+    "only the current business blockers matter; POST cannot choose another tenant",
+    "A activates while B keeps its open shift, old modifier choices and device configuration",
+    "activation retry preserves its audit/version timestamp and does not migrate twice",
+    "owner-only authorization and CSRF protect the update action",
+    "verified device tokens receive their own tenant version: modern A and compatible legacy B",
+    "real 1.7.9 pricing produces a legacy B offline sale received once with correct stock/cash and shift closure while A is updated",
+    "legacy B keeps its sales screen and A shows the completed update",
+    "repeat publication does not activate pending or newly created businesses",
+    "B activates later through its own Administration button"
+  ],
+  "environment": "real PHP/MariaDB/HTTP, fictional tenants 101/102; no production"
+}

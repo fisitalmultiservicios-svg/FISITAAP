@@ -31,10 +31,11 @@ function qa180_modifier_sync(App $app,int $tenant):void {
     $app->exec('INSERT INTO fisitaap_r2_modifier_groups(modifier_id,product_id,group_id) SELECT modifier_id180,product_id,id FROM product_option_groups WHERE tenant_id=? AND modifier_id180 IS NOT NULL ON DUPLICATE KEY UPDATE group_id=VALUES(group_id)',[$tenant]);
     $app->exec('INSERT INTO product_options(group_id,name,price_delta,sort_order,is_active,modifier_option180) SELECT g.id,JSON_UNQUOTE(JSON_EXTRACT(m.choices_json,"$[0].name")),COALESCE(JSON_UNQUOTE(JSON_EXTRACT(m.choices_json,"$[0].price")),0),0,1,"one" FROM product_option_groups g JOIN fisitaap_r2_modifiers m ON m.id=g.modifier_id180 AND m.tenant_id=g.tenant_id WHERE g.tenant_id=? ON DUPLICATE KEY UPDATE name=VALUES(name),price_delta=VALUES(price_delta),is_active=1',[$tenant]);
 }
-function qa180_modifiers_upgrade(App $app):void {
-    if($app->setting('modifiers180_migrated','0')==='1')return;
-    $app->db->beginTransaction();try{
-        foreach($app->all('SELECT * FROM fisitaap_r2_modifiers ORDER BY id') as $modifier){
+function qa180_modifiers_upgrade(App $app,int $tenantId=0):void {
+    if($tenantId){if((int)($app->one('SELECT modifiers_migrated FROM fisitaap_tenant_updates180 WHERE tenant_id=?',[$tenantId])['modifiers_migrated']??0)===1)return;}
+    elseif($app->setting('modifiers180_migrated','0')==='1')return;
+    $owns=!$app->db->inTransaction();if($owns)$app->db->beginTransaction();try{
+        foreach($app->all('SELECT * FROM fisitaap_r2_modifiers'.($tenantId?' WHERE tenant_id=?':'').' ORDER BY id',$tenantId?[$tenantId]:[]) as $modifier){
             $choices=json_decode($modifier['choices_json'],true,64,JSON_THROW_ON_ERROR);if(!$choices)continue;
             $products=array_column($app->all('SELECT r.product_id FROM fisitaap_r2_modifier_groups r JOIN product_option_groups g ON g.id=r.group_id AND g.tenant_id=? WHERE r.modifier_id=? AND g.is_active=1',[$modifier['tenant_id'],$modifier['id']]),'product_id');
             $family=count($choices)>1?(int)$modifier['id']:null;$minimum=$modifier['required']?1:0;$maximum=$modifier['multiple']?count($choices):1;
@@ -47,9 +48,11 @@ function qa180_modifiers_upgrade(App $app):void {
                 foreach($products as $pid)$app->exec('INSERT IGNORE INTO fisitaap_modifier_products180(tenant_id,modifier_id,product_id) VALUES(?,?,?)',[$modifier['tenant_id'],$id,$pid]);
             }
         }
-        foreach($app->all('SELECT DISTINCT tenant_id FROM fisitaap_r2_modifiers') as $tenant)qa180_modifier_sync($app,(int)$tenant['tenant_id']);
-        $app->exec('INSERT INTO settings(`key`,`value`) VALUES("modifiers180_migrated","1") ON DUPLICATE KEY UPDATE `value`="1"');$app->db->commit();
-    }catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();throw $error;}
+        foreach($app->all('SELECT DISTINCT tenant_id FROM fisitaap_r2_modifiers'.($tenantId?' WHERE tenant_id=?':''),$tenantId?[$tenantId]:[]) as $tenant)qa180_modifier_sync($app,(int)$tenant['tenant_id']);
+        if($tenantId)$app->exec('INSERT INTO fisitaap_tenant_updates180(tenant_id,modifiers_migrated) VALUES(?,1) ON DUPLICATE KEY UPDATE modifiers_migrated=1',[$tenantId]);
+        else $app->exec('INSERT INTO settings(`key`,`value`) VALUES("modifiers180_migrated","1") ON DUPLICATE KEY UPDATE `value`="1"');
+        if($owns)$app->db->commit();
+    }catch(Throwable $error){if($owns&&$app->db->inTransaction())$app->db->rollBack();throw $error;}
 }
 function qa180_modifier_assignment(App $app,array $user,array $tenant,bool $category):void {
     $entity=$category?'categories':'products';$section=$category?'categorias':'productos';$fk=$category?'category_id':'product_id';$table=$category?'fisitaap_modifier_categories180':'fisitaap_modifier_products180';$id=(int)($_GET['id']??$_POST['id']??0);

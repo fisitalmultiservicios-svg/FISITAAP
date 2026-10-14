@@ -1,4 +1,4 @@
-"""Publish only the six public deliverables via Git; keep signing material private."""
+"""Publish the reviewed source commit and public downloads; keep signing material private."""
 import base64, json, os, pathlib, subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]

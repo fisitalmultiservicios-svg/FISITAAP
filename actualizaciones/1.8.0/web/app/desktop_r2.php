@@ -35,6 +35,7 @@ function r2_desktop_admin(App $app,array $u,array $t):void {
     foreach($app->all('SELECT x.*,s.sale_number FROM fisitaap_r2_synced_sales x JOIN fisitaap_r2_devices d ON d.id=x.device_id JOIN sales s ON s.id=x.sale_id WHERE d.tenant_id=? ORDER BY x.local_date DESC LIMIT 200',[$t['id']]) as $row)echo '<tr><td>'.e($row['local_date']).'</td><td>'.e($row['sale_number']).'</td><td>'.e($row['register_name']).'</td><td>'.e($row['conflicts']?:'Recibida').'</td></tr>';echo '</table></section>';admin_shell_end();
 }
 function r2_snapshot(App $app,array $d):array {
+    qa180_scope($app,(int)$d['tenant_id']);
     $owns=!$app->db->inTransaction();if($owns)$app->db->beginTransaction();
     try{$snapshot=r2_snapshot_read($app,$d);if($owns)$app->db->commit();return $snapshot;}catch(Throwable $error){if($owns&&$app->db->inTransaction())$app->db->rollBack();throw $error;}
 }
@@ -76,6 +77,9 @@ function r2_offline_quote(array $snapshot,array $rows,?int $at=null,int $discoun
     if($discount<0||$discount>$subtotal)throw new DomainException('Descuento fuera del subtotal.');return ['lines'=>$lines,'net'=>$subtotal,'tax'=>$tax,'discount'=>$discount,'total'=>$subtotal+$tax-$discount,'stock'=>$stock];
 }
 function r2_sync_sales(App $app,array $d,array $payload):array {
+    qa180_scope($app,(int)$d['tenant_id']);
+    qa180_update_lock($app,(int)$d['tenant_id']);
+    qa180_scope($app,(int)$d['tenant_id']);
     $sales=(array)($payload['sales']??[]);$shifts=(array)($payload['shifts']??[]);if(count($sales)>100||count($shifts)>100)throw new DomainException('Envía hasta 100 operaciones por lote.');$acks=[];$errors=[];$closedShifts=[];
     foreach($shifts as $meta){try{
         $uuid=(string)($meta['id']??'');if(!preg_match('/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/',$uuid))throw new DomainException('Identificador de turno inválido.');
@@ -119,10 +123,15 @@ function r2_desktop_api(App $app,string $action):never {
     try{$data=json_decode($raw,true,128,JSON_THROW_ON_ERROR);if(!is_array($data))throw new DomainException('Solicitud inválida.');
         if($action==='pair'){
             if(!rate_limit_persistent($app,'device_pair',client_identity((string)($data['device_id']??'')),8,300))json_response(['ok'=>false,'error'=>'Espera antes de intentar otra conexión.'],429);
+            $pairTarget=$app->one('SELECT tenant_id,pair_hash FROM fisitaap_r2_devices WHERE id=? AND is_active=1 AND pair_expires>NOW()',[(int)($data['device_id']??0)]);
+            if(!$pairTarget||!$pairTarget['pair_hash']||!hash_equals($pairTarget['pair_hash'],hash('sha256',(string)($data['code']??''))))throw new DomainException('Código de conexión inválido o vencido.');
+            qa180_update_lock($app,(int)$pairTarget['tenant_id']);qa180_scope($app,(int)$pairTarget['tenant_id']);
             $app->db->beginTransaction();$d=$app->one('SELECT * FROM fisitaap_r2_devices WHERE id=? AND is_active=1 AND pair_expires>NOW() FOR UPDATE',[(int)($data['device_id']??0)]);if(!$d||!$d['pair_hash']||!hash_equals($d['pair_hash'],hash('sha256',(string)($data['code']??''))))throw new DomainException('Código de conexión inválido o vencido.');$token=bin2hex(random_bytes(32));$app->exec('UPDATE fisitaap_r2_devices SET token_hash=?,pair_hash=NULL,pair_expires=NULL,last_sync=NOW() WHERE id=?',[hash('sha256',$token),$d['id']]);$snap=r2_snapshot($app,$d);$app->db->commit();json_response(['ok'=>true,'token'=>$token,'snapshot'=>$snap]);
         }
         $headers=function_exists('getallheaders')?array_change_key_case(getallheaders(),CASE_LOWER):[];$auth=(string)($_SERVER['HTTP_AUTHORIZATION']??$_SERVER['REDIRECT_HTTP_AUTHORIZATION']??$headers['authorization']??'');$token=str_starts_with($auth,'Bearer ')?substr($auth,7):(string)($_SERVER['HTTP_X_FISITAAP_DEVICE']??'');if(!preg_match('/^[a-f0-9]{64}$/',$token))json_response(['ok'=>false,'error'=>'Equipo no autorizado.'],401);
         $d=$app->one('SELECT * FROM fisitaap_r2_devices WHERE token_hash=? AND is_active=1',[hash('sha256',$token)]);if(!$d)json_response(['ok'=>false,'error'=>'El equipo fue desactivado. Las ventas pendientes se conservan en Windows.'],401);
+        qa180_scope($app,(int)$d['tenant_id']);
+        if(in_array($action,['sync','release'],true)){qa180_update_lock($app,(int)$d['tenant_id']);qa180_scope($app,(int)$d['tenant_id']);}
         $t=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$d['tenant_id']]);if(!$t||!physical_store_v14($t)||!module_enabled_v12($app,$t,'pos'))json_response(['ok'=>false,'error'=>'POS no está activo para el negocio.'],403);
         if($action==='release') { if(qa180_active($app)){$actor=$app->one('SELECT * FROM users WHERE id=? AND tenant_id=? AND is_active=1',[(int)($data['user_id']??0),$d['tenant_id']]);if(!$actor)throw new DomainException('Inicia sesión con un usuario autorizado para configurar equipos.');qa180_permission($app,$actor,'configuracion','configure');}primary179_release($app,$d);json_response(['ok'=>true]); }
         if($action==='payment-status'&&qa180_active($app))json_response(qa180_web_payment_status($app,$d,$data));

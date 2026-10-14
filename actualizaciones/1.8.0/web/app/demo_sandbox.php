@@ -89,10 +89,16 @@ function demo_open(App $app,string $type,string $mode):string {
             if(!$copied)throw new RuntimeException('No se pudieron copiar todas las relaciones del catálogo de demostración.');$pending=$next;
         }
         if(!$newOwner)throw new RuntimeException('No se copió el dueño del demo.');
-        if(function_exists('qa180_active')&&qa180_active($app))qa180_demo_references($app,$tenant,$mapping);
+        if(function_exists('qa180_demo_references')&&$app->setting('qa180_active','0')==='1')qa180_demo_references($app,$tenant,$mapping);
         $customer=demo_insert($app,'users',['tenant_id'=>$tenant,'name'=>'Cliente de prueba','email'=>'demo-'.$token.'-cliente@sandbox.invalid','phone'=>'88888888','password_hash'=>$demoPasswordHash,'role'=>'customer','is_active'=>1,'email_verified_at'=>date('Y-m-d H:i:s')]);
         $app->exec('INSERT INTO tenant_customers(tenant_id,user_id) VALUES(?,?)',[$tenant,$customer]);
         $app->exec('INSERT INTO fisitaap_demo_sessions(token,tenant_id,template_id,browser_hash,owner_id,customer_id,initial_mode,expires_at) VALUES(?,?,?,?,?,?,?,DATE_ADD(NOW(),INTERVAL 30 MINUTE))',[$token,$tenant,$parent,demo_browser_hash(),$newOwner,$customer,$mode]);
+        if(function_exists('qa180_scope')&&$app->setting('qa180_rollout','0')==='1'){
+            $parentVersion=$app->one('SELECT modifiers_migrated FROM fisitaap_tenant_updates180 WHERE tenant_id=?',[$parent]);
+            $app->exec('INSERT INTO fisitaap_tenant_updates180(tenant_id,version,modifiers_migrated) VALUES(?,179,?)',[$tenant,(int)($parentVersion['modifiers_migrated']??0)]);
+            qa180_modifiers_upgrade($app,$tenant);qa180_register_upgrade($app,$tenant);qa180_floor_upgrade($app,$tenant);qa180_roles_upgrade($app,$tenant);
+            $app->exec('UPDATE fisitaap_tenant_updates180 SET version=180 WHERE tenant_id=?',[$tenant]);
+        }
         $app->db->commit();return $token;
     }catch(Throwable $e){if($app->db->inTransaction())$app->db->rollBack();throw $e;}
     finally{fm_drop_sets($app,$sets);}

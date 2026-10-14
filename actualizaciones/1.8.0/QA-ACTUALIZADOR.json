@@ -1,9 +1,10 @@
 {
-  "passed": 3,
+  "passed": 4,
   "checks": [
-    "1.7.8: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry, config preservation, rollback before activation and block after activation",
-    "1.7.9-r2: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry, config preservation, rollback before activation and block after activation",
-    "mudanza-1.7.9-r3: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry, config preservation, rollback before activation and block after activation"
+    "1.7.8: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry with open shift, preserved business version, atomic versioned entry/assets, preserved shared app/config, pre-publication restore and block after publication",
+    "1.7.9-r2: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry with open shift, preserved business version, atomic versioned entry/assets, preserved shared app/config, pre-publication restore and block after publication",
+    "mudanza-1.7.9-r3: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry with open shift, preserved business version, atomic versioned entry/assets, preserved shared app/config, pre-publication restore and block after publication",
+    "1.8.0-R1-active: extracted ZIP, master/CSRF, protected payload/backups, checksum and custom-file rejection, apply/retry with open shift, preserved business version, atomic versioned entry/assets, preserved shared app/config, pre-publication restore and block after publication"
   ],
-  "environment": "three prior file versions on independent fictional PHP/MariaDB database; no production"
+  "environment": "three prior file versions plus activated published R1 on independent fictional PHP/MariaDB database; real unzip permissions; no production"
 }

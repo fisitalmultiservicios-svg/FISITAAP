@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-function qa180_register_upgrade(App $app):void {
+function qa180_register_upgrade(App $app,int $tenantId=0):void {
     // Preserve the existing paired devices and primary assignment. Registers
     // are separate records; this never chooses an offline principal.
-    $app->exec('INSERT INTO fisitaap_registers180(tenant_id,branch_id,name,device_id) SELECT d.tenant_id,d.branch_id,LEFT(CONCAT("Caja · ",d.name),100),d.id FROM fisitaap_r2_devices d LEFT JOIN fisitaap_registers180 r ON r.device_id=d.id WHERE d.is_active=1 AND d.token_hash IS NOT NULL AND r.id IS NULL');
+    $app->exec('INSERT INTO fisitaap_registers180(tenant_id,branch_id,name,device_id) SELECT d.tenant_id,d.branch_id,LEFT(CONCAT("Caja · ",d.name),100),d.id FROM fisitaap_r2_devices d LEFT JOIN fisitaap_registers180 r ON r.device_id=d.id WHERE d.is_active=1 AND d.token_hash IS NOT NULL AND r.id IS NULL'.($tenantId?' AND d.tenant_id=?':''),$tenantId?[$tenantId]:[]);
 }
 function qa180_devices(App $app,array $user,?array $tenant):void {
     if(!$tenant){
