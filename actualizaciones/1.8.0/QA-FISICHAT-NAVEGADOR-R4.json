@@ -1,0 +1,63 @@
+{
+  "passed": 8,
+  "delivery": "installed R4 payload",
+  "cases": [
+    {
+      "context": "platform",
+      "width": 1366,
+      "viewport_fit": true,
+      "enabled_without_key": true,
+      "escape_focus_aria": true
+    },
+    {
+      "context": "platform",
+      "width": 768,
+      "viewport_fit": true,
+      "enabled_without_key": true,
+      "escape_focus_aria": true
+    },
+    {
+      "context": "platform",
+      "width": 390,
+      "viewport_fit": true,
+      "enabled_without_key": true,
+      "escape_focus_aria": true
+    },
+    {
+      "context": "platform",
+      "width": 360,
+      "viewport_fit": true,
+      "enabled_without_key": true,
+      "escape_focus_aria": true
+    },
+    {
+      "context": "store",
+      "width": 390,
+      "own_logo": true,
+      "real_product_reply": true,
+      "history_reload_reset": true
+    },
+    {
+      "context": "errors",
+      "html_not_executed": true,
+      "failed_transport_keeps_draft": true,
+      "controls_reenabled": true
+    },
+    {
+      "context": "fullpage",
+      "legacy_alias": true,
+      "working_reply": true
+    },
+    {
+      "context": "master",
+      "private_context": true,
+      "selected_business_required": true,
+      "proposal_readonly": true,
+      "explicit_confirmation_written": true,
+      "mobile_fit": true
+    }
+  ],
+  "javascript_errors": [],
+  "missing_assets": [],
+  "scope": "Chromium/PHP/MariaDB fictitious data; actual local guide HTTP, scoped admin confirmation; not physical Brave or production"
+}

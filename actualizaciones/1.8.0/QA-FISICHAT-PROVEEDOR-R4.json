@@ -1,0 +1,14 @@
+{
+  "passed": 7,
+  "checks": [
+    "verified TLS provider request uses bounded server history, factual sales/support prompt, no tools and store=false; public context has no private business data",
+    "master AI receives internal authorized metrics and administrative instructions without keys or passwords",
+    "store AI gets only published products from the authorized store/branch, without costs, private stock or other business data",
+    "master change intent bypasses external AI and requires the existing review/confirmation form",
+    "same-session navigation completes while delayed AI runs; concurrent messages in one conversation are rejected rather than interleaved",
+    "reset during a delayed AI request prevents the old reply restoring conversation history",
+    "provider HTTP500 returns helpful printing guidance and releases the conversation for the next request"
+  ],
+  "navigation_ms": 105,
+  "scope": "actual PHP cURL through locally trusted TLS provider mock on isolated Docker network; fake key; not real OpenAI model quality/cost/latency"
+}

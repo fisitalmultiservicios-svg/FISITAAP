@@ -1,0 +1,9 @@
+{
+  "packaged_php_files": 71,
+  "php": "8.3",
+  "javascript": [
+    "assets/fisichat.js"
+  ],
+  "passed": true,
+  "scope": "exact assembled R4 PHP payload/updater and new JS syntax; functional checks separate"
+}

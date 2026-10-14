@@ -1,4 +1,26 @@
-# Informe QA · FISITAAP 1.8.0-R3
+# Informe QA · FISITAAP 1.8.0-R4
+
+## FISIChat público, tiendas y maestro · R4 · 14 de octubre de 2026
+
+La portada deja de abrir un formulario aparte y dispone de un chat en la misma página, con burbujas, sugerencias, respuesta en curso, historial y contacto. Tiendas/landing usan su propia identidad. El maestro tiene un perfil administrativo privado, separado del asesor comercial aunque esté conectado al visitar la portada. El chat avanzado del dueño conserva sus herramientas anteriores.
+
+El conocimiento comercial se limita a funciones actuales: un principal Windows o Android offline, impresión directa configurada en Administración, demos virtuales, módulos y activación por negocio. No se inventan precios; la cotización remite al contacto configurado. La conversación reutiliza la conexión de IA existente. Sin clave o ante un fallo se usa la guía local; esa guía no equivale a conversación libre con un modelo.
+
+El maestro consulta cifras y listas acotadas de negocios reales, vencidos/próximos vencimientos, planes, contactos nuevos de la plataforma y estados de activación. Cambiar plan o vencimiento abre un formulario; preparar no modifica datos y confirmar exige una propuesta guardada en servidor, de diez minutos, y privilegio maestro vigente. Se compara el valor anterior para rechazar propuestas desactualizadas. La operación modifica solamente plan/vencimiento, queda auditada y admite repetición sin una segunda escritura/auditoría. No se envían contraseñas ni claves a la IA. La IA no tiene herramientas de escritura.
+
+La conversación se almacena en sesión por perfil, negocio, usuario/rol y sucursal, por treinta minutos, con doce mensajes. El historial recibido del navegador no se acepta como contexto. Se conserva la solicitud para reintentar, se impide intercalar mensajes y una nueva generación al reiniciar evita que una respuesta tardía reponga el historial borrado. Los mensajes se dibujan como texto, con CSRF y límites de tamaño/frecuencia. La sesión se libera antes de esperar al proveedor.
+
+Pruebas específicas de R4 en PHP/MariaDB y Chromium, siempre con registros ficticios:
+
+- **QA-FISICHAT-HTTP-R4.json:** 11 grupos de comprobaciones de ventas/soporte, contexto, historial/reintentos, límites, precios publicados por sucursal, exclusión de productos ocultos, pedidos solo del cliente y tienda, contactos solo de la plataforma, contraseña obligatoria/privilegio revocado, vencimientos, propuesta/confirmación/repetición y cambios de otro administrador.
+- **QA-FISICHAT-NAVEGADOR-R4.json:** 8 flujos a 1366/768/390/360px: respuestas reales del motor local, historial/reset, logo propio, pantalla completa, foco/Escape/ARIA, texto malicioso no ejecutado, respuesta HTTP no JSON sin perder el borrador, propuesta/confirmación del maestro y ajuste móvil. Sin errores JavaScript ni recursos faltantes.
+- **QA-FISICHAT-PROVEEDOR-R4.json:** 7 grupos contra un proveedor local por TLS verificado, usando una clave ficticia. Comprueba petición de IA/contexto/historial, límite de tokens/store=false, datos privados del maestro y públicos de tienda, fallo 500 con guía, navegación con la misma sesión mientras tarda la IA, conflicto entre mensajes simultáneos y reset durante la espera. No prueba calidad, precios ni latencia de OpenAI real.
+- **QA-ACTUALIZADOR-R4.json:** 7 grupos sobre R3 publicado, negocios 180/179 y turno abierto. Conserva estado/datos/config/uploads/código R3, rechaza cambios externos, verifica 115 hashes y entrada R4, UI pública/maestro, repetición y bloqueo de restauración después de publicación.
+- **QA-PERMISOS-ZIP-R4.json:** 2 extracciones reales con umask 077/Apache UID33,115 hashes, 644/755, instalador accesible y payload privado403 sin reparar permisos.
+- **QA-SINTAXIS-R4.json:** los 71 archivos PHP del paquete pasan sintaxis con PHP8.3 y el JavaScript nuevo pasa `node --check`.
+- **QA-PUBLICO-R4.json:** regresión del ZIP exacto en portada y La Ventanita, nueve anchos, títulos/botones, diseño/logo, catálogo, negocio pendiente y tema administrativo.
+
+R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. MANIFEST-ARCHIVOS.json enumera 115 archivos funcionales en releases/1.8.0-r4.
 
 ## Corrección visual · R3 · 14 de octubre de 2026
 
@@ -8,7 +30,7 @@ La ilustración ahora participa en una cuadrícula que reserva su altura real y 
 
 QA-PUBLICO-R3.json verifica 36 vistas públicas en total: portada y La Ventanita en nueve anchos (1366, 1317, 1024, 900, 768, 621, 620, 390 y 360), tanto con código fuente como con el payload exacto publicado en releases/1.8.0-r3. Comprueba que la ilustración no cubra título/botones, que los botones se puedan pulsar, que la tienda tenga navegación/banner/tarjetas adaptados, que conserve su logo, que el catálogo abra, que no se agregue JavaScript de POS a la tienda y que el administrador conserve su tema. También se verifica el diseño de un negocio pendiente en 1.7.9. No hubo errores JavaScript, recursos faltantes ni desbordamiento horizontal. Las imágenes del laboratorio usan datos y un logo ficticios, restaurados al terminar; no se modificó el contenido de la tienda real.
 
-QA-ACTUALIZADOR-R3.json prueba R3 sobre el ZIP R2 publicado con un negocio180, otro179 y un turno abierto. Conserva las versiones, turnos, modificadores, usuarios/productos/ventas, config, uploads y archivos R2; cambia la entrada al nuevo directorio al terminar la copia. Rechaza código R2 modificado fuera del paquete conocido. La repetición no duplica respaldos. QA-PERMISOS-ZIP-R3.json verifica la extracción sobre R2 y en carpeta nueva bajo umask077, sin reparar permisos después, con Apache UID33 y payload protegido.
+QA-ACTUALIZADOR-R3.json prueba R3 sobre el ZIP R2 publicado con un negocio180, otro179 y un turno abierto. Conserva las versiones, turnos, modificadores, usuarios/productos/ventas, config, uploads y archivos R2; cambia la entrada al nuevo directorio al terminar la copia. Rechaza código R2 modificado fuera del paquete conocido. La repetición no duplica respaldos. QA-PERMISOS-ZIP-R3.json verifica la extracción sobre R2 y en carpeta nueva bajo umask 077, sin reparar permisos después, con Apache UID33 y payload protegido.
 
 R3 no cambia cálculos, base de datos, turnos, impresión ni código nativo. Se ejecutaron pruebas centradas en las vistas y el empaquetado afectados. La evidencia de las 24 suites y las pruebas nativas siguientes corresponde a R2 y a los instaladores1.8.0 sin cambios; no se presenta como una nueva ejecución completa en R3. No se accedió a cPanel ni se probó un Brave físico.
 
@@ -61,7 +83,7 @@ Se separan los tiempos PHP de proceso/red; no se incluye el retraso de 500 ms de
 
 schema180.php agrega las tablas 180 de cajas, colas de impresión, dinero, borradores, asignaciones de modificadores, mesas vinculadas, usos de cupón, pedidos vinculados, listas compartidas y operaciones idempotentes, y los campos/índices de los módulos relacionados. Se ejecuta por publicación explícita, fuera de las consultas normales. Cada negocio tiene un estado independiente en fisitaap_tenant_updates180, consultado por clave primaria y almacenado en memoria durante la solicitud. La conversión de modificadores, cajas, mesas y roles se limita al negocio que activa y su versión cambia al final de la transacción. No hay DDL durante esa activación individual. Se conservan tablas y registros anteriores.
 
-MANIFEST-ARCHIVOS.json enumera los 112 archivos funcionales instalados en R3 y su SHA-256. Native: desktop/ y android/ contienen el motor compartido, protección de vistas/credenciales, persistencia, impresión y recursos 1.8.0. El ZIP evita config.php, claves privadas, SQL y archivos cargados del negocio.
+MANIFEST-ARCHIVOS.json enumera los 115 archivos funcionales instalados en R4 y su SHA-256. Native: desktop/ y android/ contienen el motor compartido, protección de vistas/credenciales, persistencia, impresión y recursos 1.8.0. El ZIP evita config.php, claves privadas, SQL y archivos cargados del negocio.
 
 ## Revisión de las solicitudes
 
