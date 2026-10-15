@@ -1,0 +1,14 @@
+{
+  "passed": 8,
+  "checks": [
+    "published R5 falsely confirms an empty submission and an actual PHP-rejected multipart upload without changing the saved image",
+    "R6 empty selection and real PHP form-size rejection give an error, preserve the previous image and create no success audit",
+    "a valid upload is persisted and displayed in master preview/master welcome and both pending179/active180 businesses",
+    "actual 6/17/25MiB multipart requests exercise application5MiB, PHP upload16MiB and POST24MiB limits while preserving the saved image and audit",
+    "invalid content, conflicting reset/upload, expired CSRF and owner privilege rejection leave the saved image intact",
+    "a second upload generates a new optimized media URL shown on all welcomes; old media is retained and public landing configuration is untouched",
+    "Chromium1366/390px loads the replaced image and direct editor link/preview without overflow or JavaScript errors",
+    "intentional reset restores the default for all; versions, business activation, sales, shifts and separate public hero image remain unchanged"
+  ],
+  "scope": "published R5 and exact R6 payload, real PHP/MariaDB multipart limits, desktop/mobile Chromium; fictitious data only; production cause not independently observed"
+}

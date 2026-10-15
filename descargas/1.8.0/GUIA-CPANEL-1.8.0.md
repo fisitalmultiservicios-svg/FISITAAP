@@ -1,22 +1,26 @@
-# Instalar FISITAAP 1.8.0-R5 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R6 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
-R5 corrige además el acceso de cuentas con negocio suspendido o sin asociación. Incluye las correcciones anteriores de la portada y La Ventanita. Agrega FISIChat con conversación en la portada y tiendas: diseño adaptable, respuestas, historial de sesión y contacto. En el panel maestro es tu asistente privado para revisar negocios, planes, vencimientos, contactos y actualizaciones, con revisión y confirmación para cambiar el plan o vencimiento de un negocio. El chat se aplica al instalar los archivos, también para negocios pendientes. La elección individual de cuándo activar 1.8.0 se mantiene. Windows y Android conservan sus instaladores 1.8.0.
+R6 comprueba la recepción y el guardado de la imagen de bienvenida: ya no anuncia un guardado si no recibió el archivo. Indica el límite real del servidor y conserva la bienvenida anterior ante un rechazo. Incluye la corrección de R5 para el acceso de cuentas con negocio suspendido o sin asociación y las correcciones anteriores de la portada y La Ventanita. Incluye FISIChat con conversación en la portada y tiendas: diseño adaptable, respuestas, historial de sesión y contacto. En el panel maestro es tu asistente privado para revisar negocios, planes, vencimientos, contactos y actualizaciones, con revisión y confirmación para cambiar el plan o vencimiento de un negocio. El chat se aplica al instalar los archivos, también para negocios pendientes. La elección individual de cuándo activar 1.8.0 se mantiene. Windows y Android conservan sus instaladores 1.8.0.
 
 Hay dos pasos: tú publicas los archivos una vez en cPanel; después cada dueño activa los cambios de su negocio desde **Administración → Actualizar sistema**, cuando pueda. Los negocios pendientes conservan el funcionamiento compatible con 1.7.9. No es necesario cerrar los turnos de todos los clientes para publicar.
 
 ## Si el acceso te devuelve al error500
 
-El error reproducido ocurre al mantener abierta una cuenta de negocio suspendido o sin negocio asociado: owner-login la devuelve a admin y admin fallaba con500. R5 muestra «Tienda fuera de servicio» para una cuenta de negocio suspendido, recupera el formulario y muestra la causa y permite entrar con otra cuenta. No cambia el estado de los negocios ni reasigna cuentas por su cuenta.
+El error reproducido ocurre al mantener abierta una cuenta de negocio suspendido o sin negocio asociado: owner-login la devuelve a admin y admin fallaba con500. R6 muestra «Tienda fuera de servicio» para una cuenta de negocio suspendido, recupera el formulario y muestra la causa y permite entrar con otra cuenta. No cambia el estado de los negocios ni reasigna cuentas por su cuenta.
 
-Después de guardar respaldo y extraer R5 en public_html, abre **https://fisitaap.com/volver-acceso-180.php** desde el navegador bloqueado. Pulsa **Volver al acceso**, ingresa con tu cuenta maestra y continúa con el actualizador indicado abajo. Este botón cierra únicamente la sesión de ese navegador mediante confirmación; no vacía ventas locales ni modifica negocios. Si el otro navegador ya permite entrar como maestro, puedes instalar desde él directamente.
+Después de guardar respaldo y extraer R6 en public_html, abre **https://fisitaap.com/volver-acceso-180.php** desde el navegador bloqueado. Pulsa **Volver al acceso**, ingresa con tu cuenta maestra y continúa con el actualizador indicado abajo. Este botón cierra únicamente la sesión de ese navegador mediante confirmación; no vacía ventas locales ni modifica negocios. Si el otro navegador ya permite entrar como maestro, puedes instalar desde él directamente.
 
 En el panel maestro revisa **Negocios → La Ventanita**: si corresponde que opere, confirma que esté activa. Si falta la asociación de un usuario, revisa su negocio antes de modificarla; no elijas otro negocio para salir del paso. La comprobación **https://fisitaap.com/diagnostico-bienvenida-180.php** identifica por separado un negocio suspendido y una asociación inexistente.
 
 ## Imagen de bienvenida para todos los negocios
 
-La bienvenida configurada por el maestro se muestra al abrir **Inicio → Bienvenida** o **/admin**, también en negocios que aún tienen pendiente activar1.8.0. No se activa su actualización operativa por mostrar la imagen. El maestro puede ver la imagen actual en **Web oficial → Imagen de bienvenida**. Después de cambiarla, vuelve a abrir la bienvenida o recarga la página. La imagen que ya guardaste se conserva.
+La bienvenida configurada por el maestro se muestra al abrir **Inicio → Bienvenida** o **/admin**, también en negocios que aún tienen pendiente activar 1.8.0. No se activa su actualización operativa por mostrar la imagen. El maestro puede ver la imagen actual en **Web oficial → Imagen de bienvenida**. Después de cambiarla, vuelve a abrir la bienvenida o recarga la página. La imagen que ya guardaste se conserva.
+
+Para cambiar esta pantalla, entra como maestro a **https://fisitaap.com/master/bienvenida**. También puedes usar **Cambiar imagen de bienvenida** desde el inicio del maestro. Elige un JPG, PNG o WebP dentro del tamaño que indica el formulario, deja desmarcada **Usar publicidad predeterminada**, pulsa **Guardar bienvenida** y comprueba **Imagen actual**. Después abre **Ver bienvenida publicada**. La imagen de **Diseño y página** pertenece a la portada pública y se configura por separado.
+
+Si no se recibe el archivo, se supera el límite o la imagen no es válida, R6 explica el motivo y no confirma un guardado. Si no había una imagen personalizada, el editor lo indica. **Usar publicidad predeterminada** restaura intencionalmente el diseño original; no la marques al subir tu imagen.
 
 ## A. Guardar respaldo
 
@@ -27,8 +31,8 @@ La bienvenida configurada por el maestro se muestra al abrir **Inicio → Bienve
 
 ## B. Publicar los archivos en cPanel
 
-5. Descarga **FISITAAP-1.8.0-CPANEL-R5.zip** de GitHub. El nombre FISITAAP-1.8.0-CPANEL.zip también contiene R5. Usa R5 para esta corrección, aunque ya hayas instalado R1, R2, R3 o R4.
-6. En **public_html**, pulsa **Cargar** y sube R5. Selecciona el ZIP → **Extraer**. Debe aparecer **public_html/actualizador-180/index.php**. Permite reemplazar los archivos anteriores de actualizador-180; conserva cualquier carpeta de respaldo que ya exista dentro.
+5. Descarga **FISITAAP-1.8.0-CPANEL-R6.zip** de GitHub. El nombre FISITAAP-1.8.0-CPANEL.zip también contiene R6. Usa R6 para esta corrección, aunque ya hayas instalado R1, R2, R3, R4 o R5.
+6. En **public_html**, pulsa **Cargar** y sube R6. Selecciona el ZIP → **Extraer**. Debe aparecer **public_html/actualizador-180/index.php**. Permite reemplazar los archivos anteriores de actualizador-180; conserva cualquier carpeta de respaldo que ya exista dentro.
 7. No muevas payload ni copies su contenido manualmente sobre el sitio. El actualizador comprueba los archivos y decide dónde instalarlos.
 8. Revisa **PHP 8.2 o 8.3**, PDO MySQL, mbstring, SimpleXML/XML, cURL y GD. GD con WebP permite optimizar imágenes. El ZIP contiene archivos **644** y carpetas **755**. Si cPanel conserva permisos viejos, corrige únicamente los del actualizador a esos valores; nunca uses 777.
 9. Abre **https://fisitaap.com/owner-login** e ingresa como **maestro**.
@@ -38,16 +42,16 @@ La bienvenida configurada por el maestro se muestra al abrir **Inicio → Bienve
 13. Si aparece **distinto**, se detectó un archivo modificado fuera de los paquetes conocidos. Guarda el respaldo y los nombres que señala; no fuerces la copia. Si falla la preparación de la base, conserva los archivos instalados y el respaldo, revisa el registro con soporte y repite después de corregir la causa. Repetir una instalación correcta no duplica datos ni activa negocios pendientes.
 14. En el panel maestro, **Administración → Actualizar sistema**, puedes ver los negocios actualizados y pendientes. También abre **https://fisitaap.com/master/actualizar-sistema**. **Comprobar publicación** revisa la preparación; no activa clientes. Para ayudar a uno, selecciona únicamente ese negocio y confirma su preparación.
 
-La aplicación nueva se instala en **public_html/releases/1.8.0-r5**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
+La aplicación nueva se instala en **public_html/releases/1.8.0-r6**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
 
-Si el negocio ya tenía 1.8.0 activada antes de R5, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
+Si el negocio ya tenía 1.8.0 activada antes de R6, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
 
 ## C. Lo que hará cada dueño cuando pueda actualizar
 
 15. El dueño entra a su panel → **Administración → Actualizar sistema**. Mientras esté pendiente puede seguir trabajando y volver después.
 16. En **cada caja de su negocio**, pulsa **Sincronizar** y confirma que quedan **cero ventas pendientes**. Hazlo también en las sucursales. El servidor no puede comprobar una cola que siga guardada en un equipo sin conexión: el dueño confirma esa parte.
 17. Cobra o cancela las cuentas abiertas y cierra los turnos de **ese negocio**. Un turno es la sesión de trabajo del cajero con su fondo y ventas; cerrarlo guarda su arqueo. No significa eliminar ventas ni borrar usuarios. Los demás negocios pueden mantener sus turnos abiertos.
-18. Actualiza sus Windows a **FISITAAP-Escritorio-1.8.0-Windows-x64.exe**, con FISITAAP cerrado, sobre la instalación anterior. No desinstales ni borres sus datos locales. Requiere Windows 10 o posterior de 64 bits. Si ya tienen 1.8.0 no necesitan reinstalarla por R5.
+18. Actualiza sus Windows a **FISITAAP-Escritorio-1.8.0-Windows-x64.exe**, con FISITAAP cerrado, sobre la instalación anterior. No desinstales ni borres sus datos locales. Requiere Windows 10 o posterior de 64 bits. Si ya tienen 1.8.0 no necesitan reinstalarla por R6.
 19. Para un Android nuevo instala **FISITAAP-Android-1.8.0.apk**; requiere Android 8 o posterior. Autoriza instalar desde ese navegador cuando Android lo solicite. Si ya tiene nuestra versión 1.8.0 puede conservarla. Guarda el APK y el respaldo privado de su firma; la clave privada nunca va en cPanel ni GitHub.
 20. Durante esta preparación, las cajas **de ese negocio** deben dejar de vender. Con todas sincronizadas, turnos cerrados y aplicaciones actualizadas, marca la confirmación y pulsa **Actualizar sistema**.
 21. Espera **Actualización 1.8.0 activada para este negocio**. La configuración se convierte dentro de una transacción y solo se marca actualizada al terminar. El servidor vuelve a revisar turnos y cuentas; si queda alguno, lo indicará sin cerrar ni borrar nada por su cuenta.
@@ -72,7 +76,7 @@ El botón prepara y activa el negocio en la web. Los instaladores de Windows/And
 32. Confirma que una caja secundaria necesita conexión y que compras, cuentas, mesas, reportes y permisos funcionan según lo que use el negocio.
 33. Si un navegador conserva un diseño anterior, recarga con **Ctrl+F5**. Los archivos nuevos se sirven desde una carpeta de versión propia.
 34. Descarga y conserva **actualizador-180/backups** fuera del sitio. Cuando lo hayas comprobado, elimina **solo** el ZIP subido, la carpeta **actualizador-180**, **volver-acceso-180.php** y **diagnostico-bienvenida-180.php**. Los dueños podrán seguir actualizando después desde Administración.
-35. **No borres releases ni releases/1.8.0-r5**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
+35. **No borres releases ni releases/1.8.0-r6**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
 
 ## F. Comprobar FISIChat
 
@@ -92,4 +96,4 @@ Después de publicar, la restauración de archivos antiguos se bloquea, incluso 
 
 ## Alcance de las pruebas
 
-Esta revisión reprodujo en R4 el bloqueo de acceso y la imagen ignorada por negocios pendientes. Verificó la corrección en R5 con PHP/MariaDB, cargas reales de imágenes, navegador móvil, permisos del ZIP, instalación sobre R4 y conservación de datos. La evidencia anterior del chat, conexión de IA simulada, venta compatible, sincronización y activación individual se conserva en el informe. Windows y Android conservan los instaladores 1.8.0 ya construidos; R5 cambia la web y el proceso de actualización. La entrega no instala nada en tu cPanel. Deben comprobarse allí la velocidad del hosting, HTTPS y la impresión/gaveta con equipos físicos.
+Esta revisión reprodujo en R5 la confirmación falsa al no recibir una imagen o rechazar PHP la carga. Verificó R6 con PHP/MariaDB, cargas y rechazos reales por tamaño, imágenes sucesivas, vista de escritorio/móvil, permisos del ZIP, instalación sobre R5 y conservación de datos. Los límites de PHP usados en el laboratorio no se presentan como los de tu hosting. La evidencia de R5 y revisiones anteriores se conserva en el informe. Windows y Android conservan los instaladores 1.8.0 ya construidos; R6 cambia la web y el paquete de actualización. La entrega no instala nada en tu cPanel. Deben comprobarse allí la velocidad del hosting, HTTPS y la impresión/gaveta con equipos físicos.

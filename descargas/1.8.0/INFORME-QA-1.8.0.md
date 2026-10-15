@@ -1,4 +1,17 @@
-# Informe QA · FISITAAP 1.8.0-R5
+# Informe QA · FISITAAP 1.8.0-R6
+
+## Carga de bienvenida y confirmación de guardado · R6
+
+El usuario confirmó que usa Web oficial → Imagen de bienvenida y recibe «Bienvenida guardada», pero permanece el diseño predeterminado. Se reprodujo en el R5 publicado que una petición sin archivo y una carga multipart rechazada realmente por PHP reciben esa confirmación sin cambiar la imagen. upload_image devuelve null si no hay tmp_name antes de examinar el error; el editor anterior anunciaba éxito y registraba auditoría incluso así. El tamaño concreto y el rechazo de la carga productiva no fueron observados directamente: la prueba identifica una causa posible reproducida, sin atribuir al hosting los límites del laboratorio.
+
+R6 valida los errores de carga dentro del editor de bienvenida, sin modificar el helper general usado por otros formularios. Distingue selección vacía, tamaño rechazado, recepción incompleta, formato inválido y conflicto entre subir/restaurar la predeterminada. Al exceder post_max_size PHP descarta campos y archivos: esa petición se rechaza sin escribir configuración, en lugar de anunciar guardado o presentar una falsa sesión vencida. Las cargas normales siguen exigiendo CSRF y cuenta maestra vigente. El formulario muestra el máximo efectivo (aplicación/PHP y margen multipart), la imagen actual o la ausencia de imagen personalizada. Los cambios se comprueban en base y se guardan junto a su auditoría en una transacción. Los rechazos no crean una auditoría de éxito. El inicio del maestro enlaza al editor y este a la bienvenida publicada; la imagen de la portada pública conserva su configuración independiente.
+
+- QA-CARGA-BIENVENIDA-R6.json: ocho grupos contra R5 publicado y payload R6. Cargas multipart válidas y rechazadas, solicitudes reales de 6/17/25 MiB (límites de aplicación/PHP/POST), conservación de imagen/auditoría, dos imágenes optimizadas con URLs diferentes, maestros y negocios179/180, permisos/CSRF, restablecimiento intencional y Chromium1366/390px con imagen realmente cargada y sin desbordamiento.
+- QA-ACTUALIZADOR-R6.json: siete grupos de instalación sobre R5 publicado, con negocios180/179 y turno abierto; conserva datos, configuración, imágenes y código anterior; verifica115 hashes, rechazo de modificaciones desconocidas, repetición sin duplicados y restauración bloqueada tras publicar.
+- QA-PERMISOS-ZIP-R6.json: dos extracciones reales sobre R5 y en carpeta nueva con umask077/ApacheUID33, sin reparar permisos después de extraer.
+- QA-SINTAXIS-R6.json: los73 PHP del ZIP pasan sintaxis con PHP8.3.
+
+Solo datos ficticios. Ventas, turnos, activaciones, versión operativa por negocio y configuración de portada se conservaron. R6 no cambia código nativo ni proveedor de IA: no se presentan como repetidas las pruebas históricas de esos componentes. No se accedió al cPanel ni se instaló el paquete en producción. Si un intento anterior no llegó a guardar una imagen, debe elegirse de nuevo después de instalar; no se inventa ni recupera un archivo que no fue recibido.
 
 ## Acceso y bienvenida compartida · R5
 
@@ -39,7 +52,7 @@ Pruebas específicas de R4 en PHP/MariaDB y Chromium, siempre con registros fict
 - **QA-SINTAXIS-R4.json:** los 71 archivos PHP del paquete pasan sintaxis con PHP8.3 y el JavaScript nuevo pasa `node --check`.
 - **QA-PUBLICO-R4.json:** regresión del ZIP exacto en portada y La Ventanita, nueve anchos, títulos/botones, diseño/logo, catálogo, negocio pendiente y tema administrativo.
 
-R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. El manifest de R4 enumeraba 115 archivos funcionales en releases/1.8.0-r4; MANIFEST-ARCHIVOS.json corresponde ahora a los 115 archivos de R5.
+R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. El manifest de R4 enumeraba 115 archivos funcionales en releases/1.8.0-r4; MANIFEST-ARCHIVOS.json corresponde ahora a los 115 archivos de R6.
 
 ## Corrección visual · R3 · 14 de octubre de 2026
 

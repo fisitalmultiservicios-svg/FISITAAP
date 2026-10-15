@@ -14,14 +14,63 @@ function qa180_groups(array $user,?array $tenant):array {
 
 function qa180_welcome(App $app,array $user,?array $tenant):void {
     admin_shell_start('Bienvenida',$user,$tenant,'dashboard');$image=(string)r2_setting($app,0,'welcome_image180');
+    if($user['role']==='master')echo '<p><a class="btn btn-light" href="'.e(url('master/bienvenida')).'">Cambiar imagen de bienvenida</a></p>';
     echo '<section class="qa180-welcome" aria-label="Bienvenida a FISITAAP">';
     if($image)echo '<img src="'.e(public_media_url($image)).'" alt="Bienvenido a FISITAAP">';
     else echo '<div class="qa180-welcome-ad"><img src="'.e(url('assets/fisitapp-logo.webp')).'" alt="FISITAAP"><h1>Tu negocio, al día.</h1><p>Vende, atiende y organiza desde un solo lugar.</p><span>Web · Windows · Android</span></div>';
     echo '</section>';admin_shell_end();
 }
+function qa180_welcome_upload_limit():int {
+    $limits=[5*1024*1024];
+    $upload=ini_parse_quantity((string)ini_get('upload_max_filesize'));
+    $post=ini_parse_quantity((string)ini_get('post_max_size'));
+    if($upload>0)$limits[]=$upload;
+    if($post>0)$limits[]=max(1,$post-65536); // Leave room for multipart fields.
+    return min($limits);
+}
+function qa180_welcome_uploaded_image():string {
+    $file=$_FILES['image']??null;
+    if(!is_array($file)||is_array($file['error']??null)||!isset($file['error']))throw new DomainException('Elige una imagen antes de guardar. No se cambió tu bienvenida.');
+    $error=(int)$file['error'];
+    if(in_array($error,[UPLOAD_ERR_INI_SIZE,UPLOAD_ERR_FORM_SIZE],true))throw new DomainException('El servidor rechazó la imagen por su tamaño. Elige una de hasta '.number_format(qa180_welcome_upload_limit()/1048576,1,',','').' MB. No se cambió tu bienvenida.');
+    if($error===UPLOAD_ERR_NO_FILE)throw new DomainException('Elige una imagen antes de guardar. No se cambió tu bienvenida.');
+    if($error!==UPLOAD_ERR_OK)throw new DomainException('No se recibió la imagen completa. Intenta cargarla de nuevo. No se cambió tu bienvenida.');
+    if(!is_string($file['tmp_name']??null)||$file['tmp_name']===''||!is_file($file['tmp_name']))throw new DomainException('No se recibió la imagen. Intenta cargarla de nuevo. No se cambió tu bienvenida.');
+    if((int)($file['size']??0)>qa180_welcome_upload_limit())throw new DomainException('La imagen supera el tamaño permitido. No se cambió tu bienvenida.');
+    try{$image=upload_image('image');}catch(RuntimeException $error){throw new DomainException($error->getMessage().' No se cambió tu bienvenida.');}
+    if(!$image)throw new DomainException('No se recibió la imagen. Intenta cargarla de nuevo. No se cambió tu bienvenida.');
+    return $image;
+}
 function qa180_welcome_editor(App $app,array $user):void {
-    if(is_post()){verify_csrf();try{if(!empty($_POST['clear']))r2_set($app,0,'welcome_image180','');elseif($image=upload_image('image'))r2_set($app,0,'welcome_image180',$image);audit($app,null,(int)$user['id'],'welcome_image','configuration',null);flash('success','Bienvenida guardada.');}catch(Throwable $error){flash('error',$error->getMessage());}redirect(url('master/bienvenida'));}
-    admin_shell_start('Imagen de bienvenida',$user,null,'contenido');$current=r2_setting($app,0,'welcome_image180');if($current!=='')echo '<section class="card admin-card"><h2>Imagen actual</h2><img src="'.e(public_media_url($current)).'" alt="Imagen de bienvenida actual" style="display:block;width:100%;max-height:280px;object-fit:contain"></section>';echo '<section class="card admin-card"><p>Todos los negocios ven esta imagen al abrir su bienvenida, incluso si tienen pendiente activar 1.8.0. Los números y gráficos están en KPIs. Usa una imagen horizontal; se adapta al espacio sin recortarse.</p><form method="post" enctype="multipart/form-data">'.csrf_field().'<label>Imagen<input class="input" type="file" name="image" accept="image/jpeg,image/png,image/webp"></label><label><input type="checkbox" name="clear"> Usar publicidad predeterminada de FISITAAP</label><button class="btn">Guardar bienvenida</button></form></section>';admin_shell_end();
+    if(is_post()){
+        $postLimit=ini_parse_quantity((string)ini_get('post_max_size'));
+        if($postLimit>0&&(int)($_SERVER['CONTENT_LENGTH']??0)>$postLimit){
+            // PHP discards both POST and FILES when its request limit is exceeded.
+            // Reject it without writing settings; there is no CSRF token to read.
+            flash('error','La carga supera el límite del servidor. Elige una imagen más pequeña. No se cambió tu bienvenida.');redirect(url('master/bienvenida'));
+        }
+        verify_csrf();
+        try{
+            $clear=!empty($_POST['clear']);$file=$_FILES['image']??null;
+            if($clear&&is_array($file)&&(int)($file['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_NO_FILE)throw new DomainException('Para subir una imagen, desmarca «Usar publicidad predeterminada». No se cambió tu bienvenida.');
+            $image=$clear?'':qa180_welcome_uploaded_image();
+            $app->db->beginTransaction();
+            r2_set($app,0,'welcome_image180',$image);
+            $saved=$app->one('SELECT value FROM fisitaap_r2_settings WHERE tenant_id=0 AND setting_key=?',['welcome_image180']);
+            if(!$saved||(string)$saved['value']!==$image)throw new RuntimeException('Welcome image was not persisted');
+            audit($app,null,(int)$user['id'],'welcome_image','configuration',null);
+            $app->db->commit();
+            flash('success',$clear?'Se restauró la bienvenida predeterminada.':'Bienvenida guardada. La imagen se mostrará en todos los negocios al abrir su bienvenida.');
+        }catch(DomainException $error){if($app->db->inTransaction())$app->db->rollBack();flash('error',$error->getMessage());}
+        catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();error_log('FISITAAP welcome image: '.get_class($error));flash('error','No se pudo guardar la bienvenida. Intenta de nuevo o revisa la configuración con soporte.');}
+        redirect(url('master/bienvenida'));
+    }
+    admin_shell_start('Imagen de bienvenida',$user,null,'contenido');
+    echo '<p><a class="btn btn-light" href="'.e(url('master')).'">Ver bienvenida publicada</a></p>';
+    $current=r2_setting($app,0,'welcome_image180');
+    if($current!=='')echo '<section class="card admin-card"><h2>Imagen actual</h2><img src="'.e(public_media_url($current)).'" alt="Imagen de bienvenida actual" style="display:block;width:100%;max-height:280px;object-fit:contain"></section>';
+    else echo '<section class="card admin-card"><p>Actualmente se muestra la bienvenida predeterminada. Aún no hay una imagen personalizada guardada para esta pantalla.</p></section>';
+    echo '<section class="card admin-card"><p>Esta imagen se muestra dentro del panel de todos los negocios, incluso si tienen pendiente activar 1.8.0. La imagen de la portada pública se configura por separado en Diseño y página.</p><p>Usa una imagen horizontal JPG, PNG o WebP de hasta '.number_format(qa180_welcome_upload_limit()/1048576,1,',','').' MB. Se optimiza al guardarla y se muestra sin recortarse.</p><form method="post" enctype="multipart/form-data">'.csrf_field().'<input type="hidden" name="MAX_FILE_SIZE" value="'.qa180_welcome_upload_limit().'"><label>Imagen<input class="input" type="file" name="image" accept="image/jpeg,image/png,image/webp"></label><label><input type="checkbox" name="clear"> Usar publicidad predeterminada de FISITAAP</label><button class="btn">Guardar bienvenida</button></form></section>';admin_shell_end();
 }
 function qa180_contacts(App $app,array $user,?array $tenant):void {
     $prefix=$tenant?'admin':'master';$scope=$tenant?'tenant_id=?':'tenant_id IS NULL';$args=$tenant?[$tenant['id']]:[];$selected=(int)($_GET['id']??$_POST['id']??0);

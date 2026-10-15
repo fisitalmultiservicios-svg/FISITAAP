@@ -1,0 +1,6 @@
+{
+  "packaged_php_files": 73,
+  "php": "8.3",
+  "passed": true,
+  "scope": "complete R6 updater/payload and standalone helpers; no native code changes"
+}
