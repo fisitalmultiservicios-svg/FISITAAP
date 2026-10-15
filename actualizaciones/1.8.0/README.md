@@ -46,3 +46,7 @@ Para R4: `python qa/setup180.py` inicia servicios y actualiza la copia ficticia 
 La evidencia anterior de 24 suites, motor local y Android corresponde a R2 y los instaladores1.8.0 que no cambian en R4. `python qa/gold180.py` reinicia solo la base ficticia y ejecuta las suites base. Los guiones históricos tienen rutas/paquetes fijos; sus ZIP y JSON se conservan. Ninguno de estos guiones se usa contra producción cambiando una URL.
 
 El APK de actualización necesita conservar la misma clave privada. `qa/build_android180.py` exige restaurarla si falta; crear otra requiere una primera instalación expresamente autorizada. La configuración del entorno cloud queda guardada como borrador para revisión/publicación en Codex.
+
+## Comprobar un error500 en la bienvenida
+
+[Descargar comprobación de bienvenida D1](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-180-COMPROBAR-BIENVENIDA-D1.zip). Extrae en /home/fisitaap/public_html y abre https://fisitaap.com/diagnostico-bienvenida-180.php con la cuenta dueña afectada o la maestra. Comparte una captura del resultado. Solo realiza comprobaciones protegidas y de lectura; no sustituye la aplicación ni identifica por sí solo la causa del hosting. Elimina el PHP al terminar la revisión.

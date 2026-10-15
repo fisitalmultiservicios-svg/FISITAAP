@@ -1,0 +1,11 @@
+{
+  "passed": 5,
+  "checks": [
+    "fresh master/owner authorization, anonymous403, POST405, published-R4 detection and successful welcome/render checks; entire fixture data digest unchanged",
+    "forced password and revoked owner role immediately deny diagnostic details",
+    "a reproducible synthetic admin500 is caught with file/line, secrets redacted, absolute root hidden, default panel tested independently; all DB data unchanged",
+    "fatal shutdown produces an authenticated readable report and rolls back the read-only transaction",
+    "MariaDB READ ONLY rejects even an injected write; no business data changes"
+  ],
+  "scope": "published R4 in isolated PHP8.3/MariaDB; fictitious accounts/data and explicitly synthetic500/fatal/write attempts; not the live hosting cause"
+}
