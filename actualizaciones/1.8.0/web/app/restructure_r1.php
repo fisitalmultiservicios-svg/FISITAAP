@@ -148,7 +148,7 @@ function restructure_guard_r1(App $app, string $path): void
         if (str_starts_with($path, 'api/')) json_response(['ok'=>false,'error'=>'Cambia primero tu contraseña temporal.','redirect'=>url('change-password')],403);
         redirect(url('change-password'));
     }
-    if(function_exists('qa180_active')&&qa180_active($app)&&in_array($path,['admin','admin/bienvenida'],true))return;
+    if(function_exists('qa180_active')&&qa180_active($app,0)&&in_array($path,['admin','admin/bienvenida'],true))return;
     if ($path !== 'admin' && !str_starts_with($path, 'admin/') && !in_array($path, ['api/pos-options','api/fisichat'], true)) return;
     if (in_array($user['role'], ['master','tenant_admin','customer','driver'], true)) return;
     if ($path === 'api/fisichat') {

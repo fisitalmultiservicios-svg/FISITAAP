@@ -1,8 +1,12 @@
-# FISITAAP 1.8.0-R4 · QA y actualización por negocio
+# FISITAAP 1.8.0-R5 · QA y actualización por negocio
 
 Entrega para actualizar la instalación existente de cPanel y sus aplicaciones Windows/Android. El código web funcional está en `web/`; `updater/` contiene el instalador que verifica los archivos antes de copiarlos. Las versiones anteriores permanecen disponibles como referencia.
 
-Descargas de la entrega: [ZIP cPanel R4](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R4.zip), [Windows x64](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.0-Windows-x64.exe), [Android 8+](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk). Sigue la [guía de cPanel](GUIA-CPANEL.md) antes de instalar.
+Descargas de la entrega: [ZIP cPanel R5](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R5.zip), [Windows x64](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.0-Windows-x64.exe), [Android 8+](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk). Sigue la [guía de cPanel](GUIA-CPANEL.md) antes de instalar.
+
+R5 corrige el ciclo owner-login → admin500 de una sesión con negocio suspendido o sin asociación. El acceso comprueba el estado real, devuelve un formulario usable y muestra «Tienda fuera de servicio» cuando corresponde. No activa negocios, cambia roles ni reasigna cuentas automáticamente. La imagen de bienvenida compartida deja de depender de la activación operativa del negocio: la guardada por el maestro se muestra también a los pendientes en 1.7.9, con sus estilos, y el editor incluye vista previa. La visualización no convierte datos ni modifica sus versiones.
+
+El ZIP actual instala 115 archivos en releases/1.8.0-r5 y conserva los anteriores. Incluye volver-acceso-180.php (salida de la sesión actual con POST/CSRF, compatible con R4 antes de instalar) y diagnóstico D2, que distingue suspensión/asociación inexistente. Son herramientas temporales y deben retirarse tras su uso. Pruebas nuevas: qa/access180.py, qa/welcome_r5.py, qa/welcome_diagnostic_d2.py, qa/archive_permissions_r5.py y qa/updater_access180.py. Las secciones R4 siguientes documentan la funcionalidad y evidencia anteriores.
 
 R4 incorpora FISIChat de conversación en la portada y tiendas, con una interfaz adaptable al móvil y al escritorio, historial separado en la sesión, estado de respuesta, reinicio y contacto. La portada ayuda a vender FISITAAP y dar soporte; cada tienda atiende sobre su catálogo público y únicamente los pedidos propios del cliente autenticado. El panel maestro tiene un asistente privado que consulta negocios, planes, vencimientos, contactos y activaciones reales. Los cambios de plan/vencimiento requieren propuesta, revisión y confirmación; quedan registrados y no alteran activación, módulos, cobros o turnos.
 
@@ -12,7 +16,7 @@ Las correcciones R3 de la portada, estilos de La Ventanita y ejemplo de stock pe
 
 La actualización por negocio incorporada en R2 permite publicar sin cerrar los turnos de todos los negocios. El dueño encuentra **Administración → Actualizar sistema**, prepara solo sus cajas y activa su negocio cuando pueda. Los pendientes conservan comportamiento y API 1.7.9; los ya activados reciben 1.8.0. La preparación compartida agrega tablas/campos/índices y la conversión de cada negocio se completa en una transacción. El maestro puede consultar estados y ayudar a un negocio seleccionado.
 
-El ZIP instala 115 archivos funcionales en `releases/1.8.0-r4` y cambia el index.php de entrada al terminar de copiar. Conserva app/assets anteriores, config.php y uploads. La aplicación utiliza la carpeta releases; no debe borrarse. La carpeta actualizador-180 puede retirarse después de descargar su respaldo; el botón de los dueños continúa funcionando. Windows/APK mantienen los instaladores 1.8.0 existentes.
+El ZIP instala 115 archivos funcionales en `releases/1.8.0-r5` y cambia el index.php de entrada al terminar de copiar. Conserva app/assets anteriores, config.php y uploads. La aplicación utiliza la carpeta releases; no debe borrarse. La carpeta actualizador-180 puede retirarse después de descargar su respaldo; el botón de los dueños continúa funcionando. Windows/APK mantienen los instaladores 1.8.0 existentes.
 
 Se mantienen archivos 644 y carpetas 755 explícitas en el ZIP. QA-PERMISOS-ZIP-R4.json verifica extracción sobre R3 y carpeta nueva con umask077 y Apache UID33, sin reparar permisos. QA-ACTUALIZADOR-R4.json prueba el paquete sobre el R3 publicado con negocios180/179 y un turno abierto; comprueba datos, permisos, entrada versionada y rechazo de código anterior desconocido. Los ZIP y JSON R1/R2/R3 permanecen como evidencia histórica.
 
@@ -48,5 +52,7 @@ La evidencia anterior de 24 suites, motor local y Android corresponde a R2 y los
 El APK de actualización necesita conservar la misma clave privada. `qa/build_android180.py` exige restaurarla si falta; crear otra requiere una primera instalación expresamente autorizada. La configuración del entorno cloud queda guardada como borrador para revisión/publicación en Codex.
 
 ## Comprobar un error500 en la bienvenida
+
+R5 ya incluye el diagnóstico D2 actualizado en la raíz del ZIP. Usa esa versión cuando instales R5; D1 se conserva como archivo histórico.
 
 [Descargar comprobación de bienvenida D1](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-180-COMPROBAR-BIENVENIDA-D1.zip). Extrae en /home/fisitaap/public_html y abre https://fisitaap.com/diagnostico-bienvenida-180.php con la cuenta dueña afectada o la maestra. Comparte una captura del resultado. Solo realiza comprobaciones protegidas y de lectura; no sustituye la aplicación ni identifica por sí solo la causa del hosting. Elimina el PHP al terminar la revisión.

@@ -41,18 +41,21 @@ function qa180_activate(App $app):void { qa180_updates_page($app,true); }
 function qa180_dispatch(App $app,string $path):void {
     if(in_array($path,['master/actualizar-180','master/actualizar-sistema'],true)){qa180_updates_page($app,true);exit;}
     if($path==='admin/actualizar-sistema'){qa180_updates_page($app,false);exit;}
+    // Shared welcome is a platform view, independent of each tenant's activation.
+    if(qa180_active($app,0)){
+        if($path==='master'){qa180_welcome($app,require_login(['master']),null);exit;}
+        if($path==='master/bienvenida'){qa180_welcome_editor($app,require_login(['master']));exit;}
+        if(in_array($path,['admin','admin/bienvenida'],true)){if((current_user()['role']??'')==='master')redirect(url('master'));$user=require_login(['tenant_admin','manager','editor','cashier','kitchen']);$tenant=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$user['tenant_id']]);if(!$tenant)reject_business_login180('Tienda fuera de servicio. La cuenta maestra debe revisar la asociación y el estado del negocio.');qa180_welcome($app,$user,$tenant);exit;}
+    }
     if(!qa180_active($app))return;
     if(preg_match('~(?:^|/)blog(?:/|$)|^(?:admin|master)/posts(?:/|$)~',$path)){http_response_code(404);simple_error('Página no disponible','Vuelve al catálogo o al inicio.');exit;}
     if($path==='logout'){
         if(!is_post())redirect(url('owner-login'));verify_csrf();$user=current_user();if($user)audit($app,$user['tenant_id']?(int)$user['tenant_id']:null,(int)$user['id'],'logout','user',(int)$user['id']);$_SESSION=[];session_regenerate_id(true);redirect(url('owner-login'));
     }
-    if($path==='master'){qa180_welcome($app,require_login(['master']),null);exit;}
-    if($path==='master/bienvenida'){qa180_welcome_editor($app,require_login(['master']));exit;}
     if($path==='master/kpis'){master_dashboard($app,require_login(['master']));exit;}
     if($path==='master/contactos'){qa180_contacts($app,require_login(['master']),null);exit;}
     if($path==='master/auditoria'){qa180_log($app,require_login(['master']),null);exit;}
     if($path==='master/escritorio'){qa180_devices($app,require_login(['master']),null);exit;}
-    if(in_array($path,['admin','admin/bienvenida'],true)){$user=require_login(['tenant_admin','manager','editor','cashier','kitchen']);$tenant=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$user['tenant_id']]);if(!$tenant)throw new DomainException('Negocio no disponible.');qa180_welcome($app,$user,$tenant);exit;}
     if($path==='api/native/bind'&&is_post())qa180_bind($app);
     if($path==='api/gift-preview'&&is_post())qa180_gift_preview($app);
     if($path==='api/native/print-test'&&is_post())qa180_print_test($app);

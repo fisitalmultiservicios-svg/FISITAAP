@@ -1,0 +1,12 @@
+{
+  "passed": 6,
+  "checks": [
+    "published R4 reproduces admin500 with a suspended store and owner-login redirects the retained session back to it",
+    "the bundled recovery file works before installation on old R4, explicitly closes the stuck session and restores the login form without reactivating the store",
+    "R5 returns an existing suspended-store session to the usable login; valid credentials are rejected humanly without reactivating the store or leaving an authenticated session",
+    "master login remains available, master at /admin is redirected to /master, recovery GET/badCSRF preserves session and explicit valid POST closes only that browser session",
+    "a retained session and a new login with missing store association both return a clear usable form; no automatic reassignment or privilege escalation",
+    "valid owner/manager/cashier/customer flows still work and sales, orders and shifts remain unchanged"
+  ],
+  "scope": "exact published R4 baseline and R5 payload, real PHP/MariaDB HTTP; isolated fictitious data, no live hosting or automatic business activation"
+}

@@ -29,7 +29,7 @@ function fwd_finish(int $status=200):never{
     header('Content-Type: text/html; charset=utf-8');header('Cache-Control: private, no-store, max-age=0');header('Pragma: no-cache');
     header('X-Content-Type-Options: nosniff');header('X-Frame-Options: DENY');header('Referrer-Policy: no-referrer');
     header("Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'");
-    echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comprobar bienvenida · FISITAAP</title><style>body{font:16px/1.5 system-ui;margin:0;padding:20px;background:#f3f6f8;color:#193647}main{max-width:850px;margin:auto;background:#fff;border:1px solid #dbe3e9;padding:24px}section{padding:14px 0;border-bottom:1px solid #e0e7eb}h2{font-size:17px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f6f8;padding:12px;font-size:13px}.error{color:#a42e20}.ok{color:#176534}a{color:#155f91}</style></head><body><main><h1>Comprobar bienvenida</h1><p>Identificador: <strong>FISITAAP-BIENVENIDA-180-D1</strong></p>';
+    echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comprobar bienvenida · FISITAAP</title><style>body{font:16px/1.5 system-ui;margin:0;padding:20px;background:#f3f6f8;color:#193647}main{max-width:850px;margin:auto;background:#fff;border:1px solid #dbe3e9;padding:24px}section{padding:14px 0;border-bottom:1px solid #e0e7eb}h2{font-size:17px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f6f8;padding:12px;font-size:13px}.error{color:#a42e20}.ok{color:#176534}a{color:#155f91}</style></head><body><main><h1>Comprobar bienvenida</h1><p>Identificador: <strong>FISITAAP-BIENVENIDA-180-D2</strong></p>';
     if(!$fwdAuthorized){echo '<p>Ingresa con tu cuenta maestra o de dueño en <a href="owner-login">Acceso negocios</a> y vuelve a abrir esta dirección. Si el acceso también falla, revisa el archivo error_log de public_html.</p></main></body></html>';exit;}
     echo '<p>Solo comprobación: transacción de lectura, sin guardar cambios en la base ni en los archivos. No se muestra la imagen ni se llama al servicio de IA.</p><p>PHP: '.fwd_escape(PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION).' · Código activo: '.fwd_escape($fwdCodeLabel??'no identificado').'</p>';
     foreach($fwdChecks as $row)echo '<section><h2 class="'.($row['ok']?'ok':'error').'">'.($row['ok']?'✓ ':'Error · ').fwd_escape($row['label']).'</h2><pre>'.fwd_escape($row['detail']).'</pre></section>';
@@ -77,7 +77,11 @@ try{
     $target=$user['role']==='master'?'master':'admin';$_SERVER['REQUEST_URI']='/'.$target;$_GET=[];$_POST=[];
     if(!fwd_check('Contexto de la cuenta y negocio',static function()use($app,$target,$user,&$tenant):string{
         qa180_request_context($app,$target);$tenant=null;
-        if($user['role']!=='master'){$tenant=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$user['tenant_id']]);if(!$tenant)throw new DomainException('El negocio asociado no existe o no está activo.');}
+        if($user['role']!=='master'){
+            $id=(int)($user['tenant_id']??0);$tenant=$id?$app->one('SELECT * FROM tenants WHERE id=?',[$id]):null;
+            if(!$tenant)throw new DomainException('La cuenta dueña apunta al negocio #'.$id.', pero ese negocio no existe. La cuenta maestra debe revisar la asociación del usuario.');
+            if(!$tenant['is_active'])throw new DomainException('El negocio #'.$id.' ('.$tenant['name'].') está suspendido. La cuenta maestra debe revisar su estado.');
+        }
         return 'Perfil: '.($target==='master'?'Maestro':'Dueño de negocio').'. Versión 1.8.0: '.(qa180_active($app)?'activa':'pendiente').'.';
     }))fwd_finish();
     fwd_check('Leer la imagen de bienvenida',static function()use($app):string{

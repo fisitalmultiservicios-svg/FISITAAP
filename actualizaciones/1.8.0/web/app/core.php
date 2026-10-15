@@ -155,6 +155,24 @@ function verify_csrf(): void
     }
 }
 function current_user(): ?array { return $_SESSION['user'] ?? null; }
+function business_login_problem180(App $app,array $user):?string {
+    if(!in_array($user['role']??'',['tenant_admin','manager','editor','kitchen','cashier'],true))return null;
+    $id=(int)($user['tenant_id']??0);
+    $tenant=$id?$app->cached('login-business180:'.$id,static fn()=>$app->one('SELECT id,is_active FROM tenants WHERE id=?',[$id])):null;
+    if(!$tenant)return 'Esta cuenta no tiene un negocio válido asignado. Solicita a la cuenta maestra que revise su asociación. Puedes ingresar con otra cuenta.';
+    return $tenant['is_active']?null:'Tienda fuera de servicio. El negocio de esta cuenta está suspendido. Solicita a la cuenta maestra que revise su estado. Puedes ingresar con otra cuenta.';
+}
+function reject_business_login180(string $message,string $route='owner-login'):never {
+    $rotate=session_status()===PHP_SESSION_ACTIVE;
+    session_change176(static function()use($message,$rotate):void {
+        // Read-session reopenings suppress cookies: retaining their ID lets the
+        // browser read the cleared session and message. Login rotates it again.
+        $_SESSION=[];if($rotate&&session_status()===PHP_SESSION_ACTIVE)session_regenerate_id(true);
+        $_SESSION['csrf']=bin2hex(random_bytes(32));$_SESSION['flash']=[['error',$message]];
+    });
+    if(str_starts_with(request_path(),'api/'))json_response(['ok'=>false,'error'=>$message,'redirect'=>url($route)],403);
+    redirect(url($route));
+}
 function require_login(array $roles = []): array
 {
     $u = current_user();
@@ -166,6 +184,7 @@ function require_login(array $roles = []): array
         redirect(url('login'));
     }
     if ($roles && !in_array($u['role'], $roles, true)) { http_response_code(403); exit('Acceso denegado'); }
+    if($GLOBALS['app'] instanceof App&&($problem=business_login_problem180($GLOBALS['app'],$u)))reject_business_login180($problem);
     return $u;
 }
 function flash(string $type, string $message): void
@@ -276,7 +295,8 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false,
     }
     if(function_exists('r3_active') && r3_active($app) && $r3Screen) echo '<link rel="stylesheet" href="'.url('assets/pdf-r3.css?v='.rawurlencode($cacheVersion)).'"><script src="'.url('assets/pdf-r3.js?v='.rawurlencode($cacheVersion)).'" defer></script>';
     if($admin)echo '<link rel="stylesheet" href="'.url('assets/admin-refined.css?v='.rawurlencode($cacheVersion)).'">';
-    if(function_exists('qa180_active')&&qa180_active($app))echo '<link rel="stylesheet" href="'.url('assets/qa180.css?v=180').'">';
+    $sharedWelcome=$admin&&in_array($path,['admin','admin/bienvenida','master'],true)&&function_exists('qa180_active')&&qa180_active($app,0);
+    if(function_exists('qa180_active')&&(qa180_active($app)||$sharedWelcome))echo '<link rel="stylesheet" href="'.url('assets/qa180.css?v=180').'">';
     echo '</head><body class="'.($admin?'admin-body':'public-body').'">';
     if(!empty($GLOBALS['demo_context']))demo_banner();
 }

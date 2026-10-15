@@ -1,0 +1,6 @@
+{
+  "packaged_php_files": 73,
+  "php": "8.3",
+  "passed": true,
+  "scope": "complete R5 updater/payload and standalone recovery/diagnostic; no native source changes"
+}

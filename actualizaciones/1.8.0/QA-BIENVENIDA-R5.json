@@ -1,0 +1,11 @@
+{
+  "passed": 5,
+  "checks": [
+    "R4 real upload is visible for master/active180 but ignored on pending179, reproducing the shared welcome image defect",
+    "R5 displays the saved shared image and its styles for master, pending179 and active180, with preview in the master editor",
+    "a second real upload replaces the image in all three profiles on reload, with a distinct media URL",
+    "Chromium390px actually loads/displays the uploaded image for pending179, fits the viewport and does not load the new POS JavaScript",
+    "owner cannot alter global welcome; tenant activation states, sales and shifts remain unchanged by shared display"
+  ],
+  "scope": "actual multipart upload/PHP/MariaDB/Chromium, published R4 baseline and R5 payload, fictional tenants only"
+}

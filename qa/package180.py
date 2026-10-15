@@ -2,8 +2,8 @@
 import hashlib,json,pathlib,shutil,zipfile
 from portable_zip180 import write_portable_zip
 root=pathlib.Path(__file__).resolve().parents[1];release=root/'actualizaciones/1.8.0';web=release/'web';staging=pathlib.Path('/workspace/fisitaap-env/package180');folder=staging/'actualizador-180'
-code_prefix='releases/1.8.0-r4'
-prior_packages=[root/'descargas/1.8.0'/name for name in ['FISITAAP-1.8.0-CPANEL-R1.zip','FISITAAP-1.8.0-CPANEL-R2.zip','FISITAAP-1.8.0-CPANEL-R3.zip']]
+code_prefix='releases/1.8.0-r5'
+prior_packages=[root/'descargas/1.8.0'/name for name in ['FISITAAP-1.8.0-CPANEL-R1.zip','FISITAAP-1.8.0-CPANEL-R2.zip','FISITAAP-1.8.0-CPANEL-R3.zip','FISITAAP-1.8.0-CPANEL-R4.zip']]
 def build():
     if folder.exists():shutil.rmtree(folder)
     folder.mkdir(parents=True);(folder/'payload').mkdir()
@@ -54,6 +54,8 @@ def build():
         return "'"+str(value).replace('\\','\\\\').replace("'","\\'")+"'"
     (folder/'files.php').write_text('<?php\ndeclare(strict_types=1);\nconst UPDATE180_FILES = '+php_value(list(files))+';\nconst UPDATE180_LEGACY = '+php_value(legacy)+';\n')
     for name in ['index.php','.htaccess']:shutil.copyfile(release/'updater'/name,folder/name)
+    shutil.copyfile(release/'recuperacion/volver-acceso-180.php',staging/'volver-acceso-180.php')
+    shutil.copyfile(release/'diagnostico-bienvenida/diagnostico-bienvenida-180.php',staging/'diagnostico-bienvenida-180.php')
     guide=release/'GUIA-CPANEL.md'
     if guide.exists():shutil.copyfile(guide,staging/'LEEME-CPANEL.md')
     out=pathlib.Path('/workspace/entregas');out.mkdir(exist_ok=True);target=out/'FISITAAP-1.8.0-CPANEL.zip'
@@ -62,7 +64,7 @@ def build():
         assert archive.testzip() is None
         for name,info in files.items():assert hashlib.sha256(archive.read('actualizador-180/payload/'+name)).hexdigest()==info['new']
     for p in staging.rglob('*'):p.chmod(0o755 if p.is_dir() else 0o644)
-    shutil.copyfile(target,out/'FISITAAP-1.8.0-CPANEL-R4.zip')
+    shutil.copyfile(target,out/'FISITAAP-1.8.0-CPANEL-R5.zip')
     (release/'MANIFEST-ARCHIVOS.json').write_text(json.dumps({'version':'1.8.0','files':{n:i['new'] for n,i in files.items()}},indent=2)+'\n')
     print('Verified cPanel updater ZIP:',len(files),'functional files, no config, private keys or business uploads.')
     return folder

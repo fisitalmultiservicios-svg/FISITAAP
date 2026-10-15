@@ -1,4 +1,23 @@
-# Informe QA · FISITAAP 1.8.0-R4
+# Informe QA · FISITAAP 1.8.0-R5
+
+## Acceso y bienvenida compartida · R5
+
+Se reprodujo el defecto de R4: con una sesión de dueño y el negocio desactivado, /admin devuelve500 por una DomainException sin manejar; /owner-login detecta la sesión y vuelve a enviarla a /admin. En R5 se valida el negocio y se limpia esa sesión con un mensaje «Tienda fuera de servicio», conservando la posibilidad de entrar con otra cuenta. Al validar credenciales tampoco se crea una sesión operativa para un negocio suspendido o sin asociación. La cuenta maestra y los clientes globales no se vinculan por suposición a otro negocio. La redirección usa datos de cuenta actualizados. Un maestro que abre /admin es enviado a /master.
+
+La sesión de lectura ya se había cerrado antes del control de acceso. La primera corrección rotaba un identificador sin poder enviar su cookie y perdía el mensaje. Se corrigió: cuando se reabre una lectura se conserva su identificador, se eliminan los datos de autorización y se renuevan CSRF/mensaje. Un acceso posterior válido sí rota la sesión. Las sesiones que siguen abiertas se rotan normalmente. La comparación de identidad del mecanismo176 impide sobrescribir una sesión rotada por otra petición.
+
+Se reprodujo también que la imagen cargada por el maestro se veía en el maestro y negocios180, pero no en pendientes179: la ruta de bienvenida estaba detrás del control de activación individual. R5 aplica la bienvenida compartida cuando la plataforma está publicada, sin cambiar el estado operativo de los negocios. Carga los estilos de esa vista para los pendientes, sin activar su JavaScript de POS180. El editor maestro muestra la imagen actual. Dos cargas reales consecutivas generan URLs distintas y reemplazan la vista para todos al recargar.
+
+- QA-ACCESO-R5.json:6 grupos HTTP, R4 reproducido y R5 corregido; recuperación antes de instalar, sesión/CSRF, maestro, asociación ausente, dueño/colaboradores/clientes y datos conservados.
+- QA-BIENVENIDA-R5.json:5 grupos con carga multipart real, versiones179/180, vista previa, reemplazo de imágenes, Chromium390px, prohibición de edición por dueño y estados/ventas/turnos conservados.
+- QA-ACTUALIZADOR-R5.json:7 grupos sobre R4 publicado con negocio180/179 y turno abierto, archivos/datos/config/uploads preservados, hashes y rechazo de cambios desconocidos.
+- QA-PERMISOS-ZIP-R5.json:2 extracciones con umask077/ApacheUID33, sin reparar permisos después.
+- QA-DIAGNOSTICO-BIENVENIDA-D2.json:5 grupos de autorización vigente, errores/fatales simulados, ocultación de claves y transacción de lectura que prohíbe escrituras.
+- QA-SINTAXIS-R5.json: los 73 archivos PHP del ZIP pasan la comprobación de sintaxis con PHP 8.3, incluidos los dos auxiliares de la raíz.
+
+Además se repitió qa/chat180.py sobre R5: sus 11 grupos HTTP de FISIChat pasaron. El resultado es idéntico al informe QA-FISICHAT-HTTP-R4.json conservado; no se volvió a ejecutar el proveedor de IA real ni las pruebas nativas.
+
+Datos y equipos de prueba ficticios. No se cambió el hosting, el estado real de La Ventanita ni los instaladores nativos. El usuario confirmó que reactivar La Ventanita desde el maestro en otro navegador y cerrar la sesión restableció su acceso. La corrección evita el error técnico futuro; las suspensiones comerciales siguen siendo decisiones del maestro. Evidencia R4 y anterior permanece debajo y no se presenta como una nueva ejecución integral de todas las funciones.
 
 ## FISIChat público, tiendas y maestro · R4 · 14 de octubre de 2026
 
@@ -20,7 +39,7 @@ Pruebas específicas de R4 en PHP/MariaDB y Chromium, siempre con registros fict
 - **QA-SINTAXIS-R4.json:** los 71 archivos PHP del paquete pasan sintaxis con PHP8.3 y el JavaScript nuevo pasa `node --check`.
 - **QA-PUBLICO-R4.json:** regresión del ZIP exacto en portada y La Ventanita, nueve anchos, títulos/botones, diseño/logo, catálogo, negocio pendiente y tema administrativo.
 
-R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. MANIFEST-ARCHIVOS.json enumera 115 archivos funcionales en releases/1.8.0-r4.
+R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. El manifest de R4 enumeraba 115 archivos funcionales en releases/1.8.0-r4; MANIFEST-ARCHIVOS.json corresponde ahora a los 115 archivos de R5.
 
 ## Corrección visual · R3 · 14 de octubre de 2026
 
