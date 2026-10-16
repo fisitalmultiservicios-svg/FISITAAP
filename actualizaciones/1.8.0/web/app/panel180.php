@@ -13,8 +13,8 @@ function qa180_groups(array $user,?array $tenant):array {
 }
 
 function qa180_welcome(App $app,array $user,?array $tenant):void {
-    admin_shell_start('Bienvenida',$user,$tenant,'dashboard');$image=(string)r2_setting($app,0,'welcome_image180');
-    if($user['role']==='master')echo '<p><a class="btn btn-light" href="'.e(url('master/bienvenida')).'">Cambiar imagen de bienvenida</a></p>';
+    admin_shell_start('Bienvenida',$user,$tenant,'dashboard',true);$image=(string)r2_setting($app,0,'welcome_image180');
+    if($user['role']==='master')echo '<div class="qa180-welcome-actions"><a class="btn btn-light" href="'.e(url('master/bienvenida')).'">Cambiar imagen de bienvenida</a></div>';
     echo '<section class="qa180-welcome" aria-label="Bienvenida a FISITAAP">';
     if($image)echo '<img src="'.e(public_media_url($image)).'" alt="Bienvenido a FISITAAP">';
     else echo '<div class="qa180-welcome-ad"><img src="'.e(url('assets/fisitapp-logo.webp')).'" alt="FISITAAP"><h1>Tu negocio, al día.</h1><p>Vende, atiende y organiza desde un solo lugar.</p><span>Web · Windows · Android</span></div>';
@@ -70,7 +70,7 @@ function qa180_welcome_editor(App $app,array $user):void {
     $current=r2_setting($app,0,'welcome_image180');
     if($current!=='')echo '<section class="card admin-card"><h2>Imagen actual</h2><img src="'.e(public_media_url($current)).'" alt="Imagen de bienvenida actual" style="display:block;width:100%;max-height:280px;object-fit:contain"></section>';
     else echo '<section class="card admin-card"><p>Actualmente se muestra la bienvenida predeterminada. Aún no hay una imagen personalizada guardada para esta pantalla.</p></section>';
-    echo '<section class="card admin-card"><p>Esta imagen se muestra dentro del panel de todos los negocios, incluso si tienen pendiente activar 1.8.0. La imagen de la portada pública se configura por separado en Diseño y página.</p><p>Usa una imagen horizontal JPG, PNG o WebP de hasta '.number_format(qa180_welcome_upload_limit()/1048576,1,',','').' MB. Se optimiza al guardarla y se muestra sin recortarse.</p><form method="post" enctype="multipart/form-data">'.csrf_field().'<input type="hidden" name="MAX_FILE_SIZE" value="'.qa180_welcome_upload_limit().'"><label>Imagen<input class="input" type="file" name="image" accept="image/jpeg,image/png,image/webp"></label><label><input type="checkbox" name="clear"> Usar publicidad predeterminada de FISITAAP</label><button class="btn">Guardar bienvenida</button></form></section>';admin_shell_end();
+    echo '<section class="card admin-card"><p>Esta imagen se muestra dentro del panel de todos los negocios, incluso si tienen pendiente activar 1.8.0. La imagen de la portada pública se configura por separado en Diseño y página.</p><p>Usa una imagen horizontal JPG, PNG o WebP de hasta '.number_format(qa180_welcome_upload_limit()/1048576,1,',','').' MB. Se optimiza al guardarla y llena el espacio disponible sin deformarse; puede recortar los bordes.</p><form method="post" enctype="multipart/form-data">'.csrf_field().'<input type="hidden" name="MAX_FILE_SIZE" value="'.qa180_welcome_upload_limit().'"><label>Imagen<input class="input" type="file" name="image" accept="image/jpeg,image/png,image/webp"></label><label><input type="checkbox" name="clear"> Usar publicidad predeterminada de FISITAAP</label><button class="btn">Guardar bienvenida</button></form></section>';admin_shell_end();
 }
 function qa180_contacts(App $app,array $user,?array $tenant):void {
     $prefix=$tenant?'admin':'master';$scope=$tenant?'tenant_id=?':'tenant_id IS NULL';$args=$tenant?[$tenant['id']]:[];$selected=(int)($_GET['id']??$_POST['id']??0);

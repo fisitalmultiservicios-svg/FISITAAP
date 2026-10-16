@@ -70,7 +70,29 @@
   const drawer=$('#cartDrawer');function openCart(){drawer?.classList.add('open');document.body.style.overflow='hidden'}function closeCart(){drawer?.classList.remove('open');document.body.style.overflow=''}$$('[data-open-cart]').forEach(x=>x.onclick=openCart);$$('[data-close-cart]').forEach(x=>x.onclick=closeCart);
   window.openCart=openCart; renderCart();
   function showDemoWhatsapp(out){let modal=$('#demoWhatsapp');if(!modal){modal=document.createElement('div');modal.id='demoWhatsapp';modal.className='demo-wa';document.body.appendChild(modal)}const message=escapeHtml(out.preview||'').replace(/\n/g,'<br>');modal.innerHTML=`<div class="demo-wa-bg" data-close-demo-wa></div><section class="demo-wa-phone"><header><div class="demo-wa-avatar">N</div><div><strong>${escapeHtml(out.store||'NOVA MIX')}</strong><small>en línea · demostración</small></div><button type="button" data-close-demo-wa>×</button></header><div class="demo-wa-chat"><div class="demo-wa-notice">Así recibiría el negocio el pedido en WhatsApp</div><article class="demo-wa-message">${message}<time>ahora ✓✓</time></article></div><footer><span>Escribe un mensaje</span><button type="button">➤</button></footer><div class="demo-wa-actions"><button class="btn btn-light" type="button" data-close-demo-wa>Cerrar ejemplo</button></div></section>`;modal.classList.add('open');$$('[data-close-demo-wa]',modal).forEach(x=>x.onclick=()=>modal.classList.remove('open'))}
-  const checkout=$('#checkoutForm');if(checkout)checkout.onsubmit=async ev=>{ev.preventDefault();if(!cart.length)return alert('Agrega productos al carrito.');const data=Object.fromEntries(new FormData(checkout));data.items=cart.map(i=>({id:i.id,qty:i.qty,option_ids:i.option_ids||[],note:i.note||''}));const btn=$('button[type=submit]',checkout);btn.disabled=true;btn.textContent='Creando pedido…';try{const r=await fetch(checkout.action,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':window.FISITAPP.csrf,'Accept':'application/json'},body:JSON.stringify(data)}),responseText=await r.text();let out;try{out=JSON.parse(responseText)}catch(e){throw new Error('El servidor no pudo procesar el pedido. Recarga la página e inténtalo nuevamente.')}if(r.status===401&&out.login){location.assign(out.login);return}if(!out.ok)throw new Error(out.error||'No se pudo crear el pedido.');cart=[];save();if(out.demo){closeCart();showDemoWhatsapp(out);btn.disabled=false;btn.textContent='Enviar pedido por WhatsApp';return}if(!out.whatsapp)throw new Error('El negocio no tiene configurado el WhatsApp de pedidos.');location.assign(out.whatsapp)}catch(e){alert(e.message);btn.disabled=false;btn.textContent='Enviar pedido por WhatsApp'}};
+  const checkout=$('#checkoutForm');let checkoutBusy=false;
+  if(checkout)checkout.onsubmit=async ev=>{
+    ev.preventDefault();if(checkoutBusy)return;
+    if(!cart.length)return alert('Agrega productos al carrito.');
+    const data=Object.fromEntries(new FormData(checkout));
+    data.items=cart.map(i=>({id:i.id,qty:i.qty,option_ids:i.option_ids||[],note:i.note||''}));
+    const btn=$('button[type=submit]',checkout);checkoutBusy=true;btn.disabled=true;btn.textContent='Creando pedido…';
+    try{
+      const r=await fetch(checkout.action,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':window.FISITAPP.csrf,'Accept':'application/json'},body:JSON.stringify(data)}),responseText=await r.text();
+      let out;try{out=JSON.parse(responseText)}catch(_){throw new Error('El servidor no pudo procesar el pedido. Inténtalo nuevamente.');}
+      if(r.status===401&&out.login){location.assign(out.login);return;}
+      if(!r.ok||!out.ok)throw new Error(out.error||'No se pudo crear el pedido.');
+      // Keep the operation key on failures/retries; a confirmed order ends it.
+      // Demos stay on this page, so the next intentional order needs a new key.
+      const key=checkout.elements.checkout_key;
+      if(key){const bytes=crypto.getRandomValues(new Uint8Array(16));key.value=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');}
+      cart=[];save();
+      if(out.demo){closeCart();showDemoWhatsapp(out);return;}
+      if(!out.whatsapp)throw new Error('El negocio no tiene configurado el WhatsApp de pedidos.');
+      location.assign(out.whatsapp);
+    }catch(error){alert(error.message);}
+    finally{checkoutBusy=false;btn.disabled=false;btn.textContent='Enviar pedido por WhatsApp';}
+  };
   const couponInput=checkout?.elements?.coupon;
   if(checkout&&couponInput){
     const summary=checkout.closest('.drawer-panel')?.querySelector('.cart-summary');

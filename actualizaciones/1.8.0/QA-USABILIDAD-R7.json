@@ -1,0 +1,119 @@
+{
+  "passed": 7,
+  "checks": [
+    "published R6 browser reproduces a duplicate second demo order and a third changed-cart error without reloading; its pending Express screen omits the web job shown in history and driver portal",
+    "both demo catalogs create three distinct intentional orders on the same page; lost-response retry reuses the original operation once, validation retains cart/key and simultaneous submit sends one request",
+    "one web Express appears in pending/history/driver views with a consistent Spanish status and separate order total versus driver payout",
+    "pending scope is the current branch, history explicitly covers all own branches, filters work and a foreign business remains excluded",
+    "real driver HTTP assignment/collection/route/PIN delivery moves the same job from pending to history once; wrong PIN cannot hide or complete it",
+    "master and pending179 welcome images cover the exact remaining area at1366/900/768/390px with preserved aspect ratio and no horizontal overflow",
+    "demo disposal leaves source templates and business stock unchanged; read-only Express additions do not create sales, alter cash or close shifts"
+  ],
+  "welcome_layouts": [
+    {
+      "role": "master",
+      "width": 1036,
+      "height": 691,
+      "fit": "cover",
+      "imageWidth": 1036,
+      "imageHeight": 691,
+      "bottom": 850,
+      "availableBottom": 850,
+      "overflow": false,
+      "viewport_width": 1366,
+      "viewport_height": 900
+    },
+    {
+      "role": "master",
+      "width": 868,
+      "height": 709,
+      "fit": "cover",
+      "imageWidth": 868,
+      "imageHeight": 709,
+      "bottom": 860,
+      "availableBottom": 860,
+      "overflow": false,
+      "viewport_width": 900,
+      "viewport_height": 900
+    },
+    {
+      "role": "master",
+      "width": 736,
+      "height": 709,
+      "fit": "cover",
+      "imageWidth": 736,
+      "imageHeight": 709,
+      "bottom": 860,
+      "availableBottom": 860,
+      "overflow": false,
+      "viewport_width": 768,
+      "viewport_height": 900
+    },
+    {
+      "role": "master",
+      "width": 376,
+      "height": 686,
+      "fit": "cover",
+      "imageWidth": 376,
+      "imageHeight": 686,
+      "bottom": 816,
+      "availableBottom": 816,
+      "overflow": false,
+      "viewport_width": 390,
+      "viewport_height": 844
+    },
+    {
+      "role": "pending179",
+      "width": 1036,
+      "height": 741,
+      "fit": "cover",
+      "imageWidth": 1036,
+      "imageHeight": 741,
+      "bottom": 850,
+      "availableBottom": 850,
+      "overflow": false,
+      "viewport_width": 1366,
+      "viewport_height": 900
+    },
+    {
+      "role": "pending179",
+      "width": 868,
+      "height": 759,
+      "fit": "cover",
+      "imageWidth": 868,
+      "imageHeight": 759,
+      "bottom": 860,
+      "availableBottom": 860,
+      "overflow": false,
+      "viewport_width": 900,
+      "viewport_height": 900
+    },
+    {
+      "role": "pending179",
+      "width": 736,
+      "height": 759,
+      "fit": "cover",
+      "imageWidth": 736,
+      "imageHeight": 759,
+      "bottom": 860,
+      "availableBottom": 860,
+      "overflow": false,
+      "viewport_width": 768,
+      "viewport_height": 900
+    },
+    {
+      "role": "pending179",
+      "width": 376,
+      "height": 736,
+      "fit": "cover",
+      "imageWidth": 376,
+      "imageHeight": 736,
+      "bottom": 816,
+      "availableBottom": 816,
+      "overflow": false,
+      "viewport_width": 390,
+      "viewport_height": 844
+    }
+  ],
+  "scope": "published R6 baseline and exact R7 package; fictional PHP/MariaDB/Chromium, no production or external delivery services"
+}

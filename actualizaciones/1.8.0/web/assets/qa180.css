@@ -9,3 +9,12 @@
 .r3-pos-grid>*,.r3-cart-panel,.r3-quick{min-width:0}.r3-quick-product>div{min-width:0;overflow-wrap:anywhere}.r3-search{max-width:100%}@media(max-width:1000px){.r3-pos-grid{grid-template-columns:minmax(0,1fr)}}
 
 @media(max-width:900px){.r3-pos-nav{flex-wrap:wrap}.r3-topbar{flex-wrap:wrap;gap:8px}.r3-header-right{margin-left:0;flex:1 1 100%;flex-wrap:wrap;gap:10px}}
+
+/* Welcome occupies the remaining viewport below the panel header and controls. */
+.admin-welcome-shell{height:100dvh;min-height:0;grid-template-rows:minmax(0,1fr)}
+.admin-welcome-shell>.admin-main{height:100dvh;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:auto}
+.admin-welcome-shell .admin-top,.admin-welcome-shell .qa180-welcome-actions,.admin-welcome-shell .alert{flex:none}
+.qa180-welcome-actions{margin:0 0 12px}
+.admin-welcome-shell .qa180-welcome{flex:1;min-height:0;position:relative;width:100%}
+.admin-welcome-shell .qa180-welcome>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+@media(max-width:980px){.admin-welcome-shell .qa180-welcome{min-height:160px}}

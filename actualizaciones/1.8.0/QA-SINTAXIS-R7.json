@@ -1,0 +1,6 @@
+{
+  "packaged_php_files": 73,
+  "php": "8.3",
+  "passed": true,
+  "scope": "all R7 updater/payload PHP and standalone helpers; app.js checked with node --check; native code unchanged"
+}

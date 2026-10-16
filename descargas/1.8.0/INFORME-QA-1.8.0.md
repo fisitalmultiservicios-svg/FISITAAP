@@ -1,4 +1,19 @@
-# Informe QA · FISITAAP 1.8.0-R6
+# Informe QA · FISITAAP 1.8.0-R7
+
+## Bienvenida, pedidos consecutivos y coherencia de Express · R7
+
+Se reprodujeron sobre el ZIP R6 publicado los dos errores operativos: en el mismo catálogo de demo un segundo pedido igual devolvía el primero como duplicado y un tercero con cantidad distinta devolvía «otros datos»; al recargar se generaba otra referencia y desaparecía el síntoma. app.js ahora renueva checkout_key solo después de una respuesta de éxito. Los fallos de validación o comunicación conservan carrito y referencia, y un envío en curso bloquea otra solicitud. Se mantiene la idempotencia del servidor, sin quitar controles para permitir pedidos repetidos.
+
+Express pendientes consultaba únicamente pos_tickets de tipo express, mientras historial/portal del motorizado consultaban delivery_jobs de pedidos web. Se reprodujo que el mismo Express web aparecía en las dos últimas vistas y faltaba en pendientes. La lista agrega esos trabajos activos de la sucursal seleccionada, con negocio y pedido comprobados en el join, estados compartidos en español y cantidades de pedido/pago al motorizado separadas. La adición es de lectura; no confirma cobros, asigna motorizados ni evita el PIN. Las tarjetas de caja mantienen sus acciones existentes. El historial especifica todas las sucursales, incluye activas/finalizadas, identifica la sucursal y ofrece un selector de estados reconocidos. El portal disponible agrega el número de pedido para reconocer la misma operación.
+
+La bienvenida usa un contenedor de la altura visible, descontando encabezado, controles y márgenes internos. La imagen cubre el área con object-fit:cover, conservando proporción y pudiendo recortar bordes. Un caso a 900px reveló el display:block!important del menú móvil heredado; se resolvió dando altura explícita al contenido de la bienvenida sin modificar los otros paneles. La imagen guardada se conserva.
+
+- QA-USABILIDAD-R7.json: siete grupos con R6 y payload R7. Pedidos consecutivos reales de ambos demos; pérdida de respuesta después de que el servidor guardó el pedido y reintento único; corrección de un formulario inválido sin perder carrito; un solo envío ante dos submits; descarte y plantillas/inventario conservados. Express web presente en pendientes/historial/motorizado, aislamiento de sucursal/negocio, filtro y estados; aceptación/recogida/ruta/PIN por HTTP real, PIN incorrecto rechazado y entrega contada una vez. Ocho vistas de bienvenida maestro/negocio179 en Chromium a1366/900/768/390px con imagen cargada, área restante cubierta y sin desbordamiento horizontal.
+- QA-ACTUALIZADOR-R7.json: siete grupos de instalación sobre R6 publicado con negocios180/179 y turno abierto,115 hashes y conservación de datos/config/uploads/código anterior; control maestro/CSRF/cambios desconocidos, repetición sin duplicados y restauración bloqueada tras publicar.
+- QA-PERMISOS-ZIP-R7.json: dos extracciones sobre R6 y carpeta nueva con umask077/ApacheUID33, sin corregir permisos después de extraer.
+- QA-SINTAXIS-R7.json: los73 PHP del paquete pasan sintaxis con PHP8.3; app.js pasa node --check.
+
+Datos, conductores y dinero ficticios. No se modificó el hosting. No cambia el código de aplicaciones Windows/Android ni las integraciones de IA/impresión, cuyas pruebas anteriores se conservan como evidencia histórica. No se presenta esta revisión como un QA nuevo de todas las funciones. No requiere importar una base distinta ni modificar config.php. Los estados operativos de caja ya existentes se conservaron y no se afirma una unificación de todo el modelo histórico de preparación/cobro.
 
 ## Carga de bienvenida y confirmación de guardado · R6
 
@@ -52,7 +67,7 @@ Pruebas específicas de R4 en PHP/MariaDB y Chromium, siempre con registros fict
 - **QA-SINTAXIS-R4.json:** los 71 archivos PHP del paquete pasan sintaxis con PHP8.3 y el JavaScript nuevo pasa `node --check`.
 - **QA-PUBLICO-R4.json:** regresión del ZIP exacto en portada y La Ventanita, nueve anchos, títulos/botones, diseño/logo, catálogo, negocio pendiente y tema administrativo.
 
-R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. El manifest de R4 enumeraba 115 archivos funcionales en releases/1.8.0-r4; MANIFEST-ARCHIVOS.json corresponde ahora a los 115 archivos de R6.
+R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. El manifest de R4 enumeraba 115 archivos funcionales en releases/1.8.0-r4; MANIFEST-ARCHIVOS.json corresponde ahora a los 115 archivos de R7.
 
 ## Corrección visual · R3 · 14 de octubre de 2026
 
