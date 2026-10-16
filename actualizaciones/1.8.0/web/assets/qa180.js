@@ -2,6 +2,23 @@
   'use strict';
   const context=window.FISITAAP180;
   if(!context)return;
+  const dispatch=document.querySelector('#qa180Dispatch');
+  if(dispatch){
+    const form=dispatch.querySelector('form'),drivers=dispatch.querySelector('[data-dispatch-drivers]');
+    let opener;
+    const mode=()=>{const direct=form.elements.dispatch_mode.value==='driver';drivers.hidden=!direct;form.elements.driver_id.disabled=!direct;form.elements.driver_id.required=direct;};
+    for(const button of document.querySelectorAll('[data-board-dispatch]'))button.addEventListener('click',()=>{
+      opener=button;form.reset();
+      for(const name of ['origin','id','revision'])form.elements[name].value=button.dataset[name];
+      form.elements.payout.value=Number(button.dataset.payout||0).toFixed(2);
+      dispatch.querySelector('[data-dispatch-order]').textContent='Pedido #'+button.dataset.number;
+      form.querySelector('[type=submit]').disabled=false;mode();dispatch.showModal();
+    });
+    form.addEventListener('change',mode);
+    for(const button of dispatch.querySelectorAll('[data-dispatch-close]'))button.addEventListener('click',()=>dispatch.close());
+    dispatch.addEventListener('close',()=>opener?.focus());
+    form.addEventListener('submit',()=>{form.querySelector('[type=submit]').disabled=true;});
+  }
   if(location.pathname.endsWith('/owner-login')){
     const getUsers=window.fisitaapWindows?.loginUsers||window.fisitaapAndroid?.loginUsers,email=document.querySelector('form input[name="email"]');
     if(getUsers&&email)getUsers().then(result=>{const users=result.users||[];if(!users.length)return;const select=document.createElement('select');select.className='input';select.id='nativeLoginUser';select.setAttribute('aria-label','Usuario autorizado del negocio');select.required=true;select.append(new Option('Elige tu usuario',''));for(const user of users)select.append(new Option(user.name+' · '+user.email,String(user.id)));select.append(new Option('Otro acceso (administración maestra / otra cuenta)','other'));const old=email.value;email.before(select);email.type='hidden';const label=email.parentElement.querySelector('label');if(label){label.textContent='Usuario del negocio';label.htmlFor=select.id;}const selected=users.find(user=>user.email===old);if(selected)select.value=String(selected.id);select.addEventListener('change',()=>{const user=users.find(user=>String(user.id)===select.value);email.type=select.value==='other'?'email':'hidden';email.value=user?.email||'';email.required=select.value==='other';if(user)email.form.querySelector('input[type="password"]')?.focus();else if(select.value==='other')email.focus();});}).catch(()=>{});

@@ -33,6 +33,8 @@ function qa180_report_definitions():array {
 }
 function qa180_report_query(array $d,array $tenant,array $filters):array {
     [,,$select,$from,$scope,$date,$branch,$user,$state,$texts]=$d;$where=[$scope.'=?'];$args=[$tenant['id']];
+    // Delivery snapshots of POS Express are not web checkout requests.
+    if($scope==='o.tenant_id')$where[]='NOT EXISTS(SELECT 1 FROM fisitaap_order_receipts180 pr JOIN pos_tickets pt ON pt.id=pr.ticket_id AND pt.sale_type="express" WHERE pr.order_id=o.id)';
     if($date){$where[]=$date.'>=? AND '.$date.'<?';$args[]=$filters['from'];$args[]=date('Y-m-d',strtotime($filters['to'].' +1 day'));}
     foreach([[$branch,'branch'],[$user,'user'],[$state,'status']] as [$column,$key])if($column&&$filters[$key]!==''){if($key==='status'&&$filters[$key]==='overdue'&&in_array($scope,['a.tenant_id'],true)&&str_contains($from,'accounts_'))$where[]='a.balance>0 AND a.due_date<CURDATE()';else{$where[]=$column.'=?';$args[]=$filters[$key];}}
     if($filters['q']!==''&&$texts){$where[]='('.implode(' OR ',array_map(fn($column)=>$column.' LIKE ?',$texts)).')';foreach($texts as $unused)$args[]='%'.$filters['q'].'%';}

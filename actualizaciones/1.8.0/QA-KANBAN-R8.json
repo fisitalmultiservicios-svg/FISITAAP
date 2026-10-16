@@ -1,0 +1,56 @@
+{
+  "passed": 14,
+  "checks": [
+    "Preparar receives and starts preparation in one POST; one account/command and original stock only; premature/stale/repeated changes rejected",
+    "invalid driver, other branch, paused affiliation, bad mode and negative payout roll back without publishing a job",
+    "pool dispatch is once-only, scoped to authorized affiliates, first concurrent acceptance wins; manual delivery/wrong PIN fail and correct PIN completes once",
+    "direct assignment supports an authorized offline driver but rejects a driver with an active delivery atomically",
+    "three-column board at five viewport sizes has no horizontal scroll; modal changes direct/pool fields and closes/restores focus without JavaScript errors",
+    "fresh kitchen/Express permission, tenant isolation, busy driver list and CSRF prevent unauthorized dispatch",
+    "POS Express dispatch links the original account/customer/prices without another sale or stock movement; invalid assignment rolls back the snapshot, retry stays unique and old pending POST cannot bypass PIN",
+    "cancelling an unpaid POS-derived Express releases POS inventory once and cancels its delivery",
+    "partially paid POS Express preserves collected amounts at dispatch, blocks cancellation and settles only the remaining balance on the original account",
+    "already paid POS Express includes service in its delivery snapshot and completes with the published PIN without another sale, payment or loyalty accrual",
+    "quick sale and pickup use Entregar after preparation and cannot create an Express",
+    "catalog-only business prepares and dispatches without creating a physical cash account",
+    "an expired delivery can be explicitly released again while an active one remains unchanged on retry",
+    "demo board hides real driver dispatch and rejects forged dispatch without a job or account; disposal removes only the private demo"
+  ],
+  "layouts": [
+    {
+      "width": 1366,
+      "overflow": false,
+      "boardOverflow": false,
+      "columns": "334.656px 334.672px 334.656px"
+    },
+    {
+      "width": 1024,
+      "overflow": false,
+      "boardOverflow": false,
+      "columns": "220.656px 220.672px 220.672px"
+    },
+    {
+      "width": 900,
+      "overflow": false,
+      "boardOverflow": false,
+      "columns": "278.656px 278.672px 278.656px"
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "boardOverflow": false,
+      "columns": "234.656px 234.672px 234.672px"
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "boardOverflow": false,
+      "columns": "376px"
+    }
+  ],
+  "environment": "fictional fisitaap_r2_test PHP8.3/MariaDB real HTTP and Chromium; simulated native session proof; no production or physical printers",
+  "pending179_compatibility": [
+    "GET /admin/express-pendientes HTTP200",
+    "GET /admin/pedidos HTTP200"
+  ]
+}

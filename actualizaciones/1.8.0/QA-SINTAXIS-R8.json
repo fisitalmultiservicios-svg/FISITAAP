@@ -1,0 +1,14 @@
+{
+  "php_files_checked": 74,
+  "php_passed": 74,
+  "javascript_files_checked": [
+    "pos-v148.js",
+    "direct-print.js",
+    "pdf-r3.js",
+    "fisichat.js",
+    "app.js",
+    "restructure-r2.js",
+    "qa180.js"
+  ],
+  "environment": "PHP8.3 syntax against final exact R8 ZIP; Node syntax; no production"
+}

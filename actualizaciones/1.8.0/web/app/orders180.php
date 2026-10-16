@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/kanban180.php';
 
 function qa180_order_states():array {return ['new'=>'Nuevo','confirmed'=>'Aceptado','preparing'=>'Preparación','ready'=>'Listo','sent'=>'Despacho / Express','delivered'=>'Entregado','cancelled'=>'Cancelado'];}
 
@@ -56,10 +57,15 @@ function qa180_order_before_status(App $app,array $order,string $status,int $act
     $ticket=$app->one('SELECT * FROM pos_tickets WHERE id=? FOR UPDATE',[$receipt['ticket_id']]);
     if($status==='cancelled'){
         if((float)$ticket['paid_total']>0||$app->one('SELECT id FROM pos_ticket_items WHERE ticket_id=? AND paid_quantity>0 LIMIT 1',[$ticket['id']]))throw new DomainException('El pedido ya tiene cobros. Revisa la devolución con administración; no se puede cancelar como un pedido sin pagar.');
+        // A delivery created from POS already reserved its stock as a POS ticket.
+        // It has no online_order movements to refund through the web helper.
+        if($ticket['sale_type']==='express'&&$order['order_number']==='POS-'.$ticket['id']&&!$app->one('SELECT id FROM inventory_movements WHERE reference_type="pos_void" AND reference_id=? LIMIT 1',[$ticket['id']])){
+            foreach($app->all('SELECT i.*,p.track_inventory FROM pos_ticket_items i JOIN products p ON p.id=i.product_id WHERE i.ticket_id=?',[$ticket['id']]) as $item)if($item['track_inventory'])stock_change_v14($app,(int)$order['tenant_id'],(int)$ticket['branch_id'],(int)$item['product_id'],(float)$item['quantity'],'pos_release','pos_void',(int)$ticket['id'],$actor,'Cancelación de '.$ticket['ticket_number'],(float)$item['unit_cost']);
+        }
         $app->exec('UPDATE pos_tickets SET status="void",fulfillment180="cancelled",revision=revision+1 WHERE id=?',[$ticket['id']]);
     }else{
         if($ticket['status']==='void')throw new DomainException('La cuenta de este pedido ya está cancelada.');
-        $app->exec('UPDATE pos_tickets SET fulfillment180=? WHERE id=?',[$status,$ticket['id']]);
+        $app->exec('UPDATE pos_tickets SET fulfillment180=?,fulfillment_state=?,revision=revision+1 WHERE id=?',[$status,match($status){'confirmed'=>'pending','sent'=>'in_transit',default=>$status},$ticket['id']]);
         if(in_array($status,['preparing','ready','delivered'],true))$app->exec('UPDATE pos_ticket_items SET kitchen_status=? WHERE ticket_id=? AND product_id IS NOT NULL',[$status==='delivered'?'served':$status,$ticket['id']]);
     }
 }
@@ -68,44 +74,40 @@ function qa180_orders(App $app,array $user,array $tenant,string $section):void {
     if(is_post()){
         verify_csrf();$action=(string)($_POST['action']??'status');
         try {
+            $notice='Pedido actualizado.';
             qa180_permission($app,$user,$section,'write');$id=(int)($_POST['id']??0);$app->db->beginTransaction();$app->one('SELECT id FROM branches WHERE id=? AND tenant_id=? FOR UPDATE',[$branch['id'],$tenant['id']]);
             if(($_POST['origin']??'web')==='web'){
                 $order=$app->one('SELECT * FROM orders WHERE id=? AND tenant_id=? AND branch_id=? FOR UPDATE',[$id,$tenant['id'],$branch['id']]);if(!$order)throw new DomainException('El pedido no pertenece a esta sucursal.');
+                if($action==='dispatch'&&$app->one('SELECT id FROM delivery_jobs WHERE order_id=? AND tenant_id=? AND status NOT IN("cancelled","expired") FOR UPDATE',[$id,$tenant['id']])){$app->db->commit();flash('info','Este pedido ya tiene un Express. Consulta Express pendientes.');redirect(url('admin/'.$section));}
                 $received=$app->one('SELECT ticket_id FROM fisitaap_order_receipts180 WHERE order_id=?',[$id]);
                 if($action==='receive'&&$received){$app->db->commit();flash('info','El pedido ya estaba recibido.');redirect(url('admin/'.$section));}
                 if((int)($_POST['revision']??-1)!==(int)$order['revision180'])throw new DomainException('El pedido cambió. Recarga antes de continuar.');
-                if($action==='receive'){qa180_order_receive($app,$tenant,$user,$id);}
+                if(in_array($action,['prepare','prepared','handover','dispatch'],true))$notice=qa180_board_web_action($app,$user,$tenant,$branch,$order,$action);
+                elseif($action==='receive'){qa180_order_receive($app,$tenant,$user,$id);}
                 else {
                     $next=(string)($_POST['status']??'');$transitions=['new'=>['cancelled'],'confirmed'=>['preparing','cancelled'],'preparing'=>['ready','cancelled'],'ready'=>['sent','delivered','cancelled'],'sent'=>['delivered'],'delivered'=>[],'cancelled'=>[]];
                     if(!in_array($next,$transitions[$order['status']]??[],true))throw new DomainException('Ese cambio no corresponde al estado actual. Primero recibe los pedidos nuevos.');
+                    if($next==='delivered'&&$app->one('SELECT id FROM delivery_jobs WHERE order_id=? AND status NOT IN("cancelled","expired")',[$id]))throw new DomainException('Esta entrega se confirma desde el portal del motorizado con su PIN.');
                     order_status_qa($app,(int)$tenant['id'],$id,$next,(int)$user['id']);qa180_audit($app,$user,'order_status','order',$id,'Cambió el pedido #'.$order['order_number'].' a '.qa180_order_states()[$next]);
                 }
             }else {
-                $ticket=pos_ticket_get_148($app,$tenant,$branch,$id,true);if($ticket['source_order_id'])throw new DomainException('Actualiza este pedido desde su tarjeta web.');
+                $ticket=pos_ticket_get_148($app,$tenant,$branch,$id,true);
+                if($action==='dispatch'&&$ticket['source_order_id']&&$app->one('SELECT id FROM delivery_jobs WHERE order_id=? AND tenant_id=? AND status NOT IN("cancelled","expired") FOR UPDATE',[$ticket['source_order_id'],$tenant['id']])){$app->db->commit();flash('info','Este pedido ya tiene un Express. Consulta Express pendientes.');redirect(url('admin/'.$section));}
+                if($ticket['source_order_id'])throw new DomainException('Actualiza este pedido desde su tarjeta vinculada.');
                 if((int)($_POST['revision']??-1)!==(int)$ticket['revision'])throw new DomainException('La cuenta cambió. Recarga antes de continuar.');
+                if(in_array($action,['prepare','prepared','handover','dispatch'],true))$notice=qa180_board_pos_action($app,$user,$tenant,$branch,$ticket,$action);
+                else {
                 $next=(string)($_POST['status']??'');$transitions=['new'=>['confirmed'],'confirmed'=>['preparing'],'preparing'=>['ready'],'ready'=>['sent','delivered'],'sent'=>['delivered']];if(!in_array($next,$transitions[$ticket['fulfillment180']]??[],true))throw new DomainException('Ese cambio no corresponde al estado actual.');
                 if($next==='confirmed'){$ids=array_column($app->all('SELECT id FROM pos_ticket_items WHERE ticket_id=? AND kitchen_status="pending"',[$id]),'id');$app->exec('UPDATE pos_ticket_items SET kitchen_status="sent",sent_at=NOW() WHERE ticket_id=? AND kitchen_status="pending"',[$id]);if($ids)qa180_print_commands($app,$tenant,$branch,$user,$id,$ids,'pos-board-'.$id.'-'.hash('sha256',implode(',',$ids)));}
                 else $app->exec('UPDATE pos_ticket_items SET kitchen_status=? WHERE ticket_id=? AND kitchen_status NOT IN("pending","served")',[$next==='delivered'?'served':($next==='sent'?'ready':$next),$id]);
                 $app->exec('UPDATE pos_tickets SET fulfillment180=?,revision=revision+1 WHERE id=?',[$next,$id]);qa180_audit($app,$user,'kitchen_status','pos_ticket',$id,'Cambió la preparación de '.$ticket['ticket_number'].' a '.qa180_order_states()[$next]);
+                }
             }
-            $app->db->commit();flash('success','Pedido actualizado.');
+            $app->db->commit();flash('success',$notice);
         }catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();flash('error',$error instanceof PDOException?'No se completó el cambio. Revisa el pedido antes de repetir.':$error->getMessage());}
         redirect(url('admin/'.$section));
     }
-    $origin=(string)($_GET['origin']??'');$days=(int)($_GET['days']??2);$days=in_array($days,[2,7,30],true)?$days:2;$from=date('Y-m-d H:i:s',strtotime('-'.$days.' days'));$cards=[];
-    if($origin===''||$origin==='web')foreach($app->all('SELECT o.*,r.ticket_id FROM orders o LEFT JOIN fisitaap_order_receipts180 r ON r.order_id=o.id WHERE o.tenant_id=? AND o.branch_id=? AND o.created_at>=? ORDER BY o.created_at LIMIT 200',[$tenant['id'],$branch['id'],$from]) as $row)$cards[]=['origin'=>'web','id'=>$row['id'],'number'=>$row['order_number'],'customer'=>$row['customer_name'],'total'=>$row['total'],'state'=>$row['status'],'delivery'=>$row['delivery_type'],'payment'=>$row['payment_method'],'created'=>$row['created_at'],'revision'=>$row['revision180'],'ticket'=>$row['ticket_id']];
-    if($origin!=='web'){$params=[$tenant['id'],$branch['id'],$from];$where='';if(in_array($origin,['table','quick','express'],true)){$where=' AND t.sale_type=?';$params[]=$origin;}
-        foreach($app->all('SELECT t.*,u.name customer,r.name table_name FROM pos_tickets t LEFT JOIN users u ON u.id=t.customer_id LEFT JOIN restaurant_tables r ON r.id=t.table_id WHERE t.tenant_id=? AND t.branch_id=? AND t.created_at>=? AND t.source_order_id IS NULL AND EXISTS(SELECT 1 FROM pos_ticket_items i WHERE i.ticket_id=t.id)'.$where.' ORDER BY t.created_at LIMIT 200',$params) as $row)$cards[]=['origin'=>'pos','id'=>$row['id'],'number'=>$row['ticket_number'],'customer'=>$row['customer']?:'Consumidor final','total'=>$row['total'],'state'=>$row['status']==='void'?'cancelled':$row['fulfillment180'],'delivery'=>$row['table_name']?:$row['sale_type'],'payment'=>$row['status']==='paid'?'Cobrado':'Cuenta pendiente','created'=>$row['created_at'],'revision'=>$row['revision'],'ticket'=>$row['id']];
-    }
-    $items=[];$webIds=[];$posIds=[];foreach($cards as $card)if($card['origin']==='web')$webIds[]=$card['id'];else $posIds[]=$card['id'];
-    foreach([['web','order_items','order_id',$webIds],['pos','pos_ticket_items','ticket_id',$posIds]] as [$kind,$table,$fk,$ids])if($ids){$marks=implode(',',array_fill(0,count($ids),'?'));foreach($app->all('SELECT '.$fk.' parent,product_name,quantity,options_json,notes FROM '.$table.' WHERE '.$fk.' IN('.$marks.') ORDER BY id',$ids) as $item)$items[$kind.'-'.$item['parent']][]=$item;}
-    $may=true;try{qa180_permission($app,$user,$section,'write');}catch(DomainException){$may=false;}
-    admin_shell_start('Pedidos · '.$branch['name'],$user,$tenant,$section);echo '<section class="card admin-card"><form class="qa180-filter" method="get"><label>Origen<select class="input" name="origin">';foreach([''=>'Todos','web'=>'Catálogo web','table'=>'Mesa','quick'=>'Venta rápida','express'=>'Express'] as $key=>$label)echo '<option value="'.$key.'" '.($origin===$key?'selected':'').'>'.$label.'</option>';echo '</select></label><label>Periodo<select class="input" name="days">';foreach([2,7,30] as $day)echo '<option value="'.$day.'" '.($days===$day?'selected':'').'>Últimos '.$day.' días</option>';echo '</select></label><button class="btn">Filtrar</button></form><p>'.(!empty($tenant['physical_store_enabled'])?'Recibir abre una cuenta y envía la comanda una sola vez. El estado de preparación y el cobro se registran por separado.':'Recibir acepta el pedido para su preparación. Los pagos coordinados con el cliente se gestionan fuera de la caja, que este negocio no tiene habilitada.').' Hasta 200 pedidos por origen; consulta periodos más amplios en Reportes.</p></section><div class="qa180-kanban">';
-    foreach(qa180_order_states() as $state=>$label){echo '<section class="qa180-kanban-column"><h2>'.$label.'</h2>';foreach($cards as $card){if($card['state']!==$state)continue;$minutes=max(0,(int)((time()-strtotime($card['created']))/60));echo '<article class="card admin-card"><h3>'.e($card['number']).'</h3><p>'.e($card['customer']).'<br>'.e($card['origin']==='web'?'Catálogo web':$card['delivery']).' · '.e($branch['name']).'</p><strong>'.money((float)$card['total']).'</strong><p>'.e($card['payment']).' · '.$minutes.' min</p><details><summary>Artículos</summary>';foreach($items[$card['origin'].'-'.$card['id']]??[] as $item)echo '<p>'.e($item['quantity'].' × '.$item['product_name']).order_item_details_html($item).'</p>';echo '</details>';
-            if($card['ticket'])echo '<a class="btn btn-light" href="'.e(url('admin/ventas?screen=order&ticket='.(int)$card['ticket'])).'">Ver cuenta</a>';
-            if($may){if($state==='new'&&$card['origin']==='web')echo qa180_order_form($card,'receive','confirmed','Recibir');else{if(!empty($tenant['physical_store_enabled'])&&$card['origin']==='web'&&!$card['ticket']&&in_array($state,['confirmed','preparing','ready','sent'],true))echo qa180_order_form($card,'receive',$state,'Vincular cuenta de caja');$next=['new'=>'confirmed','confirmed'=>'preparing','preparing'=>'ready','ready'=>'sent','sent'=>'delivered'][$state]??null;if($next)echo qa180_order_form($card,'status',$next,qa180_order_states()[$next]);}if($card['origin']==='web'&&in_array($state,['new','confirmed','preparing','ready'],true))echo qa180_order_form($card,'status','cancelled','Cancelar');}
-            if($card['origin']==='web'&&$state==='ready'&&in_array($card['delivery'],['delivery','coordinated'],true)&&r3_report_can($app,$user,$tenant,'express'))echo '<a class="btn" href="'.e(url('admin/express?order='.(int)$card['id'])).'">Publicar / asignar Express</a>';echo '</article>';}
-        echo '</section>';}
-    echo '</div>';admin_shell_end();
+    qa180_board_render($app,$user,$tenant,$branch,$section);
 }
+
 function qa180_order_form(array $card,string $action,string $status,string $label):string {return '<form method="post">'.csrf_field().pos_hidden_148('origin',$card['origin']).pos_hidden_148('id',$card['id']).pos_hidden_148('revision',$card['revision']).pos_hidden_148('action',$action).pos_hidden_148('status',$status).'<button class="btn btn-light">'.e($label).'</button></form>';}

@@ -1,4 +1,16 @@
-# Informe QA · FISITAAP 1.8.0-R7
+# Informe QA · FISITAAP 1.8.0-R8
+
+## Preparación y asignación de Express · R8
+
+El tablero usa tres columnas adaptables, con contador, cliente, artículos, tiempo, total y acciones principales: Preparar, Preparado y Asignar a Express. Preparar recibe el pedido y comienza la preparación en una operación. Retiro/mesas/venta rápida usan Entregar. Más opciones conserva acceso a cuenta/cancelación. Los finalizados y los Express activos salen de preparación; estos últimos continúan en Express pendientes. El filtro se aplica antes del límite de 200 por origen y los artículos se obtienen por lote.
+
+La asignación ofrece liberar a afiliados autorizados de la sucursal o seleccionar un afiliado directamente. Revalida permisos vigentes de pedidos/cocina y Express, módulos, negocio/sucursal, afiliación y ocupación del motorizado. El servidor realiza publicación y asignación en la transacción del pedido; un fallo directo no deja un trabajo liberado. Un reintento no cambia el motorizado, monto o PIN de una entrega activa. Se conserva la aceptación exclusiva y el PIN de confirmación del portal. Las demos no se conectan con motorizados reales.
+
+Los Express de caja se vinculan a una solicitud de entrega y a su cuenta original mediante los campos/tablas existentes. Copian cliente, dirección, artículos e importes sin registrar otra venta, cobrar ni descontar inventario. Los cobros parciales permanecen en la misma cuenta. Una cancelación sin cobros devuelve la reserva POS una sola vez; con cobros se rechaza. El tablero y pendientes evitan duplicar la tarjeta vinculada. La referencia de entrega POS se excluye de solicitudes web/historial de compras web; sus cobros se conservan en ventas registradas.
+
+Durante QA se detectó que el CAST numérico usado al inicializar order_sequences fallaba en SQL estricto después de crear una referencia POS-* aun existiendo la secuencia. Las tres rutas ahora convierten solo referencias numéricas dentro de CASE. Se prueba la creación de pedidos web tras las asignaciones de caja.
+
+Evidencia nueva: QA-KANBAN-R8.json (14 grupos: flujo HTTP, transacciones, permisos, cobros, inventario y cinco tamaños de Chromium), QA-ACTUALIZADOR-R8.json (7 grupos de instalación sobre R7 con negocios 179/180 y turno abierto), QA-PERMISOS-ZIP-R8.json (2 extracciones reales 644/755 en Apache sin privilegios) y QA-SINTAXIS-R8.json (74 PHP del ZIP y JavaScript). Los resultados y cantidades están en los JSON de cada ejecución. El manifest actual enumera 116 archivos funcionales en releases/1.8.0-r8. No se accedió al hosting ni se probó impresión física; los instaladores nativos siguen en 1.8.0. Las verificaciones R7 y anteriores siguientes son históricas.
 
 ## Bienvenida, pedidos consecutivos y coherencia de Express · R7
 
@@ -67,7 +79,7 @@ Pruebas específicas de R4 en PHP/MariaDB y Chromium, siempre con registros fict
 - **QA-SINTAXIS-R4.json:** los 71 archivos PHP del paquete pasan sintaxis con PHP8.3 y el JavaScript nuevo pasa `node --check`.
 - **QA-PUBLICO-R4.json:** regresión del ZIP exacto en portada y La Ventanita, nueve anchos, títulos/botones, diseño/logo, catálogo, negocio pendiente y tema administrativo.
 
-R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. El manifest de R4 enumeraba 115 archivos funcionales en releases/1.8.0-r4; MANIFEST-ARCHIVOS.json corresponde ahora a los 115 archivos de R7.
+R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. El manifest de R4 enumeraba 115 archivos funcionales en releases/1.8.0-r4; MANIFEST-ARCHIVOS.json corresponde ahora a los 116 archivos de R8.
 
 ## Corrección visual · R3 · 14 de octubre de 2026
 
@@ -130,7 +142,7 @@ Se separan los tiempos PHP de proceso/red; no se incluye el retraso de 500 ms de
 
 schema180.php agrega las tablas 180 de cajas, colas de impresión, dinero, borradores, asignaciones de modificadores, mesas vinculadas, usos de cupón, pedidos vinculados, listas compartidas y operaciones idempotentes, y los campos/índices de los módulos relacionados. Se ejecuta por publicación explícita, fuera de las consultas normales. Cada negocio tiene un estado independiente en fisitaap_tenant_updates180, consultado por clave primaria y almacenado en memoria durante la solicitud. La conversión de modificadores, cajas, mesas y roles se limita al negocio que activa y su versión cambia al final de la transacción. No hay DDL durante esa activación individual. Se conservan tablas y registros anteriores.
 
-MANIFEST-ARCHIVOS.json enumera los 115 archivos funcionales instalados en R4 y su SHA-256. Native: desktop/ y android/ contienen el motor compartido, protección de vistas/credenciales, persistencia, impresión y recursos 1.8.0. El ZIP evita config.php, claves privadas, SQL y archivos cargados del negocio.
+El manifest histórico de R4 enumeraba 115 archivos; MANIFEST-ARCHIVOS.json corresponde a los 116 archivos de R8 y su SHA-256. Native: desktop/ y android/ contienen el motor compartido, protección de vistas/credenciales, persistencia, impresión y recursos 1.8.0. El ZIP evita config.php, claves privadas, SQL y archivos cargados del negocio.
 
 ## Revisión de las solicitudes
 
