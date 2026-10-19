@@ -35,13 +35,14 @@ function qa180_order_receive(App $app,array $tenant,array $actor,int $id,bool $a
         pos_recalculate_148($app,$ticket);$copied=$app->one('SELECT total FROM pos_tickets WHERE id=?',[$ticket]);if(pos_cents_148($copied['total'])!==pos_cents_148($order['total']))throw new DomainException('El total del pedido requiere revisión antes de recibirlo.');
         $app->exec('INSERT INTO fisitaap_order_receipts180(tenant_id,branch_id,order_id,ticket_id,received_by) VALUES(?,?,?,?,?)',[$tenant['id'],$branch['id'],$id,$ticket,$automatic?null:$actor['id']]);
         $app->exec('UPDATE orders SET status=?,revision180=revision180+1 WHERE id=?',[$status,$id]);
+        if(op180_ready($app))op180_event($app,$order,'confirmed','Pedido aceptado por el vendedor; comanda enviada.',(int)$actor['id']);
         if($newOrder)qa180_print_commands($app,$tenant,$branch,$actor,$ticket,$newIds,'web-order-'.$id.'-command');
         qa180_audit($app,$actor,'web_order_receive','order',$id,($automatic?'Recibió automáticamente':'Recibió').' el pedido web #'.$order['order_number'].'; abrió una cuenta sin repetir el inventario');
         if($owns)$app->db->commit();return $ticket;
     }catch(Throwable $error){if($owns&&$app->db->inTransaction())$app->db->rollBack();throw $error;}
 }
 function qa180_order_auto_receive(App $app,array $tenant,array $branch,int $id):void {
-    if(!empty($branch['web_order_acceptance']))return;
+    if(op180_ready($app)||!empty($branch['web_order_acceptance']))return;
     $actor=$app->one('SELECT * FROM users WHERE tenant_id=? AND role="tenant_admin" AND is_active=1 ORDER BY id LIMIT 1',[$tenant['id']]);if(!$actor)throw new DomainException('El negocio debe tener un dueño activo para recibir pedidos automáticamente.');
     qa180_order_receive($app,$tenant,$actor,$id,true);
 }
@@ -53,6 +54,7 @@ function qa180_order_prepaid(App $app,array $tickets):int {
     }return $remaining;
 }
 function qa180_order_before_status(App $app,array $order,string $status,int $actor):void {
+    if($status==='cancelled')op180_require_cancel($app,$order,$actor);
     $receipt=$app->one('SELECT ticket_id FROM fisitaap_order_receipts180 WHERE order_id=? AND tenant_id=?',[$order['id'],$order['tenant_id']]);if(!$receipt)return;
     $ticket=$app->one('SELECT * FROM pos_tickets WHERE id=? FOR UPDATE',[$receipt['ticket_id']]);
     if($status==='cancelled'){
@@ -107,7 +109,7 @@ function qa180_orders(App $app,array $user,array $tenant,string $section):void {
         }catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();flash('error',$error instanceof PDOException?'No se completó el cambio. Revisa el pedido antes de repetir.':$error->getMessage());}
         redirect(url('admin/'.$section));
     }
-    qa180_board_render($app,$user,$tenant,$branch,$section);
+    if(op180_ready($app))op180_orders_list($app,$user,$tenant,$branch,$section);else qa180_board_render($app,$user,$tenant,$branch,$section);
 }
 
 function qa180_order_form(array $card,string $action,string $status,string $label):string {return '<form method="post">'.csrf_field().pos_hidden_148('origin',$card['origin']).pos_hidden_148('id',$card['id']).pos_hidden_148('revision',$card['revision']).pos_hidden_148('action',$action).pos_hidden_148('status',$status).'<button class="btn btn-light">'.e($label).'</button></form>';}

@@ -1,0 +1,8 @@
+{
+  "passed": 2,
+  "checks": [
+    "another seller opens a table: the existing floor button becomes occupied within polling, opens its refreshed account dialog and never navigates",
+    "live updates preserve an actively edited quantity, apply after blur, and refreshed plus buttons submit once with the current revision"
+  ],
+  "environment": "fictional real PHP/MariaDB/Chromium; no production"
+}

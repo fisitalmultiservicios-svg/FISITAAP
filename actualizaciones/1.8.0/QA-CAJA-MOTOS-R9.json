@@ -1,0 +1,12 @@
+{
+  "passed": 6,
+  "checks": [
+    "real bearer-device web authorization includes only approved local users and current permissions for immediate native preparation; cash shift opens on its assigned register",
+    "two actual cash sales include their entire delivery fee in daily cash; a 25% affiliate earns250 and an all-fee affiliate earns1000; changing terms never reprices an already assigned delivery",
+    "cash cut subtracts only from its actual native shift once; a bank cut subtracts only from the selected bank and leaves daily cash unchanged",
+    "POS Express fee and Maps survive delivery linking with exact subtotal/tax/delivery/total; its dedicated fee line is not duplicated and justified cancellation remains on the same account",
+    "custom-role cancellation is denied without delete, succeeds with explicit delete and justification, and permission changes take effect without another login",
+    "real cash close reconciles full delivery receipts minus only the cash driver payout with zero difference"
+  ],
+  "environment": "real fictional PHP/MariaDB device API and money ledger; no actual banking, cash, printer or production"
+}

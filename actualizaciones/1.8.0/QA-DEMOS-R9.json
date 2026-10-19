@@ -1,0 +1,9 @@
+{
+  "passed": 3,
+  "checks": [
+    "tienda: two SINPE demo orders without reload have distinct IDs/PIN and private proof, cross-business lookup is denied and logout removes the clone plus proofs",
+    "restaurante: two SINPE demo orders without reload have distinct IDs/PIN and private proof, cross-business lookup is denied and logout removes the clone plus proofs",
+    "real fictional business and both demo template inventories remain unchanged"
+  ],
+  "environment": "fictional PHP/MariaDB/Chromium; no external services"
+}

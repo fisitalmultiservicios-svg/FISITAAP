@@ -110,7 +110,7 @@ function qa180_updates_page(App $app,bool $master):void {
     }
     $ready=$app->one('SELECT `value` FROM settings WHERE `key`="qa180_rollout"');$published=($ready['value']??'0')==='1';
     admin_shell_start('Actualizar sistema',$user,$tenant,'actualizar-sistema');
-    echo '<section class="card admin-card"><h1>Actualizar sistema</h1><p>Versión disponible: <strong>1.8.0</strong>. Cada negocio elige su momento para activar los cambios.</p>';
+    echo '<section class="card admin-card"><h1>Actualizar sistema</h1><p>Versión disponible: <strong>1.8.0-R9 · Windows 1.8.1</strong>. Cada negocio elige su momento para activar los cambios.</p>';
     if($message)echo '<p class="alert alert-success" role="status">'.e($message).'</p>';
     if($error)echo '<p class="alert alert-error" role="alert">'.e($error).'</p>';
     if($master){
@@ -126,10 +126,10 @@ function qa180_updates_page(App $app,bool $master):void {
             echo '</select></label><label><input type="checkbox" name="ready" value="yes" required> Este negocio sincronizó sus cajas, cerró sus turnos y actualizó Windows/Android.</label><button class="btn">Actualizar el negocio seleccionado</button></form>';
         }
     }elseif(!$published)echo '<p>La publicación todavía está en preparación. El administrador de la plataforma debe completarla.</p>';
-    elseif(qa180_active($app,(int)$tenant['id']))echo '<p class="alert alert-success">Tu negocio ya está actualizado a 1.8.0.</p>';
+    elseif(qa180_active($app,(int)$tenant['id']))echo '<p class="alert alert-success">Tu negocio ya está actualizado a 1.8.0.</p><p><a class="btn btn-light" href="https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.1-Windows-x64.exe">Descargar Windows 1.8.1</a></p><p>Actualiza Windows sobre la instalación actual y prepara el acceso local antes de desconectarte. Conserva los datos locales.</p>';
     else{
         $blockers=qa180_update_blockers($app,(int)$tenant['id']);
-        echo '<p>Tu negocio continúa en 1.7.9. Puedes seguir trabajando y volver aquí cuando puedas actualizar.</p><p><a class="btn btn-light" href="https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.0-Windows-x64.exe" target="_blank" rel="noopener">Descargar Windows</a> <a class="btn btn-light" href="https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk" target="_blank" rel="noopener">Descargar Android</a></p><ol><li>Sincroniza cada caja y confirma que no quedan ventas pendientes.</li><li>Cobra o cancela las cuentas abiertas y cierra los turnos de todas las sucursales de este negocio.</li><li>Instala los paquetes Windows/Android 1.8.0 conservando sus datos.</li></ol>';
+        echo '<p>Tu negocio continúa en 1.7.9. Puedes seguir trabajando y volver aquí cuando puedas actualizar.</p><p><a class="btn btn-light" href="https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.1-Windows-x64.exe" target="_blank" rel="noopener">Descargar Windows</a> <a class="btn btn-light" href="https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk" target="_blank" rel="noopener">Descargar Android</a></p><ol><li>Sincroniza cada caja y confirma que no quedan ventas pendientes.</li><li>Cobra o cancela las cuentas abiertas y cierra los turnos de todas las sucursales de este negocio.</li><li>Instala Windows 1.8.1 y Android 1.8.0 conservando sus datos.</li></ol>';
         if($blockers){echo '<h2>Pendiente en este negocio</h2><ul>';foreach($blockers as $line)echo '<li>'.e($line).'</li>';echo '</ul><a class="btn btn-light" href="'.e(url('admin/turnos')).'">Abrir turnos</a>';}
         echo '<form method="post">'.csrf_field().'<input type="hidden" name="action" value="activate"><label><input type="checkbox" name="ready" value="yes" required> Todas las cajas de mi negocio están sincronizadas, sin ventas pendientes, con sus turnos cerrados y sus aplicaciones actualizadas.</label><button class="btn" '.($blockers?'disabled':'').'>Actualizar sistema</button></form>';
     }

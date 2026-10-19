@@ -20,6 +20,7 @@ require_once __DIR__.'/reports180.php';
 require_once __DIR__.'/settings180.php';
 require_once __DIR__.'/loyalty180.php';
 require_once __DIR__.'/kpis180.php';
+require_once __DIR__.'/operaciones180.php';
 
 function qa180_ui_context(App $app):array {
     $user=current_user();$context=['base'=>url(),'enabled'=>true,'user_id'=>(int)($user['id']??0),'nonce'=>$_SESSION['native_nonce180']??null,'native'=>null];
@@ -49,6 +50,14 @@ function qa180_dispatch(App $app,string $path):void {
     }
     if(!qa180_active($app))return;
     if(preg_match('~(?:^|/)blog(?:/|$)|^(?:admin|master)/posts(?:/|$)~',$path)){http_response_code(404);simple_error('Página no disponible','Vuelve al catálogo o al inicio.');exit;}
+    if(op180_ready($app)){
+        if($path==='api/live180')op180_live($app);
+        if($path==='api/incoming180')op180_incoming($app);
+        if($path==='api/delivery-addresses180')op180_address_lookup($app);
+        if($path==='api/order-proof180'){if(is_post())op180_proof_upload($app);else op180_proof_view($app);}
+        if($path==='admin/pedido-detalle180'){op180_order_detail($app);exit;}
+        if($path==='pedido/seguimiento'){op180_order_detail($app,true);exit;}
+    }
     if($path==='logout'){
         if(!is_post())redirect(url('owner-login'));verify_csrf();$user=current_user();if($user)audit($app,$user['tenant_id']?(int)$user['tenant_id']:null,(int)$user['id'],'logout','user',(int)$user['id']);$_SESSION=[];session_regenerate_id(true);redirect(url('owner-login'));
     }

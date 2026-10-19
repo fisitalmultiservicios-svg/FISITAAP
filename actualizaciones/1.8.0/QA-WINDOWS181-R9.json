@@ -1,0 +1,21 @@
+{
+  "version": "1.8.1",
+  "node_tests": {
+    "passed": 59,
+    "failed": 0,
+    "command": "node --test desktop/test/*.test.js qa/local_deep.test.js qa/windows_print.test.js"
+  },
+  "regression": "published R8 native server reproduces missing cached user list; corrected server passes offline-sale/restart/once-only-sync and rejects invalid approval list atomically",
+  "installer": "FISITAAP-Escritorio-1.8.1-Windows-x64.exe",
+  "bytes": 145303974,
+  "sha256": "765a0231e0f6b043535434ad5eef9c356b2d5525c091da6a31411a354c34e3f8",
+  "asar_matches": [
+    "server.js",
+    "workspace.js",
+    "public/app.js",
+    "public/desktop-shell.js",
+    "public/desktop-shell.html",
+    "local-store.js"
+  ],
+  "environment": "Linux Node, mocked upstream network with real persistent local store; Electron44.5.1/electron-builder26.15.3 builds WindowsNSIS; no physical Windows installation, printer, drawer or real network-disconnect testing"
+}

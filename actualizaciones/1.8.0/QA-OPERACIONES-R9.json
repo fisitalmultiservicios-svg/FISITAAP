@@ -1,0 +1,14 @@
+{
+  "passed": 8,
+  "checks": [
+    "guest name/phone creates a delivery contact and principal Maps address without authenticating an account; retry preserves one order/stock reservation and the same client PIN; direct configuration does not print before acceptance",
+    "same business/phone reuses its contact, lists multiple Maps addresses and uses the selected address; a foreign address or another business phone lookup does not expose that customer",
+    "SINPE requires a real image tied to this browser/business/operation; image is optimized and denied as a public file; another business or another order cannot reuse/read it",
+    "seller receives through the POS notification endpoint; duplicate acceptance makes one cash account and one durable kitchen command; live version changes without a page refresh",
+    "cancellation requires owner or an explicit custom-role delete grant AND a justification; cashier without grant and owner without reason cannot cancel; reason/user/time are retained",
+    "driver percentage is fixed at acceptance; store corrects location and resolves an incident with notes; published client PIN completes only once; current state and full timestamped timeline are available through private tracking",
+    "affiliate cut pays only delivered/unpaid earnings from the chosen treasury account; retry is once-only and a second cut cannot pay the same job; driver retains paid history",
+    "administration provides principal cash, petty cash, bank, other cash boxes and other accounts; affiliation and delivery history pages render with current states and trace links"
+  ],
+  "environment": "fictional fisitaap_r2_test; real PHP8.3/MariaDB HTTP, no real customers, banking, printers or physical devices"
+}

@@ -1,5 +1,9 @@
 # FISITAAP
 
+Actualización actual: **web 1.8.0-R9 y Windows 1.8.1**. [Descargas, guía y resultados de QA](descargas/1.8.0/README.md).
+
+Las siguientes referencias se conservan como historial.
+
 La entrega actual para un hosting nuevo es **1.7.9-R3**, con mudanza selectiva de La Ventanita y demos aislados por visitante.
 
 [Descargar archivos y guía para el nuevo cPanel](actualizaciones/mudanza-1.7.9-r3/README.md)

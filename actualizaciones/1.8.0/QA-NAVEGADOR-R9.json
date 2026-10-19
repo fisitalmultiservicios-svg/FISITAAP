@@ -1,0 +1,34 @@
+{
+  "passed": 5,
+  "checks": [
+    "mobile guest checkout uses permitted current geolocation, replaces reference with Maps, requires/uploads SINPE image and shows a persistent four-digit delivery PIN before WhatsApp",
+    "POS web-order badge opens the inbox and accepts/prints once; another seller view changes from New to Accepted without navigating or refreshing",
+    "remote preparation updates the live POS kitchen state and action revision; the refreshed order row keeps its Express dialog working",
+    "driver acceptance reaches seller and private customer tracking automatically; assigned driver can open the actual Maps location",
+    "orders is a normal state list at desktop/tablet/mobile widths, with contained table scroll and no JavaScript errors across checkout, POS, driver and tracking"
+  ],
+  "layouts": [
+    {
+      "width": 1366,
+      "scroll": 1366,
+      "columns": 0
+    },
+    {
+      "width": 900,
+      "scroll": 900,
+      "columns": 0
+    },
+    {
+      "width": 768,
+      "scroll": 768,
+      "columns": 0
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "columns": 0
+    }
+  ],
+  "page_errors": [],
+  "environment": "real fictional PHP/MariaDB and Chromium; geolocation simulated with browser permission, no real Google API, banking, printers or physical Windows"
+}

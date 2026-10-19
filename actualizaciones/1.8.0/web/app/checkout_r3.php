@@ -21,7 +21,7 @@ function r3_checkout_previous(App $app,array $tenant,array $user,array $raw,bool
     foreach($app->all('SELECT * FROM order_items WHERE order_id=? ORDER BY id',[$order['id']]) as $line){$message.=$line['quantity'].' × '.$line['product_name'].' — '.money((float)$line['line_subtotal']+(float)$line['line_tax'])."\n";foreach(json_decode((string)$line['options_json'],true)?:[] as $option)$message.='  '.($option['group']??'').': '.$option['name']."\n";if($line['notes'])$message.='  Nota: '.$line['notes']."\n";}
     $message.='TOTAL: '.money((float)$order['total'])."\nPago: ".$order['payment_method'];$message.=r3_order_gift_summary($app,(int)$order['id'],(float)$order['total']);
     if($locked)$app->db->commit();$phone=preg_replace('/\D/','',(string)($branch['whatsapp']?:$tenant['whatsapp']));$demo=is_demo_tenant_v12($tenant);
-    json_response(['ok'=>true,'duplicate'=>true,'order'=>$order['order_number'],'order_id'=>(int)$order['id'],'demo'=>$demo,'store'=>$tenant['name'].' · '.$branch['name'],'preview'=>$demo?$message:null,'whatsapp'=>$demo?null:'https://wa.me/'.$phone.'?text='.rawurlencode($message)]);
+    json_response((function_exists('op180_ready')&&op180_ready($app)?op180_checkout_result($app,$order):[])+['ok'=>true,'duplicate'=>true,'order'=>$order['order_number'],'order_id'=>(int)$order['id'],'demo'=>$demo,'store'=>$tenant['name'].' · '.$branch['name'],'preview'=>$demo?$message:null,'whatsapp'=>$demo?null:'https://wa.me/'.$phone.'?text='.rawurlencode($message)]);
 }
 function r3_checkout_record(App $app,array $tenant,array $user,array $raw,int $order): void
 {

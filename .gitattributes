@@ -5,3 +5,4 @@
 android/gradlew text eol=lf
 android/gradlew.bat text eol=crlf
 descargas/1.8.0/FISITAAP-Escritorio-1.8.0-Windows-x64.exe filter=lfs diff=lfs merge=lfs -text
+descargas/1.8.0/FISITAAP-Escritorio-1.8.1-Windows-x64.exe filter=lfs diff=lfs merge=lfs -text

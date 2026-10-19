@@ -124,6 +124,7 @@ function pos_open_148(App $app,array $tenant,array $user,array $branch,string $t
             if($tableId)$app->exec('INSERT IGNORE INTO fisitaap_ticket_tables180(tenant_id,branch_id,ticket_id,table_id) VALUES(?,?,?,?)',[$tenant['id'],$branch['id'],$id,$tableId]);
             if($register){$shift=$app->one('SELECT id FROM pos_shifts WHERE tenant_id=? AND register_id=? AND user_id=? AND status="open"',[$tenant['id'],$register['id'],$user['id']]);$app->exec('UPDATE pos_tickets SET register_id=?,shift_id=? WHERE id=?',[$register['id'],$shift['id']??null,$id]);}
         }
+        if(op180_ready($app)&&$type==='express'){$fee=r2_number($_POST['delivery_fee']??0,0,999999999);$maps=op180_maps((string)($_POST['maps_url']??''));$app->exec('UPDATE pos_tickets SET delivery_fee180=?,maps_url180=? WHERE id=?',[$fee,$maps?:null,$id]);if($fee>0)$app->exec('INSERT INTO pos_ticket_items(ticket_id,product_name,quantity,unit_price,line_subtotal,kitchen_status) VALUES(?,"Entrega Express",1,?,?,"served")',[$id,$fee,$fee]);pos_recalculate_148($app,$id);}
         if($openHash)qa180_open_record($app,$tenant,$branch,$user,$key,$openHash,$id);audit($app,(int)$tenant['id'],(int)$user['id'],'pos_open_'.$type,'pos_ticket',$id);if($ownsTransaction)$app->db->commit();return $id;
     }catch(Throwable $e){if($ownsTransaction&&$app->db->inTransaction())$app->db->rollBack();throw $e;}
 }
@@ -131,6 +132,7 @@ function pos_edit_148(App $app,array $tenant,array $user,array $branch,int $id,b
     verify_csrf();$action=(string)($_POST['action']??'');$ownsTransaction=!$app->db->inTransaction();if($ownsTransaction)$app->db->beginTransaction();try{
         if(qa180_active($app)){$permission=($action==='void'||($action==='quantity'&&(float)($_POST['quantity']??-1)===0.0))?'delete':'write';qa180_permission($app,$user,'ventas',$permission);$app->one('SELECT id FROM branches WHERE id=? AND tenant_id=? FOR UPDATE',[$branch['id'],$tenant['id']]);}
         $t=pos_ticket_get_148($app,$tenant,$branch,$id,true);
+        if(op180_ready($app)&&$action==='void'){if(!op180_can_cancel($app,$user,'ventas'))throw new DomainException('Solo el administrador o un rol con permiso explícito puede anular pedidos.');if(mb_strlen(trim((string)($_POST['cancel_reason']??'')))<8)throw new DomainException('Escribe la justificación de la anulación (mínimo 8 caracteres).');}
         if(in_array($t['status'],['paid','void','merged'],true))throw new RuntimeException('Esta cuenta ya está cerrada.');
         if((int)($_POST['revision']??-1)!==(int)$t['revision'])throw new RuntimeException('La cuenta cambió. Recarga y revisa los datos.');
         if(qa180_active($app)&&$t['source_order_id']&&in_array($action,['add_item','quantity','edit_item','discount','coupon','customer'],true))throw new DomainException('Este consumo conserva el pedido web original. Registra artículos adicionales en otra cuenta.');

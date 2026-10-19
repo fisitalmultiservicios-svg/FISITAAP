@@ -1,5 +1,6 @@
 Options -Indexes
 RewriteEngine On
+RewriteRule ^uploads/private-proofs(?:/|$) - [F,L]
 RewriteRule ^demo/s/[a-f0-9]{32}/((?:assets|uploads)/.*)$ $1 [L]
 RewriteCond %{HTTP_HOST} ^www\.fisitaap\.com$ [NC]
 RewriteRule ^ https://fisitaap.com%{REQUEST_URI} [R=301,L]

@@ -8,7 +8,7 @@ function webBase(value) {
   return url.origin+url.pathname.replace(/\/+$/,'');
 }
 class DesktopWorkspace {
-  constructor({electron,service,localURL=service.url,cachedWebURL=null,onWebURL=()=>{},fetch:request=fetch,monitorMs=10000}) {
+  constructor({electron,service,localURL=service.url,cachedWebURL=null,onWebURL=()=>{},fetch:request=fetch,monitorMs=2000}) {
     this.electron=electron;this.service=service;this.localURL=localURL;this.request=request;this.onWebURL=onWebURL;
     this.state={mode:'local',available:false,configured:false,centralReady:true,pending:0,webUrl:cachedWebURL?webBase(cachedWebURL):null,message:'Comprobando la conexión…'};
     this.closed=false;this.refreshing=null;this.webLoaded=false;this.webFailed=false;this.notice='';this.connectionError='';this.action=0;this.generation=0;
@@ -86,7 +86,7 @@ class DesktopWorkspace {
     this.state.mode=mode;this.resize();this.publish();if(mode==='local'&&this.state.primary)this.localView.webContents.send('fisitaap:resume-local');
   }
   async setup() {
-    if(this.localURL===this.service.url)return {configured:!!this.service.store.data.snapshot,primary:this.service.isPrincipal?.()===true,webUrl:this.service.store.data.connection?.url||null,pending:this.service.store.data.sales.filter(s=>!s.synced).length};
+    if(this.localURL===this.service.url)return {offlineReady:this.service.isPrincipal?.()===true&&!!this.service.store.data.snapshot?.cash_state?.register&&this.service.store.data.snapshot?.users?.some(u=>u.permissions?.shift||this.service.store.data.shifts.some(h=>h.user_id===u.id&&!h.closed_at))===true,configured:!!this.service.store.data.snapshot,primary:this.service.isPrincipal?.()===true,webUrl:this.service.store.data.connection?.url||null,pending:this.service.store.data.sales.filter(s=>!s.synced).length};
     const response=await this.request(this.localURL+'/api/setup',{signal:AbortSignal.timeout(5000)}),out=await response.json();
     if(!response.ok||!out.ok)throw new Error('El equipo central no responde.');
     return out;
@@ -97,7 +97,7 @@ class DesktopWorkspace {
     this.refreshing=(async()=>{
       const generation=this.generation,wasAvailable=this.state.available;
       try{
-        const info=await this.setup();if(generation!==this.generation)return this.snapshot();this.state.primary=this.localURL===this.service.url&&info.primary===true;this.state.centralReady=true;this.state.configured=!!info.configured;this.state.pending=Number.isSafeInteger(info.pending)?info.pending:0;
+        const info=await this.setup();if(generation!==this.generation)return this.snapshot();this.state.primary=this.localURL===this.service.url&&info.primary===true;this.state.offlineReady=info.offlineReady===true;this.state.centralReady=true;this.state.configured=!!info.configured;this.state.pending=Number.isSafeInteger(info.pending)?info.pending:0;
         if(info.webUrl){const url=webBase(info.webUrl);if(url!==this.state.webUrl){this.state.webUrl=url;this.webLoaded=false;this.webFailed=false;this.onWebURL(url);}}
       }catch{this.state.centralReady=false;}
       if(this.state.webUrl){

@@ -7,7 +7,7 @@
     const form=dispatch.querySelector('form'),drivers=dispatch.querySelector('[data-dispatch-drivers]');
     let opener;
     const mode=()=>{const direct=form.elements.dispatch_mode.value==='driver';drivers.hidden=!direct;form.elements.driver_id.disabled=!direct;form.elements.driver_id.required=direct;};
-    for(const button of document.querySelectorAll('[data-board-dispatch]'))button.addEventListener('click',()=>{
+    document.addEventListener('click',event=>{const button=event.target.closest('[data-board-dispatch]');if(!button)return;
       opener=button;form.reset();
       for(const name of ['origin','id','revision'])form.elements[name].value=button.dataset[name];
       form.elements.payout.value=Number(button.dataset.payout||0).toFixed(2);

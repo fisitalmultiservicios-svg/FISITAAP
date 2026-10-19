@@ -1,3 +1,50 @@
+# Informe QA · FISITAAP web 1.8.0-R9 / Windows 1.8.1
+
+Fecha: 19 de octubre de2026. Revisión de las 16 solicitudes y sus aclaraciones. Datos ficticios, PHP 8.3/Apache/MariaDB 11.4, Chromium y Node. No hubo acceso al cPanel ni a datos de producción.
+
+| Solicitud | Resultado y comprobación |
+|---|---|
+|1. Actualización automática | Consulta de revisión por negocio cada 2 s en pestañas visibles; trae fragmentos solo al cambiar. Vendedor, moto, seguimiento privado, mesas y POS actualizan sin navegación. Respeta campos y diálogos en edición. Sesiones/permisos vigentes se comprueban en servidor. |
+|2. Señas y Google Maps | Se sustituye señas por enlace Maps; ubicación actual con permiso del navegador y búsqueda externa con enlace compartido. HTTPS y permiso requeridos para geolocalización; no se configura Places ni API de pago. URLs validadas, sin descargar enlaces desde servidor. |
+|3. Nombre/teléfono/direcciones | Contacto por teléfono normalizado y negocio. Reutiliza contacto, ofrece varias direcciones y Maps; la primera queda principal. Dirección ajena rechazada. |
+|4. Cancelación | Administrador o permiso explícito de eliminación, leído de nuevo en servidor, y justificación obligatoria. Usuario, razón y hora quedan en bitácora/auditoría. Conserva bloqueo si ya existen cobros. |
+|5. Pedidos | Lista normal con filtros y estado actual, sin columnas Kanban. Diseño probado en1366/900/768/390px, desplazamiento de tabla contenido. |
+|6. Venta local | Se reprodujo en código Windows 1.8.0 una lista de usuarios vacía al vincular antes de asignar caja/cajero. WebR9 devuelve lista aprobada bajo autorización nativa; Windows 1.8.1 la guarda antes de dar por autorizada la sesión. Indicador de preparación y botón Caja local. Regresión: venta sin red, reinicio y sincronización única. Conserva principal único. |
+|7. SINPE | Imagen obligatoria tanto en formulario como servidor, ligada a navegador/negocio/intento. Reintento seguro. Optimización WebP y archivo privado; roles autorizados pueden verla. No confirma un abono bancario automáticamente. |
+|8. Comanda al aceptar | Pedido nuevo no imprime automáticamente. Recepción por vendedor crea una cuenta/comanda una sola vez, aunque se reenvíe la aceptación. |
+|9. Aviso POS | Botón Pedidos web con contador en Venta rápida/Mesas y caja; abre bandeja y permite aceptar. Se usa la cola de impresión directa existente. |
+|10. Pagos moto | Tarifa completa o porcentaje fijado al asignar. Deuda solo tras entrega/PIN. Historial en moto; cortes seleccionan entregas y cuenta de salida, con reintentos sin doble pago. Prueba real ficticia: ventas con envío4260, corte efectivo250, caja4010; corte banco1000 desde3000 deja2000 y caja4010. Cierre con diferencia0. |
+|11. Cuentas | Se extendió Administración → Cuentas de dinero existente: principal, chica, banco/SINPE, otra caja y otra cuenta. Efectivo de turno y saldo de cuenta nombrada son distintos. |
+|12. Maps por dirección | Ficha de cliente permite varias direcciones, Maps individual y principal. Cuenta de cliente existente conserva direcciones y puede agregar Maps. |
+|13. Acceso automático | Sustituido por tu aclaración: comprar relaciona/crea el contacto mediante teléfono; no crea contraseña con el teléfono ni inicia sesión en una cuenta existente. No concede acceso al historial por conocer un número. |
+|14. Historial/bitácora | Situación actual y detalle con acciones y tiempos registrados realmente. Cambios nuevos generan eventos en la misma transacción. No inventa tiempos de pedidos anteriores. |
+|15. PIN | Confirmación del pedido muestra PIN y enlace privado de seguimiento para conservarlo. PIN cifrado en BD con la clave existente; motorizado necesita el mismo PIN para entregar. Los PIN históricos con hash no se reemplazan al consultar. |
+|16. Incidencias | Tienda abre detalle, corrige dirección/Maps con motivo y resuelve incidencia con solución; continúa con el mismo motorizado en el estado anterior. |
+
+## Evidencia de esta entrega
+
+- QA-OPERACIONES-R9.json:8 grupos HTTP reales con contactos, direcciones, comprobantes, recepción, permisos, incidencia, PIN, pagos y cuentas.
+- QA-CAJA-MOTOS-R9.json:6 grupos de cobro, porcentaje/pago completo, fuente de fondos, permisos explícitos y cierre real ficticio.
+- QA-NAVEGADOR-R9.json:5 grupos de geolocalización simulada, SINPE, bandeja POS, actualizaciones entre sesiones y4 tamaños de lista; sin errores JavaScript.
+- QA-MESAS-VIVO-R9.json:mesa libre→ocupada y diálogo actualizado; cantidad en edición conservada, posterior actualización y botón cantidad funcional con revisión vigente.
+- QA-DEMOS-R9.json:pedidos consecutivos SINPE en ambos demos, aislamiento de negocio y descarte de datos/comprobantes temporales. Las plantillas y La Ventanita ficticia permanecen intactas.
+- QA-ACTUALIZADOR-R9.json:actualización desde el ZIP R8 publicado y su esquema anterior, con negocio 180/179 y turno abierto. Migración aditiva, estados/datos/código anterior/config conservados, reintento, control maestro/CSRF e integridad.
+- QA-PERMISOS-ZIP-R9.json:extracción sobreR8 y carpeta nueva, umask077, ApacheUID33; permisos644/755 sin reparación posterior y archivos privados403.
+- QA-SINTAXIS-R9.json:PHP y JavaScript del paquete final; hashes122 y ausencia de configuración/datos/claves privadas.
+- QA-WINDOWS181-R9.json:59 pruebas Node, instalador generado y comparación de código empaquetado ASAR con fuente revisada. El fallo anterior se reprodujo contra server.js publicado deR8, antes de validar el arreglo.
+
+La consulta periódica es ligera y evita renderizar toda la página si no hubo cambios. No es una garantía de latencia del hosting ni de entrega exactamente en2s si la red/servidor están lentos. En segundo plano se pausa y al volver se consulta.
+
+## Instalación, conservación y límites
+
+El ZIP tiene122 archivos funcionales en releases/1.8.0-r9. No reemplaza config.php, no importa otra BD ni borra datos de negocios. Actualiza primero webR9 y luego Windows 1.8.1 sobre la instalación actual. No cambies app_key ni borres datos locales. Los negocios 179 conservan compatibilidad hasta activación individual; los180 mantienen activación.
+
+No se recalculan trabajos antiguos como nuevas deudas ni se inventan pagos históricos. El portal los identifica para revisión. El comprobante SINPE no es integración bancaria. Las cargas abandonadas sin pedido caducadas por más de 2 días se limpian en lotes al subir otro comprobante; las de pedidos se conservan. Las pruebas desechadas eliminan sus propios comprobantes.
+
+No se probó el instalador en Windows físico, desconexión física, impresoras, cajón, Android físico, servicios externos reales ni rendimiento del cPanel. La prueba local de Windows ejecuta el servidor nativo con red simulada y persistencia real de archivos. El ejecutable conserva appID/directorio de datos; no tiene firma comercial Authenticode. Android no cambia y conserva el APK1.8.0 publicado. La entrega no despliega a producción por sí sola.
+
+Las verificaciones siguientes corresponden a entregas anteriores y se conservan como historial; no se presentan como ejecutadas nuevamente paraR9.
+
 # Informe QA · FISITAAP 1.8.0-R8
 
 ## Preparación y asignación de Express · R8
@@ -21,9 +68,9 @@ Express pendientes consultaba únicamente pos_tickets de tipo express, mientras 
 La bienvenida usa un contenedor de la altura visible, descontando encabezado, controles y márgenes internos. La imagen cubre el área con object-fit:cover, conservando proporción y pudiendo recortar bordes. Un caso a 900px reveló el display:block!important del menú móvil heredado; se resolvió dando altura explícita al contenido de la bienvenida sin modificar los otros paneles. La imagen guardada se conserva.
 
 - QA-USABILIDAD-R7.json: siete grupos con R6 y payload R7. Pedidos consecutivos reales de ambos demos; pérdida de respuesta después de que el servidor guardó el pedido y reintento único; corrección de un formulario inválido sin perder carrito; un solo envío ante dos submits; descarte y plantillas/inventario conservados. Express web presente en pendientes/historial/motorizado, aislamiento de sucursal/negocio, filtro y estados; aceptación/recogida/ruta/PIN por HTTP real, PIN incorrecto rechazado y entrega contada una vez. Ocho vistas de bienvenida maestro/negocio179 en Chromium a1366/900/768/390px con imagen cargada, área restante cubierta y sin desbordamiento horizontal.
-- QA-ACTUALIZADOR-R7.json: siete grupos de instalación sobre R6 publicado con negocios180/179 y turno abierto,115 hashes y conservación de datos/config/uploads/código anterior; control maestro/CSRF/cambios desconocidos, repetición sin duplicados y restauración bloqueada tras publicar.
+- QA-ACTUALIZADOR-R7.json: siete grupos de instalación sobre R6 publicado con negocios 180/179 y turno abierto,115 hashes y conservación de datos/config/uploads/código anterior; control maestro/CSRF/cambios desconocidos, repetición sin duplicados y restauración bloqueada tras publicar.
 - QA-PERMISOS-ZIP-R7.json: dos extracciones sobre R6 y carpeta nueva con umask077/ApacheUID33, sin corregir permisos después de extraer.
-- QA-SINTAXIS-R7.json: los73 PHP del paquete pasan sintaxis con PHP8.3; app.js pasa node --check.
+- QA-SINTAXIS-R7.json: los73 PHP del paquete pasan sintaxis con PHP 8.3; app.js pasa node --check.
 
 Datos, conductores y dinero ficticios. No se modificó el hosting. No cambia el código de aplicaciones Windows/Android ni las integraciones de IA/impresión, cuyas pruebas anteriores se conservan como evidencia histórica. No se presenta esta revisión como un QA nuevo de todas las funciones. No requiere importar una base distinta ni modificar config.php. Los estados operativos de caja ya existentes se conservaron y no se afirma una unificación de todo el modelo histórico de preparación/cobro.
 
@@ -33,10 +80,10 @@ El usuario confirmó que usa Web oficial → Imagen de bienvenida y recibe «Bie
 
 R6 valida los errores de carga dentro del editor de bienvenida, sin modificar el helper general usado por otros formularios. Distingue selección vacía, tamaño rechazado, recepción incompleta, formato inválido y conflicto entre subir/restaurar la predeterminada. Al exceder post_max_size PHP descarta campos y archivos: esa petición se rechaza sin escribir configuración, en lugar de anunciar guardado o presentar una falsa sesión vencida. Las cargas normales siguen exigiendo CSRF y cuenta maestra vigente. El formulario muestra el máximo efectivo (aplicación/PHP y margen multipart), la imagen actual o la ausencia de imagen personalizada. Los cambios se comprueban en base y se guardan junto a su auditoría en una transacción. Los rechazos no crean una auditoría de éxito. El inicio del maestro enlaza al editor y este a la bienvenida publicada; la imagen de la portada pública conserva su configuración independiente.
 
-- QA-CARGA-BIENVENIDA-R6.json: ocho grupos contra R5 publicado y payload R6. Cargas multipart válidas y rechazadas, solicitudes reales de 6/17/25 MiB (límites de aplicación/PHP/POST), conservación de imagen/auditoría, dos imágenes optimizadas con URLs diferentes, maestros y negocios179/180, permisos/CSRF, restablecimiento intencional y Chromium1366/390px con imagen realmente cargada y sin desbordamiento.
-- QA-ACTUALIZADOR-R6.json: siete grupos de instalación sobre R5 publicado, con negocios180/179 y turno abierto; conserva datos, configuración, imágenes y código anterior; verifica115 hashes, rechazo de modificaciones desconocidas, repetición sin duplicados y restauración bloqueada tras publicar.
+- QA-CARGA-BIENVENIDA-R6.json: ocho grupos contra R5 publicado y payload R6. Cargas multipart válidas y rechazadas, solicitudes reales de 6/17/25 MiB (límites de aplicación/PHP/POST), conservación de imagen/auditoría, dos imágenes optimizadas con URLs diferentes, maestros y negocios 179/180, permisos/CSRF, restablecimiento intencional y Chromium1366/390px con imagen realmente cargada y sin desbordamiento.
+- QA-ACTUALIZADOR-R6.json: siete grupos de instalación sobre R5 publicado, con negocios 180/179 y turno abierto; conserva datos, configuración, imágenes y código anterior; verifica115 hashes, rechazo de modificaciones desconocidas, repetición sin duplicados y restauración bloqueada tras publicar.
 - QA-PERMISOS-ZIP-R6.json: dos extracciones reales sobre R5 y en carpeta nueva con umask077/ApacheUID33, sin reparar permisos después de extraer.
-- QA-SINTAXIS-R6.json: los73 PHP del ZIP pasan sintaxis con PHP8.3.
+- QA-SINTAXIS-R6.json: los73 PHP del ZIP pasan sintaxis con PHP 8.3.
 
 Solo datos ficticios. Ventas, turnos, activaciones, versión operativa por negocio y configuración de portada se conservaron. R6 no cambia código nativo ni proveedor de IA: no se presentan como repetidas las pruebas históricas de esos componentes. No se accedió al cPanel ni se instaló el paquete en producción. Si un intento anterior no llegó a guardar una imagen, debe elegirse de nuevo después de instalar; no se inventa ni recupera un archivo que no fue recibido.
 
@@ -50,7 +97,7 @@ Se reprodujo también que la imagen cargada por el maestro se veía en el maestr
 
 - QA-ACCESO-R5.json:6 grupos HTTP, R4 reproducido y R5 corregido; recuperación antes de instalar, sesión/CSRF, maestro, asociación ausente, dueño/colaboradores/clientes y datos conservados.
 - QA-BIENVENIDA-R5.json:5 grupos con carga multipart real, versiones179/180, vista previa, reemplazo de imágenes, Chromium390px, prohibición de edición por dueño y estados/ventas/turnos conservados.
-- QA-ACTUALIZADOR-R5.json:7 grupos sobre R4 publicado con negocio180/179 y turno abierto, archivos/datos/config/uploads preservados, hashes y rechazo de cambios desconocidos.
+- QA-ACTUALIZADOR-R5.json:7 grupos sobre R4 publicado con negocio 180/179 y turno abierto, archivos/datos/config/uploads preservados, hashes y rechazo de cambios desconocidos.
 - QA-PERMISOS-ZIP-R5.json:2 extracciones con umask077/ApacheUID33, sin reparar permisos después.
 - QA-DIAGNOSTICO-BIENVENIDA-D2.json:5 grupos de autorización vigente, errores/fatales simulados, ocultación de claves y transacción de lectura que prohíbe escrituras.
 - QA-SINTAXIS-R5.json: los 73 archivos PHP del ZIP pasan la comprobación de sintaxis con PHP 8.3, incluidos los dos auxiliares de la raíz.
@@ -76,7 +123,7 @@ Pruebas específicas de R4 en PHP/MariaDB y Chromium, siempre con registros fict
 - **QA-FISICHAT-PROVEEDOR-R4.json:** 7 grupos contra un proveedor local por TLS verificado, usando una clave ficticia. Comprueba petición de IA/contexto/historial, límite de tokens/store=false, datos privados del maestro y públicos de tienda, fallo 500 con guía, navegación con la misma sesión mientras tarda la IA, conflicto entre mensajes simultáneos y reset durante la espera. No prueba calidad, precios ni latencia de OpenAI real.
 - **QA-ACTUALIZADOR-R4.json:** 7 grupos sobre R3 publicado, negocios 180/179 y turno abierto. Conserva estado/datos/config/uploads/código R3, rechaza cambios externos, verifica 115 hashes y entrada R4, UI pública/maestro, repetición y bloqueo de restauración después de publicación.
 - **QA-PERMISOS-ZIP-R4.json:** 2 extracciones reales con umask 077/Apache UID33,115 hashes, 644/755, instalador accesible y payload privado403 sin reparar permisos.
-- **QA-SINTAXIS-R4.json:** los 71 archivos PHP del paquete pasan sintaxis con PHP8.3 y el JavaScript nuevo pasa `node --check`.
+- **QA-SINTAXIS-R4.json:** los 71 archivos PHP del paquete pasan sintaxis con PHP 8.3 y el JavaScript nuevo pasa `node --check`.
 - **QA-PUBLICO-R4.json:** regresión del ZIP exacto en portada y La Ventanita, nueve anchos, títulos/botones, diseño/logo, catálogo, negocio pendiente y tema administrativo.
 
 R4 no modifica el motor, instaladores, impresión física ni cálculos de caja. Las pruebas históricas R2/R3 siguientes se conservan y no se presentan como una nueva ejecución completa. No se accedió al hosting ni se ejecutó IA con una clave productiva. El despliegue, velocidad del hosting y equipos físicos requieren comprobación allí. El manifest de R4 enumeraba 115 archivos funcionales en releases/1.8.0-r4; MANIFEST-ARCHIVOS.json corresponde ahora a los 116 archivos de R8.

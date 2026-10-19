@@ -127,7 +127,7 @@ function demo_runtime(App $app,string $token):void {
         redirect(url($user['role']==='customer'?$row['slug'].'/catalogo':'admin'));
     }
     if($path==='')redirect(url($row['slug']));
-    $allowed=$path==='admin'||str_starts_with($path,'admin/')||$path==='account'||str_starts_with($path,'account/')||$path===$row['slug']||str_starts_with($path,$row['slug'].'/')||in_array($path,['api/checkout','api/coupon-preview','api/search-log','api/pos-options','api/pos-quote-r3','api/native/print-test','api/gift-preview'],true);
+    $allowed=$path==='admin'||str_starts_with($path,'admin/')||$path==='account'||str_starts_with($path,'account/')||$path===$row['slug']||str_starts_with($path,$row['slug'].'/')||in_array($path,['api/checkout','api/coupon-preview','api/search-log','api/pos-options','api/pos-quote-r3','api/native/print-test','api/gift-preview','api/live180','api/incoming180','api/delivery-addresses180','api/order-proof180','pedido/seguimiento'],true);
     if(!$allowed)demo_fail('Esta función conecta servicios o cuentas reales y no se ejecuta en la demostración.');
     if(in_array($path,['admin/escritorio','admin/asistente'],true))demo_fail('Puedes probar los menús, las ventas y la impresión de ejemplo. La vinculación de equipos y los servicios externos se configuran en un negocio real.',200);
     foreach(['email','customer_email','driver_email'] as $field)if(!empty($_POST[$field])&&is_string($_POST[$field]))$_POST[$field]='demo-'.$token.'-'.substr(hash('sha256',strtolower($_POST[$field])),0,16).'@sandbox.invalid';
@@ -135,6 +135,7 @@ function demo_runtime(App $app,string $token):void {
 function demo_discard(App $app,array $session):void {
     require_once __DIR__.'/data_tools179.php';$id=(int)$session['tenant_id'];
     $tenant=$app->one('SELECT slug FROM tenants WHERE id=?',[$id]);if(!$tenant||!demo_slug($tenant['slug']))throw new RuntimeException('La limpieza solo admite copias temporales de demostración.');
+    $proofPaths=$app->setting('operations180_ready','0')==='1'?array_column($app->all('SELECT path FROM fisitaap_order_uploads180 WHERE tenant_id=?',[$id]),'path'):[];
     $meta=fm_meta($app);$sets=fm_sets($app,$meta);
     // Build the disposable tenant's owned descendants only. Never ascend into shared parents.
     foreach($meta['tables'] as $table=>$m){if($table==='tenants')fm_mark($app,$meta,$sets,$table,'b.id='.$id);elseif(in_array('tenant_id',$m['cols'],true))fm_mark($app,$meta,$sets,$table,'b.tenant_id='.$id);}
@@ -150,6 +151,7 @@ function demo_discard(App $app,array $session):void {
         $app->db->exec('SET FOREIGN_KEY_CHECKS=1');$app->db->commit();
     }catch(Throwable $e){if($app->db->inTransaction())$app->db->rollBack();$app->db->exec('SET FOREIGN_KEY_CHECKS=1');throw $e;}
     finally{fm_drop_sets($app,$sets);}
+    foreach($proofPaths as $proofPath)if(preg_match('~^uploads/private-proofs/[a-f0-9]{48}\.webp$~D',$proofPath)&&is_file(ROOT_PATH.'/'.$proofPath)&&!is_link(ROOT_PATH.'/'.$proofPath))unlink(ROOT_PATH.'/'.$proofPath);
     $dir=ROOT_PATH.'/uploads/demo/'.$session['token'];
     if(preg_match('/^[a-f0-9]{32}$/D',(string)$session['token'])&&is_dir($dir)&&!is_link($dir)&&str_starts_with((string)realpath($dir),(string)realpath(ROOT_PATH.'/uploads').'/demo/')){
         foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir,FilesystemIterator::SKIP_DOTS),RecursiveIteratorIterator::CHILD_FIRST) as $file){if($file->isLink()||$file->isFile())unlink($file->getPathname());elseif($file->isDir())rmdir($file->getPathname());}rmdir($dir);

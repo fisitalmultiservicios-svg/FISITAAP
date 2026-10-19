@@ -36,6 +36,7 @@ function r2_new_customer(App $app,array $t,string $name,string $phone,?array $cr
 }
 function r2_customer_checkout(App $app,array $t,array $raw):?array {
     if(current_user()||!r2_active($app)||is_demo_tenant_v12($t))return current_user();
+    if(function_exists('op180_ready')&&op180_ready($app)){try{return op180_customer_checkout($app,$t,$raw);}catch(DomainException $e){json_response(['ok'=>false,'error'=>$e->getMessage()],422);}}
     if(!rate_limit_persistent($app,'quick_register',client_identity(),8,300))json_response(['ok'=>false,'error'=>'Espera unos minutos antes de crear otra cuenta.'],429);
     try{$u=r2_new_customer($app,$t,(string)($raw['guest_name']??''),(string)($raw['guest_phone']??''));session_regenerate_id(true);$_SESSION['user']=$u;$_SESSION['active_tenant_slug']=$t['slug'];return $u;}catch(DomainException $ex){json_response(['ok'=>false,'error'=>$ex->getMessage()],422);}
 }

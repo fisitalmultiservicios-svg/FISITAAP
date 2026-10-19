@@ -25,7 +25,7 @@ function admin_shell_end():void{global $app;$u=current_user();if($u&&$u['role']=
 function audit(App $app,?int $tenantId,int $userId,string $action,string $type='',?int $id=null):int {
     $ip=hash('sha256',($_SERVER['REMOTE_ADDR']??'').$app->config['app_key']);
     $app->exec('INSERT INTO audit_logs(tenant_id,user_id,action,entity_type,entity_id,ip_hash) VALUES(?,?,?,?,?,?)',[$tenantId,$userId,$action,$type,$id,$ip]);$auditId=(int)$app->db->lastInsertId();
-    if(function_exists('qa180_active')&&qa180_active($app))$app->exec('UPDATE audit_logs SET summary=? WHERE id=?',[qa180_audit_label($action),$auditId]);return $auditId;
+    if(function_exists('qa180_active')&&qa180_active($app))$app->exec('UPDATE audit_logs SET summary=? WHERE id=?',[qa180_audit_label($action).($action==='pos_void'&&trim((string)($_POST['cancel_reason']??''))!==''?' · Justificación: '.mb_substr(trim((string)$_POST['cancel_reason']),0,300):''),$auditId]);if($tenantId&&function_exists('op180_touch'))op180_touch($app,$tenantId);return $auditId;
 }
 
 function slugify(string $s):string{$s=iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$s);$s=strtolower(preg_replace('/[^a-zA-Z0-9]+/','-',(string)$s));return trim($s,'-')?:bin2hex(random_bytes(3));}

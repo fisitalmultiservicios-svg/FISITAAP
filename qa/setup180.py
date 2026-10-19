@@ -28,7 +28,11 @@ def main(reset=False):
     info.setdefault('app_url','http://localhost:18080');state.write_text(json.dumps(info));state.chmod(0o600)
     def q(s):return "'"+s.replace('\\','\\\\').replace("'","\\'")+"'"
     (STAGE/'config.php').write_text("<?php return ['db_host'=>'fisitaap-db','db_name'=>'fisitaap_r2_test','db_user'=>'root','db_pass'=>'','app_url'=>"+q(info['app_url'])+",'debug'=>false,'app_key'=>"+q(info['app_key'])+"];")
-    for p in STAGE.rglob('*'):p.chmod(0o755 if p.is_dir() else 0o644)
+    for p in STAGE.rglob('*'):
+        # Apache owns uploaded/optimized files, including private receipts.
+        # Keep their runtime ownership and permissions; source extraction is tested separately.
+        if p.is_relative_to(STAGE/'uploads') and p.stat().st_uid!=os.getuid():continue
+        p.chmod(0o755 if p.is_dir() else 0o644)
     if exists('fisitaap-r2-web'):
         container=json.loads(run(['docker','inspect','fisitaap-r2-web']))[0]
         if not container['HostConfig'].get('PortBindings',{}).get('80/tcp'):

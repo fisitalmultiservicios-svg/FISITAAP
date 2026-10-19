@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(button.hasAttribute('data-new-customer-open')){const checkbox=$('[data-new-customer]',dialog);if(checkbox){checkbox.checked=true;checkbox.dispatchEvent(new Event('change'));}}
   }));
   $$('[data-dialog-close]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog').close()));
-  $$('[data-quantity-step]').forEach(button=>button.addEventListener('click',()=>{
+  if(!window.OP180)$$('[data-quantity-step]').forEach(button=>button.addEventListener('click',()=>{
     const form=button.closest('form'),input=form.elements.quantity,step=Number(input.step)||1;
     input.value=String(Math.max(0,Math.round((Number(input.value)+Number(button.dataset.quantityStep)*step)*1000)/1000));form.requestSubmit();
   }));
@@ -22,8 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(event.key==='F4'){event.preventDefault();open('r3Customer');}
     if(event.key==='F8'){event.preventDefault();if($('[data-r3-collect]'))$('[data-confirm-payment]')?.click();else $('.r3-charge-box a')?.click();}
   });
-  const lineItems=json('[data-r3-items]');
-  if(lineItems)$$('[data-line-edit]').forEach(button=>button.addEventListener('click',async()=>{
+  document.addEventListener('click',async event=>{const button=event.target.closest('[data-line-edit]');if(!button)return;const lineItems=json('[data-r3-items]');if(!lineItems)return;
     const item=lineItems.find(i=>Number(i.id)===Number(button.dataset.lineEdit));if(!item)return;
     const dialog=open('r3LineEdit'),form=$('form',dialog),fields=$('[data-line-options]',dialog);form.elements.item_id.value=item.id;form.elements.quantity.value=item.quantity;form.elements.notes.value=item.notes||'';if(form.elements.base_price180){const recipe=JSON.parse(item.pricing_json||'null');form.elements.base_price180.value=recipe?Number(recipe.base)/100:item.unit_price;}
     fields.textContent='Cargando opciones…';$('button[type=submit]',dialog)?.setAttribute('disabled','');const save=$('footer button:last-child',dialog);save.disabled=true;
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const selected=new Set((JSON.parse(item.options_json||'[]')).map(o=>Number(o.id)));
       fields.innerHTML=out.groups.map(g=>'<fieldset><legend>'+esc(g.name)+'</legend>'+g.options.map(o=>'<label><input type="checkbox" name="option_ids[]" value="'+Number(o.id)+'" '+(selected.has(Number(o.id))?'checked':'')+'> '+esc(o.name)+(Number(o.price_delta)?' +'+money(cents(o.price_delta)):'')+'</label>').join('')+'</fieldset>').join('');save.disabled=false;
     }catch(error){fields.textContent=error.message||'No se pudieron cargar las opciones.';}
-  }));
+  });
   let selectedLine=null;$$('[data-line]').forEach(row=>row.addEventListener('click',()=>{selectedLine=row;$$('[data-line]').forEach(r=>r.classList.toggle('r3-line-selected',r===row));}));document.addEventListener('keydown',e=>{if(e.key==='Delete'&&selectedLine&&!e.target.closest('input,textarea,select')){const button=selectedLine.querySelector('[aria-label^=Eliminar]');if(button&&!button.disabled){e.preventDefault();button.click();}}});
   const editId=new URL(location.href).searchParams.get('edit_item');if(editId)$('[data-line-edit="'+Number(editId)+'"]')?.click();
   const payment=$('[data-r3-collect]'),paymentData=json('[data-r3-payment-data]');
@@ -164,7 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
     $('[data-basic-cancel]')?.addEventListener('click',()=>{initialOrder.forEach(id=>cards.append($('[data-r3-table="'+id+'"]',cards)));ordering=false;dirty=false;cards.classList.remove('is-ordering');$$('[data-r3-table]',cards).forEach(c=>c.draggable=false);$('[data-basic-edit-bar]').hidden=true;});
     $('[data-table-search]')?.addEventListener('input',e=>{const q=e.target.value.trim().toLocaleLowerCase('es');$$('[data-r3-table]').forEach(g=>g.style.display=(!q||(g.dataset.search||'').includes(q))?'':'none');});
     if(editor)window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
-    if(!editor){const tableData=json('[data-r3-table-data]');if(tableData) {
+    if(!editor){let tableData=json('[data-r3-table-data]');if(tableData) {
+      document.addEventListener('op180:updated',()=>{tableData=json('[data-r3-table-data]')||tableData;const fresh=json('[data-r3-layout-data]');if(fresh)data=fresh;});
       $$('[data-r3-table]').forEach(g=>{const names=tableData.accounts.filter(a=>(Number(a.table_id)===Number(g.dataset.r3Table)||(a.table_ids||[]).includes(Number(g.dataset.r3Table)))).map(a=>a.customer_name||'').join(' ');g.dataset.search=(g.dataset.search||'')+' '+names.toLocaleLowerCase('es');});
       let currentTable=null,currentAccount=null;
       const base=String(tableData.base).replace(/\/$/,'');
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         $('.r3-table-modal-actions',dialog).hidden=!account;if(!dialog.open)dialog.showModal();
       }
-      $$('[data-r3-table]').forEach(g=>g.addEventListener('click',()=>{if(ordering)return;const table=tableData.tables.find(t=>Number(t.id)===Number(g.dataset.r3Table));if(table)showAccount(table,tableData.accounts.find(a=>(Number(a.table_id)===Number(table.id)||(a.table_ids||[]).includes(Number(table.id)))));}));
+      document.addEventListener('click',event=>{const g=event.target.closest('[data-r3-table]');if(!g||ordering)return;const table=tableData.tables.find(t=>Number(t.id)===Number(g.dataset.r3Table));if(table)showAccount(table,tableData.accounts.find(a=>(Number(a.table_id)===Number(table.id)||(a.table_ids||[]).includes(Number(table.id)))));});
       for(const [attr,action,title] of [['data-table-move','move_table','Mover cuenta'],['data-table-join','join_tables','Unir mesas']])$('['+attr+']')?.addEventListener('click',()=>{if(!currentAccount)return;const d=open('r3MoveTable'),form=$('[data-move-form]',d);$('[data-move-title]',d).textContent=title;form.action=base+'/admin/ventas?screen=order&ticket='+currentAccount.id;form.elements.action.value=action;form.elements.revision.value=currentAccount.revision;if(form.elements.operation_key)form.elements.operation_key.value=uid().replace(/-/g,'');});
     }}
   }

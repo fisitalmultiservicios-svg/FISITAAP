@@ -6,10 +6,10 @@ function qa180_start_sale(App $app,array $user,array $tenant,array $branch,strin
     $options=array_values(array_unique(array_map('intval',(array)($post['option_ids']??[]))));sort($options);
     $hash=hash('sha256',json_encode([$user['id'],$branch['id'],$type,(int)($post['product_id']??0),(float)($post['quantity']??1),$options,(string)($post['notes']??'')],JSON_THROW_ON_ERROR));
     $app->db->beginTransaction();try{
-        $id=pos_open_148($app,$tenant,$user,$branch,$type);$ticket=pos_ticket_get_148($app,$tenant,$branch,$id,true);
+        $id=pos_open_148($app,$tenant,$user,$branch,$type,$type==='table'?(int)($_POST['table_id']??0):null);$ticket=pos_ticket_get_148($app,$tenant,$branch,$id,true);
         if((int)$ticket['opened_by']!==(int)$user['id'])throw new DomainException('Esta cuenta pertenece a otro usuario.');
         if($ticket['start_payload_hash']){if(!hash_equals($ticket['start_payload_hash'],$hash))throw new DomainException('La misma referencia ya abrió una venta con otro producto.');$app->db->commit();return $id;}
-        if($app->one('SELECT id FROM pos_ticket_items WHERE ticket_id=? LIMIT 1',[$id]))throw new DomainException('La venta ya tiene productos. Abre su detalle para continuar.');
+        if($app->one('SELECT id FROM pos_ticket_items WHERE ticket_id=? AND NOT(product_id IS NULL AND product_name="Entrega Express" AND kitchen_status="served") LIMIT 1',[$id]))throw new DomainException('La venta ya tiene productos. Abre su detalle para continuar.');
         $_POST['action']='add_item';$_POST['revision']=$ticket['revision'];pos_edit_148($app,$tenant,$user,$branch,$id,false);
         $app->exec('UPDATE pos_tickets SET start_payload_hash=? WHERE id=? AND tenant_id=?',[$hash,$id,$tenant['id']]);$app->db->commit();return $id;
     }catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();throw $error;}finally{$_POST=$post;}
@@ -32,7 +32,7 @@ function qa180_pos_start(App $app,array $user,array $tenant,array $branch):void 
     if(!$products)echo '<p>No hay productos con este filtro.</p>';echo '</div></section></aside></div><footer class="r3-sale-total"><div><span>Total<b>'.money(0).'</b></span></div><div class="r3-charge-box"><button class="r3-button green" disabled>Cobrar</button><span>Agrega productos para cobrar.</span></div></footer>';r3_shell_end();
 }
 function qa180_open_hash(array $user,array $branch,string $type,?int $table,array $post):string {
-    return hash('sha256',json_encode([$user['id'],$branch['id'],$type,$table,(string)($post['diner_name']??''),(int)($post['customer_id']??0),!empty($post['create_customer']),(string)($post['new_name']??''),(string)($post['new_phone']??''),(string)($post['delivery_address']??'')],JSON_THROW_ON_ERROR));
+     $payload=[$user['id'],$branch['id'],$type,$table,(string)($post['diner_name']??''),(int)($post['customer_id']??0),!empty($post['create_customer']),(string)($post['new_name']??''),(string)($post['new_phone']??''),(string)($post['delivery_address']??'')];if(isset($post['delivery_fee'])||isset($post['maps_url']))$payload[]=[(string)($post['delivery_fee']??0),(string)($post['maps_url']??'')];return hash('sha256',json_encode($payload,JSON_THROW_ON_ERROR));
 }
 function qa180_open_record(App $app,array $tenant,array $branch,array $user,string $key,string $hash,int $id):void {
     $app->exec('INSERT INTO fisitaap_operations180(tenant_id,branch_id,user_id,operation_key,payload_hash,kind,result_id) VALUES(?,?,?,?,?,"account_open",?)',[$tenant['id'],$branch['id'],$user['id'],$key,$hash,$id]);

@@ -125,6 +125,7 @@ function order_status_qa(App $app,int $tenantId,int $orderId,string $status,int 
                 if($job['assigned_driver_id'])$app->exec('UPDATE driver_profiles SET completed_deliveries=completed_deliveries+1 WHERE user_id=?',[$job['assigned_driver_id']]);
             }
         }
+        if(op180_ready($app)&&$order['status']!==$status)op180_event($app,$order,$status,$status==='cancelled'?'Cancelado: '.trim((string)($_POST['cancel_reason']??'')):'Estado: '.(qa180_order_states()[$status]??$status),$userId);
         $app->exec('UPDATE orders SET status=?,updated_at=NOW()'.(qa180_active($app)?',revision180=revision180+1':'').' WHERE id=? AND tenant_id=?',[$status,$orderId,$tenantId]);
         if($own)$app->db->commit();
     }catch(Throwable $e){if($own&&$app->db->inTransaction())$app->db->rollBack();throw $e;}

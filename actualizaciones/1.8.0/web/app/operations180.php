@@ -36,7 +36,7 @@ function qa180_proof(App $app,array $device,array $data):array {
     $owns=!$app->db->inTransaction();if($owns)$app->db->beginTransaction();
     try{$state=qa180_cash_state($app,$device,(array)($data['pending']??[]));$state['web_payments']=[];$webKeys=array_slice(array_values(array_filter((array)($data['web_payment_keys']??[]),fn($key)=>is_string($key)&&preg_match('/^[a-f0-9]{32}$/D',$key))),0,100);if($webKeys){$marks=implode(',',array_fill(0,count($webKeys),'?'));$state['web_payments']=array_column($app->all('SELECT s.payment_key FROM sales s JOIN pos_shifts h ON h.id=s.shift_id WHERE s.tenant_id=? AND s.branch_id=? AND h.device_id=? AND s.created_by=? AND s.payment_key IN('.$marks.')',[$device['tenant_id'],$device['branch_id'],$device['id'],$uid,...$webKeys]),'payment_key');}$policy=primary179_policy($app,$device);$policy['version']=180;$policy['allowed']=$policy['allowed']&&$cash&&count(qa180_snapshot_users($app,$device))>0;if($owns)$app->db->commit();}
     catch(Throwable $error){if($owns&&$app->db->inTransaction())$app->db->rollBack();throw $error;}
-    return ['ok'=>true,'proof'=>$encoded.'.'.hash_hmac('sha256',$encoded,$app->config['app_key']),'cash'=>$cash,'bound'=>$bound,'cash_state'=>$state,'offline_policy'=>$policy];
+    return ['ok'=>true,'users180'=>qa180_snapshot_users($app,$device),'proof'=>$encoded.'.'.hash_hmac('sha256',$encoded,$app->config['app_key']),'cash'=>$cash,'bound'=>$bound,'cash_state'=>$state,'offline_policy'=>$policy];
 }
 function qa180_bind(App $app):never {
     $user=require_login(['tenant_admin','manager','editor','cashier','kitchen']);verify_csrf();

@@ -21,16 +21,18 @@ function qa180_board_pos_order(App $app,array $user,array $tenant,array $branch,
     if(empty($customer['phone'])||trim((string)$ticket['delivery_address'])==='')throw new DomainException('Completa el cliente, teléfono y dirección en la cuenta antes de asignar Express.');
     $items=$app->all('SELECT i.*,p.unit_label FROM pos_ticket_items i LEFT JOIN products p ON p.id=i.product_id WHERE i.ticket_id=? ORDER BY i.id',[$ticket['id']]);
     if(!$items)throw new DomainException('El pedido no tiene artículos.');
-    $subtotal=pos_cents_148($ticket['subtotal'])+pos_cents_148($ticket['service_total']);
+    $fee=op180_ready($app)?pos_cents_148($ticket['delivery_fee180']):0;$subtotal=pos_cents_148($ticket['subtotal'])+pos_cents_148($ticket['service_total']);
     if($subtotal+pos_cents_148($ticket['tax_total'])-pos_cents_148($ticket['discount_total'])!==pos_cents_148($ticket['total']))throw new DomainException('Revisa los importes de la cuenta antes de asignar Express.');
     $method=$ticket['status']==='paid'?'Pagado en caja':'Cobro coordinado en caja';
     $notes='Cuenta de caja: '.$ticket['ticket_number'].($ticket['notes']?"\n".$ticket['notes']:'');
     $app->exec('INSERT INTO orders(tenant_id,branch_id,user_id,order_number,customer_name,customer_phone,address,delivery_type,payment_method,subtotal,tax_total,discount_total,total,status,notes) VALUES(?,?,?,?,?,?,?,"coordinated",?,?,?,?,?,"ready",?)',[$tenant['id'],$branch['id'],$customer['id'],'POS-'.$ticket['id'],$customer['name'],$customer['phone'],$ticket['delivery_address'],$method,$subtotal/100,$ticket['tax_total'],$ticket['discount_total'],$ticket['total'],$notes]);
     $order=(int)$app->db->lastInsertId();
-    foreach($items as $item)$app->exec('INSERT INTO order_items(order_id,product_id,product_name,quantity,unit_label,unit_price,tax_rate,line_subtotal,line_tax,options_json,notes,pricing_json180) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',[$order,$item['product_id'],$item['product_name'],$item['quantity'],$item['unit_label']?:'unidad',$item['unit_price'],$item['tax_rate'],$item['line_subtotal'],$item['line_tax'],$item['options_json'],$item['notes'],$item['pricing_json']]);
+    if(op180_ready($app))$app->exec('UPDATE orders SET subtotal=subtotal-?,delivery_total=?,maps_url180=? WHERE id=?',[$fee/100,$fee/100,$ticket['maps_url180'],$order]);
+    foreach($items as $item)if(!($fee>0&&empty($item['product_id'])&&$item['product_name']==='Entrega Express'))$app->exec('INSERT INTO order_items(order_id,product_id,product_name,quantity,unit_label,unit_price,tax_rate,line_subtotal,line_tax,options_json,notes,pricing_json180) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',[$order,$item['product_id'],$item['product_name'],$item['quantity'],$item['unit_label']?:'unidad',$item['unit_price'],$item['tax_rate'],$item['line_subtotal'],$item['line_tax'],$item['options_json'],$item['notes'],$item['pricing_json']]);
     if((float)$ticket['service_total']!==0.0)$app->exec('INSERT INTO order_items(order_id,product_name,quantity,unit_label,unit_price,line_subtotal,line_tax) VALUES(?,"Servicio de la cuenta",1,"servicio",?,?,0)',[$order,$ticket['service_total'],$ticket['service_total']]);
     $app->exec('INSERT INTO fisitaap_order_receipts180(tenant_id,branch_id,order_id,ticket_id,received_by) VALUES(?,?,?,?,?)',[$tenant['id'],$branch['id'],$order,$ticket['id'],$user['id']]);
     $app->exec('UPDATE pos_tickets SET source_order_id=?,revision=revision+1 WHERE id=?',[$order,$ticket['id']]);
+    if(op180_ready($app)){$o=$app->one('SELECT * FROM orders WHERE id=?',[$order]);op180_pin($app,$o);op180_event($app,$o,'ready','Pedido de caja preparado para asignar Express.',(int)$user['id']);}
     return $order;
 }
 
@@ -168,8 +170,9 @@ function qa180_board_pending(App $app,array $user,array $tenant,array $branch):v
     $rows=$app->all('SELECT t.id,t.ticket_number,t.fulfillment180,t.status,u.name customer_name FROM pos_tickets t LEFT JOIN users u ON u.id=t.customer_id WHERE t.tenant_id=? AND t.branch_id=? AND t.source_order_id IS NULL AND t.sale_type="express" AND t.status NOT IN("void","merged") AND t.fulfillment180 NOT IN("delivered","cancelled") ORDER BY t.created_at LIMIT 200',[$tenant['id'],$branch['id']]);
     admin_shell_start('Express pendientes de entrega',$user,$tenant,'express-pendientes');
     echo '<p>Sucursal: <strong>'.e($branch['name']).'</strong>. El cobro y la entrega se registran por separado.</p><p><a class="btn btn-light" href="'.e(url('admin/pedidos')).'">Abrir tablero de preparación</a></p>';
-    $active=express_web_pending_v12($app,$user,$tenant,$branch);
+    echo '<div data-live-region="pending-express">';$active=express_web_pending_v12($app,$user,$tenant,$branch);
     if($rows){echo '<h2>Express de caja por preparar o asignar</h2><div class="p148-account-grid">';foreach($rows as $row)echo '<article class="card admin-card"><h3>'.e($row['ticket_number'].' · '.$row['customer_name']).'</h3><p>'.e(['new'=>'Por preparar','confirmed'=>'Por preparar','preparing'=>'En preparación','ready'=>'Preparado','sent'=>'Preparado para asignar'][$row['fulfillment180']]??'Por preparar').'</p><a class="btn btn-light" href="'.e(url('admin/pedidos?origin=express&days=30')).'">Preparar / asignar en el tablero</a></article>';echo '</div>';}
     if(!$rows&&!$active)echo '<p>No hay Express pendientes en esta sucursal.</p>';
+    echo '</div>';
     admin_shell_end();
 }
