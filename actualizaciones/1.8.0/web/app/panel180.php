@@ -21,7 +21,7 @@ function qa180_welcome(App $app,array $user,?array $tenant):void {
     echo '</section>';admin_shell_end();
 }
 function qa180_welcome_upload_limit():int {
-    $limits=[5*1024*1024];
+    $limits=[25*1024*1024];
     $upload=ini_parse_quantity((string)ini_get('upload_max_filesize'));
     $post=ini_parse_quantity((string)ini_get('post_max_size'));
     if($upload>0)$limits[]=$upload;

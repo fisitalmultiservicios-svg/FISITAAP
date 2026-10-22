@@ -1,0 +1,10 @@
+{
+  "passed": 3,
+  "checks": [
+    "server directly accepts a valid11MB PNG under128MB PHP memory and stores a lightweight WebP, independently of browser preprocessing",
+    "transparent logo retains alpha and rotated phone JPEG is oriented correctly without enlarging small images",
+    "actual files over25MB cannot bypass the limit with a false size; MIME mismatch, unsafe dimensions and PHP upload-limit errors are rejected without silently announcing a save"
+  ],
+  "stored_large_image_bytes": 133232,
+  "environment": "PHP8.3/GD/WebP, memory128MB, fictional fixture; transport/browser tested separately"
+}

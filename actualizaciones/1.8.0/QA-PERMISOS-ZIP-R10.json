@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "variant": "over-R9",
+      "apache_uid": 33,
+      "updater_http": 302,
+      "protected_payload_http": 403,
+      "payload_files": 126
+    },
+    {
+      "variant": "fresh",
+      "apache_uid": 33,
+      "updater_http": 302,
+      "protected_payload_http": 403,
+      "payload_files": 126
+    }
+  ],
+  "payload_hashes_verified": 126,
+  "extraction": "unzip under umask 077, explicit ZIP 644/755; no chmod/chown after R10 extraction",
+  "scope": "isolated Apache UID33; old bootstrap authentication stub for entry redirect only; full updater/database exercised separately; no production"
+}

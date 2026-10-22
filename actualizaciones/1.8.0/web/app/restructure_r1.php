@@ -158,7 +158,7 @@ function restructure_guard_r1(App $app, string $path): void
         return;
     }
     $section = $path === 'api/pos-options' ? 'ventas' : (explode('/', $path)[1]??'dashboard');
-    if(function_exists('qa180_active')&&qa180_active($app))$section=['cobro'=>'ventas','producto-extras'=>'productos','categoria-extras'=>'categorias','cuentas-dinero'=>'configuracion','caja-movimiento'=>'turnos','turno-resumen'=>'turnos'][$section]??$section;
+    if(function_exists('qa180_active')&&qa180_active($app))$section=['productos-importar'=>'productos','cobro'=>'ventas','producto-extras'=>'productos','categoria-extras'=>'categorias','cuentas-dinero'=>'configuracion','caja-movimiento'=>'turnos','turno-resumen'=>'turnos'][$section]??$section;
     $action = 'view';
     if (is_post()) {
         $action = 'write';

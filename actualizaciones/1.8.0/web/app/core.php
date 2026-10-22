@@ -282,7 +282,9 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false,
     if(!empty($GLOBALS['demo_context']))demo_header();
     require_once __DIR__.'/browser_migration179.php';
     browser_recovery179($GLOBALS['demo_base_url']??rtrim(url(),'/'));
-    echo '<style>:root{--primary:'.e($primary).';--accent:'.e($accent).'}.store-name-brand>span{display:inline!important;font-size:16px;max-width:180px;overflow:hidden;text-overflow:ellipsis}</style>';
+    if(!preg_match('/^#[0-9a-f]{6}$/iD',$primary))$primary='#1f7a45';
+    $rgb=sscanf($primary,'#%02x%02x%02x');$linear=array_map(static fn($v)=>($v/255<=.04045)?$v/255/12.92:pow(($v/255+.055)/1.055,2.4),$rgb);$luminance=.2126*$linear[0]+.7152*$linear[1]+.0722*$linear[2];$onPrimary=$luminance>.179?'#000000':'#ffffff';$brandInk=$luminance>.179?'#24313b':$primary;
+    echo '<style>:root{--primary:'.e($primary).';--accent:'.e($accent).';--on-primary:'.$onPrimary.';--brand-ink:'.$brandInk.'}.store-name-brand>span{display:inline!important;font-size:16px;max-width:180px;overflow:hidden;text-overflow:ellipsis}</style>';
     if($admin)echo '<style id="admin-critical-v1451">.dash-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.dash-grid-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.8fr);gap:16px}.dash-grid-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.dash-welcome{display:flex;justify-content:space-between;gap:20px}.dash-kpi,.dash-chart-card,.dash-side-card,.dash-mini-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px}.dash-kpi{padding:16px;display:flex;gap:12px}.dash-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:240px;align-items:end}.dash-bar-track{height:170px;background:#eef1ed;border-radius:10px;position:relative;overflow:hidden}.dash-bar-track i{position:absolute;bottom:0;left:0;right:0;background:var(--primary);border-radius:10px}.dash-progress{height:6px;background:#eef1ed;border-radius:99px;overflow:hidden}.dash-progress i{display:block;height:100%;background:var(--primary)}@media(max-width:980px){.dash-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.dash-grid-main{grid-template-columns:1fr}}@media(max-width:700px){.dash-kpis,.dash-grid-secondary{grid-template-columns:1fr}.dash-welcome{flex-direction:column}}</style>';
     $path=request_path();
     // The business landing needs the shared R2 styles; its POS/designer script
@@ -305,5 +307,6 @@ function layout_end(): void
 {
     if(function_exists('op180_ui')&&qa180_active($GLOBALS['app']))op180_ui($GLOBALS['app']);
     if(function_exists('qa180_active')&&qa180_active($GLOBALS['app']))echo '<script>window.FISITAAP180='.r3_json(qa180_ui_context($GLOBALS['app'])).'</script><script src="'.url('assets/qa180.js?v=180').'" defer></script>';
+    if(in_array(explode('/',request_path())[0],['admin','master'],true))echo '<script src="'.url('assets/image-upload.js?v=1810').'" defer></script>';
     global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').'</body></html>';
 }

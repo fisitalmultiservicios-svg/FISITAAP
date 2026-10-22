@@ -43,6 +43,8 @@ def main(reset=False):
     else:run(['docker','start','fisitaap-r2-web'])
     run(['docker','exec','fisitaap-r2-web','chgrp','www-data','/var/www/html/uploads'])
     run(['docker','exec','fisitaap-r2-web','chmod','775','/var/www/html/uploads'])
+    # Existing year/month fixture directories also need the Apache group to create new derivatives.
+    run(['docker','exec','fisitaap-r2-web','find','/var/www/html/uploads','-type','d','-exec','chgrp','www-data','{}','+','-exec','chmod','g+rwx','{}','+'])
     initialized=ENV/'initialized180'
     if reset or not initialized.exists():
         run(['docker','exec','fisitaap-db','mariadb','-uroot','-e','DROP DATABASE IF EXISTS fisitaap_r2_test;CREATE DATABASE fisitaap_r2_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'])

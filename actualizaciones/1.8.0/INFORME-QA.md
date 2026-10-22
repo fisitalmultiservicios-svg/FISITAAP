@@ -1,3 +1,43 @@
+# Informe QA · FISITAAP web 1.8.0-R10
+
+Fecha: 21 de octubre de 2026. Mejoras del editor/imágenes de tienda, portada del catálogo, alta actualizada de negocios, grupos de opcionales y creación por Excel. Windows 1.8.1 y APK 1.8.0 no cambian en esta entrega.
+
+| Solicitud | Implementación |
+|---|---|
+| Fotos mayores de 5 MB | Hasta 25 MB por imagen JPG/PNG/WebP en formularios del panel. Preparación automática antes de enviar y WebP/miniatura en servidor. Transparencia y orientación conservadas. |
+| Editar el segmento de Nosotros | Etiqueta, título, presentación, las tres frases destacadas y texto del botón dentro de Diseño y página → Nosotros. Frase vacía se oculta. El editor recupera valores publicados y contenido anterior cuando corresponda. |
+| Información de contacto | Diseño y página → Contacto contiene correo, teléfono, WhatsApp, dirección, horario, mapa y redes. Usa los mismos datos de Generales; no crea una segunda copia. Requiere permiso de configuración para editarlos. |
+| Quitar la capa verde | Sin capa de color sobre la imagen principal ni sobre la portada del catálogo. Fondo sin imagen usa el color primario. Se retiran verdes fijos de los botones/insignias de la landing. |
+| Botón del color primario | Los botones para abrir catálogo/menú usan el color elegido, con letras blancas o negras según contraste. El panel del dueño sigue neutral. Los textos de enlaces usan un tono legible si el primario es muy claro. |
+| Editar el banner del catálogo | Nueva sección Portada del catálogo o menú, con título, texto, imagen y modos Personalizada/Ocultar/Conservar banners actuales. Los banners de sucursales siguen disponibles y no se borran. |
+| Negocios nuevos actualizados | La creación prepara la versión 180 antes de confirmar la misma transacción, tanto Catálogo como Menú; no requiere activación manual. Ediciones/publicación respetan los negocios anteriores pendientes. |
+| Grupos de opcionales | Nombre de grupo y opciones individuales, elección única/múltiple y obligatoria, asignación completa por producto/categoría. Reutiliza estructura existente; no añade tablas. IDs e historial preservados. |
+| Creación desde Excel y machote | .xlsx real y CSV, machote con Productos vacío y Ejemplos/Instrucciones separados. Vista previa, hasta500 productos/5MB, validación de SKU/valores/permisos/sucursal, alta atómica y confirmación idempotente con movimiento inicial de inventario. |
+
+La compresión se aplica a imágenes estáticas. No se guardan las copias originales pesadas de nuevas cargas. Los archivos ya publicados se conservan. La preparación del navegador reduce el tráfico y la memoria necesaria de PHP; la validación del servidor limita bytes reales, formatos, dimensiones y memoria. Un rechazo de PHP ya no se interpreta como ausencia de imagen/guardado sin cambios.
+
+El formulario espera la preparación antes de enviarse. Si falla, conserva el formulario y la publicación anterior. Las imágenes no se regeneran durante las visitas del público. Una carga de 11.534.672 bytes llegó como aproximadamente 411 KB multipart y se guardó en 114.932 bytes con miniatura. Es una prueba deliberadamente detallada; los tamaños de otras imágenes dependen del contenido.
+
+La portada personalizada del catálogo aplica a todas las sucursales. El modo automático restaura los banners existentes y su prioridad por sucursal. Ocultar elimina solo el banner, conservando categorías, productos y carrito. El encabezado automático sin imagen deja de usar el dibujo que decía FISITAPP. La vista de cada sucursal y los productos no se mezclan.
+
+## Pruebas de R10
+
+- QA-DISENO-R10.json: 5 grupos. Foto real de 11 MB enviada desde Chromium, guardado de Nosotros/contacto, aislamiento de negocio/datos fiscales, colores morado/amarillo y contraste,3 tamaños1366/768/390px, edición por roles y rechazo atómico de correo/mapa inválidos. Sin errores JavaScript.
+- QA-IMAGENES-R10.json: 3 grupos. Compresión directa de 11 MB en PHP con memoria 128 MB, transparencia, orientación EXIF, límites por bytes reales y mensajes ante errores de recepción. No se desactivó la validación para admitir fotos grandes.
+- QA-CATALOGO-R10.json: 3 grupos. Edición/publicación de la portada, imagen optimizada, ausencia de verde fijo y del placeholder de plataforma en ese bloque, ocultar sin perder carrito y restaurar varias promociones por sucursal. Modos inválidos rechazados y registros originales conservados.
+- QA-ALTAS-OPCIONALES-R10.json: 6 grupos con alta Catálogo/Menú y cambio normal de contraseña, versión180 sin activación manual, preservación de179 pendientes, fallo de alta atómico, grupos Tallas/Colores, validación en caja, edición sin cambiar historial y roles/tres tamaños de navegador.
+- QA-EXCEL-R10.json: 5 grupos con descarga del machote real, preview sin escrituras, alta y stock en sucursal, confirmación repetida, SKU conflictivo entre revisión/alta, CSV, archivos inválidos, fórmulas/DTD/enlaces externos/bomba ZIP/501filas, sucursal ajena y permisos revocados tras revisión.
+- QA-NAVEGADOR-R10.json:regresión de checkout móvil con Maps/SINPE/PIN y recepción por vendedor, actualizaciones entre sesiones y tamaños de la lista de pedidos.
+- QA-ACTUALIZADOR-R10.json: 7 grupos. Instalación sobre ZIP R9 publicado, negocios 179/180 y turno abierto, datos/config/uploads/código anterior conservados, permisos maestro/CSRF/integridad y reintento sin duplicar respaldo.
+- QA-PERMISOS-ZIP-R10.json:extracción sobre R9 y carpeta nueva con umask077/ApacheUID33, permisos644/755 sin reparaciones posteriores y payload privado403.
+- QA-SINTAXIS-R10.json:sintaxis del PHP/JavaScript del paquete final,126 hashes y guía idéntica al archivo de descarga.
+
+No se cambian tablas, importan respaldos SQL ni reemplaza config.php. El ZIP usa releases/1.8.0-r10. Las imágenes y valores ya guardados permanecen. La publicación no activa automáticamente un negocio anterior179. Los negocios180 mantienen activación. Los negocios nuevos creados después de la instalación/publicación empiezan180 y no necesitan el botón de actualización.
+
+Pruebas en PHP 8.3/GD/WebP, MariaDB y Chromium con datos ficticios. El mapa incrustado de Google se sustituyó por una respuesta ficticia en el test visual; no se probó el servicio externo real ni se modificó el hosting. No hubo una nueva validación física de Windows, Android o impresoras, cuyos binarios permanecen iguales. Para navegadores sin preparación previa se necesita que los límites efectivos de cPanel admitan el original; la guía explica los valores de PHP.
+
+Las secciones siguientes son el historial de R9 y anteriores, no ejecuciones nuevas de toda la plataforma para R10.
+
 # Informe QA · FISITAAP web 1.8.0-R9 / Windows 1.8.1
 
 Fecha: 19 de octubre de2026. Revisión de las 16 solicitudes y sus aclaraciones. Datos ficticios, PHP 8.3/Apache/MariaDB 11.4, Chromium y Node. No hubo acceso al cPanel ni a datos de producción.

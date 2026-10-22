@@ -28,6 +28,17 @@
     const search=document.createElement('input');search.type='search';search.className='input';search.placeholder='Buscar en esta lista…';search.setAttribute('aria-label','Buscar productos para asignar');select.before(search);
     search.addEventListener('input',()=>{const term=search.value.toLocaleLowerCase('es');for(const option of select.options)option.hidden=!option.selected&&!option.text.toLocaleLowerCase('es').includes(term);});
   }
+  const optionalLines=document.querySelector('[data-optional180-lines]');
+  if(optionalLines){
+    let index=optionalLines.children.length;
+    document.querySelector('[data-optional180-add]').addEventListener('click',()=>{
+      if(optionalLines.children.length>=50)return;
+      const row=optionalLines.firstElementChild.cloneNode(true);
+      for(const input of row.querySelectorAll('input')){input.name=input.name.replace(/choices\[\d+\]/,'choices['+index+']');input.value=input.type==='hidden'?'0':'';}
+      index++;optionalLines.append(row);row.querySelector('[type="hidden"]').nextElementSibling.querySelector('input').focus();
+    });
+    optionalLines.addEventListener('click',event=>{const button=event.target.closest('[data-optional180-remove]');if(!button)return;const row=button.closest('[data-optional180-line]');if(optionalLines.children.length>1)row.remove();else for(const input of row.querySelectorAll('input'))input.value=input.type==='hidden'?'0':'';});
+  }
   const combos=document.querySelector('[data-combo180-lines]');
   if(combos){
     let index=combos.querySelectorAll('[data-combo180-line]').length;

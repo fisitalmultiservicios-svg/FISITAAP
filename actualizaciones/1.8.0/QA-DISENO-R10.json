@@ -1,0 +1,33 @@
+{
+  "passed": 5,
+  "checks": [
+    "an actual11MB PNG can be submitted immediately while preparation is pending; multipart is under2MB and server stores a WebP/thumbnail under1440px, over90% smaller, with all editor values saved",
+    "Nosotros label, title, three phrases and button are editable; contact email/phone/WhatsApp/address/hours/map/social links publish from the same general records without changing fiscal settings or another tenant",
+    "hero image has no overlay; every catalog CTA uses the selected purple or yellow primary with readable contrast; owner panel stays neutral and store fits1366/768/390px without page overflow or JS errors",
+    "invalid email or non-Google map rejects the design atomically; previously published image/contact/theme remain unchanged",
+    "content-only role can edit public text but cannot alter contact/general settings; omitted image, other text and colors are preserved"
+  ],
+  "source_image_bytes": 11534672,
+  "multipart_bytes": 411319,
+  "stored_image_bytes": 114932,
+  "stored_dimensions": [
+    810,
+    540
+  ],
+  "layouts": [
+    {
+      "width": 1366,
+      "scroll": 1366
+    },
+    {
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "width": 390,
+      "scroll": 390
+    }
+  ],
+  "page_errors": [],
+  "environment": "fictional PHP8.3/MariaDB and Chromium; embedded Google map mocked; no production"
+}

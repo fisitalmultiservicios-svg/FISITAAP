@@ -1,0 +1,9 @@
+{
+  "passed": 3,
+  "checks": [
+    "catalog header is editable from the same section editor, including title/text/optimized image; no platform placeholder or green tint; existing branch banner records remain unchanged",
+    "hiding the header leaves categories, products, cart and checkout reachable; no whole-catalog section is accidentally removed",
+    "restoring automatic mode restores original multi-slide/branch precedence without deleting custom data; invalid mode rejects the entire edit and there are no JavaScript errors"
+  ],
+  "environment": "real fictional PHP/MariaDB and Chromium; no production"
+}

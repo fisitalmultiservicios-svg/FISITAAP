@@ -15,7 +15,9 @@ def install_payload(name):
         for n in sorted(manifest['files'],key=lambda n:n=='index.php'):
             p=STAGE/n;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(z.read('actualizador-180/payload/'+n));p.chmod(0o644)
             parent=p.parent
-            while parent!=STAGE:parent.chmod(0o755);parent=parent.parent
+            while parent!=STAGE:
+                if parent!=STAGE/'uploads':parent.chmod(0o755)
+                parent=parent.parent
         for n in ['volver-acceso-180.php','diagnostico-bienvenida-180.php']:
             if n in z.namelist():p=STAGE/n;p.write_bytes(z.read(n));p.chmod(0o644)
     reload_root()

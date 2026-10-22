@@ -1,0 +1,13 @@
+{
+  "passed": 6,
+  "checks": [
+    "new Cat\u00e1logo and Men\u00fa businesses are born180 inside creation; owner completes normal first-password flow and immediately sees current groups/design/import without manual activation",
+    "editing or republishing does not auto-upgrade existing179; failed tenant creation leaves neither tenant nor version orphan, existing180 remains unchanged",
+    "named Tallas and Colores groups inherit complete options by category and reach POS as independent required single-choice groups at zero extra price",
+    "group assignment expands all members; server rejects zero/two sizes, accepts one size+color; editing/removing/adding choices keeps option IDs and historical ticket snapshot intact",
+    "foreign-product and duplicate-choice edits roll back, cashier has no optional-group administration permission",
+    "optional editor adds/removes individual rows accessibly and fits desktop/tablet/mobile with no JavaScript errors"
+  ],
+  "page_errors": [],
+  "environment": "fictional PHP/MariaDB and Chromium; real HTTP first-password/onboarding/group/POS flows, no production"
+}

@@ -1,18 +1,63 @@
-# Instalar FISITAAP 1.8.0-R9 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R10 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
-R9 incorpora las 16 solicitudes de pedidos, entregas, clientes, caja y actualización automática. Pedidos es una lista con estado. Los cambios se consultan cada 2 segundos en pestañas visibles, sin recargar ni borrar campos que se están editando. Conserva la bienvenida, demos, FISIChat, impresión directa y correcciones visuales anteriores.
+R10 agrega edición de Nosotros, frases destacadas, contacto y portada del catálogo. Permite fotos de hasta 25 MB con compresión automática, quita la capa verde de la portada y hace que los botones del catálogo usen el color primario elegido. Agrega grupos de opcionales con nombre, carga de productos por Excel y alta de negocios con la versión vigente. Conserva las 16 mejoras operativas de R9 y las entregas anteriores.
 
-**Instala primero el ZIP web R9 y después Windows 1.8.1 en los equipos que usan la caja local.** Android conserva el APK 1.8.0; esta revisión no requiere reinstalarlo. No cambies la clave app_key de config.php: protege los PIN y enlaces privados existentes.
+Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
 
-Hay dos pasos: tú publicas los archivos una vez en cPanel; después cada dueño activa los cambios de su negocio desde **Administración → Actualizar sistema**, cuando pueda. Los negocios pendientes conservan el funcionamiento compatible con 1.7.9. No es necesario cerrar los turnos de todos los clientes para publicar.
+## Editar tu página y la portada del catálogo
+
+Después de instalar R10, entra como dueño a **Administración → Diseño y página**: https://fisitaap.com/admin/contenido.
+
+1. **Nosotros:** cambia la etiqueta que decía «NOSOTROS», título, presentación, las tres frases destacadas y el texto del botón. Una frase vacía se oculta. Los campos muestran los valores publicados, incluyendo los anteriores cuando correspondan.
+2. **Contacto:** edita correo, teléfono, WhatsApp, dirección, horario, mapa y redes sociales. Son los mismos datos de Administración → Generales y el catálogo; guardar aquí actualiza ambos. Se requiere permiso de configuración, además del permiso para editar el contenido.
+3. Para el mapa, abre Google Maps → Compartir → Insertar un mapa → Copiar HTML. Pega ese código en el campo Mapa de Google. No se permite insertar mapas de dominios ajenos.
+4. **Portada del catálogo o menú:** elige **Portada personalizada**, cambia título, texto e imagen y guarda. Se aplica a todas las sucursales. **Ocultar portada** retira solo el banner y mantiene categorías, productos y carrito.
+5. **Conservar banners actuales** vuelve a usar las promociones que ya tenías, respetando la sucursal. **Editar banners por sucursal** abre la gestión de imágenes/promociones anteriores. Cambiar entre modos no elimina esos registros ni la portada personalizada guardada.
+6. **Colores y botones:** el color principal se aplica a los botones para abrir catálogo/menú. El texto del botón se ajusta a negro o blanco para mantener contraste. El panel del dueño conserva su diseño neutral.
+7. Pulsa **Guardar diseño**. La vista previa muestra lo publicado. Puedes abrir también **Abrir página completa** o **Abrir catálogo / menú**. La portada principal y la portada del catálogo se editan por separado.
+
+## Crear productos con Excel y descargar el machote
+
+1. En el panel del dueño abre **Catálogo → Productos → Crear productos desde Excel**. También puedes entrar a https://fisitaap.com/admin/productos-importar.
+2. Pulsa **Descargar machote Excel**. El archivo FISITAAP-Machote-Productos.xlsx también está en la carpeta de descargas de esta entrega.
+3. Completa únicamente la hoja **Productos**. Las hojas **Ejemplos** e **Instrucciones** sirven de ayuda y no se importan. Mantén los encabezados; SKU, nombre y precio son obligatorios. Conserva el formato Texto del SKU para no perder ceros iniciales. No uses fórmulas, símbolos de moneda ni separadores de miles.
+4. Puedes cargar hasta **500 productos por archivo de 5 MB**, en .xlsx o CSV. Para archivos .xls antiguos, usa Guardar como → .xlsx. CSV admite UTF-8, coma o punto y coma. La lectura de .xlsx requiere las extensiones PHP zip y SimpleXML, usadas también por otras herramientas de la plataforma.
+5. Elige la **sucursal para existencias iniciales**, selecciona el archivo y pulsa **Revisar archivo**. Revisa nombre, precio, impuesto, estado y cantidades. Las categorías que no existan se crearán. La primera revisión no guarda productos.
+6. Si hay errores de filas o SKU existentes/repetidos, corrige el archivo y vuelve a cargarlo. Esta herramienta **crea productos nuevos**; no actualiza precios ni existencias de los productos anteriores.
+7. Pulsa **Crear productos** tras revisar. Si falla una fila, no se crea ninguna. Repetir la misma confirmación no duplica la carga. La revisión vence en 20 minutos.
+8. La existencia inicial se registra solamente en la sucursal elegida y genera su movimiento. En catálogo global, los productos pertenecen al negocio; en catálogo por sucursal se habilitan en la elegida. Imágenes, extras, grupos y proveedores se pueden completar después desde el producto.
+
+Se necesita permiso para crear productos. Inventario y categorías nuevas requieren además sus permisos. Los permisos se verifican de nuevo al confirmar. Los valores predeterminados de las columnas opcionales están en Instrucciones del machote.
+
+## Opcionales organizados por grupo
+
+En **Catálogo → Opcionales**, escribe **Nombre del grupo**, por ejemplo **Tallas**, y agrega las opciones **S, M, L**. Crea otro grupo **Colores** con **Rojo, Azul**. Puedes indicar si elegir es obligatorio y si permite una o varias selecciones; asigna el grupo a productos o categorías completas.
+
+En **Productos → Extras y opcionales** y en la asignación de categorías también puedes marcar el grupo completo. Las opciones tienen costo adicional cero; los extras con precio conservan su editor. Catálogo y caja piden las selecciones de cada grupo por separado. Editar o desactivar opciones no cambia los nombres/importes que ya quedaron guardados en ventas y pedidos anteriores.
+
+## Negocios nuevos con la versión actual
+
+Tras instalar y publicar R10, todo negocio creado desde **Maestro → Negocios** empieza con la versión actual, incluyendo modo Catálogo o Menú. Su dueño solo realiza el cambio normal de contraseña temporal; no necesita activar una actualización pendiente para empezar. La creación y la preparación se guardan juntas: si falla, no queda un negocio a medio preparar.
+
+Los negocios anteriores que ya activaron 1.8.0 mantienen esa activación. Los negocios anteriores pendientes en 1.7.9 siguen eligiendo cuándo activar desde Administración → Actualizar sistema, porque pueden tener turnos y equipos pendientes. No se elige un equipo principal ni se abre un turno automáticamente.
+
+## Fotos grandes y optimización
+
+Selecciona JPG, PNG o WebP de hasta **25 MB por foto**. El navegador prepara la foto antes de enviarla y muestra el tamaño resultante; espera a que termine o pulsa Guardar y el formulario esperará. El servidor vuelve a validar y guardar WebP con miniatura. La reducción depende de cada imagen: en QA una foto de 11 MB llegó como 400 KB y quedó en 115 KB. Se conserva la transparencia y la orientación de fotos del teléfono. El archivo original de tu computadora no cambia.
+
+La optimización reduce dimensiones/peso; las imágenes del sitio son estáticas. La validación de formato, dimensiones y memoria sigue activa. Ante un rechazo no se publica una imagen vacía ni se anuncia un guardado exitoso. Las imágenes ya publicadas se conservan hasta que elijas reemplazarlas o quitarlas.
+
+La compresión previa permite trabajar normalmente con el límite PHP habitual. Si el hosting aún rechaza una carga, revisa en cPanel → MultiPHP INI Editor los límites efectivos. Para recibir originales sin compresión previa, usa upload_max_filesize=25M y post_max_size=50M; memory_limit=256M es recomendable. Los controles de seguridad de la aplicación siguen aplicándose. No reemplaces config.php ni la base de datos.
+
+Hay dos pasos: tú publicas los archivos una vez en cPanel; después cada dueño de un negocio anterior pendiente activa los cambios de su negocio desde **Administración → Actualizar sistema**, cuando pueda. Los negocios pendientes conservan el funcionamiento compatible con 1.7.9. No es necesario cerrar los turnos de todos los clientes para publicar.
 
 ## Si el acceso te devuelve al error500
 
 El error reproducido ocurre al mantener abierta una cuenta de negocio suspendido o sin negocio asociado: owner-login la devuelve a admin y admin fallaba con500. R9 muestra «Tienda fuera de servicio» para una cuenta de negocio suspendido, recupera el formulario y muestra la causa y permite entrar con otra cuenta. No cambia el estado de los negocios ni reasigna cuentas por su cuenta.
 
-Después de guardar respaldo y extraer R9 en public_html, abre **https://fisitaap.com/volver-acceso-180.php** desde el navegador bloqueado. Pulsa **Volver al acceso**, ingresa con tu cuenta maestra y continúa con el actualizador indicado abajo. Este botón cierra únicamente la sesión de ese navegador mediante confirmación; no vacía ventas locales ni modifica negocios. Si el otro navegador ya permite entrar como maestro, puedes instalar desde él directamente.
+Después de guardar respaldo y extraer R10 en public_html, abre **https://fisitaap.com/volver-acceso-180.php** desde el navegador bloqueado. Pulsa **Volver al acceso**, ingresa con tu cuenta maestra y continúa con el actualizador indicado abajo. Este botón cierra únicamente la sesión de ese navegador mediante confirmación; no vacía ventas locales ni modifica negocios. Si el otro navegador ya permite entrar como maestro, puedes instalar desde él directamente.
 
 En el panel maestro revisa **Negocios → La Ventanita**: si corresponde que opere, confirma que esté activa. Si falta la asociación de un usuario, revisa su negocio antes de modificarla; no elijas otro negocio para salir del paso. La comprobación **https://fisitaap.com/diagnostico-bienvenida-180.php** identifica por separado un negocio suspendido y una asociación inexistente.
 
@@ -74,8 +119,8 @@ La corrección actualiza inmediatamente los usuarios aprobados al autorizar la s
 
 ## B. Publicar los archivos en cPanel
 
-5. Descarga **FISITAAP-1.8.0-CPANEL-R9.zip** de GitHub. El nombre FISITAAP-1.8.0-CPANEL.zip también contiene R9. Usa R9 para esta corrección, aunque ya hayas instalado R1, R2, R3, R4, R5, R6, R7 o R8.
-6. En **public_html**, pulsa **Cargar** y sube R9. Selecciona el ZIP → **Extraer**. Debe aparecer **public_html/actualizador-180/index.php**. Permite reemplazar los archivos anteriores de actualizador-180; conserva cualquier carpeta de respaldo que ya exista dentro.
+5. Descarga **FISITAAP-1.8.0-CPANEL-R10.zip** de GitHub. El nombre FISITAAP-1.8.0-CPANEL.zip también contiene R10. Usa R10 para esta corrección, aunque ya hayas instalado R1, R2, R3, R4, R5, R6, R7, R8 o R9.
+6. En **public_html**, pulsa **Cargar** y sube R10. Selecciona el ZIP → **Extraer**. Debe aparecer **public_html/actualizador-180/index.php**. Permite reemplazar los archivos anteriores de actualizador-180; conserva cualquier carpeta de respaldo que ya exista dentro.
 7. No muevas payload ni copies su contenido manualmente sobre el sitio. El actualizador comprueba los archivos y decide dónde instalarlos.
 8. Revisa **PHP 8.2 o 8.3**, PDO MySQL, mbstring, SimpleXML/XML, cURL y GD. GD con WebP permite optimizar imágenes. El ZIP contiene archivos **644** y carpetas **755**. Si cPanel conserva permisos viejos, corrige únicamente los del actualizador a esos valores; nunca uses 777.
 9. Abre **https://fisitaap.com/owner-login** e ingresa como **maestro**.
@@ -85,9 +130,9 @@ La corrección actualiza inmediatamente los usuarios aprobados al autorizar la s
 13. Si aparece **distinto**, se detectó un archivo modificado fuera de los paquetes conocidos. Guarda el respaldo y los nombres que señala; no fuerces la copia. Si falla la preparación de la base, conserva los archivos instalados y el respaldo, revisa el registro con soporte y repite después de corregir la causa. Repetir una instalación correcta no duplica datos ni activa negocios pendientes.
 14. En el panel maestro, **Administración → Actualizar sistema**, puedes ver los negocios actualizados y pendientes. También abre **https://fisitaap.com/master/actualizar-sistema**. **Comprobar publicación** revisa la preparación; no activa clientes. Para ayudar a uno, selecciona únicamente ese negocio y confirma su preparación.
 
-La aplicación nueva se instala en **public_html/releases/1.8.0-r9**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
+La aplicación nueva se instala en **public_html/releases/1.8.0-r10**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
 
-Si el negocio ya tenía 1.8.0 activada antes de R9, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
+Si el negocio ya tenía 1.8.0 activada antes de R10, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
 
 ## C. Lo que hará cada dueño cuando pueda actualizar
 
@@ -119,7 +164,7 @@ El botón prepara y activa el negocio en la web. Los instaladores de Windows/And
 32. Confirma que una caja secundaria necesita conexión y que compras, cuentas, mesas, reportes y permisos funcionan según lo que use el negocio.
 33. Si un navegador conserva un diseño anterior, recarga con **Ctrl+F5**. Los archivos nuevos se sirven desde una carpeta de versión propia.
 34. Descarga y conserva **actualizador-180/backups** fuera del sitio. Cuando lo hayas comprobado, elimina **solo** el ZIP subido, la carpeta **actualizador-180**, **volver-acceso-180.php** y **diagnostico-bienvenida-180.php**. Los dueños podrán seguir actualizando después desde Administración.
-35. **No borres releases ni releases/1.8.0-r9**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
+35. **No borres releases ni releases/1.8.0-r10**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
 
 ## F. Comprobar FISIChat
 
@@ -139,4 +184,4 @@ Después de publicar, la restauración de archivos antiguos se bloquea, incluso 
 
 ## Alcance de las pruebas
 
-R9 se prueba con PHP/MariaDB y Chromium ficticios, en pantallas de escritorio, tablet y móvil; incluye prueba de actualización desde el ZIP R8 y su esquema anterior, negocios 179/180 y turno abierto. Se verifican 122 hashes y permisos644/755. El informe separa las pruebas actuales de las históricas. El instalador Windows 1.8.1 se genera y su código local se prueba con servidor simulado; queda por comprobar el instalador en Windows real, los periféricos y la desconexión física. No instala nada automáticamente en tu cPanel. HTTPS, velocidad del hosting e impresión física deben comprobarse allí.
+R10 se prueba con fotos reales ficticias mayores de 5 MB, compresión previa y en servidor, transparencia, orientación, límites seguros, editor, contacto, permisos, colores claros/oscuros, portada del catálogo, banners por sucursal, alta de negocios actualizados, grupos de opcionales y creación desde Excel con permisos y confirmación idempotente. La instalación se verifica sobre R9 publicado con negocios 179/180 y turno abierto. El paquete contiene 126 archivos con permisos644/755. El informe separa estas pruebas de las históricas. No se accede al hosting ni se prueba un nuevo instalador nativo; Windows/APK no cambian en R10.

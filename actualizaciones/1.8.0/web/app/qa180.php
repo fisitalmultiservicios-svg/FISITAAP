@@ -9,6 +9,8 @@ require_once __DIR__.'/panel180.php';
 require_once __DIR__.'/chat180.php';
 require_once __DIR__.'/customers180.php';
 require_once __DIR__.'/modifiers180.php';
+require_once __DIR__.'/optional_groups180.php';
+require_once __DIR__.'/product_import180.php';
 require_once __DIR__.'/devices180.php';
 require_once __DIR__.'/pos180.php';
 require_once __DIR__.'/floor180.php';
@@ -70,12 +72,13 @@ function qa180_dispatch(App $app,string $path):void {
     if($path==='api/native/print-test'&&is_post())qa180_print_test($app);
     if($path==='api/coupon-preview'&&is_post())qa180_coupon_preview($app);
     if($path==='api/pos-options')qa180_pos_options($app);
-    $handlers=['turnos','caja-movimiento','cxc','cxp','cuentas-dinero','compras','contactos','auditoria','kpis','clientes','clientes-crear','clientes-buscar','clientes-historial','credito','extras','opcionales','producto-extras','categoria-extras','escritorio','salones','impresion','cupones','pedidos','cocina','reportes','configuracion','contenido'];
+    $handlers=['productos-importar','turnos','caja-movimiento','cxc','cxp','cuentas-dinero','compras','contactos','auditoria','kpis','clientes','clientes-crear','clientes-buscar','clientes-historial','credito','extras','opcionales','producto-extras','categoria-extras','escritorio','salones','impresion','cupones','pedidos','cocina','reportes','configuracion','contenido'];
     if(!str_starts_with($path,'admin/'))return;
     $section=explode('/',$path)[1];if(!in_array($section,$handlers,true))return;
     try{
-        [$user,$tenant]=qa180_business($app,['cupones'=>'promociones','caja-movimiento'=>'turnos','cuentas-dinero'=>'configuracion','producto-extras'=>'productos','categoria-extras'=>'categorias'][$section]??$section);
-        if(in_array($section,['pedidos','cocina'],true))qa180_orders($app,$user,$tenant,$section);
+        [$user,$tenant]=qa180_business($app,['productos-importar'=>'productos','cupones'=>'promociones','caja-movimiento'=>'turnos','cuentas-dinero'=>'configuracion','producto-extras'=>'productos','categoria-extras'=>'categorias'][$section]??$section);
+        if($section==='productos-importar')qa180_import_products($app,$user,$tenant);
+        elseif(in_array($section,['pedidos','cocina'],true))qa180_orders($app,$user,$tenant,$section);
         elseif($section==='turnos')qa180_shifts($app,$user,$tenant);
         elseif($section==='caja-movimiento')qa180_cash_move($app,$user,$tenant);
         elseif(in_array($section,['cxc','cxp'],true))qa180_accounts($app,$user,$tenant,$section);

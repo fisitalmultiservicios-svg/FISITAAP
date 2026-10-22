@@ -70,6 +70,19 @@ function qa180_update_blockers(App $app,int $tenant):array {
     if((int)$tickets['total'])$out[]=(int)$tickets['total'].' cuenta(s) con productos, mesa o pagos pendientes. Cobra o cancela esas cuentas.';
     return $out;
 }
+function qa180_initialize_new_tenant(App $app,int $tenant,array $actor):void {
+    // Called only inside tenant creation, before its transaction commits.
+    // Existing businesses retain their chosen activation date.
+    if($app->setting('qa180_active','0')!=='1')return;
+    if(!$app->db->inTransaction())throw new LogicException('La preparación del negocio requiere su transacción de creación.');
+    $app->exec('INSERT INTO fisitaap_tenant_updates180(tenant_id,version) VALUES(?,179)',[$tenant]);
+    qa180_modifiers_upgrade($app,$tenant);
+    qa180_register_upgrade($app,$tenant);
+    qa180_floor_upgrade($app,$tenant);
+    qa180_roles_upgrade($app,$tenant);
+    $app->exec('UPDATE fisitaap_tenant_updates180 SET version=180,modifiers_migrated=1,activated_by=?,activated_at=NOW() WHERE tenant_id=?',[$actor['id'],$tenant]);
+    unset($GLOBALS['qa180_version_cache'][spl_object_id($app).':'.$tenant]);
+}
 function qa180_upgrade_tenant(App $app,int $tenant,array $actor):void {
     if($app->setting('qa180_rollout','0')!=='1')throw new DomainException('El administrador de la plataforma todavía debe preparar la publicación.');
     qa180_update_lock($app,$tenant);qa180_scope($app,$tenant);
@@ -110,7 +123,7 @@ function qa180_updates_page(App $app,bool $master):void {
     }
     $ready=$app->one('SELECT `value` FROM settings WHERE `key`="qa180_rollout"');$published=($ready['value']??'0')==='1';
     admin_shell_start('Actualizar sistema',$user,$tenant,'actualizar-sistema');
-    echo '<section class="card admin-card"><h1>Actualizar sistema</h1><p>Versión disponible: <strong>1.8.0-R9 · Windows 1.8.1</strong>. Cada negocio elige su momento para activar los cambios.</p>';
+    echo '<section class="card admin-card"><h1>Actualizar sistema</h1><p>Versión disponible: <strong>1.8.0-R10 · Windows 1.8.1</strong>. Los negocios nuevos comienzan actualizados. Los negocios anteriores pendientes eligen su momento para activar los cambios.</p>';
     if($message)echo '<p class="alert alert-success" role="status">'.e($message).'</p>';
     if($error)echo '<p class="alert alert-error" role="alert">'.e($error).'</p>';
     if($master){
