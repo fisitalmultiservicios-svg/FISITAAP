@@ -1,0 +1,101 @@
+{
+  "passed": 4,
+  "checks": [
+    "Guest catalog only offers categories/cart; actions work and close the menu at four sizes; customer login is not duplicated",
+    "Authenticated shopper reaches own orders from catalog",
+    "Tables/quick sale/collection use exactly the panel grouped navigation for owner and cashier, with real link navigation, manual/logout, Escape/close and no old generated menu",
+    "Official website retains R12 original navigation; no horizontal overflow or JS errors"
+  ],
+  "layouts": [
+    {
+      "width": 1366,
+      "catalog_navigation": "purchase actions only"
+    },
+    {
+      "width": 900,
+      "catalog_navigation": "purchase actions only"
+    },
+    {
+      "width": 768,
+      "catalog_navigation": "purchase actions only"
+    },
+    {
+      "width": 390,
+      "catalog_navigation": "purchase actions only"
+    },
+    {
+      "role": "owner",
+      "route": "/admin/mesas",
+      "width": 1366,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "owner",
+      "route": "/admin/ventas",
+      "width": 1366,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "owner",
+      "route": "/admin/cobro",
+      "width": 1366,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "owner",
+      "route": "/admin/mesas",
+      "width": 390,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "owner",
+      "route": "/admin/ventas",
+      "width": 390,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "owner",
+      "route": "/admin/cobro",
+      "width": 390,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "cashiera",
+      "route": "/admin/mesas",
+      "width": 1366,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "cashiera",
+      "route": "/admin/ventas",
+      "width": 1366,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "cashiera",
+      "route": "/admin/cobro",
+      "width": 1366,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "cashiera",
+      "route": "/admin/mesas",
+      "width": 390,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "cashiera",
+      "route": "/admin/ventas",
+      "width": 390,
+      "navigation_matches_panel": true
+    },
+    {
+      "role": "cashiera",
+      "route": "/admin/cobro",
+      "width": 390,
+      "navigation_matches_panel": true
+    }
+  ],
+  "page_errors": [],
+  "environment": "isolated fictional PHP/MariaDB/Chromium; no production or real messages"
+}

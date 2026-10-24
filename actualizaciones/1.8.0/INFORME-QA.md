@@ -1,3 +1,26 @@
+# Informe QA · FISITAAP web 1.8.0-R13
+
+Fecha: 24 de octubre de 2026. Correcciones del catálogo, navegación interna y especialización de FISIChat. Se conservan los instaladores Windows 1.8.1/Android 1.8.0 y el machote Excel R11.
+
+| Solicitud | Resultado |
+|---|---|
+| Menú antiguo del catálogo | Se reemplaza por Categorías y Ver carrito. Acceso de cliente visible sin duplicarlo dentro del menú; tras iniciar sesión se ofrecen Mis pedidos/Mi cuenta. No aparecen Inicio/Catálogo/Blog/Contacto ni el listado de administración. Las acciones regresan a categorías y abren el carrito real, cerrando el menú y restaurando el estado del botón. |
+| Menú de Mesas en celular | Mesas, Venta rápida y Cobrar cuentas reutilizan el mismo componente PHP agrupado del panel, con sus etiquetas, destinos, permisos y módulos. Se retira la lista JavaScript anterior. Incluye manual y cierre de sesión. Se conserva el ajuste/zoom de terminal y la navegación oficial restaurada en R12. |
+| FISIChat fuera de función | Cuatro perfiles: comercial/soporte en la web oficial; compras/pedidos de esa tienda en el catálogo; operación del negocio en el panel; administración de FISITAAP en maestro. Filtro local previo al proveedor para consultas ajenas, creación/clonación de sistemas, cambio de instrucciones y preguntas no confirmadas del desarrollo interno. Instrucciones distintas por perfil y contexto permitido; los rechazos no se envían después como historial a la IA. Respuestas acotadas y filtro de salidas que derivan en creación de software. |
+| Asistentes existentes | La misma política se aplica a las API anteriores del dueño y pública. Se conservan las herramientas autorizadas del dueño y la propuesta/confirmación de planes del maestro. Conversaciones previas quedan fuera del nuevo espacio de perfil. No se modifica ni publica la conexión privada de IA. |
+
+## Evidencia actual
+
+- QA-NAVEGACION-R13.json: cuatro grupos, 16 combinaciones de rol/ruta/tamaño; catálogo en 1366/900/768/390 px, acciones reales de categorías/carrito, acceso a pedidos propios, igualdad de enlaces agrupados entre panel y terminal para dueño/cajero, navegación real a Productos, cierre y Escape. Captura del menú móvil inspeccionada; sin errores JavaScript.
+- QA-FISICHAT-PROVEEDOR-R13.json: 12 grupos con proveedor TLS simulado y clave ficticia. Las consultas de clonación, procedencia del desarrollo, instrucciones y redacción ajena se rechazan en los cuatro perfiles sin llamada externa. Comprueba contexto público/de tienda/maestro, historial filtrado, salida simulada fuera de función sustituida por guía, API anteriores, permisos y controles de sesión, concurrencia, reinicio y caída del proveedor.
+- QA-FISICHAT-HTTP-R13.json: 11 grupos de regresión sin IA: contexto y precios por sucursal, productos ocultos, aislamiento entre clientes/tiendas, acceso y cambio obligatorio de clave, datos del maestro, confirmación/idempotencia de planes y límites de solicitudes.
+- QA-ACTUALIZADOR-R13.json: instalación real sobre ZIP R12 publicado con negocios179/180 y turno abierto; preservación de datos, contraseñas, indicadores de acceso, config/uploads/código anterior, permisos maestro/CSRF, integridad y repetición idempotente.
+- QA-SINTAXIS-R13.json: 79 PHP funcionales, 83 PHP del ZIP completo, 10 JavaScript, 131 hashes, permisos644/755 y guía idéntica al paquete.
+
+R13 no añade columnas ni tablas respecto de R12. Se instala en releases/1.8.0-r13, conservando las versiones previas. Los indicadores/activaciones por negocio mantienen su estado.
+
+Pruebas con PHP/MariaDB/Chromium y datos ficticios, incluyendo respuestas de IA simuladas. No se consultó un modelo real ni se midió su calidad/latencia; las instrucciones y filtros reducen desvíos y se verificaron los casos descritos, sin afirmar que un modelo generativo nunca se desvíe. No se accedió al hosting ni se enviaron mensajes. Los informes siguientes son evidencia histórica de entregas anteriores.
+
 # Informe QA · FISITAAP web 1.8.0-R12
 
 Corrección del menú de la portada oficial de FISITAAP. Se retira únicamente el JavaScript que lo convertía en desplegable y sus estilos específicos. La navegación recupera el diseño adaptable anterior: enlaces horizontales en escritorio y el comportamiento móvil previo. El logo y Acceso negocios conservan su posición. Los paneles, catálogos, Mesas y Venta rápida mantienen sus menús desplegables de R11.

@@ -95,8 +95,13 @@ function public_header(array $tenant=null,string $active='inicio'):void{
     $platformLogo=$app->setting('platform_logo',url('assets/fisitapp-logo.webp'));
     $brandLogo=$tenant?($tenant['logo']??null):$platformLogo;
     $brandText=$tenant?($tenant['name']??''):($brandLogo?'':$app->setting('site_name','FISITAPP'));
+    $shopping=$tenant&&$active==='catalogo'&&qa180_active($app,(int)$tenant['id']);
     $links=[];
-    if($user){
+    if($shopping){
+        $links=[['action'=>'categories','label'=>'Categorías'],['action'=>'cart','label'=>'Ver carrito']];
+        if(($user['role']??'')==='customer'){$links[]=['href'=>url('account'),'label'=>'Mis pedidos'];$links[]=['href'=>url('account#perfil'),'label'=>'Mi cuenta'];}
+        elseif($user)$links[]=['href'=>role_home_url_v1($app,$user),'label'=>'Volver a mi panel'];
+    }elseif($user){
         foreach(role_nav_links_v1($app,$user,$tenant) as $route=>$label)$links[]=['href'=>url($route),'label'=>$label,'active'=>str_contains(request_path(),trim($route,'#'))];
     }else{
         $links=[
@@ -106,7 +111,12 @@ function public_header(array $tenant=null,string $active='inicio'):void{
             ['href'=>$tenant?url($slug.'/contacto'):url('#contacto'),'label'=>'Contacto','active'=>$active==='contacto'],
         ];
     }
-    $renderLinks=static function(array $items):string{$html='';foreach($items as $item)$html.='<a class="'.($item['active']?'active':'').'" href="'.e($item['href']).'">'.e($item['label']).'</a>';return $html;};
+    $renderLinks=static function(array $items):string{
+        $html='';foreach($items as $item){
+            if(isset($item['action'])){$html.='<button type="button" '.($item['action']==='cart'?'data-open-cart':'data-catalog-nav').'>'.e($item['label']).'</button>';continue;}
+            $html.='<a class="'.(!empty($item['active'])?'active':'').'" href="'.e($item['href']).'">'.e($item['label']).'</a>';
+        }return $html;
+    };
     $loginHref='';$loginLabel='';
     if(!$user&&$tenant&&!is_demo_tenant_v12($tenant)){$loginHref=r11_ready($app)&&qa180_active($app,(int)$tenant['id'])?url($tenant['slug'].'/clientes/ingresar'):url('login?next='.rawurlencode(current_url_v1()));$loginLabel='Iniciar sesión de cliente';}
     elseif(!$user&&!$tenant){$loginHref=url('owner-login');$loginLabel='Acceso negocios';}
@@ -117,7 +127,7 @@ function public_header(array $tenant=null,string $active='inicio'):void{
     elseif($loginHref!=='')echo '<a class="btn '.(!$tenant?'btn-light ':'').'desktop-nav-action r11-customer-login" href="'.e($loginHref).'">'.e($loginLabel).'</a>';
     echo '</div><nav id="mobileMenu" class="mobile-menu-panel" data-mobile-menu aria-label="Menú móvil" hidden><div class="container mobile-menu-inner">'.$renderLinks($links);
     if($user)echo '<form method="post" action="'.url('logout').'">'.csrf_field().'<button class="mobile-menu-action" type="submit">Cerrar sesión</button></form>';
-    elseif($loginHref!=='')echo '<a class="mobile-menu-action" href="'.e($loginHref).'">'.e($loginLabel).'</a>';
+    elseif(!$shopping&&$loginHref!=='')echo '<a class="mobile-menu-action" href="'.e($loginHref).'">'.e($loginLabel).'</a>';
     echo '</div></nav></header>';
 }
 

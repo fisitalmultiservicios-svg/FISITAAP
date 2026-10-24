@@ -1,0 +1,17 @@
+{
+  "passed": 11,
+  "checks": [
+    "sales and support give grounded answers, explicit follow-up intent and current native printing guidance without an AI key",
+    "server-scoped conversation survives reload; request retry is cached, mismatched reuse rejected, and reset clears history",
+    "public and store users cannot become master, access private businesses, confirm writes or bypass CSRF/type/length checks",
+    "store answers use published branch prices, hide unpublished products, reject foreign branches and isolate their history from platform chat",
+    "authenticated shoppers see only their own orders in the selected store; anonymous users, other shoppers and other stores are excluded",
+    "master differentiates expired businesses from those due in the next 14 days using database dates",
+    "master contacts exclude store messages; forced password change blocks private full-page and API access immediately",
+    "the master panel serves an internal administrative assistant; the official landing stays public even for the logged-in master",
+    "master plan proposal changes nothing; explicit token confirmation updates only plan/expiry, preserves money/shifts/activation and retry adds no duplicate audit",
+    "stale proposals, reset proposals and revoked master roles cannot overwrite newer changes or confirm an old action",
+    "rate limit permits 24 requests and rejects the next; the isolated test window is cleaned for browser QA"
+  ],
+  "scope": "actual PHP/MariaDB HTTP; fictional tenants/users/money only; local guide engine; AI transport tested separately"
+}

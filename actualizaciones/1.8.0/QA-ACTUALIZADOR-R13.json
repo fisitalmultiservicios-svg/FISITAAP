@@ -1,0 +1,14 @@
+{
+  "baseline": "published R12, tenant A180/B179 and one open shift",
+  "passed": 7,
+  "checks": [
+    "R13 preserves phone-login flags, customer passwords/contacts, data and mixed business versions and open shift",
+    "sales/products/users, modifiers, config, uploads, old shared app/assets and immutable R12 files preserved",
+    "master-only/CSRF and rejection of unknown modifications to active R12 code",
+    "131 installed payload hashes match with portable extraction under umask077",
+    "new entry/assets use R13; private PHP denied HTTP403",
+    "business styles loaded without extra POS script; official sample reply answers the stock question",
+    "repeat installation does not duplicate backups or alter tenant versions; rollback stays blocked after publication"
+  ],
+  "environment": "independent fictional PHP/MariaDB database; actual published R12 ZIP baseline; no production"
+}

@@ -1,0 +1,19 @@
+{
+  "passed": 12,
+  "checks": [
+    "verified TLS provider request uses bounded server history, factual sales/support prompt, no tools and store=false; public context has no private business data",
+    "master AI receives internal authorized metrics and administrative instructions without keys or passwords",
+    "store AI gets only published products from the authorized store/branch, without costs, private stock or other business data",
+    "all four profiles reject software cloning, invented development claims, prompt override and unrelated writing locally with no provider call",
+    "store prompt is exclusively a shopping assistant, excludes platform sales/support knowledge and excludes rejected conversation turns from provider history",
+    "provider output that drifts into software creation is replaced by the grounded local store response",
+    "legacy owner/public endpoints enforce the same local domain boundary while the real owner assistant retains its authorized tools and operational prompt",
+    "profile names supplied by a shopper cannot grant master/business access or a foreign branch",
+    "master change intent bypasses external AI and requires the existing review/confirmation form",
+    "same-session navigation completes while delayed AI runs; concurrent messages in one conversation are rejected rather than interleaved",
+    "reset during a delayed AI request prevents the old reply restoring conversation history",
+    "provider HTTP500 returns helpful printing guidance and releases the conversation for the next request"
+  ],
+  "navigation_ms": 72,
+  "scope": "actual PHP cURL and legacy endpoints through locally trusted TLS mock; fake key, four enforced profiles and simulated provider drift; not live model quality or production"
+}
