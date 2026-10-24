@@ -123,7 +123,7 @@ function qa180_updates_page(App $app,bool $master):void {
     }
     $ready=$app->one('SELECT `value` FROM settings WHERE `key`="qa180_rollout"');$published=($ready['value']??'0')==='1';
     admin_shell_start('Actualizar sistema',$user,$tenant,'actualizar-sistema');
-    echo '<section class="card admin-card"><h1>Actualizar sistema</h1><p>Versión disponible: <strong>1.8.0-R11 · Windows 1.8.1</strong>. Los negocios nuevos comienzan actualizados. Los negocios anteriores pendientes eligen su momento para activar los cambios.</p>';
+    echo '<section class="card admin-card"><h1>Actualizar sistema</h1><p>Versión disponible: <strong>1.8.0-R12 · Windows 1.8.1</strong>. Los negocios nuevos comienzan actualizados. Los negocios anteriores pendientes eligen su momento para activar los cambios.</p>';
     if($message)echo '<p class="alert alert-success" role="status">'.e($message).'</p>';
     if($error)echo '<p class="alert alert-error" role="alert">'.e($error).'</p>';
     if($master){

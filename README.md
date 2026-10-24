@@ -1,6 +1,6 @@
 # FISITAAP
 
-Actualización actual: **web 1.8.0-R11 y Windows 1.8.1**. [Descargas, guía y resultados de QA](descargas/1.8.0/README.md).
+Actualización actual: **web 1.8.0-R12 y Windows 1.8.1**. [Descargas, guía y resultados de QA](descargas/1.8.0/README.md).
 
 Las siguientes referencias se conservan como historial.
 

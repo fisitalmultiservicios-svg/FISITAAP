@@ -1,3 +1,15 @@
+# Informe QA · FISITAAP web 1.8.0-R12
+
+Corrección del menú de la portada oficial de FISITAAP. Se retira únicamente el JavaScript que lo convertía en desplegable y sus estilos específicos. La navegación recupera el diseño adaptable anterior: enlaces horizontales en escritorio y el comportamiento móvil previo. El logo y Acceso negocios conservan su posición. Los paneles, catálogos, Mesas y Venta rápida mantienen sus menús desplegables de R11.
+
+- QA-MENU-R12.json: portada en 1366/900/768/390 px, encabezado sin desplegable añadido ni desborde horizontal, enlaces Funciones/Demos operativos y revisión de los menús de catálogo, administración y Venta rápida. Sin errores JavaScript. Capturas inspeccionadas en el entorno local.
+- QA-ACTUALIZADOR-R12.json: instalación mediante el actualizador sobre el ZIP R11 publicado, con negocios 179/180 y turno abierto. Conserva datos, contraseñas, indicadores de acceso por teléfono, config.php, uploads y código R11. Comprueba maestro/CSRF, rechazo de modificaciones ajenas, 130 hashes, archivos privados protegidos y repetición idempotente.
+- QA-SINTAXIS-R12.json: 78 PHP funcionales, 82 PHP del ZIP completo, 10 JavaScript, 130 hashes, guía idéntica y permisos 644/755.
+
+El ZIP instala releases/1.8.0-r12 sin sobrescribir la versión R11 conservada. No cambia el esquema ni las reglas de negocio respecto de R11; reutiliza la preparación idempotente existente. Los instaladores Windows 1.8.1/Android 1.8.0 y el machote Excel R11 no cambian.
+
+Pruebas en PHP/MariaDB/Chromium con datos ficticios; sin acceso al hosting ni mensajes externos. No se repitieron todos los flujos de R11, que quedan documentados a continuación como evidencia histórica.
+
 # Informe QA · FISITAAP web 1.8.0-R11
 
 Fecha: 23 de octubre de 2026. Windows 1.8.1 y Android 1.8.0 conservan sus binarios. R11 es una actualización web sobre R10, con una columna aditiva para diferenciar acceso de clientes nuevo/pendiente/anterior.

@@ -1,0 +1,37 @@
+{
+  "passed": 4,
+  "checks": [
+    "Official FISITAAP header restores original responsive navigation with no injected toggle/overlay, logo and business access intact",
+    "Desktop original links are horizontal and Functions/Demos anchors navigate correctly",
+    "Store catalog drawer opens/closes at four sizes; owner administration drawer opens/closes at desktop/mobile",
+    "Quick sale retains fit/zoom toolbar and authorized hamburger navigation"
+  ],
+  "layouts": [
+    {
+      "width": 1366,
+      "scroll": 1366,
+      "header": 80,
+      "nav": "flex"
+    },
+    {
+      "width": 900,
+      "scroll": 900,
+      "header": 74,
+      "nav": "flex"
+    },
+    {
+      "width": 768,
+      "scroll": 768,
+      "header": 74,
+      "nav": "flex"
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "header": 68,
+      "nav": "none"
+    }
+  ],
+  "page_errors": [],
+  "environment": "Exact R12 payload in isolated PHP/MariaDB/Chromium with fictional accounts; no production changes or messages"
+}

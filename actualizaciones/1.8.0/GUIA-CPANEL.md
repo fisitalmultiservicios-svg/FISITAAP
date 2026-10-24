@@ -1,10 +1,16 @@
-# Instalar FISITAAP 1.8.0-R11 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R12 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
-R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enteras por unidad y fracciones a granel, menús desplegables en todos los tamaños y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp antes de consultar el PIN. Agrega acceso de clientes por teléfono y mantiene las mejoras de imágenes, Excel, opcionales y alta de negocios de R10.
+R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enteras por unidad y fracciones a granel, menús desplegables de paneles y tiendas en todos los tamaños y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp antes de consultar el PIN. Agrega acceso de clientes por teléfono y mantiene las mejoras de imágenes, Excel, opcionales y alta de negocios de R10.
 
 Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
+
+## Corrección R12: menú de la web principal
+
+R12 restaura el menú anterior de la portada oficial de FISITAAP: los enlaces Funciones, Cómo funciona, Demos y Preguntas vuelven a su posición original, junto al logo y Acceso negocios. El menú de esta portada no se transforma en desplegable. Los paneles y catálogos de las tiendas conservan el menú desplegable de R11.
+
+Se instala con el mismo actualizador, tanto si ya instalaste R11 como si vienes de una versión anterior. No requiere importar SQL ni cambiar datos de clientes. Windows y Android conservan sus instaladores.
 
 ## Cambios de R11: slider, cantidades, pantallas y clientes
 
@@ -33,7 +39,7 @@ En el Excel, usa **unidad + decimales0 + mínimo1 + incremento1** para piezas. P
 
 ### Menú desplegable y pantalla completa
 
-En maestro, dueño, catálogo y web principal, el menú comienza cerrado y se abre con **☰** tanto en computadora como en tableta o teléfono. Pulsa fuera, el botón de cerrar o Escape para ocultarlo. Venta rápida y Mesas también tienen su menú.
+En maestro, dueño y catálogos de las tiendas, el menú comienza cerrado y se abre con **☰** tanto en computadora como en tableta o teléfono. Pulsa fuera, el botón de cerrar o Escape para ocultarlo. Venta rápida y Mesas también tienen su menú.
 
 En **Venta rápida** y **Mesas**, el área de trabajo se ajusta a la pantalla disponible. **Ajustar** recupera la vista completa. **+ / −** amplían o reducen para leer mejor; al ampliar puedes desplazarte dentro de esa vista. **Pantalla completa** usa el permiso del navegador. El navegador conserva su propio zoom. Productos de acceso rápido y mesas extensas se dividen en páginas para mantener visibles los controles.
 
@@ -108,7 +114,7 @@ Hay dos pasos: tú publicas los archivos una vez en cPanel; después cada dueño
 
 El error reproducido ocurre al mantener abierta una cuenta de negocio suspendido o sin negocio asociado: owner-login la devuelve a admin y admin fallaba con500. R9 muestra «Tienda fuera de servicio» para una cuenta de negocio suspendido, recupera el formulario y muestra la causa y permite entrar con otra cuenta. No cambia el estado de los negocios ni reasigna cuentas por su cuenta.
 
-Después de guardar respaldo y extraer R11 en public_html, abre **https://fisitaap.com/volver-acceso-180.php** desde el navegador bloqueado. Pulsa **Volver al acceso**, ingresa con tu cuenta maestra y continúa con el actualizador indicado abajo. Este botón cierra únicamente la sesión de ese navegador mediante confirmación; no vacía ventas locales ni modifica negocios. Si el otro navegador ya permite entrar como maestro, puedes instalar desde él directamente.
+Después de guardar respaldo y extraer R12 en public_html, abre **https://fisitaap.com/volver-acceso-180.php** desde el navegador bloqueado. Pulsa **Volver al acceso**, ingresa con tu cuenta maestra y continúa con el actualizador indicado abajo. Este botón cierra únicamente la sesión de ese navegador mediante confirmación; no vacía ventas locales ni modifica negocios. Si el otro navegador ya permite entrar como maestro, puedes instalar desde él directamente.
 
 En el panel maestro revisa **Negocios → La Ventanita**: si corresponde que opere, confirma que esté activa. Si falta la asociación de un usuario, revisa su negocio antes de modificarla; no elijas otro negocio para salir del paso. La comprobación **https://fisitaap.com/diagnostico-bienvenida-180.php** identifica por separado un negocio suspendido y una asociación inexistente.
 
@@ -170,8 +176,8 @@ La corrección actualiza inmediatamente los usuarios aprobados al autorizar la s
 
 ## B. Publicar los archivos en cPanel
 
-5. Descarga **FISITAAP-1.8.0-CPANEL-R11.zip** de GitHub. El nombre FISITAAP-1.8.0-CPANEL.zip también contiene R11. Usa R11 para esta corrección, aunque ya hayas instalado R1, R2, R3, R4, R5, R6, R7, R8, R9 o R10.
-6. En **public_html**, pulsa **Cargar** y sube R11. Selecciona el ZIP → **Extraer**. Debe aparecer **public_html/actualizador-180/index.php**. Permite reemplazar los archivos anteriores de actualizador-180; conserva cualquier carpeta de respaldo que ya exista dentro.
+5. Descarga **FISITAAP-1.8.0-CPANEL-R12.zip** de GitHub. El nombre FISITAAP-1.8.0-CPANEL.zip también contiene R12. Usa R12 para esta corrección, aunque ya hayas instalado R1, R2, R3, R4, R5, R6, R7, R8, R9, R10 o R11.
+6. En **public_html**, pulsa **Cargar** y sube R12. Selecciona el ZIP → **Extraer**. Debe aparecer **public_html/actualizador-180/index.php**. Permite reemplazar los archivos anteriores de actualizador-180; conserva cualquier carpeta de respaldo que ya exista dentro.
 7. No muevas payload ni copies su contenido manualmente sobre el sitio. El actualizador comprueba los archivos y decide dónde instalarlos.
 8. Revisa **PHP 8.2 o 8.3**, PDO MySQL, mbstring, SimpleXML/XML, cURL y GD. GD con WebP permite optimizar imágenes. El ZIP contiene archivos **644** y carpetas **755**. Si cPanel conserva permisos viejos, corrige únicamente los del actualizador a esos valores; nunca uses 777.
 9. Abre **https://fisitaap.com/owner-login** e ingresa como **maestro**.
@@ -181,7 +187,7 @@ La corrección actualiza inmediatamente los usuarios aprobados al autorizar la s
 13. Si aparece **distinto**, se detectó un archivo modificado fuera de los paquetes conocidos. Guarda el respaldo y los nombres que señala; no fuerces la copia. Si falla la preparación de la base, conserva los archivos instalados y el respaldo, revisa el registro con soporte y repite después de corregir la causa. Repetir una instalación correcta no duplica datos ni activa negocios pendientes.
 14. En el panel maestro, **Administración → Actualizar sistema**, puedes ver los negocios actualizados y pendientes. También abre **https://fisitaap.com/master/actualizar-sistema**. **Comprobar publicación** revisa la preparación; no activa clientes. Para ayudar a uno, selecciona únicamente ese negocio y confirma su preparación.
 
-La aplicación nueva se instala en **public_html/releases/1.8.0-r11**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
+La aplicación nueva se instala en **public_html/releases/1.8.0-r12**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
 
 Si el negocio ya tenía 1.8.0 activada antes de R11, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
 
@@ -215,7 +221,7 @@ El botón prepara y activa el negocio en la web. Los instaladores de Windows/And
 32. Confirma que una caja secundaria necesita conexión y que compras, cuentas, mesas, reportes y permisos funcionan según lo que use el negocio.
 33. Si un navegador conserva un diseño anterior, recarga con **Ctrl+F5**. Los archivos nuevos se sirven desde una carpeta de versión propia.
 34. Descarga y conserva **actualizador-180/backups** fuera del sitio. Cuando lo hayas comprobado, elimina **solo** el ZIP subido, la carpeta **actualizador-180**, **volver-acceso-180.php** y **diagnostico-bienvenida-180.php**. Los dueños podrán seguir actualizando después desde Administración.
-35. **No borres releases ni releases/1.8.0-r11**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
+35. **No borres releases ni releases/1.8.0-r12**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
 
 ## F. Comprobar FISIChat
 
@@ -235,4 +241,4 @@ Después de publicar, la restauración de archivos antiguos se bloquea, incluso 
 
 ## Alcance de las pruebas
 
-R11 se verifica con slider real de tres imágenes/tiempo configurable, unidad y granel en caja/catálogo, login/contraseñas por teléfono, menús, veinte vistas de terminal, checkout y PIN en móvil. La instalación se comprueba sobre R10 publicado con negocios179/180 y turno abierto. El paquete tiene130 archivos con permisos644/755. Las pruebas de fotos de11MB, orientación y compresión de R10 se conservan como evidencia histórica. El informe distingue las ejecuciones actuales. No se accedió al hosting ni se cambiaron los instaladores Windows/Android.
+R12 verifica el menú oficial original en escritorio/tablet/móvil y la instalación sobre R11 publicado, conservando datos y menús de tiendas. Las pruebas de R11 se conservan como evidencia histórica: slider real de tres imágenes/tiempo configurable, unidad y granel en caja/catálogo, login/contraseñas por teléfono, menús, veinte vistas de terminal, checkout y PIN en móvil. La instalación se comprueba sobre R10 publicado con negocios179/180 y turno abierto. El paquete tiene130 archivos con permisos644/755. Las pruebas de fotos de11MB, orientación y compresión de R10 se conservan como evidencia histórica. El informe distingue las ejecuciones actuales. No se accedió al hosting ni se cambiaron los instaladores Windows/Android.
