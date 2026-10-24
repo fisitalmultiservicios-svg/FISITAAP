@@ -76,21 +76,26 @@
   const checkout=document.querySelector('#checkoutForm');
   if(checkout){
     checkout.elements.address_reference?.closest('.form-group')?.remove();
-    const maps=document.createElement('div');maps.className='form-group';maps.innerHTML='<label>Ubicación de Google Maps</label><input class="input" type="url" name="maps_url" placeholder="Pega el enlace de Compartir → Copiar enlace"><div class="op180-map-actions"><button class="btn btn-light" type="button" data-current-location>Usar mi ubicación actual</button><button class="btn btn-light" type="button" data-search-map>Buscar en Google Maps</button></div><small data-map-message role="status"></small>';
+    const maps=document.createElement('div');maps.className='form-group';maps.innerHTML='<label>Ubicación de Google Maps</label><input class="input" type="url" name="maps_url" placeholder="Pega un enlace de Google Maps o usa tu ubicación"><div class="op180-map-actions"><button class="btn btn-light" type="button" data-current-location>Usar mi ubicación actual</button></div><small data-map-message role="status"></small><a data-map-preview target="_blank" rel="noopener noreferrer" hidden>Ver ubicación cargada</a>';
     checkout.elements.address?.closest('.form-group')?.after(maps);
     maps.querySelector('[data-current-location]').onclick=()=>{
-      const message=maps.querySelector('[data-map-message]');if(!navigator.geolocation){message.textContent='Puedes buscar tu ubicación en Maps y pegar el enlace.';return;}
-      message.textContent='Solicitando ubicación. Permite el acceso cuando el navegador lo indique.';
-      navigator.geolocation.getCurrentPosition(position=>{checkout.elements.maps_url.value='https://www.google.com/maps?q='+position.coords.latitude.toFixed(7)+','+position.coords.longitude.toFixed(7);message.textContent='Ubicación cargada. Completa la dirección escrita para facilitar la entrega.';},()=>{message.textContent='No se obtuvo la ubicación. Puedes buscarla en Maps o pegar el enlace.';},{enableHighAccuracy:true,timeout:15000,maximumAge:30000});
+      const message=maps.querySelector('[data-map-message]'),button=maps.querySelector('[data-current-location]'),preview=maps.querySelector('[data-map-preview]');
+      if(!window.isSecureContext){message.textContent='La ubicación necesita HTTPS con certificado válido. Puedes pegar un enlace de Maps mientras se corrige el certificado.';return;}
+      if(!navigator.geolocation){message.textContent='Este dispositivo no ofrece ubicación. Pega un enlace de Google Maps.';return;}
+      button.disabled=true;message.textContent='Buscando ubicación… permite el acceso en tu navegador y activa Ubicación en el dispositivo.';
+      navigator.geolocation.getCurrentPosition(position=>{
+        const url='https://www.google.com/maps?q='+position.coords.latitude.toFixed(7)+','+position.coords.longitude.toFixed(7);checkout.elements.maps_url.value=url;checkout.elements.maps_url.dispatchEvent(new Event('change',{bubbles:true}));preview.href=url;preview.hidden=false;message.textContent='Ubicación cargada. Revisa el punto y completa la dirección escrita.';button.disabled=false;
+      },error=>{button.disabled=false;message.textContent=error.code===1?'El permiso de ubicación está bloqueado. Abre los permisos del sitio junto a la dirección del navegador y permite Ubicación.':error.code===2?'El dispositivo no pudo localizarte. Activa Ubicación/GPS en sus ajustes o pega tu enlace de Maps.':'La ubicación tardó demasiado. Vuelve a intentar o pega tu enlace de Maps.';},{enableHighAccuracy:false,timeout:20000,maximumAge:300000});
     };
-    maps.querySelector('[data-search-map]').onclick=()=>window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(checkout.elements.address.value||'mi ubicación'),'_blank','noopener,noreferrer');
     let addressSelect=checkout.querySelector('[data-saved-address]');if(!addressSelect){const group=document.createElement('div');group.className='form-group';group.innerHTML='<label>Direcciones guardadas para este teléfono</label><select class="input" data-saved-address name="address_id"><option value="">Escribir una dirección nueva</option></select>';maps.before(group);addressSelect=group.querySelector('select');}addressSelect.name='address_id';
-    let addresses=[];let addressTimer;
+    const addressGroup=addressSelect.closest('.form-group');addressGroup.hidden=true;addressSelect.disabled=true;
+    let addresses=[],addressTimer,lookupVersion=0,filled=false;
     const phone=checkout.elements.guest_phone;
-    const lookup=async()=>{const value=phone?.value||'';if(value.replace(/\D/g,'').length<8)return;try{const out=await api('api/delivery-addresses180',{tenant:checkout.elements.tenant.value,phone:value});addresses=out.addresses;addressSelect.innerHTML='<option value="">Escribir una dirección nueva</option>'+addresses.map(a=>'<option value="'+Number(a.id)+'">'+esc(a.label)+(a.is_default?' · Principal':'')+' · '+esc(a.address)+'</option>').join('');}catch(_){}};
+    const resetAddresses=()=>{lookupVersion++;addresses=[];addressSelect.innerHTML='<option value="">Escribir una dirección nueva</option>';addressSelect.disabled=true;addressGroup.hidden=true;if(filled){checkout.elements.address.value='';checkout.elements.maps_url.value='';filled=false;}};
+    const lookup=async()=>{const value=phone?.value||'',version=++lookupVersion;if(value.replace(/\D/g,'').length<8){resetAddresses();return;}try{const out=await api('api/delivery-addresses180',{tenant:checkout.elements.tenant.value,phone:value});if(version!==lookupVersion||phone.value!==value)return;addresses=out.addresses;addressSelect.innerHTML='<option value="">Escribir una dirección nueva</option>'+addresses.map(a=>'<option value="'+Number(a.id)+'">'+esc(a.label)+(a.is_default?' · Principal':'')+' · '+esc(a.address)+'</option>').join('');addressGroup.hidden=!addresses.length;addressSelect.disabled=!addresses.length;}catch(_){if(version===lookupVersion)resetAddresses();}};
     window.op180RefreshAddresses=lookup;
-    phone?.addEventListener('input',()=>{clearTimeout(addressTimer);addressTimer=setTimeout(lookup,550);});phone?.addEventListener('blur',lookup);if(phone?.value)lookup();
-    addressSelect.onchange=()=>{const a=addresses.find(a=>String(a.id)===addressSelect.value);if(a){checkout.elements.address.value=a.address;checkout.elements.maps_url.value=a.maps_url180||'';}};
+    phone?.addEventListener('input',()=>{clearTimeout(addressTimer);resetAddresses();addressTimer=setTimeout(lookup,550);});phone?.addEventListener('blur',lookup);if(phone?.value)lookup();
+    addressSelect.onchange=()=>{const a=addresses.find(a=>String(a.id)===addressSelect.value);if(a){checkout.elements.address.value=a.address;checkout.elements.maps_url.value=a.maps_url180||'';filled=true;}};
     const proof=document.createElement('div');proof.className='form-group';proof.hidden=true;proof.innerHTML='<label>Comprobante de pago SINPE <span aria-hidden="true">*</span></label><input class="input" type="file" name="sinpe_proof" accept="image/jpeg,image/png,image/webp"><input type="hidden" name="proof_token"><small>Adjunta la imagen para poder enviar el pedido. JPG, PNG o WebP, máximo 6 MB.</small>';checkout.elements.payment.closest('.form-group').after(proof);
     const payment=()=>{const sinpe=/sinpe/i.test(checkout.elements.payment.value);proof.hidden=!sinpe;proof.querySelector('[type=file]').required=sinpe;};checkout.elements.payment.addEventListener('change',payment);payment();
     window.op180PrepareCheckout=async()=>{
@@ -101,10 +106,14 @@
     proof.querySelector('[type=file]').addEventListener('change',()=>checkout.elements.proof_token.value='');
   }
   window.op180ShowConfirmation=out=>{
-    if(out.demo)return false;let dialog=document.querySelector('#op180Confirmation');if(!dialog){dialog=document.createElement('dialog');dialog.id='op180Confirmation';dialog.className='qa180-dispatch-dialog';document.body.append(dialog);}
-    dialog.innerHTML='<h2>Tu pedido fue enviado</h2><p>El negocio lo recibirá para aceptar y preparar.</p>'+(out.delivery_pin?'<div class="op180-pin"><small>PIN PARA RECIBIR TU PEDIDO</small><strong>'+esc(out.delivery_pin)+'</strong><p>Compártelo con el motorizado al recibir el pedido.</p></div>':'')+'<p><a class="btn" href="'+esc(out.tracking_url)+'">Ver estado y conservar mi PIN</a></p>'+(out.whatsapp?'<p><a class="btn btn-light" target="_blank" rel="noopener noreferrer" href="'+esc(out.whatsapp)+'">Compartir pedido por WhatsApp</a></p>':'')+'<button class="btn btn-light" type="button" data-dialog-close>Seguir comprando</button>';
-    window.op180RefreshAddresses?.();
-    if(checkout){checkout.elements.proof_token.value='';checkout.querySelector('[type=file]').value='';}dialog.showModal();return true;
+    if(out.demo)return false;
+    document.querySelector('#op180Confirmation')?.remove();
+    let notice=document.querySelector('#r11OrderConfirmation');if(!notice){notice=document.createElement('section');notice.id='r11OrderConfirmation';notice.className='r11-order-confirmation';notice.setAttribute('role','status');document.querySelector('.branch-current')?.after(notice);if(!notice.isConnected)document.body.prepend(notice);}
+    const account=out.customer_logged_in?out.account_url:out.customer_login_url;
+    notice.innerHTML='<strong>Pedido #'+esc(out.order)+' guardado</strong><p>'+(out.customer_logged_in?'Tu sesión está abierta. Consulta la trazabilidad y tu PIN en Mis pedidos.':'Conserva el enlace de seguimiento para consultar tu pedido y PIN.')+'</p>'+(account?'<a class="btn" href="'+esc(account)+'">'+(out.customer_logged_in?'Mis pedidos':'Iniciar sesión de cliente')+'</a> ':'')+'<a class="btn btn-light" href="'+esc(out.tracking_url)+'">Ver este pedido y PIN</a>'+(out.whatsapp?' <a class="btn btn-light" target="_blank" rel="noopener noreferrer" href="'+esc(out.whatsapp)+'">Abrir WhatsApp</a>':'<p>El negocio aún debe configurar su número de WhatsApp. El pedido quedó guardado.</p>');
+    if(out.customer_logged_in){context.role='customer';const menu=document.querySelector('[data-mobile-menu] .mobile-menu-inner');if(menu&&!menu.querySelector('[data-customer-orders]')){const link=document.createElement('a');link.href=out.account_url;link.dataset.customerOrders='';link.textContent='Mis pedidos';menu.append(link);}for(const link of document.querySelectorAll('a.r11-customer-login,[data-mobile-menu] a[href$="/clientes/ingresar"]'))link.remove();}
+    window.op180RefreshAddresses?.();if(checkout){checkout.elements.proof_token.value='';checkout.querySelector('[type=file]').value='';}return true;
   };
+
   poll();
 })();

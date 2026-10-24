@@ -8,7 +8,7 @@ function pos_ticket_v141(App $app,array $tenant,array $user,int $ticketId=0,stri
 
 function pos_recalculate_v141(App $app,int $ticketId):array {return pos_recalculate_148($app,$ticketId);}
 
-function pos_items_v141(App $app,int $ticketId):array{return $app->all('SELECT i.*,p.image,p.sku FROM pos_ticket_items i LEFT JOIN products p ON p.id=i.product_id WHERE i.ticket_id=? ORDER BY i.id',[$ticketId]);}
+function pos_items_v141(App $app,int $ticketId):array{$rows=$app->all('SELECT i.*,p.image,p.sku,p.unit_label,p.decimals,p.min_qty,p.qty_step FROM pos_ticket_items i LEFT JOIN products p ON p.id=i.product_id WHERE i.ticket_id=? ORDER BY i.id',[$ticketId]);return qa180_active($app)?array_map(static fn($row)=>isset($row['unit_label'])?r11_quantity_product($row):$row,$rows):$rows;}
 
 function pos_product_options_v141(App $app,int $tenantId,int $productId,array $selected):array
 {
@@ -25,7 +25,7 @@ function pos_handle_action_v141(App $app,array $user,array $tenant,array $ticket
 
 function pos_catalog_products_v141(App $app,array $tenant,array $branch):array
 {
-    $q=trim((string)($_GET['q']??''));$category=(int)($_GET['category']??0);$params=[$branch['id'],$tenant['id']];$where='p.tenant_id=? AND p.status="active"';if($q!==''){$where.=' AND (p.name LIKE ? OR p.sku LIKE ? OR p.description LIKE ?)';$like='%'.$q.'%';array_push($params,$like,$like,$like);}if($category){$where.=' AND p.category_id=?';$params[]=$category;}return $app->all('SELECT p.*,COALESCE(i.quantity,0) stock FROM products p LEFT JOIN product_inventory i ON i.product_id=p.id AND i.branch_id=? WHERE '.$where.' ORDER BY '.($q!==''?'(p.sku=?) DESC,':'').'p.name LIMIT 80',$q!==''?[...$params,$q]:$params);
+    $q=trim((string)($_GET['q']??''));$category=(int)($_GET['category']??0);$params=[$branch['id'],$tenant['id']];$where='p.tenant_id=? AND p.status="active"';if($q!==''){$where.=' AND (p.name LIKE ? OR p.sku LIKE ? OR p.description LIKE ?)';$like='%'.$q.'%';array_push($params,$like,$like,$like);}if($category){$where.=' AND p.category_id=?';$params[]=$category;}$result=$app->all('SELECT p.*,COALESCE(i.quantity,0) stock FROM products p LEFT JOIN product_inventory i ON i.product_id=p.id AND i.branch_id=? WHERE '.$where.' ORDER BY '.($q!==''?'(p.sku=?) DESC,':'').'p.name LIMIT 80',$q!==''?[...$params,$q]:$params);return qa180_active($app)?array_map('r11_quantity_product',$result):$result;
 }
 
 function pos_order_screen_v141(App $app,array $user,array $tenant,array $ticket):void {pos_workspace_148($app,$user,$tenant,(int)$ticket['id']);}

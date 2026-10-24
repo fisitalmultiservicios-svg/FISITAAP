@@ -23,19 +23,24 @@ function op180_pin(App $app,array $order,bool $allowLegacy=false):string {
 function op180_browser():string {if(empty($_SESSION['checkout_browser180']))$_SESSION['checkout_browser180']=bin2hex(random_bytes(24));return hash('sha256',$_SESSION['checkout_browser180']);}
 function op180_contact(App $app,array $tenant,string $name,string $phone):array {
     $phone=op180_phone($phone);$name=mb_substr(trim($name),0,150);if($name==='')throw new DomainException('Escribe tu nombre.');
-    $owns=!$app->db->inTransaction();if($owns)$app->db->beginTransaction();
+    $created=false;$owns=!$app->db->inTransaction();if($owns)$app->db->beginTransaction();
     try{
         $app->one('SELECT id FROM tenants WHERE id=? FOR UPDATE',[$tenant['id']]);
         $contact=$app->one('SELECT u.* FROM fisitaap_guest_contacts180 c JOIN users u ON u.id=c.user_id AND u.role="customer" AND u.is_active=1 WHERE c.tenant_id=? AND c.phone=?',[$tenant['id'],$phone]);
         if(!$contact){foreach($app->all('SELECT u.* FROM users u JOIN tenant_customers tc ON tc.user_id=u.id WHERE tc.tenant_id=? AND u.role="customer" AND u.is_active=1 AND u.phone LIKE ? ORDER BY u.id LIMIT 100',[$tenant['id'],'%'.substr($phone,-4).'%']) as $candidate){try{if(op180_phone((string)$candidate['phone'])===$phone){$contact=$candidate;break;}}catch(DomainException){}}}
-        if(!$contact){if(!rate_limit_persistent($app,'delivery_new_contact',client_identity(),20,3600))throw new DomainException('Espera antes de registrar otro contacto.');$contact=r2_new_customer($app,$tenant,$name,$phone);}
-        $app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id) VALUES(?,?,?) ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)',[$tenant['id'],$phone,$contact['id']]);
+        if(!$contact&&r11_ready($app)&&!is_demo_tenant_v12($tenant)&&($session=current_user())&&$session['role']==='customer'){
+            $signed=$app->one('SELECT * FROM users WHERE id=? AND role="customer" AND is_active=1',[$session['id']]);
+            try{$samePhone=$signed&&op180_phone((string)$signed['phone'])===$phone;}catch(DomainException){$samePhone=false;}
+            if($samePhone){$contact=$signed;$app->exec('INSERT IGNORE INTO tenant_customers(tenant_id,user_id) VALUES(?,?)',[$tenant['id'],$signed['id']]);}
+        }
+        if(!$contact){if(!rate_limit_persistent($app,'delivery_new_contact',client_identity(),20,3600))throw new DomainException('Espera antes de registrar otro contacto.');$contact=r2_new_customer($app,$tenant,$name,$phone);$created=true;}
+        if(r11_ready($app))$app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id,phone_login181) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)',[$tenant['id'],$phone,$contact['id'],$created&&!is_demo_tenant_v12($tenant)?2:0]);else $app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id) VALUES(?,?,?) ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)',[$tenant['id'],$phone,$contact['id']]);
         if($owns)$app->db->commit();unset($contact['password_hash']);return $contact;
     }catch(Throwable $e){if($owns&&$app->db->inTransaction())$app->db->rollBack();throw $e;}
 }
 function op180_customer_checkout(App $app,array $tenant,array $raw):array {
     $user=op180_contact($app,$tenant,(string)($raw['guest_name']??''),(string)($raw['guest_phone']??''));
-    // A phone identifies a delivery contact; it never authenticates that person's account.
+    // Contact lookup alone does not authenticate an existing account. R11 completes new access only after the order commits.
     $user['name']=mb_substr(trim((string)$raw['guest_name']),0,150);$user['phone']=op180_phone((string)$raw['guest_phone']);$user['guest180']=true;return $user;
 }
 function op180_address_lookup(App $app):never {
@@ -88,7 +93,7 @@ function op180_checkout_saved(App $app,array $tenant,array $user,array $raw,int 
 }
 function op180_checkout_result(App $app,array $order):array {
     $signature=hash_hmac('sha256','order:'.$order['id'],$app->config['app_key']);
-    return ['delivery_pin'=>$order['delivery_type']==='pickup'?null:op180_pin($app,$order),'tracking_url'=>url('pedido/seguimiento?id='.(int)$order['id'].'&token='.$signature)];
+    return (r11_ready($app)?r11_customer_finish($app,$order):[])+['delivery_pin'=>$order['delivery_type']==='pickup'?null:op180_pin($app,$order),'tracking_url'=>url('pedido/seguimiento?id='.(int)$order['id'].'&token='.$signature)];
 }
 function op180_proof_upload(App $app):never {
     verify_csrf();$tenant=tenant_by_slug($app,(string)($_POST['tenant']??''));$key=(string)($_POST['checkout_key']??'');

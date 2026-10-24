@@ -47,7 +47,7 @@ function r2_snapshot_read(App $app,array $d):array {
     if($t['catalog_mode']==='branches')foreach($app->all('SELECT bp.* FROM branch_products bp JOIN products p ON p.id=bp.product_id AND p.tenant_id=? WHERE bp.branch_id=? AND bp.is_active=1',[$t['id'],$b['id']])as$row)$branchPrices[$row['product_id']]=$row;
     $optionsByGroup=[];
     foreach($app->all('SELECT o.* FROM product_options o JOIN product_option_groups g ON g.id=o.group_id JOIN products p ON p.id=g.product_id WHERE g.tenant_id=? AND p.tenant_id=? AND p.status="active" AND g.is_active=1 AND o.is_active=1 ORDER BY o.group_id,o.sort_order,o.id',[$t['id'],$t['id']])as$o)$optionsByGroup[$o['group_id']][]=['id'=>(int)$o['id'],'name'=>$o['name'],'price'=>pos_cents_148($o['price_delta'])];
-    $groupsByProduct=[];
+    if(qa180_active($app))$products=array_map('r11_quantity_product',$products);$groupsByProduct=[];
     foreach($app->all('SELECT g.* FROM product_option_groups g JOIN products p ON p.id=g.product_id WHERE g.tenant_id=? AND p.tenant_id=? AND p.status="active" AND g.is_active=1 ORDER BY g.product_id,g.sort_order,g.id',[$t['id'],$t['id']])as$g)$groupsByProduct[$g['product_id']][]=['id'=>(int)$g['id'],'name'=>$g['name'],'min'=>$g['is_required']?max(1,(int)$g['min_select']):(int)$g['min_select'],'max'=>$g['type']==='single'?1:(int)$g['max_select'],'options'=>$optionsByGroup[$g['id']]??[]];
     if(qa180_active($app))foreach($groupsByProduct as $pid=>$groups)$groupsByProduct[$pid]=qa180_compact_groups($app,(int)$t['id'],$groups);
     $componentsByProduct=[];

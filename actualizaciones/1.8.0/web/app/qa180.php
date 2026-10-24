@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/operations180.php';
+require_once __DIR__.'/experience_r11.php';
+require_once __DIR__.'/customer_phone_r11.php';
 require_once __DIR__.'/updates180.php';
 require_once __DIR__.'/cash180.php';
 require_once __DIR__.'/finance180.php';
@@ -51,6 +53,7 @@ function qa180_dispatch(App $app,string $path):void {
         if(in_array($path,['admin','admin/bienvenida'],true)){if((current_user()['role']??'')==='master')redirect(url('master'));$user=require_login(['tenant_admin','manager','editor','cashier','kitchen']);$tenant=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$user['tenant_id']]);if(!$tenant)reject_business_login180('Tienda fuera de servicio. La cuenta maestra debe revisar la asociación y el estado del negocio.');qa180_welcome($app,$user,$tenant);exit;}
     }
     if(!qa180_active($app))return;
+    r11_customer_routes($app,$path);
     if(preg_match('~(?:^|/)blog(?:/|$)|^(?:admin|master)/posts(?:/|$)~',$path)){http_response_code(404);simple_error('Página no disponible','Vuelve al catálogo o al inicio.');exit;}
     if(op180_ready($app)){
         if($path==='api/live180')op180_live($app);

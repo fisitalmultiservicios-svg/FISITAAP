@@ -21,6 +21,7 @@ function op180_schema(App $app):void {
         if(!$app->one('SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA=DATABASE() AND TABLE_NAME=? AND CONSTRAINT_NAME=?',[$table,$fk]))$app->db->exec('ALTER TABLE '.$table.' ADD CONSTRAINT '.$fk.' FOREIGN KEY('.$column.') REFERENCES '.$parent.'(id) ON DELETE CASCADE');
     }
     foreach([
+        'fisitaap_guest_contacts180'=>['phone_login181'=>'TINYINT NOT NULL DEFAULT 0'],
         'orders'=>['maps_url180'=>'VARCHAR(1500) NULL','pin_cipher180'=>'VARCHAR(250) NULL','cancel_reason180'=>'VARCHAR(500) NULL'],
         'customer_addresses'=>['maps_url180'=>'VARCHAR(1500) NULL'],
         'pos_tickets'=>['delivery_fee180'=>'DECIMAL(15,2) NOT NULL DEFAULT 0','maps_url180'=>'VARCHAR(1500) NULL'],
@@ -28,6 +29,7 @@ function op180_schema(App $app):void {
         'driver_affiliations'=>['payout_mode180'=>'VARCHAR(16) NOT NULL DEFAULT \'all\'','payout_percent180'=>'DECIMAL(7,2) NOT NULL DEFAULT 100'],
     ] as $table=>$columns){$known=array_column($app->all('SHOW COLUMNS FROM '.$table),'Field');foreach($columns as $column=>$type)if(!in_array($column,$known,true))$app->db->exec('ALTER TABLE '.$table.' ADD COLUMN '.$column.' '.$type);}
     $app->exec('INSERT INTO settings(`key`,`value`) VALUES("operations180_ready","1") ON DUPLICATE KEY UPDATE value="1"');
+    $app->exec('INSERT INTO settings(`key`,`value`) VALUES("experience_r11_ready","1") ON DUPLICATE KEY UPDATE value="1"');
 }
 function op180_touch(App $app,int $tenant):void {
     if($tenant&&op180_ready($app))$app->exec('INSERT INTO fisitaap_live180(tenant_id,revision) VALUES(?,1) ON DUPLICATE KEY UPDATE revision=revision+1',[$tenant]);

@@ -1,3 +1,37 @@
+# Informe QA · FISITAAP web 1.8.0-R11
+
+Fecha: 23 de octubre de 2026. Windows 1.8.1 y Android 1.8.0 conservan sus binarios. R11 es una actualización web sobre R10, con una columna aditiva para diferenciar acceso de clientes nuevo/pendiente/anterior.
+
+| Solicitud | Implementación |
+|---|---|
+| Editar el banner señalado | Tres tarjetas numeradas de imágenes, títulos/textos opcionales, tiempo de2 a60 segundos y modos personalizado/anterior/oculto en Diseño y página. Se conservan banners por sucursal y la compresión. |
+| Unidad y granel | Selector explícito, enteros para unidades y hasta3 decimales para granel. Validación en servidor al agregar/editar POS y checkout web; catálogo visual, Excel y snapshot nativo consistentes. Ventas anteriores conservadas. |
+| Menú en todas las pantallas | Drawer inicialmente cerrado en maestro/dueño/catálogo y navegación oficial; abre con☰ y cierra desde botón, fuera o Escape. Menú en terminal con rutas autorizadas. |
+| Mesas y Venta rápida | Ajuste al área disponible y controles Ajustar/+/−/pantalla completa. Ambas vistas de mesas y venta vacía/cargada sin scroll exterior en20 combinaciones de ruta/tamaño. Acceso rápido/mesas paginan; al ampliar se permite desplazamiento interior. |
+| Checkout más simple | Sin cédula, programación ni búsqueda de Maps; comprobante oculto excepto SINPE; direcciones sólo tras coincidencia del teléfono y limpieza al cambiarlo. |
+| Ubicación actual | Solicitud con permiso, enlace exacto y vista previa; mensajes para HTTPS inválido, permiso bloqueado, ubicación no disponible y tiempo agotado. Se requiere soporte/configuración real del dispositivo. |
+| Error de WhatsApp | Se corrige el número local sin506. Se reserva la ventana al clic y se abre el enlace tras guardar; una confirmación no modal deja seguimiento/WhatsApp disponibles. No se verifica que el número esté registrado en WhatsApp. |
+| PIN y acceso | El PIN está en Mis pedidos y trazabilidad; no se interpone un diálogo antes de WhatsApp. Cuenta y sesión para nuevos compradores con usuario teléfono/clave inicial teléfono. Login de clientes visible en catálogo. |
+| Contraseñas y cuentas anteriores | Nunca se reemplaza una contraseña existente por conocer un teléfono. Sólo los contactos nuevos marcados por R11 reciben la clave inicial al guardar su primer pedido. Clave cambiada no se restablece ni autoautentica. Cambio de teléfono actualiza el alias conservando contraseña. |
+
+La clave inicial igual al teléfono es débil por ser un dato conocido; el formulario lo explica y ofrece cambio de contraseña. Esto no es verificación por SMS/WhatsApp ni autenticación con código. Las cuentas previas sin acceso configurado conservan su contraseña; conocer el número no reclama automáticamente su historial. El lookup de direcciones por teléfono conserva el comportamiento solicitado previamente.
+
+## Evidencia R11
+
+- QA-EXPERIENCIA-R11.json: 8 grupos HTTP/Chromium: enteros/fracciones, login por teléfono, conservación/cambio de claves y teléfonos, slider real con tres imágenes/2s, menús en cuatro tamaños, veinte vistas de terminal, checkout condicional/geolocalización y salto a WhatsApp simulado con sesión/PIN/trazabilidad. PIN visible en tarjeta adaptable sin ancho mínimo heredado.
+- QA-EXCEL-R11.json: 5 grupos de descarga XLSX, creación atómica/reintento, rechazo de configuración fraccionaria por unidad, CSV, conflictos de SKU, permisos revocados y archivos malformados. Los casos válidos a granel mantienen0,25kg.
+- QA-DIVISION-R11.json: API de cotización y preview JavaScript con metadatos SQL reales rechazan trasladar media unidad, permiten1unidad/0,125kg y conservan la división monetaria en3partes. Sin escrituras de ventas/cantidades al cotizar. La vista de venta reutiliza metadatos y evita consultar el producto por cada línea.
+- QA-SNAPSHOT-R11.json: snapshot HTTP real y quote de Windows1.8.1 sin cambios. Rechaza1,5 unidades y acepta2 unidades y0,25kg. Los clientes deben sincronizar después de la instalación.
+- QA-ACTUALIZADOR-R11.json: instalación sobre ZIP R10 publicado sin la columna nueva, con negocios179/180 y turno abierto. Migración aditiva, preservación de filas/config/uploads/código anterior, controles maestro/CSRF y reintento idempotente.
+- QA-PERMISOS-ZIP-R11.json: extracción sobre R10 y en carpeta nueva bajo umask077/ApacheUID33, sin reparar después; archivos644/755 y PHP privado403.
+- QA-SINTAXIS-R11.json:78PHP funcionales/82PHP del archivo completo,10JavaScript,130 hashes y guía exacta del ZIP.
+
+El paquete conserva datos y no importa SQL ni reemplaza config.php. La publicación mantiene las activaciones por negocio; los negocios nuevos continúan iniciando actualizados como en R10. Los archivos se instalan en releases/1.8.0-r11.
+
+No se modificó el hosting ni se enviaron mensajes. WhatsApp se interceptó en navegador; la geolocalización se simuló con permiso y con rechazo. No se validaron Windows/Android físicos, GPS real, certificado/latencia de cPanel, cuentas bancarias ni impresoras. El test nativo ejecutó la lógica de cantidades con un snapshot ficticio, sin presentar eso como una nueva prueba física de venta sin red.
+
+Las secciones siguientes son evidencia histórica de R10 y anteriores.
+
 # Informe QA · FISITAAP web 1.8.0-R10
 
 Fecha: 21 de octubre de 2026. Mejoras del editor/imágenes de tienda, portada del catálogo, alta actualizada de negocios, grupos de opcionales y creación por Excel. Windows 1.8.1 y APK 1.8.0 no cambian en esta entrega.

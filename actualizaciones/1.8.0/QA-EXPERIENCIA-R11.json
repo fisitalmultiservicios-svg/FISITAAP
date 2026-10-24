@@ -1,0 +1,157 @@
+{
+  "passed": 8,
+  "checks": [
+    "physical POS rejects fractional unit add/edit even with legacy fractional config; whole units and0.25kg are accepted, with no partial writes on rejection",
+    "web checkout rejects fractional units, accepts fractional bulk and creates a phone account/session after committing the order; Mis pedidos shows its real PIN and tracking without generated email",
+    "phone login works for new and prior registered accounts; changed password is not reset/auto-authenticated, prior private shadow password survives, and profile phone change updates the login alias while keeping the private password",
+    "owner sees three numbered image cards and interval control; actual three-image catalog slider rotates at2s with no image tint",
+    "admin and public navigation are hidden drawers at desktop/tablet/mobile widths; hamburger opens/closes them and no horizontal overflow appears",
+    "quick sale, loaded sale and both table views fit viewport without outer horizontal/vertical scroll across20 sizes/routes; explicit zoom changes scale and Ajustar restores fit",
+    "checkout removes ID/scheduling/search controls, shows proof only for SINPE and saved addresses only for an existing entered phone; permitted geolocation fills exact coordinates and preview link",
+    "sending a new-customer order opens the prepared WhatsApp window with normalized506number; no PIN dialog blocks it, customer stays signed in and reaches the actual order PIN/tracking from menu"
+  ],
+  "layouts": [
+    {
+      "route": "/admin/ventas",
+      "width": 1366,
+      "height": 900,
+      "scrollW": 1366,
+      "scrollH": 900
+    },
+    {
+      "route": "/admin/ventas",
+      "width": 900,
+      "height": 700,
+      "scrollW": 900,
+      "scrollH": 700
+    },
+    {
+      "route": "/admin/ventas",
+      "width": 768,
+      "height": 1024,
+      "scrollW": 768,
+      "scrollH": 1024
+    },
+    {
+      "route": "/admin/ventas",
+      "width": 390,
+      "height": 844,
+      "scrollW": 390,
+      "scrollH": 844
+    },
+    {
+      "route": "/admin/ventas",
+      "width": 844,
+      "height": 390,
+      "scrollW": 844,
+      "scrollH": 390
+    },
+    {
+      "route": "/admin/ventas?screen=order&ticket=43",
+      "width": 1366,
+      "height": 900,
+      "scrollW": 1366,
+      "scrollH": 900
+    },
+    {
+      "route": "/admin/ventas?screen=order&ticket=43",
+      "width": 900,
+      "height": 700,
+      "scrollW": 900,
+      "scrollH": 700
+    },
+    {
+      "route": "/admin/ventas?screen=order&ticket=43",
+      "width": 768,
+      "height": 1024,
+      "scrollW": 768,
+      "scrollH": 1024
+    },
+    {
+      "route": "/admin/ventas?screen=order&ticket=43",
+      "width": 390,
+      "height": 844,
+      "scrollW": 390,
+      "scrollH": 844
+    },
+    {
+      "route": "/admin/ventas?screen=order&ticket=43",
+      "width": 844,
+      "height": 390,
+      "scrollW": 844,
+      "scrollH": 390
+    },
+    {
+      "route": "/admin/mesas?view=graphic",
+      "width": 1366,
+      "height": 900,
+      "scrollW": 1366,
+      "scrollH": 900
+    },
+    {
+      "route": "/admin/mesas?view=graphic",
+      "width": 900,
+      "height": 700,
+      "scrollW": 900,
+      "scrollH": 700
+    },
+    {
+      "route": "/admin/mesas?view=graphic",
+      "width": 768,
+      "height": 1024,
+      "scrollW": 768,
+      "scrollH": 1024
+    },
+    {
+      "route": "/admin/mesas?view=graphic",
+      "width": 390,
+      "height": 844,
+      "scrollW": 390,
+      "scrollH": 844
+    },
+    {
+      "route": "/admin/mesas?view=graphic",
+      "width": 844,
+      "height": 390,
+      "scrollW": 844,
+      "scrollH": 390
+    },
+    {
+      "route": "/admin/mesas?view=basic",
+      "width": 1366,
+      "height": 900,
+      "scrollW": 1366,
+      "scrollH": 900
+    },
+    {
+      "route": "/admin/mesas?view=basic",
+      "width": 900,
+      "height": 700,
+      "scrollW": 900,
+      "scrollH": 700
+    },
+    {
+      "route": "/admin/mesas?view=basic",
+      "width": 768,
+      "height": 1024,
+      "scrollW": 768,
+      "scrollH": 1024
+    },
+    {
+      "route": "/admin/mesas?view=basic",
+      "width": 390,
+      "height": 844,
+      "scrollW": 390,
+      "scrollH": 844
+    },
+    {
+      "route": "/admin/mesas?view=basic",
+      "width": 844,
+      "height": 390,
+      "scrollW": 844,
+      "scrollH": 390
+    }
+  ],
+  "page_errors": [],
+  "environment": "fictional PHP/MariaDB/Chromium; actual checkout/login/password/PIN and POS flows; WhatsApp intercepted, geolocation simulated with granted/denied permission; no messages sent or hosting changes"
+}

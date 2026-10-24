@@ -108,13 +108,13 @@ function public_header(array $tenant=null,string $active='inicio'):void{
     }
     $renderLinks=static function(array $items):string{$html='';foreach($items as $item)$html.='<a class="'.($item['active']?'active':'').'" href="'.e($item['href']).'">'.e($item['label']).'</a>';return $html;};
     $loginHref='';$loginLabel='';
-    if(!$user&&$tenant&&!is_demo_tenant_v12($tenant)){$loginHref=url('login?next='.rawurlencode(current_url_v1()));$loginLabel='Iniciar sesión';}
+    if(!$user&&$tenant&&!is_demo_tenant_v12($tenant)){$loginHref=r11_ready($app)&&qa180_active($app,(int)$tenant['id'])?url($tenant['slug'].'/clientes/ingresar'):url('login?next='.rawurlencode(current_url_v1()));$loginLabel='Iniciar sesión de cliente';}
     elseif(!$user&&!$tenant){$loginHref=url('owner-login');$loginLabel='Acceso negocios';}
     echo '<header class="topbar"><div class="container nav"><a class="brand '.($tenant?(!$brandLogo?'store-name-brand':''):'platform-brand').'" href="'.e($user?role_home_url_v1($app,$user):$base).'">'.($brandLogo?'<img class="brand-logo" src="'.e($brandLogo).'" alt="'.e($tenant['name']??'FISITAAP').'">':($tenant?'':'<span class="brand-mark">F</span>')).($brandText!==''?'<span>'.e($brandText).'</span>':'').'</a><nav class="nav-links role-nav" aria-label="Navegación principal">'.$renderLinks($links).'</nav>';
     echo '<button class="icon-btn mobile-menu-toggle mobile-only" type="button" data-mobile-menu-toggle aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú"><span aria-hidden="true">☰</span></button>';
     if($tenant&&$active==='catalogo')echo '<button class="icon-btn nav-cart" type="button" data-open-cart aria-label="Carrito">🛒<span class="badge-count" data-cart-count>0</span></button>';
     if($user)echo '<form method="post" action="'.url('logout').'" class="nav-logout desktop-nav-action">'.csrf_field().'<button class="icon-btn" title="Cerrar sesión" aria-label="Cerrar sesión">↪</button></form>';
-    elseif($loginHref!=='')echo '<a class="btn '.(!$tenant?'btn-light ':'').'desktop-nav-action" href="'.e($loginHref).'">'.e($loginLabel).'</a>';
+    elseif($loginHref!=='')echo '<a class="btn '.(!$tenant?'btn-light ':'').'desktop-nav-action r11-customer-login" href="'.e($loginHref).'">'.e($loginLabel).'</a>';
     echo '</div><nav id="mobileMenu" class="mobile-menu-panel" data-mobile-menu aria-label="Menú móvil" hidden><div class="container mobile-menu-inner">'.$renderLinks($links);
     if($user)echo '<form method="post" action="'.url('logout').'">'.csrf_field().'<button class="mobile-menu-action" type="submit">Cerrar sesión</button></form>';
     elseif($loginHref!=='')echo '<a class="mobile-menu-action" href="'.e($loginHref).'">'.e($loginLabel).'</a>';

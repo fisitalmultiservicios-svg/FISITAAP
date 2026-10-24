@@ -299,6 +299,7 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false,
     if($admin)echo '<link rel="stylesheet" href="'.url('assets/admin-refined.css?v='.rawurlencode($cacheVersion)).'">';
     $sharedWelcome=$admin&&in_array($path,['admin','admin/bienvenida','master'],true)&&function_exists('qa180_active')&&qa180_active($app,0);
     if(function_exists('qa180_active')&&(qa180_active($app)||$sharedWelcome))echo '<link rel="stylesheet" href="'.url('assets/qa180.css?v=180').'">';
+    echo '<link rel="stylesheet" href="'.url('assets/experience-r11.css?v=r11').'">';
     echo '</head><body class="'.($admin?'admin-body':'public-body').'">';
     if(!empty($GLOBALS['demo_context']))demo_banner();
 }
@@ -308,5 +309,5 @@ function layout_end(): void
     if(function_exists('op180_ui')&&qa180_active($GLOBALS['app']))op180_ui($GLOBALS['app']);
     if(function_exists('qa180_active')&&qa180_active($GLOBALS['app']))echo '<script>window.FISITAAP180='.r3_json(qa180_ui_context($GLOBALS['app'])).'</script><script src="'.url('assets/qa180.js?v=180').'" defer></script>';
     if(in_array(explode('/',request_path())[0],['admin','master'],true))echo '<script src="'.url('assets/image-upload.js?v=1810').'" defer></script>';
-    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').'</body></html>';
+    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.'<script src="'.url('assets/experience-r11.js?v=r11').'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').'</body></html>';
 }

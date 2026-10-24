@@ -1,23 +1,21 @@
-# FISITAAP 1.8.0-R10 · Windows 1.8.1
+# FISITAAP web 1.8.0-R11 · Windows 1.8.1
 
-R10 agrega creación de productos desde Excel con machote, grupos de opcionales como Tallas/Colores y negocios nuevos con la versión actual. Además mejora el editor de Nosotros/contacto/portada del catálogo, acepta fotos de 25 MB y las optimiza, elimina la capa verde y usa el color primario en los botones. Incluye las 16 solicitudes de pedidos, clientes, Maps, SINPE, entregas, pagos y venta local. Conserva las mejoras anteriores de bienvenida, demos, impresión y FISIChat. Pedidos ahora es una lista con estado y acciones, según la solicitud más reciente.
+R11 agrega un slider de tres imágenes con tiempo configurable, reglas de unidad/granel, menús desplegables y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp sin un diálogo del PIN. Los clientes nuevos reciben acceso por teléfono; Mis pedidos muestra PIN y trazabilidad. Conserva Excel, grupos de opcionales, imágenes optimizadas y alta de negocios con la versión actual.
 
-- [ZIP para cPanel R10](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R10.zip)
-- [Machote Excel para crear productos](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Machote-Productos.xlsx)
-- [Windows 1.8.1 x64](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.1-Windows-x64.exe)
+- [Descargar ZIP cPanel R11](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R11.zip)
+- [Machote Excel R11](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-Machote-Productos-R11.xlsx)
+- [Guía de instalación y uso](GUIA-CPANEL.md)
+- [Revisión de solicitudes y evidencia QA](INFORME-QA.md)
+- [Comprobación SHA256](../../descargas/1.8.0/SHA256SUMS-1.8.0.txt)
+- [Windows 1.8.1 existente](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.1-Windows-x64.exe)
 - [Android 1.8.0 existente](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk)
-- [Guía de instalación](GUIA-CPANEL.md)
-- [Informe de pruebas y revisión de los 16 puntos](INFORME-QA.md)
-- [SHA256 de los archivos](../../descargas/1.8.0/SHA256SUMS-1.8.0.txt)
 
-Instala primero R10 en **/home/fisitaap/public_html** y abre **https://fisitaap.com/actualizador-180/index.php** como maestro, con respaldo de archivos y BD. Después actualiza Windows sobre su instalación existente, sin desinstalar ni borrar datos. Si el negocio ya activó1.8.0, conserva esa activación. Los negocios nuevos comienzan actualizados. Los negocios anteriores pendientes deciden cuándo activar desde Administración → Actualizar sistema.
+Guarda respaldo de archivos y BD. Extrae el ZIP en **/home/fisitaap/public_html** y abre **https://fisitaap.com/actualizador-180/index.php** como maestro. La actualización conserva config.php, imágenes, ventas, turnos y activaciones. Añade una columna de acceso a clientes; no importa otra base SQL. Los negocios nuevos siguen iniciando actualizados; los anteriores pendientes deciden cuándo activar.
 
-Los clientes compran con nombre y teléfono, eligiendo o guardando direcciones. Esto no inicia sesión en cuentas existentes ni crea contraseñas con el teléfono. Google Maps permite obtener ubicación con permiso o buscar y pegar un enlace. SINPE exige comprobante privado; no verifica el abono bancario automáticamente. El pedido muestra su PIN y seguimiento privado.
+R11 actualiza la web. Si ya usas Windows 1.8.1, sincroniza su catálogo con internet para adoptar las reglas de cantidades antes de vender sin red; no necesitas reinstalarlo. Los binarios Windows/Android no cambiaron. No borres ventas locales pendientes.
 
-Windows 1.8.1 corrige el acceso local que podía quedar vacío tras vincular antes de asignar cajero/caja. Comprueba **Caja local preparada** antes de desconectar. Solo el equipo principal autorizado vende sin internet. La prueba automatizada incluye venta, reinicio y sincronización única; queda por probar el instalador en Windows físico y las impresoras reales.
+Para los compradores nuevos el usuario y la contraseña inicial son el teléfono. La clave es fácil de conocer: se ofrece Cambiar mi contraseña. Las cuentas existentes conservan su clave; conocer su teléfono no la restablece ni inicia esa cuenta al crear otro pedido. El comprador confirma el envío dentro de WhatsApp; la web abre el mensaje preparado y guarda previamente la solicitud.
 
-El ZIP contiene 126 archivos funcionales en **releases/1.8.0-r10**, con permisos644/755. No incluye config.php, BD, comprobantes, imágenes de negocios ni claves privadas. El ZIP sin sufijo también contieneR10. Conserva releases/1.8.0-r10; puedes retirar actualizador-180 al descargar su respaldo y completar las comprobaciones.
+El ZIP contiene130 archivos funcionales en **releases/1.8.0-r11**, con permisos644/755 y sin configuración privada, datos, claves ni imágenes de negocios. Conserva esa carpeta. Después de completar las pruebas y descargar su respaldo, puedes retirar actualizador-180. El ZIP sin sufijo también contieneR11. Los ZIP R1…R10 permanecen históricos.
 
-R1…R9, Windows 1.8.0 y el APK1.8.0 se conservan como archivos históricos. Esta entrega no instala nada en el hosting por sí sola. El informe especifica qué fue probado y qué requiere equipos físicos.
-
-R10 solo actualiza la web: si ya tienes Windows 1.8.1, no necesitas reinstalarlo. Los campos están en Administración → Diseño y página, dentro de Nosotros, Contacto y Portada del catálogo o menú.
+Pruebas con PHP/MariaDB/Chromium y datos ficticios; WhatsApp y ubicación fueron simulados y no se enviaron mensajes. El informe diferencia pruebas actuales de las históricas y de las verificaciones físicas pendientes. Publicar estos archivos no instala nada automáticamente en tu hosting.

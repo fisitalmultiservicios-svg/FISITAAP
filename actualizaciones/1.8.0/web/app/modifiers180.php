@@ -17,9 +17,9 @@ function qa180_validate_families(App $app,int $tenant,int $product,array $select
     foreach($rules as $fid=>$rule)if(($count[$fid]??0)<(int)$rule['minimum']||($count[$fid]??0)>(int)$rule['maximum'])throw new DomainException('Selecciona de '.$rule['minimum'].' a '.$rule['maximum'].' opciones de '.$rule['name'].'.');
 }
 function qa180_pos_options(App $app):never {
-    [$user,$tenant]=qa180_business($app,'ventas');$id=(int)($_GET['product_id']??0);$product=$app->one('SELECT id,name FROM products WHERE id=? AND tenant_id=? AND status="active"',[$id,$tenant['id']]);if(!$product)json_response(['ok'=>false,'error'=>'Producto no disponible.'],404);
+    [$user,$tenant]=qa180_business($app,'ventas');$id=(int)($_GET['product_id']??0);$product=$app->one('SELECT id,name,unit_label,min_qty,qty_step,decimals FROM products WHERE id=? AND tenant_id=? AND status="active"',[$id,$tenant['id']]);if(!$product)json_response(['ok'=>false,'error'=>'Producto no disponible.'],404);
     $groups=[];foreach($app->all('SELECT g.id,g.name,g.type,g.is_required,g.min_select,g.max_select,o.id option_id,o.name option_name,o.price_delta FROM product_option_groups g LEFT JOIN product_options o ON o.group_id=g.id AND o.is_active=1 WHERE g.tenant_id=? AND g.product_id=? AND g.is_active=1 ORDER BY g.sort_order,g.id,o.sort_order,o.id',[$tenant['id'],$id]) as $row){$gid=(int)$row['id'];if(!isset($groups[$gid]))$groups[$gid]=['id'=>$gid,'name'=>$row['name'],'type'=>$row['type'],'is_required'=>(bool)$row['is_required'],'min_select'=>(int)$row['min_select'],'max_select'=>(int)$row['max_select'],'options'=>[]];if($row['option_id']!==null)$groups[$gid]['options'][]=['id'=>(int)$row['option_id'],'name'=>$row['option_name'],'price_delta'=>$row['price_delta']];}
-    json_response(['ok'=>true,'product'=>$product,'groups'=>qa180_compact_groups($app,(int)$tenant['id'],$groups)]);
+    json_response(['ok'=>true,'product'=>r11_quantity_product($product),'groups'=>qa180_compact_groups($app,(int)$tenant['id'],$groups)]);
 }
 
 function qa180_modifier_sync(App $app,int $tenant):void {

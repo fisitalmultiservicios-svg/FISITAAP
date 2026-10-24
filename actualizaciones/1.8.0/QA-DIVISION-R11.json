@@ -1,0 +1,7 @@
+{
+  "passed": 1,
+  "checks": [
+    "actual API and frontend preview using actual SQL item metadata reject0.5unit transfer, accepts1unit and0.125kg transfers, preserves a3-way monetary division at83333cents; quotes do not mutate items/sales"
+  ],
+  "environment": "fictional PHP/MariaDB real HTTP payment quote; no funds, printers or devices used"
+}

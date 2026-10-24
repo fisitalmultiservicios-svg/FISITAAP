@@ -1,0 +1,12 @@
+{
+  "passed": 1,
+  "checks": [
+    "real HTTP desktop snapshot publishes unit min/step1000 and bulk min/step1; unchanged Windows1.8.1 quote rejects1.5units, accepts2units and0.25kg"
+  ],
+  "native_quote": {
+    "unit": 2000,
+    "bulk": 250,
+    "rejected": true
+  },
+  "environment": "fictional PHP/MariaDB snapshot plus actual Windows1.8.1 server.js quote under Node; no physical Windows/disconnection/printers; synchronize installed clients to adopt new snapshot"
+}

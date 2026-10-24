@@ -1,0 +1,13 @@
+{
+  "passed": 5,
+  "checks": [
+    "Products has a discoverable Excel action and authenticated downloadable real XLSX; Products sheet is empty, examples/help separate and leading-zero SKU column has Text style",
+    "XLSX preview writes nothing; confirmation creates2 products/category, preserves leading-zero SKU and fractional quantities, records stock/movements only in selected branch; repeated confirmation creates nothing extra",
+    "duplicates/negative amounts/fractional unit configuration reject the preview; UTF8 semicolon CSV works; commit revalidates a competing SKU and rolls back every row, then a corrected retry creates in branch303",
+    "formula cells, DTD/entities, external sheet relationship, missing Products sheet, decompression bomb,501rows and foreign branch are rejected without writes or stale confirmation",
+    "product-only role cannot create inventory/categories; product/inventory write permissions revoked after preview are revalidated at commit and every product is rolled back; editor has no JS errors at desktop/tablet/mobile"
+  ],
+  "page_errors": [],
+  "template_bytes": 5255,
+  "environment": "fictional PHP/MariaDB and Chromium, generated actual XLSX and UTF8 CSV; no production or physical Microsoft Excel"
+}

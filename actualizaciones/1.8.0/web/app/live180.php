@@ -45,7 +45,7 @@ function op180_incoming(App $app):never {
 }
 function op180_ui(App $app):void {
     if(!op180_ready($app))return;$user=current_user();$staff=$user&&in_array($user['role'],['tenant_admin','manager','editor','cashier','kitchen'],true);
-    echo '<link rel="stylesheet" href="'.e(url('assets/operations180.css?v=r9')).'"><script>window.OP180='.r3_json(['base'=>url(),'staff'=>$staff,'role'=>$user['role']??'guest','poll'=>2000,'csrf'=>csrf_token()]).';</script><script src="'.e(url('assets/operations180.js?v=r9')).'" defer></script>';
+    echo '<link rel="stylesheet" href="'.e(url('assets/operations180.css?v=r9')).'"><script>window.OP180='.r3_json(['base'=>url(),'demo'=>!empty($GLOBALS['demo_context']),'staff'=>$staff,'role'=>$user['role']??'guest','poll'=>2000,'csrf'=>csrf_token()]).';</script><script src="'.e(url('assets/operations180.js?v=r9')).'" defer></script>';
 }
 function op180_orders_list(App $app,array $user,array $tenant,array $branch,string $section):void {
     $origin=(string)($_GET['origin']??'');$status=(string)($_GET['status']??'');$days=(int)($_GET['days']??2);if(!in_array($days,[2,7,30],true))$days=2;
