@@ -1,0 +1,721 @@
+{
+  "date": "2026-10-27",
+  "designs": [
+    {
+      "design": "linea",
+      "flows": [
+        "branch and report date filters",
+        "POS sale/stock/receipt/print",
+        "unit validation",
+        "product CRUD/CSV atomic duplicate rejection",
+        "master CRUD/modules/roles",
+        "conditional SINPE checkout",
+        "new buyer/PIN/session/orders",
+        "accept/prepare/dispatch/pickup/PIN delivery",
+        "driver payout",
+        "separate merchant colors/slider",
+        "responsive navigation/POS",
+        "scoped local chat",
+        "reload persistence"
+      ],
+      "passed": true
+    },
+    {
+      "design": "estudio",
+      "flows": [
+        "branch and report date filters",
+        "POS sale/stock/receipt/print",
+        "unit validation",
+        "product CRUD/CSV atomic duplicate rejection",
+        "master CRUD/modules/roles",
+        "conditional SINPE checkout",
+        "new buyer/PIN/session/orders",
+        "accept/prepare/dispatch/pickup/PIN delivery",
+        "driver payout",
+        "separate merchant colors/slider",
+        "responsive navigation/POS",
+        "scoped local chat",
+        "reload persistence"
+      ],
+      "passed": true
+    },
+    {
+      "design": "noche",
+      "flows": [
+        "branch and report date filters",
+        "POS sale/stock/receipt/print",
+        "unit validation",
+        "product CRUD/CSV atomic duplicate rejection",
+        "master CRUD/modules/roles",
+        "conditional SINPE checkout",
+        "new buyer/PIN/session/orders",
+        "accept/prepare/dispatch/pickup/PIN delivery",
+        "driver payout",
+        "separate merchant colors/slider",
+        "responsive navigation/POS",
+        "scoped local chat",
+        "reload persistence"
+      ],
+      "passed": true
+    }
+  ],
+  "layout_cases": 108,
+  "layouts": [
+    {
+      "design": "linea",
+      "route": "overview",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "linea",
+      "route": "pos",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "linea",
+      "route": "tables",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "linea",
+      "route": "orders",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "linea",
+      "route": "products",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "linea",
+      "route": "catalog",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "linea",
+      "route": "overview",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "linea",
+      "route": "pos",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "linea",
+      "route": "tables",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "linea",
+      "route": "orders",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "linea",
+      "route": "products",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "linea",
+      "route": "catalog",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "linea",
+      "route": "overview",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "linea",
+      "route": "pos",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "linea",
+      "route": "tables",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "linea",
+      "route": "orders",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "linea",
+      "route": "products",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "linea",
+      "route": "catalog",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "linea",
+      "route": "overview",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "linea",
+      "route": "pos",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "linea",
+      "route": "tables",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "linea",
+      "route": "orders",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "linea",
+      "route": "products",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "linea",
+      "route": "catalog",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "linea",
+      "route": "overview",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "linea",
+      "route": "pos",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "linea",
+      "route": "tables",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "linea",
+      "route": "orders",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "linea",
+      "route": "products",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "linea",
+      "route": "catalog",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "linea",
+      "route": "overview",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "linea",
+      "route": "pos",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "linea",
+      "route": "tables",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "linea",
+      "route": "orders",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "linea",
+      "route": "products",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "linea",
+      "route": "catalog",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "estudio",
+      "route": "overview",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "estudio",
+      "route": "pos",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "estudio",
+      "route": "tables",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "estudio",
+      "route": "orders",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "estudio",
+      "route": "products",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "estudio",
+      "route": "catalog",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "estudio",
+      "route": "overview",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "estudio",
+      "route": "pos",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "estudio",
+      "route": "tables",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "estudio",
+      "route": "orders",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "estudio",
+      "route": "products",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "estudio",
+      "route": "catalog",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "estudio",
+      "route": "overview",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "estudio",
+      "route": "pos",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "estudio",
+      "route": "tables",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "estudio",
+      "route": "orders",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "estudio",
+      "route": "products",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "estudio",
+      "route": "catalog",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "estudio",
+      "route": "overview",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "estudio",
+      "route": "pos",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "estudio",
+      "route": "tables",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "estudio",
+      "route": "orders",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "estudio",
+      "route": "products",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "estudio",
+      "route": "catalog",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "estudio",
+      "route": "overview",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "estudio",
+      "route": "pos",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "estudio",
+      "route": "tables",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "estudio",
+      "route": "orders",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "estudio",
+      "route": "products",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "estudio",
+      "route": "catalog",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "estudio",
+      "route": "overview",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "estudio",
+      "route": "pos",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "estudio",
+      "route": "tables",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "estudio",
+      "route": "orders",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "estudio",
+      "route": "products",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "estudio",
+      "route": "catalog",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "noche",
+      "route": "overview",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "noche",
+      "route": "pos",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "noche",
+      "route": "tables",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "noche",
+      "route": "orders",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "noche",
+      "route": "products",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "noche",
+      "route": "catalog",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "noche",
+      "route": "overview",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "noche",
+      "route": "pos",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "noche",
+      "route": "tables",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "noche",
+      "route": "orders",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "noche",
+      "route": "products",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "noche",
+      "route": "catalog",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "noche",
+      "route": "overview",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "noche",
+      "route": "pos",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "noche",
+      "route": "tables",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "noche",
+      "route": "orders",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "noche",
+      "route": "products",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "noche",
+      "route": "catalog",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "noche",
+      "route": "overview",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "noche",
+      "route": "pos",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "noche",
+      "route": "tables",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "noche",
+      "route": "orders",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "noche",
+      "route": "products",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "noche",
+      "route": "catalog",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "noche",
+      "route": "overview",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "noche",
+      "route": "pos",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "noche",
+      "route": "tables",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "noche",
+      "route": "orders",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "noche",
+      "route": "products",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "noche",
+      "route": "catalog",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "noche",
+      "route": "overview",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "noche",
+      "route": "pos",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "noche",
+      "route": "tables",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "noche",
+      "route": "orders",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "noche",
+      "route": "products",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "noche",
+      "route": "catalog",
+      "width": 844,
+      "height": 390
+    }
+  ],
+  "page_errors": [],
+  "external_requests": [],
+  "scope": "Local HTTP static HTML in Chromium, entirely fictional browser state; no backend, messages, payments, printers, AI or production changes. The managed browser blocked file://, so the same self-contained HTML was tested over loopback HTTP.",
+  "selector": {
+    "opens_all_three_designs": true,
+    "mobile_width": 390,
+    "passed": true
+  }
+}
