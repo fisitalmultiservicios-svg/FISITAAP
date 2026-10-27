@@ -6,7 +6,7 @@
   const money=value=>'₡'+Number(value).toLocaleString('es-CR',{minimumFractionDigits:2,maximumFractionDigits:2});
   async function api(path,data){const r=await fetch(base+'/'+path,{method:data?'POST':'GET',credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json',...(data instanceof FormData?{}:data?{'Content-Type':'application/x-www-form-urlencoded'}:{})},body:data instanceof FormData?data:data?new URLSearchParams({csrf:csrf(),...data}):undefined,signal:AbortSignal.timeout(12000)});const out=await r.json();if(!r.ok||!out.ok)throw new Error(out.error||'No se completó la solicitud.');return out;}
   const status=document.createElement('span');status.className='op180-live-status';status.setAttribute('role','status');status.textContent='Actualización automática · 2 s';
-  (document.querySelector('.admin-top .admin-actions')||document.querySelector('.driver-top')||document.querySelector('.r3-topbar'))?.append(status);
+  (document.querySelector('[data-r15-live-status]')||document.querySelector('.admin-top .admin-actions')||document.querySelector('.driver-top')||document.querySelector('.r3-topbar'))?.append(status);
   let version=null,busy=false,changed=false,typingAt=0,stopped=false;
   document.addEventListener('input',()=>typingAt=Date.now());
   function markRegions(doc){
@@ -15,7 +15,7 @@
     }
   }
   markRegions(document);
-  function editing(region){return region.contains(document.activeElement)&&document.activeElement?.matches('input,textarea,select')||Date.now()-typingAt<2500||region.querySelector('details[open] form')||document.querySelector('.r3-dialog[open],.r3-payment-modal[open]');}
+  function editing(region){return region.contains(document.activeElement)&&document.activeElement?.matches('input,textarea,select')||Date.now()-typingAt<2500||region.querySelector('details[open] form')||document.querySelector('.r3-dialog[open]:not([data-r15-inline]),.r3-payment-modal[open]');}
   async function refreshRegions(){
     if(!document.querySelector('[data-live-region]'))return;
     const r=await fetch(location.href,{credentials:'same-origin',cache:'no-store',headers:{'X-FISITAAP-Live':'1'},signal:AbortSignal.timeout(12000)});
@@ -62,7 +62,7 @@
   let incomingBusy=false;
   if(context.staff&&/\/admin\/(ventas|mesas|cobro)(\/|$)/.test(location.pathname)){
     const button=document.createElement('button');button.type='button';button.className='btn op180-incoming-button';button.dataset.incomingOpen='';button.innerHTML='▣ Pedidos web <b data-incoming-count>0</b>';
-    (document.querySelector('.r3-topbar')||document.querySelector('.p148-toolbar')||document.querySelector('.admin-top .admin-actions')||document.querySelector('.admin-main'))?.append(button);
+    (document.querySelector('[data-r15-incoming]')||document.querySelector('.r3-topbar')||document.querySelector('.p148-toolbar')||document.querySelector('[data-r15-live-status]')||document.querySelector('.admin-top .admin-actions')||document.querySelector('.admin-main'))?.append(button);
   }
   async function loadIncoming(){
     const out=await api('api/incoming180');incoming.querySelector('[data-incoming-list]').innerHTML=out.orders.map(o=>'<article class="op180-incoming-order"><h3>#'+esc(o.order_number)+' · '+esc(o.customer_name)+'</h3><p>'+money(o.total)+' · '+esc(o.payment_method)+'</p>'+(o.proof_url?'<a target="_blank" rel="noopener" href="'+esc(o.proof_url)+'">Ver comprobante SINPE</a>':'')+'<p>'+(out.can_accept?'<button class="btn" type="button" data-accept-order="'+Number(o.id)+'">Aceptar e imprimir comanda</button>':'Tu rol permite consultar; un encargado debe aceptar.')+'</p></article>').join('')||'<p>No hay pedidos web pendientes.</p>';

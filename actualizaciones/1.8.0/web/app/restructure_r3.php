@@ -42,11 +42,10 @@ function r3_icon(string $name): string
 function r3_shell_start(App $app,array $u,array $t,array $branch,string $title,bool $light=false): void
 {
     if(qa180_active($app)){$reg=qa180_native($app,$u);$shift=$reg?$app->one('SELECT id FROM pos_shifts WHERE tenant_id=? AND branch_id=? AND user_id=? AND register_id=? AND status="open" ORDER BY id DESC LIMIT 1',[$t['id'],$branch['id'],$u['id'],$reg['id']]):null;}else{$shift=$app->one('SELECT id FROM pos_shifts s WHERE tenant_id=? AND branch_id=? AND user_id=? AND status="open" AND NOT EXISTS(SELECT 1 FROM fisitaap_r2_shift_links l WHERE l.shift_id=s.id) ORDER BY id DESC LIMIT 1',[$t['id'],$branch['id'],$u['id']]);}
-    layout_start($title,$t,true);
-    echo '<div class="r3-terminal'.($light?' r3-terminal-light':'').'"><div class="admin-shell r13-terminal-navigation">';admin_sidebar($app,$u,$t,substr(request_path(),6));echo '</div><header class="r3-topbar"><button class="r3-button admin-mobile-launch" type="button" data-admin-menu-toggle aria-expanded="false" aria-controls="adminMenuLinks" aria-label="Abrir menú">☰</button><a class="r3-brand" href="'.url('admin').'">'.(!empty($t['logo'])?'<img src="'.e(public_media_url($t['logo'])).'" alt="'.e($t['name']).'">':'<span>'.e($t['name']).'</span>').'</a><h1>'.e($title).'</h1><div class="r3-header-right"><span>'.r3_icon('pin').e($branch['name']).'</span><span>'.r3_icon('shop').e($u['name']).'</span><span class="r3-status '.($shift?'free':'closed').'">● '.($shift?'Turno abierto':'Turno cerrado').'</span><a class="r3-button" href="'.url('admin/turnos').'">'.($shift?'Cerrar turno':'Abrir turno').'</a><a href="'.url('admin').'">'.r3_icon('person').'Rol: '.e(restructure_role_name_r1($app,$u)).'</a></div></header>';
-    echo '<main class="r3-main">';render_flashes();if(qa180_active($app))qa180_cash_tools($app,$u,$t,$branch);
+    layout_start($title,$t,true);r15_shell_start($app,$u,$t,$title,substr(request_path(),6),false,true,$branch);
+    if(qa180_active($app)){echo '<details class="r15-cash-popover"><summary>Caja y turno</summary>';qa180_cash_tools($app,$u,$t,$branch);echo '</details>';}
 }
-function r3_shell_end(): void { echo '</main></div>';layout_end(); }
+function r3_shell_end(): void {r15_shell_end();}
 function r3_pos_nav(array $t): void
 {
     echo '<nav class="r3-pos-nav"><form method="post" action="'.url('admin/ventas').'">'.csrf_field().pos_hidden_148('action',($t['catalog_label']??'')==='Menú'?'quick':'catalog').pos_hidden_148('open_key',bin2hex(random_bytes(16))).'<button class="r3-button primary">'.r3_icon('bolt').'Venta rápida</button></form>';

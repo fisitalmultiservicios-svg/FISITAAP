@@ -1,0 +1,10 @@
+{
+  "revision": "1.8.0-R15",
+  "checks": [
+    "Persistent table card and selection update from a second actor without a page reload; the nonmodal card does not suspend the 2-second poll",
+    "Driver and buyer menus open, close and respond to Escape on phone without JavaScript errors",
+    "Real navigation search and chat open/close work; owner, master and buyer retain separate server-selected assistant profiles without external AI requests"
+  ],
+  "page_errors": [],
+  "environment": "real PHP/MariaDB/Chromium; guarded fictional database, temporary table name restored; no production, external AI calls or printers"
+}

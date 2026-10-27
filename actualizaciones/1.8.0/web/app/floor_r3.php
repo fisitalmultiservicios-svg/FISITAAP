@@ -99,17 +99,17 @@ function r3_table_state(array $table): string { return (int)$table['payment_coun
 function r3_table_minutes(array $table): int { return $table['opened_at']?max(0,(int)floor((time()-strtotime($table['opened_at']))/60)):0; }
 function r3_furniture_defs(): string
 {
-    return '<defs><linearGradient id="r3-wood" x2=".8" y2="1"><stop stop-color="#dabd94"/><stop offset="1" stop-color="#a88052"/></linearGradient><linearGradient id="r3-marble" x2="1" y2="1"><stop stop-color="#f1f2ef"/><stop offset="1" stop-color="#c8d0d0"/></linearGradient><linearGradient id="r3-wall" x2="0" y2="1"><stop stop-color="#71818c"/><stop offset="1" stop-color="#374a59"/></linearGradient><filter id="r3-shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity=".22"/></filter><pattern id="r3-dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r=".8" fill="#b5c5d8"/></pattern><pattern id="r3-grain" width="40" height="18" patternUnits="userSpaceOnUse"><path d="M0 3Q20 10 40 3M0 12Q25 5 40 12" stroke="#b28c60" stroke-width=".5" fill="none"/></pattern></defs>';
+    return '<defs><linearGradient id="r3-wood" x2=".8" y2="1"><stop stop-color="#e5ceb0"/><stop offset="1" stop-color="#c0a07a"/></linearGradient><linearGradient id="r3-marble" x2="1" y2="1"><stop stop-color="#f1f2ef"/><stop offset="1" stop-color="#c8d0d0"/></linearGradient><linearGradient id="r3-wall" x2="0" y2="1"><stop stop-color="#a9b4b7"/><stop offset="1" stop-color="#a9b4b7"/></linearGradient><filter id="r3-shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity=".22"/></filter><pattern id="r3-dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r=".8" fill="#b5c5d8"/></pattern><pattern id="r3-grain" width="40" height="18" patternUnits="userSpaceOnUse"><path d="M0 3Q20 10 40 3M0 12Q25 5 40 12" stroke="#b28c60" stroke-width=".5" fill="none"/></pattern></defs>';
 }
 function r3_furniture(string $shape,int $capacity,string $state='free',string $label=''): string
 {
-    $color=['free'=>'#6f976a','busy'=>'#4a8bc9','due'=>'#d7a13e'][$state]??'#6f976a';$out='<g filter="url(#r3-shadow)">';
+    $color=['free'=>'#779b79','busy'=>'#427dac','due'=>'#c39c5f'][$state]??'#6f976a';$out='<g filter="url(#r3-shadow)">';
     $chairs=$shape==='bar'?max(2,min(6,$capacity)):max(2,min(8,$capacity));
     for($i=0;$i<$chairs;$i++) {
         $angle=360*$i/$chairs;$out.='<g transform="translate(60 60) rotate('.$angle.')"><rect x="-15" y="-53" width="30" height="28" rx="9" fill="'.$color.'" stroke="#3b5660" stroke-width="1.2"/><path d="M-15-46Q0-54 15-46" fill="none" stroke="#ffffff77" stroke-width="2"/><path d="M-12-27v7M12-27v7" stroke="#59616c" stroke-width="2"/></g>';
     }
     if($shape==='round')$out.='<circle cx="60" cy="60" r="38" fill="url(#r3-wood)" stroke="#9a774b"/><circle cx="60" cy="60" r="37" fill="url(#r3-grain)" opacity=".5"/>';
-    else $out.='<rect x="24" y="24" width="72" height="72" rx="'.($shape==='bar'?3:7).'" fill="url(#'.($state==='busy'?'r3-marble':'r3-wood').')" stroke="#8a806b"/><path d="M30 40q25-15 60 5M30 60q30 10 60-6M28 85q30-20 65-10" fill="none" stroke="'.($state==='busy'?'#bdc7c6':'#b49770').'" stroke-width=".8"/>';
+    else $out.='<rect x="24" y="24" width="72" height="72" rx="'.($shape==='bar'?3:7).'" fill="url(#'.'r3-wood'.')" stroke="#8a806b"/><path d="M30 40q25-15 60 5M30 60q30 10 60-6M28 85q30-20 65-10" fill="none" stroke="'.($state==='busy'?'#bdc7c6':'#b49770').'" stroke-width=".8"/>';
     $out.='<circle cx="60" cy="60" r="17" fill="#fffdf5"/><text x="60" y="65" font-size="13" font-weight="700" fill="#0a2547" text-anchor="middle">'.e($label).'</text></g>';
     return $out;
 }

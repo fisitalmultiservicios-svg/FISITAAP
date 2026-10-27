@@ -1,0 +1,724 @@
+{
+  "revision": "1.8.0-R15",
+  "source_css": {
+    "disenos/ux-2026-10-27/styles.css": "26427a93bd5a452c848e2ddfae98c44ab408c46101f79a56be47ae2ec2e9c36d",
+    "disenos/linea-fisitaap-2026-10-27/hybrid.css": "1924ddb19493b5214a61c39986e20f2f97c3147fec48648583e7cdc6ec944a64"
+  },
+  "shared_styles_sha256": "55d286cde5d3477c56efca48a5d32f7060dfd412e8d81ddfe55f36c6679577bb",
+  "exact_reference_css_except_prototype_print_rule": true,
+  "comparisons": [
+    {
+      "screen": "RESUMEN",
+      "width": 1440,
+      "height": 1000,
+      "geometry": [
+        {
+          "reference": ".topbar",
+          "production": ".r15-topbar",
+          "html": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 74,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 74,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".breadcrumb",
+          "production": ".breadcrumb",
+          "html": {
+            "x": 0,
+            "y": 74,
+            "width": 1440,
+            "height": 42,
+            "radius": "0px",
+            "font": "10px",
+            "color": "rgb(112, 130, 143)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 0,
+            "y": 74,
+            "width": 1440,
+            "height": 41,
+            "radius": "0px",
+            "font": "10px",
+            "color": "rgb(112, 130, 143)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".metrics",
+          "production": ".metrics",
+          "html": {
+            "x": 30,
+            "y": 243.59375,
+            "width": 1380,
+            "height": 120,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 30,
+            "y": 247.59375,
+            "width": 1380,
+            "height": 125.9375,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".dash-grid",
+          "production": ".dash-grid",
+          "html": {
+            "x": 30,
+            "y": 383.59375,
+            "width": 1380,
+            "height": 456.609375,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 30,
+            "y": 393.53125,
+            "width": 1380,
+            "height": 459.71875,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ]
+    },
+    {
+      "screen": "RESUMEN",
+      "width": 768,
+      "height": 1024,
+      "geometry": [
+        {
+          "reference": ".topbar",
+          "production": ".r15-topbar",
+          "html": {
+            "x": 0,
+            "y": 0,
+            "width": 768,
+            "height": 74,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 0,
+            "y": 0,
+            "width": 768,
+            "height": 74,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".breadcrumb",
+          "production": ".breadcrumb",
+          "html": {
+            "x": 0,
+            "y": 74,
+            "width": 768,
+            "height": 42,
+            "radius": "0px",
+            "font": "10px",
+            "color": "rgb(112, 130, 143)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 0,
+            "y": 74,
+            "width": 768,
+            "height": 41,
+            "radius": "0px",
+            "font": "10px",
+            "color": "rgb(112, 130, 143)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".metrics",
+          "production": ".metrics",
+          "html": {
+            "x": 30,
+            "y": 243.59375,
+            "width": 708,
+            "height": 120,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 30,
+            "y": 247.59375,
+            "width": 708,
+            "height": 125.9375,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".dash-grid",
+          "production": ".dash-grid",
+          "html": {
+            "x": 30,
+            "y": 383.59375,
+            "width": 708,
+            "height": 615.578125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 30,
+            "y": 393.53125,
+            "width": 708,
+            "height": 595.78125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ]
+    },
+    {
+      "screen": "RESUMEN",
+      "width": 390,
+      "height": 844,
+      "geometry": [
+        {
+          "reference": ".topbar",
+          "production": ".r15-topbar",
+          "html": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 117,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 117,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".breadcrumb",
+          "production": ".breadcrumb",
+          "html": {
+            "x": 0,
+            "y": 117,
+            "width": 390,
+            "height": 35,
+            "radius": "0px",
+            "font": "10px",
+            "color": "rgb(112, 130, 143)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 0,
+            "y": 117,
+            "width": 390,
+            "height": 35,
+            "radius": "0px",
+            "font": "9px",
+            "color": "rgb(112, 130, 143)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".metrics",
+          "production": ".metrics",
+          "html": {
+            "x": 15,
+            "y": 318,
+            "width": 360,
+            "height": 227.28125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 15,
+            "y": 317.5,
+            "width": 360,
+            "height": 227.28125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".dash-grid",
+          "production": ".dash-grid",
+          "html": {
+            "x": 15,
+            "y": 561.28125,
+            "width": 360,
+            "height": 922.171875,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 15,
+            "y": 560.78125,
+            "width": 360,
+            "height": 915.78125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ]
+    },
+    {
+      "screen": "VENTA",
+      "width": 1440,
+      "height": 1000,
+      "geometry": [
+        {
+          "reference": ".pos-layout",
+          "production": ".pos-layout",
+          "html": {
+            "x": 25,
+            "y": 205.1875,
+            "width": 1390,
+            "height": 777.8125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 25,
+            "y": 207.1875,
+            "width": 1390,
+            "height": 775.8125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".ticket",
+          "production": ".ticket",
+          "html": {
+            "x": 25,
+            "y": 205.1875,
+            "width": 822,
+            "height": 777.8125,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 25,
+            "y": 207.1875,
+            "width": 822,
+            "height": 775.8125,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".pos-products",
+          "production": ".pos-products",
+          "html": {
+            "x": 867,
+            "y": 205.1875,
+            "width": 548,
+            "height": 777.8125,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 867,
+            "y": 207.1875,
+            "width": 548,
+            "height": 775.8125,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        }
+      ]
+    },
+    {
+      "screen": "VENTA",
+      "width": 768,
+      "height": 1024,
+      "geometry": [
+        {
+          "reference": ".pos-layout",
+          "production": ".pos-layout",
+          "html": {
+            "x": 25,
+            "y": 205.1875,
+            "width": 718,
+            "height": 801.8125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 25,
+            "y": 207.1875,
+            "width": 718,
+            "height": 799.8125,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".ticket",
+          "production": ".ticket",
+          "html": {
+            "x": 25,
+            "y": 205.1875,
+            "width": 422.390625,
+            "height": 801.8125,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 25,
+            "y": 207.1875,
+            "width": 422.390625,
+            "height": 799.8125,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".pos-products",
+          "production": ".pos-products",
+          "html": {
+            "x": 461.390625,
+            "y": 205.1875,
+            "width": 281.609375,
+            "height": 801.8125,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 461.390625,
+            "y": 207.1875,
+            "width": 281.609375,
+            "height": 799.8125,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        }
+      ]
+    },
+    {
+      "screen": "VENTA",
+      "width": 390,
+      "height": 844,
+      "geometry": [
+        {
+          "reference": ".pos-layout",
+          "production": ".pos-layout",
+          "html": {
+            "x": 12,
+            "y": 252.890625,
+            "width": 366,
+            "height": 578.109375,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 12,
+            "y": 253,
+            "width": 366,
+            "height": 578,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".ticket",
+          "production": ".ticket",
+          "html": {
+            "x": 12,
+            "y": 252.890625,
+            "width": 366,
+            "height": 578.109375,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 12,
+            "y": 253,
+            "width": 366,
+            "height": 578,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "reference": ".pos-products",
+          "production": ".pos-products",
+          "html": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        }
+      ]
+    },
+    {
+      "screen": "MESAS",
+      "width": 1440,
+      "height": 1000,
+      "geometry": [
+        {
+          "reference": ".tables-layout",
+          "production": ".r15-floor-layout",
+          "html": {
+            "x": 30,
+            "y": 270.09375,
+            "width": 1380,
+            "height": 675.59375,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 30,
+            "y": 283.53125,
+            "width": 1380,
+            "height": 664.59375,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".detail-panel",
+          "production": ".r15-inline-table",
+          "html": {
+            "x": 1130,
+            "y": 270.09375,
+            "width": 280,
+            "height": 332.515625,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 1130,
+            "y": 283.53125,
+            "width": 280,
+            "height": 414.421875,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        }
+      ]
+    },
+    {
+      "screen": "MESAS",
+      "width": 768,
+      "height": 1024,
+      "geometry": [
+        {
+          "reference": ".tables-layout",
+          "production": ".r15-floor-layout",
+          "html": {
+            "x": 30,
+            "y": 270.09375,
+            "width": 708,
+            "height": 413.515625,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 30,
+            "y": 283.53125,
+            "width": 708,
+            "height": 404.421875,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".detail-panel",
+          "production": ".r15-inline-table",
+          "html": {
+            "x": 508,
+            "y": 270.09375,
+            "width": 230,
+            "height": 240.5625,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 508,
+            "y": 283.53125,
+            "width": 230,
+            "height": 404.421875,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        }
+      ]
+    },
+    {
+      "screen": "MESAS",
+      "width": 390,
+      "height": 844,
+      "geometry": [
+        {
+          "reference": ".tables-layout",
+          "production": ".r15-floor-layout",
+          "html": {
+            "x": 15,
+            "y": 378.4375,
+            "width": 360,
+            "height": 566.765625,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "php": {
+            "x": 15,
+            "y": 397.6875,
+            "width": 360,
+            "height": 753.90625,
+            "radius": "0px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "reference": ".detail-panel",
+          "production": ".r15-inline-table",
+          "html": {
+            "x": 15,
+            "y": 699.484375,
+            "width": 360,
+            "height": 245.71875,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(25, 56, 77)",
+            "background": "rgb(255, 255, 255)"
+          },
+          "php": {
+            "x": 15,
+            "y": 745.671875,
+            "width": 360,
+            "height": 405.921875,
+            "radius": "9px",
+            "font": "13px",
+            "color": "rgb(16, 40, 68)",
+            "background": "rgb(255, 255, 255)"
+          }
+        }
+      ]
+    }
+  ],
+  "page_errors": [],
+  "scope": "Real PHP views compared with unchanged approved HTML at desktop/tablet/phone. Temporary fictional sample data; original fixture restored in finally. Production uses its real records, saved floor and role permissions. Different content/authorized header modes and native actions are intentional; this is not a claim of pixel identity across different data."
+}

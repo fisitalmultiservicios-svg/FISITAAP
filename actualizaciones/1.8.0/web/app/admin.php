@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/interface_r15.php';
 
 function admin_navigation_groups(App $app,array $user,?array $tenant):array {
     $viewLabel=(($tenant['catalog_label']??'Catálogo')==='Menú')?'Vista cocina':'Vista monitor';
@@ -20,23 +21,20 @@ function admin_navigation_groups(App $app,array $user,?array $tenant):array {
     $out=[];foreach($groups as $groupLabel=>$links){$visible=[];foreach($links as $key=>$label){if(in_array($key,['cobro','express-pendientes'],true)&&($tenant['catalog_label']??'')!=='Menú')continue;if($user['role']!=='master'&&in_array($key,['ventas','cobro','express-pendientes','turnos','compras','cxc','cxp'],true)&&(!$tenant||!physical_store_v14($tenant)))continue;if($key==='roles'&&$user['role']!=='tenant_admin')continue;if($user['role']!=='master'&&!role_can($user['role'],$key))continue;if($user['role']!=='master'&&$tenant&&!module_enabled_v12($app,$tenant,($key==='roles'?'team':section_module_v12($key))))continue;$visible[$key]=$label;}if($visible)$out[$groupLabel]=$visible;}return $out;
 }
 function admin_sidebar(App $app,array $user,?array $tenant,string $active='dashboard'):void {
-    $officialLogo=$tenant?($tenant['logo']??''):$app->setting('platform_logo',url('assets/fisitapp-logo.webp'));
+    $officialLogo=!empty($GLOBALS['r15_shell'])?$app->setting('platform_logo',url('assets/fisitapp-logo.webp')):($tenant?($tenant['logo']??''):$app->setting('platform_logo',url('assets/fisitapp-logo.webp')));
     $base=$user['role']==='master'?'master':'admin';
-    echo '<aside class="sidebar" data-admin-menu><div class="sidebar-head"><a class="brand admin-brand" href="'.e(role_home_url_v1($app,$user)).'">'.($officialLogo?'<img src="'.e(public_media_url($officialLogo)).'" alt="'.e($tenant['name']??'FISITAAP').'">':'').($tenant?'<span>'.e($tenant['name']).'</span>':'').'</a><button class="icon-btn admin-menu-toggle" type="button" data-admin-menu-toggle aria-expanded="false" aria-controls="adminMenuLinks" aria-label="Cerrar menú del panel"><span aria-hidden="true">×</span></button></div><nav id="adminMenuLinks" class="sidebar-groups">';
+    echo '<aside id="navigation" class="sidebar" data-admin-menu><div class="sidebar-head nav-brand"><a class="brand admin-brand" href="'.e(role_home_url_v1($app,$user)).'">'.($officialLogo?'<img src="'.e(public_media_url($officialLogo)).'" alt="'.e($tenant['name']??'FISITAAP').'">':'').($tenant?'<span>'.e($tenant['name']).'</span>':'').'</a><button class="icon-btn admin-menu-toggle" type="button" data-admin-menu-toggle aria-expanded="false" aria-controls="adminMenuLinks" aria-label="Cerrar menú del panel"><span aria-hidden="true">×</span></button></div><nav id="adminMenuLinks" class="sidebar-groups nav-groups">';
     foreach(admin_navigation_groups($app,$user,$tenant) as $groupLabel=>$links){
         $opened=isset($links[$active])||$groupLabel==='Inicio';
         echo '<details class="nav-group" data-nav-group '.($opened?'open':'').'><summary><span>'.e($groupLabel).'</span><span class="nav-chevron">⌄</span></summary><div class="nav-group-links">';
-        foreach($links as $key=>$label)echo '<a class="side-link '.($active===$key?'active':'').'" href="'.e(url($base.($key==='dashboard'?'':'/'.$key))).'">'.e($label).'</a>';
+        foreach($links as $key=>$label)echo '<a class="side-link nav-link '.($active===$key?'active':'').'" href="'.e(url($base.($key==='dashboard'?'':'/'.$key))).'">'.e($label).'</a>';
         echo '</div></details>';
     }
-    echo '</nav><div class="sidebar-foot"><a class="side-link" target="_blank" href="'.e(url('ayuda?perfil='.($user['role']==='master'?'master':($user['role']==='driver'?'driver':'store')))).'">? Manual de uso</a><span>'.e($user['name']).'</span><form method="post" action="'.e(url('logout')).'">'.csrf_field().'<button class="side-logout">Cerrar sesión</button></form></div></aside>';
+    echo '</nav><div class="sidebar-foot nav-foot"><a class="side-link" target="_blank" href="'.e(url('ayuda?perfil='.($user['role']==='master'?'master':($user['role']==='driver'?'driver':'store')))).'">? Manual de uso</a><span>'.e($user['name']).'</span><form method="post" action="'.e(url('logout')).'">'.csrf_field().'<button class="side-logout">Cerrar sesión</button></form></div></aside>';
 }
-function admin_shell_start(string $title,array $user,?array $tenant=null,string $active='dashboard',bool $welcome=false):void {
-    global $app;layout_start($title,$tenant,true);
-    echo '<div class="admin-shell'.($welcome?' admin-welcome-shell':'').'">';admin_sidebar($app,$user,$tenant,$active);
-    echo '<main class="admin-main"><header class="admin-top"><button class="icon-btn admin-mobile-launch" type="button" data-admin-menu-toggle aria-expanded="false" aria-controls="adminMenuLinks" aria-label="Abrir menú">☰</button><div><p class="muted" style="margin:0">'.e($tenant['name']??'Control de plataforma').'</p><h1>'.e($title).'</h1></div><div class="admin-actions">'.($user['role']==='master'?'<form method="post" action="'.e(url('master/cache')).'" onsubmit="return confirm(\'¿Vaciar la caché?\')">'.csrf_field().'<button class="btn btn-light">↻ Caché</button></form>':'').($tenant?'<a class="btn btn-light" target="_blank" href="'.e(url($tenant['slug'])).'">Ver tienda</a>':'').'</div></header>';render_flashes();
-}
-function admin_shell_end():void{global $app;$u=current_user();if($u&&$u['role']==='tenant_admin')fisichat_widget(false);elseif(function_exists('r2_active')&&r2_active($app))r2_chat_widget($app);echo '</main></div>';layout_end();}
+function admin_shell_start(string $title,array $user,?array $tenant=null,string $active='dashboard',bool $welcome=false):void{global $app;layout_start($title,$tenant,true);r15_shell_start($app,$user,$tenant,$title,$active,$welcome);}
+
+function admin_shell_end():void{if(!empty($GLOBALS['r15_shell'])){r15_shell_end();return;}global $app;$u=current_user();if($u&&$u['role']==='tenant_admin')fisichat_widget(false);elseif(function_exists('r2_active')&&r2_active($app))r2_chat_widget($app);echo '</main></div>';layout_end();}
 function audit(App $app,?int $tenantId,int $userId,string $action,string $type='',?int $id=null):int {
     $ip=hash('sha256',($_SERVER['REMOTE_ADDR']??'').$app->config['app_key']);
     $app->exec('INSERT INTO audit_logs(tenant_id,user_id,action,entity_type,entity_id,ip_hash) VALUES(?,?,?,?,?,?)',[$tenantId,$userId,$action,$type,$id,$ip]);$auditId=(int)$app->db->lastInsertId();
@@ -73,7 +71,8 @@ function master_routes(App $app,string $path):void{
     $u=require_login(['master']);$section=explode('/',$path)[1]??'dashboard';
     if($section==='empresas')master_tenants($app,$u);elseif($section==='reportes')master_reports($app,$u);elseif($section==='blog')master_blog_admin($app,$u);elseif($section==='configuracion'||$section==='contenido')master_settings($app,$u,$section);else master_dashboard($app,$u);
 }
-function master_dashboard(App $app,array $u):void{$tenantStats=$app->one("SELECT COALESCE(SUM(is_active=1),0) active,COALESCE(SUM(is_active=0),0) inactive FROM tenants WHERE slug NOT IN ('tienda-demo','restaurante-demo') AND slug NOT REGEXP '^demo-(restaurante|tienda)-[0-9a-f]{32}$'");$orderStats=$app->one("SELECT COUNT(*) orders_count,COUNT(DISTINCT o.user_id) customers FROM orders o JOIN tenants t ON t.id=o.tenant_id WHERE t.slug NOT IN ('tienda-demo','restaurante-demo') AND t.slug NOT REGEXP '^demo-(restaurante|tienda)-[0-9a-f]{32}$'");$stats=['Empresas activas'=>$tenantStats['active'],'Tiendas suspendidas'=>$tenantStats['inactive'],'Pedidos totales'=>$orderStats['orders_count'],'Usuarios finales'=>$orderStats['customers']];$recent=$app->all("SELECT o.*,t.name tenant FROM orders o JOIN tenants t ON t.id=o.tenant_id WHERE t.slug NOT IN ('tienda-demo','restaurante-demo') AND t.slug NOT REGEXP '^demo-(restaurante|tienda)-[0-9a-f]{32}$' ORDER BY o.created_at DESC LIMIT 10");admin_shell_start('Resumen general',$u,null,'dashboard');echo '<div class="grid grid-4">';foreach($stats as $k=>$v)echo '<article class="card stat"><div class="stat-label">'.e($k).'</div><div class="stat-value">'.e((string)$v).'</div></article>';echo '</div><section class="card admin-card" style="margin-top:22px"><h2>Pedidos recientes</h2>';orders_table($recent,true);echo '</section>';admin_shell_end();}
+function master_dashboard(App $app,array $u):void{r15_master_dashboard($app,$u);}
+
 function master_tenants(App $app,array $u):void{
     if(is_post()){verify_csrf();$action=$_POST['action']??'save';try{if($action==='toggle'){$id=(int)$_POST['id'];$app->exec("UPDATE tenants SET is_active=1-is_active WHERE id=? AND slug!='tienda-demo'",[$id]);audit($app,null,$u['id'],'toggle_tenant','tenant',$id);flash('success','Estado de la empresa actualizado.');}else{$id=(int)($_POST['id']??0);$name=trim($_POST['name']??'');$slug=slugify(($_POST['slug']??'')?:$name);$email=strtolower(trim($_POST['admin_email']??''));if(!$name||!preg_match('/^[a-z0-9-]{2,100}$/',$slug))throw new RuntimeException('Nombre o enlace inválido.');$logo=upload_image('logo');if($id){$sql='UPDATE tenants SET name=?,slug=?,email=?,phone=?,whatsapp=?,catalog_label=?,is_listed=?'.($logo?',logo=?':'').' WHERE id=?';$p=[$name,$slug,trim($_POST['email']??''),trim($_POST['phone']??''),trim($_POST['whatsapp']??''),($_POST['catalog_label']??'')==='Menú'?'Menú':'Catálogo',isset($_POST['is_listed'])?1:0];if($logo)$p[]=$logo;$p[]=$id;$app->exec($sql,$p);audit($app,null,$u['id'],'update_tenant','tenant',$id);}else{if(!filter_var($email,FILTER_VALIDATE_EMAIL)||strlen($_POST['admin_password']??'')<12)throw new RuntimeException('El administrador necesita correo válido y contraseña temporal de 12 caracteres.');$app->db->beginTransaction();$app->exec('INSERT INTO tenants(name,slug,email,phone,whatsapp,catalog_label,logo,is_listed) VALUES(?,?,?,?,?,?,?,?)',[$name,$slug,trim($_POST['email']??''),trim($_POST['phone']??''),trim($_POST['whatsapp']??''),($_POST['catalog_label']??'')==='Menú'?'Menú':'Catálogo',$logo,isset($_POST['is_listed'])?1:0]);$id=(int)$app->db->lastInsertId();$app->exec('INSERT INTO users(tenant_id,name,email,phone,password_hash,role,force_password_change) VALUES(?,?,?,?,?,?,1)',[$id,trim($_POST['admin_name']??'Administrador'),$email,trim($_POST['phone']??''),password_hash($_POST['admin_password'],PASSWORD_DEFAULT),'tenant_admin']);foreach([['San José centro',2500],['Alrededores',4000]] as $z)$app->exec('INSERT INTO delivery_zones(tenant_id,name,price) VALUES(?,?,?)',[$id,$z[0],$z[1]]);if(function_exists('qa180_initialize_new_tenant'))qa180_initialize_new_tenant($app,$id,$u);$app->db->commit();audit($app,null,$u['id'],'create_tenant','tenant',$id);}flash('success','Empresa guardada correctamente.');}}catch(Throwable $e){if($app->db->inTransaction())$app->db->rollBack();flash('error',$e->getMessage());}redirect(url('master/empresas'));}
     $edit=!empty($_GET['edit'])?$app->one("SELECT * FROM tenants WHERE id=? AND slug!='tienda-demo'",[(int)$_GET['edit']]):null;$rows=$app->all("SELECT t.*,(SELECT email FROM users WHERE tenant_id=t.id AND role='tenant_admin' ORDER BY id LIMIT 1) admin_email FROM tenants t WHERE t.slug!='tienda-demo' ORDER BY t.created_at DESC");admin_shell_start('Empresas',$u,null,'empresas');echo '<div class="split"><section class="card admin-card"><h2>'.($edit?'Editar empresa':'Nueva empresa').'</h2><form method="post" enctype="multipart/form-data">'.csrf_field().'<input type="hidden" name="id" value="'.(int)($edit['id']??0).'"><div class="form-group"><label>Nombre comercial</label><input class="input" name="name" value="'.e($edit['name']??'').'" required></div><div class="form-group"><label>Enlace</label><div style="display:flex;align-items:center"><span>fisitaap.com/</span><input class="input" name="slug" value="'.e($edit['slug']??'').'" placeholder="se genera automáticamente"></div></div><div class="split"><div class="form-group"><label>WhatsApp pedidos</label><input class="input" name="whatsapp" value="'.e($edit['whatsapp']??'').'" required></div><div class="form-group"><label>Teléfono</label><input class="input" name="phone" value="'.e($edit['phone']??'').'"></div></div><div class="form-group"><label>Correo del negocio</label><input class="input" type="email" name="email" value="'.e($edit['email']??'').'"></div><div class="form-group"><label>Logo</label><input class="input" type="file" name="logo" accept="image/jpeg,image/png,image/webp"></div><div class="form-group"><label>Nombre del catálogo</label><select class="input" name="catalog_label"><option>Catálogo</option><option '.(($edit['catalog_label']??'')==='Menú'?'selected':'').'>Menú</option></select></div><label><input type="checkbox" name="is_listed" '.(($edit['is_listed']??1)?'checked':'').'> Mostrar en directorio</label>';if(!$edit)echo '<hr style="border:0;border-top:1px solid var(--line);margin:22px 0"><h3>Administrador principal</h3><div class="form-group"><label>Nombre</label><input class="input" name="admin_name" required></div><div class="form-group"><label>Correo de acceso</label><input class="input" type="email" name="admin_email" required></div><div class="form-group"><label>Contraseña temporal</label><input class="input" type="password" name="admin_password" minlength="12" required></div>';echo '<button class="btn btn-block">Guardar empresa</button></form></section><section class="card admin-card"><h2>Empresas creadas</h2><div class="table-wrap"><table class="table"><tr><th>Empresa</th><th>Enlace</th><th>Estado</th><th>Acción</th></tr>';foreach($rows as $r)echo '<tr><td><strong>'.e($r['name']).'</strong><br><small>'.e($r['admin_email']).'</small></td><td><a target="_blank" href="'.url($r['slug']).'">/'.$r['slug'].'</a></td><td><span class="status '.(!$r['is_active']?'status-off':'').'">'.($r['is_active']?'Activa':'Suspendida').'</span></td><td><a class="btn btn-light" href="?edit='.(int)$r['id'].'">Editar</a><form method="post" style="display:inline">'.csrf_field().'<input type="hidden" name="action" value="toggle"><input type="hidden" name="id" value="'.(int)$r['id'].'"><button class="btn '.($r['is_active']?'btn-danger':'btn-accent').'">'.($r['is_active']?'Suspender':'Activar').'</button></form></td></tr>';echo '</table></div></section></div>';admin_shell_end();}
@@ -86,121 +85,8 @@ function tenant_admin_routes(App $app,string $path):void{
     $allowed=['dashboard','pedidos','cocina','repartidor','productos','opciones','categorias','delivery','cupones','clientes','contenido','blog','reportes','usuarios','configuracion'];if(!in_array($section,$allowed,true))$section='dashboard';require_section_permission($u,$section);
     if($section==='dashboard')tenant_dashboard($app,$u,$t);elseif($section==='pedidos')tenant_orders_v3($app,$u,$t);elseif($section==='cocina')tenant_kitchen_v4($app,$u,$t);elseif($section==='repartidor')tenant_delivery_board_v4($app,$u,$t);elseif($section==='productos')tenant_products_v5($app,$u,$t);elseif($section==='opciones')tenant_product_options_v5($app,$u,$t);elseif(in_array($section,['categorias','delivery','cupones'],true))tenant_simple_module_v3($app,$u,$t,$section);elseif($section==='reportes')tenant_reports($app,$u,$t);elseif($section==='contenido')tenant_content_admin_v3($app,$u,$t);elseif($section==='blog')tenant_blog_admin($app,$u,$t);elseif($section==='configuracion')tenant_settings($app,$u,$t);elseif($section==='clientes')tenant_customers($app,$u,$t);else tenant_team($app,$u,$t);
 }
-function tenant_dashboard(App $app,array $u,array $t):void
-{
-    $tid=(int)$t['id'];
+function tenant_dashboard(App $app,array $u,array $t):void{r15_owner_dashboard($app,$u,$t);}
 
-    // Keep the dashboard's independent counters in one database round trip.
-    // This matters on shared hosting where each MySQL round trip can be slow.
-    $metrics=$app->one("SELECT v.*,o.*,
-      (SELECT COUNT(DISTINCT user_id) FROM tenant_customers WHERE tenant_id=?) customers,
-      (SELECT COUNT(*) FROM products WHERE tenant_id=? AND status='active') products,
-      (SELECT COUNT(*) FROM product_inventory WHERE tenant_id=? AND track_stock=1 AND (quantity-reserved_quantity)<=GREATEST(min_stock,reorder_point)) low_stock
-      FROM (SELECT
-        COUNT(CASE WHEN created_at>=CURDATE() THEN 1 END) sales_today_n,
-        COALESCE(SUM(CASE WHEN created_at>=CURDATE() THEN total ELSE 0 END),0) sales_today_total,
-        COALESCE(AVG(CASE WHEN created_at>=CURDATE() THEN total END),0) sales_today_avg,
-        COALESCE(SUM(CASE WHEN created_at>=DATE_SUB(CURDATE(),INTERVAL 1 DAY) AND created_at<CURDATE() THEN total ELSE 0 END),0) sales_yesterday_total,
-        COUNT(CASE WHEN created_at>=DATE_FORMAT(CURDATE(),'%Y-%m-01') THEN 1 END) month_sales_n,
-        COALESCE(SUM(CASE WHEN created_at>=DATE_FORMAT(CURDATE(),'%Y-%m-01') THEN total ELSE 0 END),0) month_sales_total
-        FROM sales WHERE tenant_id=? AND status IN ('completed','credit')
-          AND created_at>=LEAST(DATE_FORMAT(CURDATE(),'%Y-%m-01'),DATE_SUB(CURDATE(),INTERVAL 1 DAY))
-          AND created_at<DATE_ADD(CURDATE(),INTERVAL 1 DAY)) v
-      CROSS JOIN (SELECT COUNT(*) orders_today_n,COALESCE(SUM(total),0) orders_today_total
-        FROM orders WHERE tenant_id=? AND status!='cancelled' AND created_at>=CURDATE()
-          AND created_at<DATE_ADD(CURDATE(),INTERVAL 1 DAY)) o",
-      array_fill(0,5,$tid));
-    $salesToday=['n'=>(int)($metrics['sales_today_n']??0),'total'=>(float)($metrics['sales_today_total']??0),'avg_ticket'=>(float)($metrics['sales_today_avg']??0)];
-    $salesYesterday=['total'=>(float)($metrics['sales_yesterday_total']??0)];
-    $monthSales=['n'=>(int)($metrics['month_sales_n']??0),'total'=>(float)($metrics['month_sales_total']??0)];
-    $ordersToday=['n'=>(int)($metrics['orders_today_n']??0),'total'=>(float)($metrics['orders_today_total']??0)];
-    $customers=(int)($metrics['customers']??0);
-    $products=(int)($metrics['products']??0);
-    $lowStock=(int)($metrics['low_stock']??0);
-
-    $todayTotal=(float)($salesToday['total']??0);
-    $yesterdayTotal=(float)($salesYesterday['total']??0);
-    $change=$yesterdayTotal>0?(($todayTotal-$yesterdayTotal)/$yesterdayTotal)*100:null;
-
-    $sales7=$app->all("SELECT DATE(created_at) day,COALESCE(SUM(total),0) total,COUNT(*) n FROM sales WHERE tenant_id=? AND status IN ('completed','credit') AND created_at>=DATE_SUB(CURDATE(),INTERVAL 6 DAY) AND created_at<DATE_ADD(CURDATE(),INTERVAL 1 DAY) GROUP BY DATE(created_at) ORDER BY day",[$tid]);
-    $map=[];foreach($sales7 as $row)$map[$row['day']]=$row;
-    $chart=[];$maxSale=0;
-    for($i=6;$i>=0;$i--){
-        $d=date('Y-m-d',strtotime("-$i day"));
-        $row=$map[$d]??['day'=>$d,'total'=>0,'n'=>0];
-        $row['total']=(float)$row['total'];$row['n']=(int)$row['n'];
-        $maxSale=max($maxSale,$row['total']);$chart[]=$row;
-    }
-
-    $topProducts=$app->all("SELECT si.product_name,ROUND(SUM(si.quantity),2) qty,ROUND(SUM(si.line_subtotal+si.line_tax),2) revenue FROM sale_items si JOIN sales s ON s.id=si.sale_id WHERE s.tenant_id=? AND s.status IN ('completed','credit') AND s.created_at>=DATE_FORMAT(CURDATE(),'%Y-%m-01') AND s.created_at<DATE_ADD(CURDATE(),INTERVAL 1 DAY) GROUP BY si.product_id,si.product_name ORDER BY qty DESC,revenue DESC LIMIT 5",[$tid]);
-
-    $payments=$app->all("SELECT payment_method,ROUND(SUM(total),2) total FROM sales WHERE tenant_id=? AND status IN ('completed','credit') AND created_at>=DATE_FORMAT(CURDATE(),'%Y-%m-01') AND created_at<DATE_ADD(CURDATE(),INTERVAL 1 DAY) GROUP BY payment_method ORDER BY total DESC LIMIT 5",[$tid]);
-    $paymentTotal=0;foreach($payments as $p)$paymentTotal+=(float)$p['total'];
-
-    $recent=$app->all('SELECT * FROM orders WHERE tenant_id=? ORDER BY created_at DESC LIMIT 8',[$tid]);
-
-    admin_shell_start('Resumen',$u,$t,'dashboard');
-
-    echo '<section class="dash-welcome">';
-    echo '<div><span class="dash-kicker">PANEL DEL NEGOCIO</span><h2>Así se mueve '.e($t['name']).'</h2><p>Una vista rápida de lo importante, actualizada con los datos registrados en FISITAAP.</p></div>';
-    echo '<div class="dash-date"><small>Hoy</small><strong>'.e(date('d/m/Y')).'</strong></div>';
-    echo '</section>';
-
-    echo '<section class="dash-kpis">';
-    echo '<article class="dash-kpi"><span class="dash-icon">₡</span><div><small>Ventas hoy</small><strong>'.money($todayTotal).'</strong><em class="'.($change!==null&&$change<0?'down':'up').'">'.($change===null?'Sin comparación':(($change>=0?'↑ ':'↓ ').number_format(abs($change),1).'% vs ayer')).'</em></div></article>';
-    echo '<article class="dash-kpi"><span class="dash-icon">↗</span><div><small>Ventas del mes</small><strong>'.money((float)($monthSales['total']??0)).'</strong><em>'.(int)($monthSales['n']??0).' transacciones</em></div></article>';
-    echo '<article class="dash-kpi"><span class="dash-icon">◎</span><div><small>Pedidos online hoy</small><strong>'.(int)($ordersToday['n']??0).'</strong><em>'.money((float)($ordersToday['total']??0)).'</em></div></article>';
-    echo '<article class="dash-kpi"><span class="dash-icon">◇</span><div><small>Ticket promedio hoy</small><strong>'.money((float)($salesToday['avg_ticket']??0)).'</strong><em>'.(int)($salesToday['n']??0).' ventas</em></div></article>';
-    echo '</section>';
-
-    echo '<section class="dash-grid-main">';
-    echo '<article class="card dash-chart-card"><div class="dash-card-head"><div><small>ÚLTIMOS 7 DÍAS</small><h3>Movimiento de ventas</h3></div><strong>'.money(array_sum(array_column($chart,'total'))).'</strong></div>';
-    echo '<div class="dash-bars">';
-    foreach($chart as $row){
-        $pct=$maxSale>0?max(5,round(($row['total']/$maxSale)*100)):5;
-        echo '<div class="dash-bar-col" title="'.e(date('d/m',strtotime($row['day'])).' · '.money($row['total'])).'"><div class="dash-bar-value">'.($row['total']>0?e(money($row['total'])):'').'</div><div class="dash-bar-track"><i style="height:'.$pct.'%"></i></div><span>'.e(ui_label_qa(date('D',strtotime($row['day'])))).'</span><small>'.e(date('d/m',strtotime($row['day']))).'</small></div>';
-    }
-    echo '</div></article>';
-
-    echo '<article class="card dash-side-card"><div class="dash-card-head"><div><small>ESTE MES</small><h3>Productos destacados</h3></div><a href="'.url('admin/reportes').'">Ver reportes</a></div>';
-    if($topProducts){
-        echo '<div class="dash-ranking">';
-        $rankMax=max(1,(float)$topProducts[0]['qty']);
-        foreach($topProducts as $i=>$p){
-            $pct=max(4,round(((float)$p['qty']/$rankMax)*100));
-            echo '<div class="dash-rank-row"><span class="dash-rank-number">'.($i+1).'</span><div><strong>'.e($p['product_name']).'</strong><small>'.e((string)$p['qty']).' unidades · '.e(money((float)$p['revenue'])).'</small><div class="dash-progress"><i style="width:'.$pct.'%"></i></div></div></div>';
-        }
-        echo '</div>';
-    }else echo '<div class="dash-empty">Aún no hay ventas de productos registradas este mes.</div>';
-    echo '</article>';
-    echo '</section>';
-
-    echo '<section class="dash-grid-secondary">';
-    echo '<article class="card dash-mini-card"><div class="dash-card-head"><div><small>ESTADO GENERAL</small><h3>Tu negocio</h3></div></div><div class="dash-facts">';
-    echo '<div><span>Clientes</span><strong>'.$customers.'</strong></div>';
-    echo '<div><span>Productos activos</span><strong>'.$products.'</strong></div>';
-    echo '<div><span>Stock bajo</span><strong class="'.($lowStock>0?'warn':'').'">'.$lowStock.'</strong></div>';
-    echo '<div><span>Pedidos hoy</span><strong>'.(int)($ordersToday['n']??0).'</strong></div>';
-    echo '</div></article>';
-
-    echo '<article class="card dash-mini-card"><div class="dash-card-head"><div><small>ESTE MES</small><h3>Formas de pago</h3></div></div>';
-    if($payments){
-        echo '<div class="dash-payments">';
-        foreach($payments as $p){
-            $pct=$paymentTotal>0?round(((float)$p['total']/$paymentTotal)*100):0;
-            echo '<div><div><span>'.e($p['payment_method']?:'Sin definir').'</span><strong>'.$pct.'%</strong></div><div class="dash-progress"><i style="width:'.$pct.'%"></i></div></div>';
-        }
-        echo '</div>';
-    }else echo '<div class="dash-empty">Sin ventas registradas este mes.</div>';
-    echo '</article>';
-    echo '</section>';
-
-    echo '<section class="card admin-card dash-recent"><div class="dash-card-head"><div><small>ACTIVIDAD RECIENTE</small><h3>Pedidos recientes</h3></div><a href="'.url('admin/pedidos').'">Ver todos</a></div>';
-    orders_table($recent);
-    echo '</section>';
-
-    admin_shell_end();
-}
 function orders_table(array $rows,bool $master=false):void{echo '<div class="table-wrap"><table class="table"><tr><th>Pedido</th>'.($master?'<th>Empresa</th>':'').'<th>Cliente</th><th>Total</th><th>Estado</th><th>Fecha</th></tr>';foreach($rows as $r)echo '<tr><td>#'.e($r['order_number']).'</td>'.($master?'<td>'.e($r['tenant']).'</td>':'').'<td>'.e($r['customer_name']).'</td><td>'.money((float)$r['total']).'</td><td><span class="status">'.e(ui_label_qa((string)$r['status'])).'</span></td><td>'.e(date('d/m/Y H:i',strtotime($r['created_at']))).'</td></tr>';echo '</table></div>';}
 
 function tenant_orders(App $app,array $u,array $t):void{if(is_post()){verify_csrf();$status=$_POST['status']??'';$allowed=['new','confirmed','preparing','ready','sent','delivered','cancelled'];if(in_array($status,$allowed,true)){order_status_qa($app,(int)$t['id'],(int)$_POST['id'],$status,(int)$u['id']);audit($app,$t['id'],$u['id'],'update_order','order',(int)$_POST['id']);flash('success','Pedido actualizado.');}redirect(url('admin/pedidos'));}$status=$_GET['status']??'';$params=[$t['id']];$sql='SELECT * FROM orders WHERE tenant_id=?';if($status){$sql.=' AND status=?';$params[]=$status;}$sql.=' ORDER BY created_at DESC LIMIT 300';$rows=$app->all($sql,$params);admin_shell_start('Pedidos',$u,$t,'pedidos');echo '<div class="chips" style="margin-bottom:18px"><a class="chip '.(!$status?'active':'').'" href="'.url('admin/pedidos').'">Todos</a>';foreach(['new'=>'Nuevos','confirmed'=>'Confirmados','preparing'=>'Preparando','ready'=>'Listos','delivered'=>'Entregados','cancelled'=>'Cancelados'] as $k=>$v)echo '<a class="chip '.($status===$k?'active':'').'" href="?status='.$k.'">'.$v.'</a>';echo '</div><section class="card admin-card"><div class="table-wrap"><table class="table"><tr><th>Pedido</th><th>Cliente</th><th>Teléfono</th><th>Total</th><th>Pago</th><th>Estado</th><th>Fecha</th></tr>';foreach($rows as $r){echo '<tr><td>#'.e($r['order_number']).'</td><td>'.e($r['customer_name']).'</td><td>'.e($r['customer_phone']).'</td><td>'.money((float)$r['total']).'</td><td>'.e($r['payment_method']).'</td><td><form method="post">'.csrf_field().'<input type="hidden" name="id" value="'.(int)$r['id'].'"><select class="input" name="status" onchange="this.form.submit()">';foreach(['new'=>'Nuevo','confirmed'=>'Confirmado','preparing'=>'Preparando','ready'=>'Listo','sent'=>'Enviado','delivered'=>'Entregado','cancelled'=>'Cancelado'] as $k=>$v)echo '<option value="'.$k.'" '.($r['status']===$k?'selected':'').'>'.$v.'</option>';echo '</select></form></td><td>'.e(date('d/m/Y H:i',strtotime($r['created_at']))).'</td></tr>';}echo '</table></div></section>';admin_shell_end();}

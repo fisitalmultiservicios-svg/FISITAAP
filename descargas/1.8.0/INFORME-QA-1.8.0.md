@@ -1,3 +1,35 @@
+# Informe QA · FISITAAP web 1.8.0-R15
+
+Fecha: 27 de octubre de 2026. Corrección de la diferencia entre R14 y el HTML aprobado **Línea + FISITAAP**. Esta revisión cambia la composición de las pantallas PHP reales y reutiliza los estilos de la propuesta. No sustituye los datos del sistema por los del prototipo.
+
+| Solicitud | Resultado |
+|---|---|
+| Que coincida con la mezcla aprobada | Cabecera, ruta de navegación, resumen con cuatro indicadores, gráfico a la izquierda, pedidos a la derecha y actividad debajo. Los valores se consultan por negocio/sucursal. El maestro tiene sus propias métricas y accesos de plataforma. |
+| Facturación amplia a la izquierda | Estructura de dos columnas 60/40, factura con Producto/Cantidad/Precio/Importe, cliente arriba, total y cobro abajo. Hasta 650 px usa Facturación/Productos; mantiene cobro y aviso de pedidos dentro de pantalla. Cantidades y selección de cliente siguen enviándose al backend real. Las monedas enteras se muestran sin ceros decimales; se conservan los centavos cuando existen. |
+| Mesas gráficas | Plano real y detalle lateral persistente, apilados en celular. Conserva formas, coordenadas, objetos, sectores, cuentas y vista básica. El detalle se actualiza cada dos segundos sin bloquear el refresco y conserva la selección. |
+| Mismo lenguaje visual en el sistema | Estilos compartidos y adaptación para maestro, negocio, comprador, motorizado y catálogo. El catálogo conserva color primario, slider, fotografías, carrito y acceso de cliente. Los menús muestran enlaces permitidos de la cuenta real; no se copian los cambios de identidad de la demo. |
+| Mantener bienvenida y asistentes | Resumen y Bienvenida tienen accesos separados; se conserva la imagen guardada por el maestro. El negocio y el maestro usan la ventana moderna de FISIChat con sus perfiles y permisos del servidor. |
+| Conservar la presentación oficial | La portada de presentación no carga el tema nuevo. Su captura coincide píxel por píxel con la referencia anterior en el entorno de prueba. |
+
+## Evidencia R15
+
+- **QA-REFERENCIA-VISUAL-R15.json:** nueve comparaciones del HTML original frente a PHP real: Resumen, Venta rápida y Mesas en 1440×1000, 768×1024 y 390×844. Comprueba posiciones y anchos de sus regiones principales; en facturación también la posición vertical. Reutilización exacta del CSS aprobado, salvo la regla de impresión exclusiva del modal de la demo. Capturas lado a lado en **VISTAS-R15.md**. Los datos de muestra se aplicaron temporalmente sólo al fixture ficticio y se restauraron al terminar.
+- **QA-INTERFAZ-R15.json:** ocho recorridos y 178 combinaciones de ruta/pantalla. Anchos de 320 a 1366 px, orientaciones vertical/horizontal y ventanas móviles de 520 px de alto. Venta móvil inicial y repetida, teclado de cantidades, botones de incremento, edición de producto, selección de cliente, autorización nativa mediante el protocolo real, turno, cobro e inventario. Factura izquierda/más ancha, total y cobro visibles, ventanas, mesas, zoom y teclado. Sin errores JavaScript; recibo de impresión conserva papel blanco, monoespaciado y contenido visible, sin imprimir físicamente.
+- **QA-NAVEGACION-R15.json:** 16 combinaciones de rol/ruta/pantalla. Dueño y cajero mantienen enlaces, módulos y permisos; apertura/cierre, Escape, manual, salida, acceso a Productos desde el menú de Mesas, catálogo/carrito y pedidos propios del comprador. La navegación original de la web oficial se conserva.
+- **QA-COMPORTAMIENTO-R15.json:** el detalle lateral de mesa cambia por una actualización de otro actor, sin navegación ni recarga; mantiene la selección. Búsqueda de pantallas y apertura/cierre del chat. Perfiles de FISIChat seleccionados por servidor: dueño, maestro y cliente, sin llamadas externas de IA.
+- **QA-ACTUALIZADOR-R15.json:** instalación real sobre el ZIP R14 publicado, en una segunda base ficticia con negocios179/180 y turno abierto. Conserva datos, contraseñas, contactos, permisos, modificadores, activaciones, config, imágenes, versiones anteriores y turno. Acceso maestro/CSRF, rechazo de código activo modificado, 137 archivos, extracción644/755 y repetición idempotente.
+- **QA-SINTAXIS-R15.json:** 80 PHP funcionales, 84 PHP del ZIP completo, 12 JavaScript y 137 hashes verificados; guía idéntica al paquete y permisos explícitos644/755.
+
+R15 no añade tablas ni columnas sobre R14. El paquete acumulativo se instala en **releases/1.8.0-r15** y conserva las revisiones anteriores. Windows1.8.1 y Android1.8.0 conservan sus instaladores; la caja local de Windows sin internet mantiene su interfaz existente.
+
+La comparación visual verifica las regiones descritas y se acompaña de capturas inspeccionadas. No afirma identidad de todos los píxeles entre una demo y una instalación con otros datos, salón y permisos. Las funciones de cálculo, caja, impresión y pedidos continúan en el backend original. Las pruebas usan PHP/MariaDB/Chromium con datos ficticios; Safari/iPhone, tabletas Android y Windows físico requieren comprobación en los dispositivos. No se enviaron WhatsApp, pagos ni trabajos a impresoras reales.
+
+El ZIP y las capturas se publican para instalación. No hay conexión directa al cPanel: publicar el repositorio no ejecuta el actualizador en fisitaap.com.
+
+Las siguientes secciones conservan evidencia histórica de las entregas anteriores.
+
+---
+
 # Informe QA · FISITAAP web 1.8.0-R14
 
 Fecha: 27 de octubre de 2026. Integración del diseño aprobado **Línea + FISITAAP** en la aplicación PHP real. Windows 1.8.1 y Android 1.8.0 conservan sus instaladores.

@@ -1,4 +1,4 @@
-# Instalar FISITAAP 1.8.0-R14 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R15 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
@@ -6,22 +6,23 @@ R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enter
 
 Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
 
-## Diseño R14: Línea con la identidad de FISITAAP
+## Diseño R15: estructura del HTML aprobado
 
-R14 aplica el diseño aprobado al sistema real: panel del negocio, maestro, catálogo de cada tienda, cuenta del comprador, acceso y portal del motorizado. Combina tarjetas blancas, bordes suaves y espacios de Línea con los azules y verdes de FISITAAP. El catálogo conserva el color primario elegido por cada negocio. **La web oficial de presentación de FISITAAP conserva su diseño y navegación.**
+R15 corrige la diferencia visual de R14. Integra las plantillas y los estilos del HTML **Línea + FISITAAP** en la aplicación PHP real: cabecera, ruta de navegación, tarjetas, resumen, facturación y detalle de mesas. La información procede del negocio y respeta sus permisos; los valores del prototipo no se copian al sitio. **La web oficial de presentación conserva su diseño y navegación.**
 
-- **Venta rápida:** la factura está a la izquierda con el 60 % del ancho; categorías y productos de carga rápida están a la derecha con el 40 %. La pantalla inicial sin productos sigue sin crear una cuenta hasta agregar el primero.
-- **Celular:** usa las pestañas **Facturación** y **Productos**. Los productos y líneas se desplazan dentro de su área, manteniendo el total y el cobro a mano. El sistema deja de encoger una pantalla de computadora completa para mostrarla en el teléfono. Con poco alto disponible se compactan los controles secundarios y se conservan el importe y el cobro.
-- **Tableta:** mantiene las dos columnas cuando hay espacio; debajo de 651 px usa las pestañas. Los formularios y ventanas se adaptan al ancho, con desplazamiento interno cuando hace falta.
-- **Mesas:** conserva el plano gráfico real, sus mesas, sillas, sectores y objetos guardados. La selección, cuentas, cobros, configuración y vista básica siguen funcionando. Ajustar y +/− controlan el plano; también puedes seleccionarlo con Tab y Enter.
-- **Código de descuento:** está en el botón de acciones de la factura y abre una ventana; ya no queda debajo de la zona visible.
-- **Zoom:** en la factura, +/− cambian el tamaño del texto; Ajustar vuelve a 100 %. En el plano, controlan su acercamiento. El zoom propio del navegador permanece disponible.
+- **Resumen:** cuatro indicadores, gráfico de ventas, pedidos que necesitan atención y accesos operativos. En el menú están separados **Resumen** y **Bienvenida**, donde permanece la imagen configurada por el maestro. En el maestro se muestran sus propios negocios, suscripciones, contactos y equipos.
+- **Venta rápida:** factura amplia a la izquierda (60 %) y carga rápida a la derecha (40 %), como en el HTML. Las líneas muestran producto, cantidad, precio e importe; el total y el cobro quedan al pie. El nombre del producto abre sus opciones, precio autorizado y notas. El selector de cliente envía el formulario real. **Más acciones (⋯)** conserva Express, Mesas, cuentas pendientes e historial; **Más acciones** al pie conserva descuentos, notas y las demás operaciones. La pantalla vacía crea una cuenta al agregar el primer producto.
+- **Celular:** pestañas **Facturación** y **Productos**. Las líneas y productos se desplazan dentro de su área; el total y **Cobrar** permanecen visibles, también con poco alto. El aviso de pedidos web sigue disponible. Se conserva el zoom del navegador.
+- **Tableta:** dos columnas cuando el ancho lo permite; hasta 650 px se usan las pestañas. Las ventanas y formularios se limitan al ancho disponible.
+- **Mesas:** el plano real está a la izquierda y el detalle de la mesa seleccionada a la derecha; en celular se apilan. No se reemplaza el salón por las mesas del ejemplo. Se conservan coordenadas, formas, sectores, objetos, cuentas y vista básica. +/− y 100 % controlan el plano. La selección también funciona con teclado. El detalle lateral sigue recibiendo actualizaciones automáticas cada dos segundos; no es una ventana que bloquee el refresco.
+- **Catálogo:** banner con texto e imagen, categorías compactas y tarjetas de producto con el contenido guardado por la tienda. Se conserva su color primario, slider, carrito y acceso de clientes.
+- **FISIChat:** el panel del negocio y el maestro usan la ventana de chat moderna con su perfil correspondiente. Se mantienen los límites de temas, permisos y conexión de IA de R13.
 
-Se instala con el mismo actualizador, sobre R13 o versiones anteriores compatibles. Conserva config.php, uploads, negocios, usuarios, ventas, turnos, permisos y la conexión de IA. No requiere SQL ni reinstalar Windows 1.8.1 o Android 1.8.0. La apariencia cambia en la aplicación web; la caja local sin internet de Windows conserva la interfaz incluida en su instalador.
+Se instala con el mismo actualizador, sobre R14 o versiones anteriores compatibles. Conserva config.php, uploads, negocios, usuarios, ventas, turnos, permisos y conexión de IA. No requiere importar SQL ni reinstalar Windows 1.8.1 o Android 1.8.0. El diseño se aplica a la aplicación web; la caja local de Windows sin internet conserva la interfaz de su instalador.
 
-Para instalar: descarga **FISITAAP-1.8.0-CPANEL-R14.zip**, extrae en **/home/fisitaap/public_html** y, como maestro, abre **https://fisitaap.com/actualizador-180/index.php**. Marca el respaldo guardado y pulsa **Instalar archivos**. Conserva **releases/1.8.0-r14**. La extracción del ZIP por sí sola no instala el diseño.
+Descarga **FISITAAP-1.8.0-CPANEL-R15.zip**, extrae en **/home/fisitaap/public_html** y, con tu sesión maestra, abre **https://fisitaap.com/actualizador-180/index.php**. Marca el respaldo guardado y pulsa **Instalar archivos**. Conserva **releases/1.8.0-r15** y las versiones anteriores. La extracción del ZIP por sí sola no instala el diseño. No se dispone de acceso directo al cPanel desde esta entrega.
 
-Después revisa en celular y tableta: abrir/cerrar menú, agregar dos productos, cambiar entre Facturación/Productos, abrir el cobro, seleccionar una mesa en el plano y abrir el carrito del catálogo. Las pruebas automatizadas usan tamaños de pantalla en Chromium; también conviene comprobar el navegador de tus dispositivos físicos.
+Revisa las capturas de comparación en **VISTAS-R15.md**. Las pruebas automatizadas usan PHP, MariaDB y Chromium con datos ficticios y tamaños de computadora, celular y tableta; la revisión en tus dispositivos físicos sigue siendo necesaria.
 
 ## Corrección R13: catálogo, menú interno y perfiles de FISIChat
 
@@ -212,7 +213,7 @@ La corrección actualiza inmediatamente los usuarios aprobados al autorizar la s
 13. Si aparece **distinto**, se detectó un archivo modificado fuera de los paquetes conocidos. Guarda el respaldo y los nombres que señala; no fuerces la copia. Si falla la preparación de la base, conserva los archivos instalados y el respaldo, revisa el registro con soporte y repite después de corregir la causa. Repetir una instalación correcta no duplica datos ni activa negocios pendientes.
 14. En el panel maestro, **Administración → Actualizar sistema**, puedes ver los negocios actualizados y pendientes. También abre **https://fisitaap.com/master/actualizar-sistema**. **Comprobar publicación** revisa la preparación; no activa clientes. Para ayudar a uno, selecciona únicamente ese negocio y confirma su preparación.
 
-La aplicación nueva se instala en **public_html/releases/1.8.0-r14**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
+La aplicación nueva se instala en **public_html/releases/1.8.0-r15**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
 
 Si el negocio ya tenía 1.8.0 activada antes de R11, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
 
@@ -246,7 +247,7 @@ El botón prepara y activa el negocio en la web. Los instaladores de Windows/And
 32. Confirma que una caja secundaria necesita conexión y que compras, cuentas, mesas, reportes y permisos funcionan según lo que use el negocio.
 33. Si un navegador conserva un diseño anterior, recarga con **Ctrl+F5**. Los archivos nuevos se sirven desde una carpeta de versión propia.
 34. Descarga y conserva **actualizador-180/backups** fuera del sitio. Cuando lo hayas comprobado, elimina **solo** el ZIP subido, la carpeta **actualizador-180**, **volver-acceso-180.php** y **diagnostico-bienvenida-180.php**. Los dueños podrán seguir actualizando después desde Administración.
-35. **No borres releases ni releases/1.8.0-r14**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
+35. **No borres releases ni releases/1.8.0-r15**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
 
 ## F. Comprobar FISIChat
 

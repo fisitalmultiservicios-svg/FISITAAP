@@ -1,0 +1,32 @@
+"""Real browser regression for the catalog and shared panel/terminal navigation."""
+import json,pathlib,sys
+from playwright.sync_api import sync_playwright,expect
+from browser_operations_r9 import login_page
+sys.path.insert(0,'/workspace/fisitaap-env/tests')
+from r3_helpers import PASSWORD,sql
+ROOT=pathlib.Path(__file__).resolve().parents[1];OUT=pathlib.Path('/workspace/fisitaap-env/navigation-r15')
+def links(page):return page.locator('[data-admin-menu] .nav-group').evaluate_all("nodes=>nodes.map(n=>({group:n.querySelector('summary span').textContent,links:[...n.querySelectorAll('a')].map(a=>[a.textContent,a.getAttribute('href')])}))")
+def main():
+    assert sql('SELECT DATABASE() db')[0]['db']=='fisitaap_r2_test';sql('DELETE FROM rate_limits');OUT.mkdir(exist_ok=True);errors=[];layouts=[]
+    with sync_playwright() as pw:
+        browser=pw.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--no-proxy-server']);guest=browser.new_context();page=guest.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
+        for w,h in [(1366,900),(900,700),(768,1024),(390,844)]:
+            page.set_viewport_size({'width':w,'height':h});page.goto('http://localhost:18080/laventanita/catalogo?sucursal=principal');menu=page.locator('[data-mobile-menu]');expect(menu).not_to_be_visible();page.get_by_role('button',name='Abrir menú',exact=True).click();expect(menu).to_be_visible();assert menu.inner_text().splitlines()==['Categorías','Ver carrito'];expect(page.get_by_role('link',name='Iniciar sesión de cliente',exact=True)).to_have_count(1)
+            menu.get_by_role('button',name='Categorías',exact=True).click();expect(menu).not_to_be_visible();expect(page.locator('[data-category-launcher]')).to_be_visible();page.locator('[data-category-open]').first.click();expect(page.locator('[data-category-launcher]')).to_be_visible();expect(page.locator('[data-catalog-products]')).to_be_visible();page.get_by_role('button',name='Abrir menú',exact=True).click();menu.get_by_role('button',name='Categorías',exact=True).click();expect(page.locator('[data-category-launcher]')).to_be_visible()
+            page.get_by_role('button',name='Abrir menú',exact=True).click();menu.get_by_role('button',name='Ver carrito',exact=True).click();expect(page.locator('#cartDrawer')).to_have_class('drawer open');expect(menu).not_to_be_visible();page.locator('button[data-close-cart]').click();assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1');layouts.append({'width':w,'catalog_navigation':'purchase actions only'})
+        page.goto('http://localhost:18080/login');page.locator('[name=email]').fill('customer@r2.invalid');page.locator('[name=password]').fill(PASSWORD);page.locator('form button.btn').first.click();page.wait_for_url('**/account');page.goto('http://localhost:18080/laventanita/catalogo?sucursal=principal');page.get_by_role('button',name='Abrir menú',exact=True).click();expect(page.locator('[data-mobile-menu]').get_by_role('link',name='Mis pedidos',exact=True)).to_be_visible();page.locator('[data-mobile-menu]').get_by_role('link',name='Mis pedidos',exact=True).click();expect(page.locator('.page-heading h1')).to_have_text('Mis pedidos')
+        for email in ['owner@r2.invalid','cashiera@r2.invalid']:
+            ctx,panel=login_page(browser,email);panel.on('pageerror',lambda e:errors.append(str(e)));panel.goto('http://localhost:18080/admin');expected=links(panel);assert expected
+            for w,h in [(1366,900),(390,844)]:
+                panel.set_viewport_size({'width':w,'height':h})
+                for route in ['/admin/mesas','/admin/ventas','/admin/cobro']:
+                    panel.goto('http://localhost:18080'+route);assert links(panel)==expected,(email,route);assert panel.locator('[data-r11-terminal-links],.r11-terminal-menu').count()==0;sidebar=panel.locator('[data-admin-menu]');expect(sidebar).not_to_be_visible();panel.get_by_role('button',name='Abrir menú',exact=True).click();expect(sidebar).to_be_visible();expect(sidebar).to_be_in_viewport(ratio=0.95);expect(sidebar.get_by_role('link',name='? Manual de uso',exact=True)).to_be_visible();expect(sidebar.get_by_role('button',name='Cerrar sesión',exact=True)).to_be_visible();sidebar.locator('[data-admin-menu-toggle]').click();expect(sidebar).not_to_be_visible();panel.get_by_role('button',name='Abrir menú',exact=True).click();panel.keyboard.press('Escape');expect(sidebar).not_to_be_visible();assert panel.evaluate('document.documentElement.scrollWidth<=innerWidth+1');layouts.append({'role':email.split('@')[0],'route':route,'width':w,'navigation_matches_panel':True})
+                    if email.startswith('owner') and w==390 and route=='/admin/mesas':
+                        panel.get_by_role('button',name='Abrir menú',exact=True).click();expect(sidebar).to_be_in_viewport(ratio=0.95);panel.wait_for_timeout(220);panel.screenshot(path=str(OUT/'tables-menu-mobile.png'));sidebar.locator('a[href$="/admin/productos"]').evaluate("e=>e.closest('details').open=true");sidebar.locator('a[href$="/admin/productos"]').click();panel.wait_for_url('**/admin/productos');expect(panel.locator('.page-heading h1')).to_have_text('Productos e inventario')
+            if email.startswith('cashier'):assert not any(x[1].endswith('/roles') or x[1].endswith('/configuracion') for g in expected for x in g['links'])
+            ctx.close()
+        page.goto('http://localhost:18080/');page.set_viewport_size({'width':1366,'height':900});expect(page.locator('.r3-official-nav nav a')).to_have_count(4);assert page.locator('.r3-official-nav button').count()==0
+        assert not errors,errors;browser.close()
+    out={'passed':4,'checks':['Guest catalog only offers categories/cart; actions work and close the menu at four sizes; customer login is not duplicated','Authenticated shopper reaches own orders from catalog','Tables/quick sale/collection use exactly the panel grouped navigation for owner and cashier, with real link navigation, manual/logout, Escape/close and no old generated menu','Official website retains R12 original navigation; no horizontal overflow or JS errors'],'layouts':layouts,'page_errors':errors,'environment':'isolated fictional PHP/MariaDB/Chromium; no production or real messages'}
+    (ROOT/'actualizaciones/1.8.0/QA-NAVEGACION-R15.json').write_text(json.dumps(out,indent=2)+'\n');print('PASS R15 navigation:',len(layouts),'role/route/viewport combinations')
+if __name__=='__main__':main()

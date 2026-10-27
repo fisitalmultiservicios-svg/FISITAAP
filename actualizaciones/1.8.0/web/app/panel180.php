@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 function qa180_groups(array $user,?array $tenant):array {
-    if($user['role']==='master')return ['Plataforma'=>['dashboard'=>'Bienvenida','empresas'=>'Negocios','planes'=>'Planes y suscripciones','modules'=>'Planes y módulos','escritorio'=>'Equipos y cajas'],'Web oficial'=>['contenido'=>'Diseño y página','bienvenida'=>'Imagen de bienvenida','contactos'=>'Contactos'],'Analítica'=>['kpis'=>'KPIs','reportes'=>'Reportes'],'Administración'=>['auditoria'=>'Bitácora','configuracion'=>'Configuración','qa'=>'Comprobar sitio','cache'=>'Caché','actualizar-sistema'=>'Actualizar sistema']];
-    $physical=$tenant&&physical_store_v14($tenant);$groups=['Inicio'=>['dashboard'=>'Bienvenida'],'Catálogo'=>['categorias'=>'Categorías','productos'=>'Productos','extras'=>'Extras','opcionales'=>'Opcionales','combos'=>'Combos','promociones'=>'Promociones','pedidos'=>'Pedidos','cocina'=>'Cocina / monitor']];
+    if($user['role']==='master')return ['Plataforma'=>['dashboard'=>'Resumen','inicio'=>'Bienvenida','empresas'=>'Negocios','planes'=>'Planes y suscripciones','modules'=>'Planes y módulos','escritorio'=>'Equipos y cajas'],'Web oficial'=>['contenido'=>'Diseño y página','bienvenida'=>'Imagen de bienvenida','contactos'=>'Contactos'],'Analítica'=>['kpis'=>'KPIs','reportes'=>'Reportes'],'Administración'=>['auditoria'=>'Bitácora','configuracion'=>'Configuración','qa'=>'Comprobar sitio','cache'=>'Caché','actualizar-sistema'=>'Actualizar sistema']];
+    $physical=$tenant&&physical_store_v14($tenant);$groups=['Inicio'=>['dashboard'=>'Resumen','bienvenida'=>'Bienvenida'],'Catálogo'=>['categorias'=>'Categorías','productos'=>'Productos','extras'=>'Extras','opcionales'=>'Opcionales','combos'=>'Combos','promociones'=>'Promociones','pedidos'=>'Pedidos','cocina'=>'Cocina / monitor']];
     if($physical){$groups['Ventas']=['ventas'=>'Venta rápida','turnos'=>'Turnos'];if(($tenant['catalog_label']??'')==='Menú')$groups['Ventas']+=['mesas'=>'Mesas','cobro'=>'Cobrar cuentas','express-pendientes'=>'Express pendientes'];}
     $groups['Clientes']=['clientes-crear'=>'Crear cliente','clientes-buscar'=>'Buscar clientes','clientes-historial'=>'Historial','fidelizacion'=>'Fidelización'];if($physical)$groups['Clientes']+=['credito'=>'Crédito','cxc'=>'Cuentas por cobrar'];
     if($physical)$groups['Compras']=['proveedores'=>'Proveedores','compras'=>'Compras','cxp'=>'Cuentas por pagar','inventario'=>'Inventario'];
@@ -66,7 +66,7 @@ function qa180_welcome_editor(App $app,array $user):void {
         redirect(url('master/bienvenida'));
     }
     admin_shell_start('Imagen de bienvenida',$user,null,'contenido');
-    echo '<p><a class="btn btn-light" href="'.e(url('master')).'">Ver bienvenida publicada</a></p>';
+    echo '<p><a class="btn btn-light" href="'.e(url('master/inicio')).'">Ver bienvenida publicada</a></p>';
     $current=r2_setting($app,0,'welcome_image180');
     if($current!=='')echo '<section class="card admin-card"><h2>Imagen actual</h2><img src="'.e(public_media_url($current)).'" alt="Imagen de bienvenida actual" style="display:block;width:100%;max-height:280px;object-fit:contain"></section>';
     else echo '<section class="card admin-card"><p>Actualmente se muestra la bienvenida predeterminada. Aún no hay una imagen personalizada guardada para esta pantalla.</p></section>';

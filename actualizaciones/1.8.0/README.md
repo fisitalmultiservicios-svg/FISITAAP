@@ -1,19 +1,18 @@
-# FISITAAP web 1.8.0-R14 · Windows 1.8.1
+# FISITAAP web 1.8.0-R15 · Windows 1.8.1
 
-R14 aplica al sistema real la mezcla aprobada de Línea y la identidad de FISITAAP. Renueva paneles, catálogo, acceso, cuenta de comprador y portal del motorizado. En Venta rápida la factura ocupa la izquierda con el 60 % del ancho y la carga rápida la derecha con el 40 %. En celular se alternan Facturación y Productos; en tableta la distribución se adapta al ancho disponible. Conserva el plano real de mesas, sus objetos y los procesos de venta. La web oficial de presentación mantiene su diseño y navegación.
+R15 corrige la diferencia entre R14 y el HTML aprobado **Línea + FISITAAP**. Reutiliza los estilos de esa propuesta y cambia la estructura PHP: cabecera, resumen con gráfico/pedidos, factura amplia a la izquierda y mesas con detalle lateral. Los datos, controles, permisos y procesos pertenecen a la aplicación real.
 
-- [Descargar actualización cPanel R14](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R14.zip)
-- [Guía de instalación y uso](GUIA-CPANEL.md)
+- [Descargar actualización cPanel R15](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R15.zip)
+- [Comparar el HTML con las pantallas reales](https://github.com/fisitalmultiservicios-svg/FISITAAP/blob/main/descargas/1.8.0/VISTAS-R15.md)
+- [Guía de instalación](GUIA-CPANEL.md)
 - [Pruebas y alcance](INFORME-QA.md)
-- [Comprobación SHA256](../../descargas/1.8.0/SHA256SUMS-1.8.0.txt)
-- [Machote Excel existente](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-Machote-Productos-R11.xlsx)
 
-Guarda respaldo de archivos y base de datos. Extrae el ZIP en **/home/fisitaap/public_html** y, con tu sesión maestra, abre **https://fisitaap.com/actualizador-180/index.php**. Marca el respaldo guardado y pulsa **Instalar archivos**. La extracción por sí sola no cambia la versión activa. Conserva **releases/1.8.0-r14**; no borres releases anteriores mientras tengas que conservar sus respaldos.
+Guarda respaldo de archivos y base de datos. Extrae el ZIP en **/home/fisitaap/public_html** y, como maestro, abre **https://fisitaap.com/actualizador-180/index.php**. Pulsa **Instalar archivos** tras confirmar tu respaldo. Extraer el ZIP solamente no cambia la versión activa. Conserva **releases/1.8.0-r15** y las versiones anteriores.
 
-La actualización conserva config.php, uploads, datos, turnos, permisos, activaciones y la conexión de IA. No importa SQL ni requiere reinstalar Windows 1.8.1 o Android 1.8.0. El nuevo diseño corresponde a la web; la caja local de Windows sin internet conserva la interfaz de su instalador. Los negocios que ya usan 1.8.0 reciben el diseño al instalar los archivos; los negocios antiguos todavía pendientes conservan su estado de activación.
+La web oficial de presentación permanece igual. Las tiendas conservan sus colores, imágenes y plano real. En celular se alternan Facturación/Productos con el total y cobro visibles; en tablet se aprovechan las dos columnas. Resumen y Bienvenida son accesos separados, por lo que se conserva la imagen de bienvenida configurada por el maestro.
 
-El ZIP incluye 133 archivos funcionales, con permisos 644/755 y sin configuración privada, datos de negocios, contraseñas ni claves. El ZIP sin sufijo también corresponde a R14. Los ZIP R1…R13 permanecen como historial.
+El paquete incluye 137 archivos funcionales con permisos 644/755. Conserva configuración, imágenes, usuarios, ventas, turnos, activaciones y conexión de IA; no contiene config.php, datos ni claves privadas. Los ZIP R1…R14 permanecen como historial. La versión sin sufijo también corresponde a R15.
 
-Se mantienen los grupos de opcionales, importación Excel, slider configurable, reglas de cantidades, flujo de pedidos/entregas, navegación agrupada y perfiles de FISIChat de las revisiones anteriores. Las operaciones monetarias siguen requiriendo una caja y equipo autorizados; el cambio visual no modifica estos permisos.
+No se requiere reinstalar Windows 1.8.1 ni Android 1.8.0. El nuevo diseño corresponde a la aplicación web; la caja local de Windows sin internet mantiene la interfaz de su instalador. Las operaciones de efectivo conservan la autorización de equipo, caja y turno.
 
-Las pruebas se ejecutan en PHP/MariaDB/Chromium con datos ficticios y tamaños de computadora, celular y tableta. No sustituyen las verificaciones en dispositivos físicos ni conectan impresoras, WhatsApp o pagos reales. La publicación en el repositorio entrega los archivos; **no instala automáticamente la actualización en el hosting**.
+Las pruebas usan PHP/MariaDB/Chromium con datos ficticios. No envían WhatsApp ni pagos reales, no conectan impresoras y no sustituyen la revisión en dispositivos físicos. Publicar el ZIP en el repositorio no lo instala automáticamente en el hosting.

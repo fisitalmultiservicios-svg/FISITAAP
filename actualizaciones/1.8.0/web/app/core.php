@@ -303,9 +303,9 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false,
     // The approved interface applies to the application and tenant pages only.
     // The official presentation site keeps its existing HTML and styles.
     $r14Scope=$admin?'r14-app r14-admin':($tenant?'r14-store':(preg_match('~^(?:account|driver|driver-register|owner-login|login|register|forgot-password|reset-password|change-password)(?:/|$)~',$path)?'r14-app r14-public-app':''));
-    if($r14Scope!=='')echo '<link rel="stylesheet" href="'.url('assets/interface-r14.css?v=r14').'">';
+    if($r14Scope!==''){echo '<link rel="stylesheet" href="'.url('assets/interface-r14.css?v=r14').'">';if($admin)echo '<link rel="stylesheet" href="'.url('assets/linea-reference-r15.css?v=r15').'">';if($admin||$tenant)echo '<link rel="stylesheet" href="'.url('assets/interface-r15.css?v=r15').'">';}
     $GLOBALS['r14_interface']=$r14Scope!=='';
-    echo '</head><body class="'.($admin?'admin-body':'public-body').($r14Scope!==''?' '.$r14Scope:'').'">';
+    echo '</head><body class="'.($admin?'admin-body':'public-body').($r14Scope!==''?' '.$r14Scope:'').($admin?' r15-app':($tenant?' r15-store':'')).'"'.($admin?' data-design="fusion"':'').'>';
     if(!empty($GLOBALS['demo_context']))demo_banner();
 }
 
@@ -314,5 +314,5 @@ function layout_end(): void
     if(function_exists('op180_ui')&&qa180_active($GLOBALS['app']))op180_ui($GLOBALS['app']);
     if(function_exists('qa180_active')&&qa180_active($GLOBALS['app']))echo '<script>window.FISITAAP180='.r3_json(qa180_ui_context($GLOBALS['app'])).'</script><script src="'.url('assets/qa180.js?v=180').'" defer></script>';
     if(in_array(explode('/',request_path())[0],['admin','master'],true))echo '<script src="'.url('assets/image-upload.js?v=1810').'" defer></script>';
-    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.'<script src="'.url('assets/experience-r11.js?v=r11').'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').(!empty($GLOBALS['r14_interface'])?'<script src="'.url('assets/interface-r14.js?v=r14').'" defer></script>':'').'</body></html>';
+    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.'<script src="'.url('assets/experience-r11.js?v=r11').'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').(!empty($GLOBALS['r14_interface'])?'<script src="'.url('assets/interface-r15.js?v=r15').'" defer></script>':'').'</body></html>';
 }

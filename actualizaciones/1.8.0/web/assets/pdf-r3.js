@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $('[data-table-search]')?.addEventListener('input',e=>{const q=e.target.value.trim().toLocaleLowerCase('es');$$('[data-r3-table]').forEach(g=>g.style.display=(!q||(g.dataset.search||'').includes(q))?'':'none');});
     if(editor)window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
     if(!editor){let tableData=json('[data-r3-table-data]');if(tableData) {
-      document.addEventListener('op180:updated',()=>{tableData=json('[data-r3-table-data]')||tableData;const fresh=json('[data-r3-layout-data]');if(fresh)data=fresh;});
+      document.addEventListener('op180:updated',()=>{tableData=json('[data-r3-table-data]')||tableData;const fresh=json('[data-r3-layout-data]');if(fresh)data=fresh;if(currentTable&&document.querySelector('[data-r15-inline]')){const t=tableData.tables.find(t=>Number(t.id)===Number(currentTable.id));if(t)showAccount(t,tableData.accounts.find(a=>Number(a.table_id)===Number(t.id)||(a.table_ids||[]).includes(Number(t.id))));}});
       $$('[data-r3-table]').forEach(g=>{const names=tableData.accounts.filter(a=>(Number(a.table_id)===Number(g.dataset.r3Table)||(a.table_ids||[]).includes(Number(g.dataset.r3Table)))).map(a=>a.customer_name||'').join(' ');g.dataset.search=(g.dataset.search||'')+' '+names.toLocaleLowerCase('es');});
       let currentTable=null,currentAccount=null;
       const base=String(tableData.base).replace(/\/$/,'');
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const pre=$('[data-table-prebill]',dialog);pre.action=path;pre.elements.revision.value=account.revision;$('[data-table-charge]',dialog).hidden=!tableData.canCharge;$('[data-table-split]',dialog).hidden=!tableData.canCharge;
           $('[data-table-reprint]',dialog).href=account.last_sale?base+'/admin/recibo?venta='+account.last_sale:base+'/admin/recibo?precuenta='+account.id;
         }
-        $('.r3-table-modal-actions',dialog).hidden=!account;if(!dialog.open)dialog.showModal();
+        $('.r3-table-modal-actions',dialog).hidden=!account;if(dialog.hasAttribute('data-r15-inline')){dialog.setAttribute('open','');dialog.hidden=false;}else if(!dialog.open)dialog.showModal();document.dispatchEvent(new CustomEvent('r15:table-selected',{detail:{table,account}}));
       }
       document.addEventListener('click',event=>{const g=event.target.closest('[data-r3-table]');if(!g||ordering)return;const table=tableData.tables.find(t=>Number(t.id)===Number(g.dataset.r3Table));if(table)showAccount(table,tableData.accounts.find(a=>(Number(a.table_id)===Number(table.id)||(a.table_ids||[]).includes(Number(table.id)))));});
       for(const [attr,action,title] of [['data-table-move','move_table','Mover cuenta'],['data-table-join','join_tables','Unir mesas']])$('['+attr+']')?.addEventListener('click',()=>{if(!currentAccount)return;const d=open('r3MoveTable'),form=$('[data-move-form]',d);$('[data-move-title]',d).textContent=title;form.action=base+'/admin/ventas?screen=order&ticket='+currentAccount.id;form.elements.action.value=action;form.elements.revision.value=currentAccount.revision;if(form.elements.operation_key)form.elements.operation_key.value=uid().replace(/-/g,'');});
