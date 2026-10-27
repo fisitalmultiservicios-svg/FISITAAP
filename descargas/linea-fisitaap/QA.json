@@ -1,0 +1,307 @@
+{
+  "date": "2026-10-27",
+  "designs": [
+    {
+      "design": "fusion",
+      "flows": [
+        "branch and report date filters",
+        "POS sale/stock/receipt/print",
+        "unit validation",
+        "product CRUD/CSV atomic duplicate rejection",
+        "master CRUD/modules/roles",
+        "conditional SINPE checkout",
+        "new buyer/PIN/session/orders",
+        "accept/prepare/dispatch/pickup/PIN delivery",
+        "driver payout",
+        "separate merchant colors/slider",
+        "responsive navigation/POS",
+        "scoped local chat",
+        "reload persistence"
+      ],
+      "passed": true
+    }
+  ],
+  "layout_cases": 36,
+  "layouts": [
+    {
+      "design": "fusion",
+      "route": "overview",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "fusion",
+      "route": "pos",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "fusion",
+      "route": "tables",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "fusion",
+      "route": "orders",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "fusion",
+      "route": "products",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "fusion",
+      "route": "catalog",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "design": "fusion",
+      "route": "overview",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "fusion",
+      "route": "pos",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "fusion",
+      "route": "tables",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "fusion",
+      "route": "orders",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "fusion",
+      "route": "products",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "fusion",
+      "route": "catalog",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "design": "fusion",
+      "route": "overview",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "fusion",
+      "route": "pos",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "fusion",
+      "route": "tables",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "fusion",
+      "route": "orders",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "fusion",
+      "route": "products",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "fusion",
+      "route": "catalog",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "design": "fusion",
+      "route": "overview",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "fusion",
+      "route": "pos",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "fusion",
+      "route": "tables",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "fusion",
+      "route": "orders",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "fusion",
+      "route": "products",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "fusion",
+      "route": "catalog",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "design": "fusion",
+      "route": "overview",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "fusion",
+      "route": "pos",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "fusion",
+      "route": "tables",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "fusion",
+      "route": "orders",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "fusion",
+      "route": "products",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "fusion",
+      "route": "catalog",
+      "width": 360,
+      "height": 740
+    },
+    {
+      "design": "fusion",
+      "route": "overview",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "fusion",
+      "route": "pos",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "fusion",
+      "route": "tables",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "fusion",
+      "route": "orders",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "fusion",
+      "route": "products",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "design": "fusion",
+      "route": "catalog",
+      "width": 844,
+      "height": 390
+    }
+  ],
+  "page_errors": [],
+  "external_requests": [],
+  "scope": "Local HTTP static HTML in Chromium, entirely fictional browser state; no backend, messages, payments, printers, AI or production changes. The managed browser blocked file://, so the same self-contained HTML was tested over loopback HTTP.",
+  "variant": "Línea · FISITAAP",
+  "specific_checks": [
+    "invoice first in DOM, left and 60% width",
+    "invoice totals and pay button remain in viewport",
+    "mobile invoice/products tabs",
+    "SVG furniture and room filtering",
+    "keyboard and pointer table selection",
+    "floor zoom and reset",
+    "open table, add product, retain account, pay and free table"
+  ],
+  "invoice_layouts": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "invoice_left_and_larger": true,
+      "pay_button_in_view": true
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "invoice_left_and_larger": true,
+      "pay_button_in_view": true
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "invoice_left_and_larger": true,
+      "pay_button_in_view": true
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "invoice_left_and_larger": true,
+      "pay_button_in_view": true
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "invoice_left_and_larger": true,
+      "pay_button_in_view": true
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "invoice_left_and_larger": true,
+      "pay_button_in_view": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "invoice_left_and_larger": false,
+      "pay_button_in_view": true
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "invoice_left_and_larger": false,
+      "pay_button_in_view": true
+    }
+  ],
+  "menu_destinations": 51
+}

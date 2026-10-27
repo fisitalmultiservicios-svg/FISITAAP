@@ -1,0 +1,221 @@
+/* Línea spacing and clarity, with FISITAAP's navy, green and familiar branding. */
+body[data-design=fusion]{
+ --canvas:#f3f6f9;--panel:#fff;--subtle:#f6f8fa;--ink:#19384d;
+ --muted:#70828f;--line:#dfe7ee;--accent:#1d7550;--accent-soft:#e9f3ed;
+ --positive:#25835d;--on-accent:#fff;--chart:#244f6d;--chartfill:#244f6d0d;
+ --radius:9px;--shadow:0 4px 18px #18344506;--header:74px;
+}
+body[data-design=fusion] .topbar{padding-inline:28px;border-top:3px solid #1f4965;gap:18px}
+.hybrid-brand{width:112px;height:39px;object-fit:contain}
+.hybrid-brand-divider{width:1px;height:29px;background:var(--line);margin-inline:5px}
+body[data-design=fusion] .brand strong{font-size:11px;letter-spacing:.5px}
+body[data-design=fusion] .brand small{font-size:9px}
+body[data-design=fusion] .platform-logo{width:133px}
+body[data-design=fusion] .header-search{max-width:300px}
+body[data-design=fusion] .breadcrumb{background:#fff;border-bottom:1px solid var(--line);font-size:10px}
+body[data-design=fusion] .view{padding:27px 30px 70px}
+body[data-design=fusion] .page-heading h1{font-size:28px;color:#193c56;font-weight:650;letter-spacing:-.65px}
+body[data-design=fusion] .page-heading p{font-size:12px;line-height:1.5}
+body[data-design=fusion] .eyebrow{color:#6c8595}
+body[data-design=fusion] .btn{border-radius:6px;min-height:36px;font-size:12px}
+body[data-design=fusion] .btn.primary{box-shadow:0 3px 8px #1d755015}
+body[data-design=fusion] .btn.primary:hover{background:#186442}
+body[data-design=fusion] .btn.small{min-height:29px;font-size:10px}
+body[data-design=fusion] .input{border-radius:6px;font-size:12px}
+body[data-design=fusion] .metric{border:1px solid var(--line);box-shadow:var(--shadow);position:relative;min-height:120px}
+body[data-design=fusion] .metric:before{content:'';position:absolute;top:19px;left:0;width:3px;height:26px;border-radius:0 3px 3px 0;background:#2e607f}
+body[data-design=fusion] .metric:nth-child(2):before,body[data-design=fusion] .metric:nth-child(4):before{background:#448967}
+body[data-design=fusion] .metric-value{color:#173c57;font-size:30px;font-weight:550}
+body[data-design=fusion] .metric-label{font-size:11px}
+body[data-design=fusion] .metric-foot{font-size:10px}
+body[data-design=fusion] .card-header h2{font-size:13px;font-weight:650}
+body[data-design=fusion] .card-header p{font-size:11px}
+body[data-design=fusion] .order-mini strong{font-size:12px}
+body[data-design=fusion] .order-mini small{font-size:10px}
+body[data-design=fusion] .welcome-strip{border-left:3px solid #1f4965;background:#ebf1f6;border-radius:0 7px 7px 0}
+body[data-design=fusion] .nav-brand{padding-bottom:21px}
+body[data-design=fusion] .nav-brand .hybrid-brand{width:96px}
+body[data-design=fusion] .nav-brand .brand strong{font-size:9px}
+body[data-design=fusion] .nav-brand .brand small{display:none}
+body[data-design=fusion] .nav-link{font-size:12px;padding:12px;border-radius:6px}
+body[data-design=fusion] .nav-link.active{background:#eaf0f5;color:#1f4965;border-left:3px solid #1f4965}
+body[data-design=fusion] .nav-link.active .icon{color:#1f4965}
+body[data-design=fusion] .nav-group summary{font-size:10px;font-weight:600}
+body[data-design=fusion] .chat-launch{background:#193e4a;color:#fff;border-color:#193e4a;border-radius:12px;box-shadow:0 5px 14px #193e4a20}
+body[data-design=fusion] .chat header{background:#193e4a;color:#fff}
+body[data-design=fusion]:has(.pos-view) .chat-launch{top:calc(var(--header) + 5px);right:25px;bottom:auto;height:26px;min-height:26px;padding:4px 10px;font-size:10px;border-radius:5px;box-shadow:none}
+body[data-design=fusion]:has(.pos-view) .breadcrumb>.hstack:last-child{visibility:hidden}
+body[data-design=fusion] #toasts{top:calc(var(--header) + 7px);right:25px;left:auto;bottom:auto;transform:none;max-width:min(340px,calc(100vw - 30px))}
+body[data-design=fusion] .toast{font-size:11px;padding:9px 14px;min-width:0}
+
+/* Billing is the first DOM region and gets 60% of the working area. */
+body[data-design=fusion] .pos-view{padding:18px 25px 17px}
+body[data-design=fusion] .pos-view .page-heading{margin-bottom:16px}
+body[data-design=fusion] .pos-view .page-heading h1{font-size:26px}
+body[data-design=fusion] .pos-layout{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px}
+body[data-design=fusion] .pos-layout>.ticket{grid-column:1;grid-row:1;border-top:3px solid #234e6b;box-shadow:0 5px 20px #173c5705}
+body[data-design=fusion] .pos-products{grid-column:2;grid-row:1;border:1px solid var(--line);background:#fff;border-radius:9px;padding:18px;overflow:hidden}
+body[data-design=fusion] .ticket-head{background:#f9fbfd;padding:15px 20px;border-bottom:1px solid var(--line)}
+body[data-design=fusion] .ticket-head h2{font-size:17px;font-weight:650;color:#1b415c}
+body[data-design=fusion] .ticket-head small{font-size:10px}
+body[data-design=fusion] .ticket-customer{padding:13px 20px}
+body[data-design=fusion] .ticket-customer .input{background:#fff;min-height:37px}
+.invoice-columns{display:grid;grid-template-columns:minmax(100px,1fr) 98px 75px 110px;gap:12px;padding:11px 20px;background:#f0f4f7;border-block:1px solid var(--line);font-size:10px;font-weight:600;color:#587387;flex:none}
+.invoice-columns span:not(:first-child){text-align:right}
+.invoice-columns span:nth-child(2){text-align:center}
+body[data-design=fusion] .ticket-lines{padding:0 20px;min-height:0}
+body[data-design=fusion] .invoice-row{display:grid;grid-template-columns:minmax(100px,1fr) 98px 75px 110px;align-items:center;gap:12px;padding:16px 0}
+.invoice-product{display:flex;align-items:center;gap:10px;min-width:0}
+.invoice-row-number{font-size:10px;color:#93a2ad;flex:none}
+body[data-design=fusion] .invoice-product b{font-size:12px;font-weight:550;line-height:1.4}
+body[data-design=fusion] .invoice-product small{font-size:10px;margin-top:4px;color:#81909d}
+body[data-design=fusion] .invoice-row .quantity{margin:0;display:flex;gap:0;align-items:center;justify-content:center}
+body[data-design=fusion] .invoice-row .quantity button{width:25px;height:28px;background:#f3f6f8;border:1px solid var(--line);border-radius:4px;font-size:13px;flex:none}
+body[data-design=fusion] .invoice-row .quantity input{width:46px;height:28px;font-size:11px}
+.invoice-unit{font-size:11px;text-align:right;color:#728491;white-space:nowrap}
+body[data-design=fusion] .invoice-row .line-amount{font-size:12px;font-weight:600;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:6px;white-space:nowrap}
+body[data-design=fusion] .invoice-row .line-amount button{width:24px;height:27px;min-height:0;padding:3px;border:0;background:transparent;color:#8b9ca8;flex:none}
+body[data-design=fusion] .ticket-summary{padding:13px 20px 9px;background:#fbfcfd;border-top:1px solid var(--line)}
+body[data-design=fusion] .ticket-summary .summary-row{font-size:11px}
+body[data-design=fusion] .ticket-summary .total{border-top:1px solid var(--line);margin-top:8px;padding-top:12px;font-size:13px}
+body[data-design=fusion] .ticket-summary .total strong{font-size:29px;font-weight:600;color:#173c57}
+body[data-design=fusion] .ticket-actions{padding:12px 20px 16px;background:#fbfcfd}
+body[data-design=fusion] .ticket-actions>.btn.primary{font-size:14px;min-height:43px}
+.quick-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px;flex:none}
+.quick-heading .eyebrow{font-size:8px;letter-spacing:1.7px;margin:0 0 5px}
+.quick-heading h2{font-size:17px;margin:0;font-weight:600;color:#1b415c}
+body[data-design=fusion] .pos-products .filter-bar{padding:0;border:0;margin:0 0 13px;gap:0}
+body[data-design=fusion] .pos-products .filter-bar .input{width:100%;min-width:0;background:#f9fbfc}
+.quick-categories{display:flex;gap:6px;overflow:auto;padding-bottom:12px;margin-bottom:4px;flex:none;scrollbar-width:thin}
+.quick-categories .chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-size:10px;min-width:66px;min-height:62px;padding:8px 10px;border-radius:7px}
+.quick-categories .icon{width:16px;height:16px;color:#728c9e}
+.quick-categories .chip.active{background:#edf3f8;border-color:#91afc5;color:#1f4965}
+.quick-categories .chip.active .icon{color:#1f4965}
+body[data-design=fusion] .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;flex:1;align-content:start;padding:1px 1px 5px}
+body[data-design=fusion] .pos-product{padding:12px;min-height:149px;border-radius:7px;background:#fff}
+body[data-design=fusion] .pos-product img{height:66px;width:80%;margin-bottom:8px}
+body[data-design=fusion] .pos-product strong{font-size:11px}
+body[data-design=fusion] .pos-product small{font-size:9px}
+body[data-design=fusion] .pos-product .product-bottom{font-size:12px;color:#1f4965;font-weight:600}
+body[data-design=fusion] .product-plus{background:#edf5f0;color:#21714d;border-color:#d8e8df}
+body[data-design=fusion] .pagination{font-size:10px;padding-top:12px;gap:6px;flex:none}
+
+/* The familiar visual floor plan remains a first-class screen. */
+body[data-design=fusion] .tables-layout{grid-template-columns:minmax(0,1fr) 280px;gap:20px;align-items:start}
+.floor-card{overflow:hidden}
+.floor-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line);background:#fff}
+.floor-legend{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:#70838f}
+.floor-legend i{width:7px;height:7px;border-radius:50%;background:#779b79}
+.floor-legend.busy i{background:#427dac}
+.floor-viewport{width:100%;height:min(39vw,calc(100dvh - 375px));min-height:230px;overflow:auto;background:#fafbf9;scrollbar-width:thin}
+.hybrid-floor{display:block;min-width:100%;min-height:100%;max-width:none}
+.floor-table{cursor:pointer;outline:none}
+.floor-selection{fill:transparent;stroke:transparent;stroke-width:1.5;transition:stroke .15s,fill .15s}
+.floor-table:hover .floor-selection,.floor-table:focus .floor-selection{fill:#173c5705;stroke:#91b0c3;stroke-dasharray:4 3}
+.floor-table.selected .floor-selection{fill:#173c5705;stroke:#6b94ad;stroke-dasharray:4 3}
+.floor-hint{display:flex;align-items:center;gap:7px;padding:13px 18px;font-size:10px;color:#7d8f9a;border-top:1px solid var(--line)}
+.floor-hint .icon{width:14px;height:14px}
+.floor-hint .btn{margin-left:auto}
+body[data-design=fusion] .detail-panel{border-top:3px solid #234e6b;border-radius:9px}
+body[data-design=fusion] .detail-panel h2{font-size:24px;color:#173c57;font-weight:600}
+body[data-design=fusion] .table-detail-actions .btn.primary{font-size:12px}
+
+@media(min-width:651px) and (max-width:1100px){
+ body[data-design=fusion] .header-search{display:none}
+ body[data-design=fusion] .topbar{gap:12px;padding-inline:20px}
+ body[data-design=fusion] .invoice-row,.invoice-columns{grid-template-columns:minmax(85px,1fr) 90px 94px;gap:8px}
+ .invoice-unit,.invoice-columns>span:nth-child(3){display:none}
+ body[data-design=fusion] .pos-products{padding:13px}
+ body[data-design=fusion] .pos-layout{gap:14px}
+ body[data-design=fusion] .ticket-head,body[data-design=fusion] .ticket-customer{padding-inline:15px}
+ body[data-design=fusion] .ticket-lines,.invoice-columns{padding-inline:15px}
+ body[data-design=fusion] .tables-layout{grid-template-columns:minmax(0,1fr) 230px;gap:14px}
+ .hybrid-brand{width:88px}
+}
+@media(max-width:650px){
+ body[data-design=fusion]{--header:117px}
+ body[data-design=fusion] .topbar{padding:10px 14px;gap:8px}
+ .hybrid-brand{width:84px;height:30px}
+ .hybrid-brand-divider{margin-inline:0;height:24px}
+ body[data-design=fusion] .brand{gap:7px}
+ body[data-design=fusion] .brand strong{font-size:9px;max-width:87px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ body[data-design=fusion] .brand small{font-size:7px;max-width:87px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ body[data-design=fusion] .topbar>.profile-select{max-width:65px;font-size:8px}
+ body[data-design=fusion] .topbar .avatar{width:25px;height:27px;font-size:9px}
+ body[data-design=fusion] .topbar>.icon-btn{width:29px;height:31px;flex:none}
+ body[data-design=fusion] .mode-switch button{padding:4px 6px}
+ body[data-design=fusion] .view{padding:22px 15px 65px}
+ body[data-design=fusion] .page-heading h1{font-size:25px}
+ body[data-design=fusion] .page-heading p{font-size:11px}
+ body[data-design=fusion] .metric{min-height:107px;padding:15px}
+ body[data-design=fusion] .metric-value{font-size:27px}
+ body[data-design=fusion] .metric-label{font-size:10px}
+ body[data-design=fusion] .metric-foot{font-size:8px}
+ body[data-design=fusion] .pos-view{padding:13px 12px}
+ body[data-design=fusion] .pos-view .page-heading{margin-bottom:10px;flex-wrap:nowrap;gap:6px;align-items:center}
+ body[data-design=fusion] .pos-view .page-heading h1{font-size:22px}
+ body[data-design=fusion] .pos-view .page-heading p{display:none}
+ body[data-design=fusion] .terminal-toolbar .btn{min-height:30px;font-size:10px;padding:6px}
+ body[data-design=fusion] .terminal-toolbar .icon-btn{display:none}
+ body[data-design=fusion] .pos-mobile-tabs{margin-bottom:9px}
+ body[data-design=fusion] .pos-layout{grid-template-columns:1fr;gap:0}
+ body[data-design=fusion] .pos-layout>.ticket,body[data-design=fusion] .pos-products{grid-column:1;grid-row:1}
+ body[data-design=fusion] .ticket-head{padding:10px 12px}
+ body[data-design=fusion] .ticket-head h2{font-size:15px}
+ body[data-design=fusion] .ticket-head small{font-size:9px}
+ body[data-design=fusion] .ticket-customer{padding:9px 12px}
+ body[data-design=fusion] .ticket-customer .input{min-height:32px}
+ body[data-design=fusion] .ticket-lines{padding-inline:12px}
+ body[data-design=fusion] .invoice-row,.invoice-columns{grid-template-columns:minmax(80px,1fr) 91px 87px;gap:5px}
+ .invoice-columns{padding:9px 12px;font-size:9px}
+ .invoice-unit,.invoice-columns>span:nth-child(3){display:none}
+ body[data-design=fusion] .invoice-row{padding:12px 0}
+ body[data-design=fusion] .invoice-product b{font-size:11px}
+ .invoice-product{gap:5px}
+ .invoice-row-number{display:none}
+ body[data-design=fusion] .invoice-product small{font-size:9px}
+ body[data-design=fusion] .invoice-row .quantity input{width:39px;font-size:10px}
+ body[data-design=fusion] .invoice-row .line-amount{font-size:11px;gap:2px}
+ body[data-design=fusion] .invoice-row .line-amount button{width:20px}
+ body[data-design=fusion] .ticket-summary{padding:9px 12px 5px}
+ body[data-design=fusion] .ticket-summary .summary-row{font-size:10px;padding:4px 0}
+ body[data-design=fusion] .ticket-summary .total{padding-top:8px;margin-top:4px}
+ body[data-design=fusion] .ticket-summary .total strong{font-size:24px}
+ body[data-design=fusion] .ticket-actions{padding:8px 12px 10px}
+ body[data-design=fusion] .ticket-actions>.btn.primary{min-height:36px;font-size:12px}
+ body[data-design=fusion] .ticket-actions .hstack .btn{min-height:29px;font-size:10px;padding:5px}
+ body[data-design=fusion] .pos-products{padding:12px}
+ .quick-heading{margin-bottom:10px}
+ .quick-heading h2{font-size:15px}
+ .quick-categories{padding-bottom:9px}
+ .quick-categories .chip{min-height:52px;min-width:59px;font-size:9px;gap:5px}
+ body[data-design=fusion] .pos-product{min-height:135px;padding:10px}
+ body[data-design=fusion] .pos-product img{height:55px}
+ body[data-design=fusion] .tables-layout{grid-template-columns:1fr;gap:15px}
+ .floor-toolbar{padding:10px 12px;gap:5px}
+ .floor-viewport{height:auto;aspect-ratio:1000/570;min-height:0}
+ .floor-toolbar .hstack{gap:6px}
+ .floor-legend{font-size:9px;gap:4px}
+ .floor-hint{padding:10px 12px;font-size:9px;gap:4px}
+ .floor-hint>.icon{display:none}
+ .floor-hint .btn{font-size:9px!important}
+ body[data-design=fusion] .detail-panel header{padding:15px}
+ body[data-design=fusion] .detail-panel h2{font-size:22px}
+}
+@media(max-height:600px) and (min-width:651px){
+ body[data-design=fusion] .pos-view .page-heading{display:none}
+ body[data-design=fusion] .ticket-head{display:none}
+ body[data-design=fusion] .ticket-customer{padding:6px 13px}
+ body[data-design=fusion] .ticket-customer .input{padding:5px 10px;min-height:28px}
+ .invoice-columns{padding-block:6px}
+ body[data-design=fusion] .ticket-summary{padding-block:6px}
+ body[data-design=fusion] .ticket-summary .summary-row:not(.total){display:none}
+ body[data-design=fusion] .ticket-summary .total{padding:0;margin:0;border:0}
+ body[data-design=fusion] .ticket-summary .total strong{font-size:25px}
+ body[data-design=fusion] .ticket-actions{display:block;padding-block:6px}
+ body[data-design=fusion] .ticket-actions>.btn.primary{min-height:34px;height:34px}
+ body[data-design=fusion] .ticket-actions>.hstack{display:none}
+ body[data-design=fusion] .quick-heading{margin-bottom:8px}
+ .quick-categories .chip{min-height:45px;gap:3px}
+ .quick-categories{padding-bottom:6px}
+}
