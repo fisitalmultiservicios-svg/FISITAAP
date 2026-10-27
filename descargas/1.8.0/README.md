@@ -1,21 +1,20 @@
-# FISITAAP web 1.8.0-R13 · Windows 1.8.1
+# FISITAAP web 1.8.0-R14 · Windows 1.8.1
 
-R13 limpia la navegación del catálogo, unifica el menú interno de Mesas/Venta rápida con el panel y limita FISIChat a su perfil de tienda, negocio, maestro o asesor oficial. Mantiene el menú anterior de la web principal de FISITAAP. Los paneles y catálogos mantienen sus menús desplegables. Conserva las mejoras de R11: un slider de tres imágenes con tiempo configurable, reglas de unidad/granel, menús desplegables y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp sin un diálogo del PIN. Los clientes nuevos reciben acceso por teléfono; Mis pedidos muestra PIN y trazabilidad. Conserva Excel, grupos de opcionales, imágenes optimizadas y alta de negocios con la versión actual.
+R14 aplica al sistema real la mezcla aprobada de Línea y la identidad de FISITAAP. Renueva paneles, catálogo, acceso, cuenta de comprador y portal del motorizado. En Venta rápida la factura ocupa la izquierda con el 60 % del ancho y la carga rápida la derecha con el 40 %. En celular se alternan Facturación y Productos; en tableta la distribución se adapta al ancho disponible. Conserva el plano real de mesas, sus objetos y los procesos de venta. La web oficial de presentación mantiene su diseño y navegación.
 
-- [Descargar ZIP cPanel R13](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R13.zip)
-- [Machote Excel R11](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-Machote-Productos-R11.xlsx)
+- [Descargar actualización cPanel R14](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R14.zip)
 - [Guía de instalación y uso](GUIA-CPANEL-1.8.0.md)
-- [Revisión de solicitudes y evidencia QA](INFORME-QA-1.8.0.md)
+- [Ver capturas de celular y tableta](VISTAS-R14.md)
+- [Pruebas y alcance](INFORME-QA-1.8.0.md)
 - [Comprobación SHA256](SHA256SUMS-1.8.0.txt)
-- [Windows 1.8.1 existente](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.1-Windows-x64.exe)
-- [Android 1.8.0 existente](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/main/descargas/1.8.0/FISITAAP-Android-1.8.0.apk)
+- [Machote Excel existente](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-Machote-Productos-R11.xlsx)
 
-Guarda respaldo de archivos y BD. Extrae el ZIP en **/home/fisitaap/public_html** y abre **https://fisitaap.com/actualizador-180/index.php** como maestro. La actualización conserva config.php, imágenes, ventas, turnos y activaciones. Añade una columna de acceso a clientes; no importa otra base SQL. Los negocios nuevos siguen iniciando actualizados; los anteriores pendientes deciden cuándo activar.
+Guarda respaldo de archivos y base de datos. Extrae el ZIP en **/home/fisitaap/public_html** y, con tu sesión maestra, abre **https://fisitaap.com/actualizador-180/index.php**. Marca el respaldo guardado y pulsa **Instalar archivos**. La extracción por sí sola no cambia la versión activa. Conserva **releases/1.8.0-r14**; no borres releases anteriores mientras tengas que conservar sus respaldos.
 
-R13 actualiza la web. Si ya usas Windows 1.8.1, sincroniza su catálogo con internet para adoptar las reglas de cantidades antes de vender sin red; no necesitas reinstalarlo. Los binarios Windows/Android no cambiaron. No borres ventas locales pendientes.
+La actualización conserva config.php, uploads, datos, turnos, permisos, activaciones y la conexión de IA. No importa SQL ni requiere reinstalar Windows 1.8.1 o Android 1.8.0. El nuevo diseño corresponde a la web; la caja local de Windows sin internet conserva la interfaz de su instalador. Los negocios que ya usan 1.8.0 reciben el diseño al instalar los archivos; los negocios antiguos todavía pendientes conservan su estado de activación.
 
-Para los compradores nuevos el usuario y la contraseña inicial son el teléfono. La clave es fácil de conocer: se ofrece Cambiar mi contraseña. Las cuentas existentes conservan su clave; conocer su teléfono no la restablece ni inicia esa cuenta al crear otro pedido. El comprador confirma el envío dentro de WhatsApp; la web abre el mensaje preparado y guarda previamente la solicitud.
+El ZIP incluye 133 archivos funcionales, con permisos 644/755 y sin configuración privada, datos de negocios, contraseñas ni claves. El ZIP sin sufijo también corresponde a R14. Los ZIP R1…R13 permanecen como historial.
 
-El ZIP contiene131 archivos funcionales en **releases/1.8.0-r13**, con permisos644/755 y sin configuración privada, datos, claves ni imágenes de negocios. Conserva esa carpeta. Después de completar las pruebas y descargar su respaldo, puedes retirar actualizador-180. El ZIP sin sufijo también contieneR13. Los ZIP R1…R12 permanecen históricos.
+Se mantienen los grupos de opcionales, importación Excel, slider configurable, reglas de cantidades, flujo de pedidos/entregas, navegación agrupada y perfiles de FISIChat de las revisiones anteriores. Las operaciones monetarias siguen requiriendo una caja y equipo autorizados; el cambio visual no modifica estos permisos.
 
-Pruebas con PHP/MariaDB/Chromium y datos ficticios; WhatsApp y ubicación fueron simulados y no se enviaron mensajes. El informe diferencia pruebas actuales de las históricas y de las verificaciones físicas pendientes. Publicar estos archivos no instala nada automáticamente en tu hosting.
+Las pruebas se ejecutan en PHP/MariaDB/Chromium con datos ficticios y tamaños de computadora, celular y tableta. No sustituyen las verificaciones en dispositivos físicos ni conectan impresoras, WhatsApp o pagos reales. La publicación en el repositorio entrega los archivos; **no instala automáticamente la actualización en el hosting**.

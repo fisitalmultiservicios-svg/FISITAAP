@@ -1,3 +1,35 @@
+# Informe QA · FISITAAP web 1.8.0-R14
+
+Fecha: 27 de octubre de 2026. Integración del diseño aprobado **Línea + FISITAAP** en la aplicación PHP real. Windows 1.8.1 y Android 1.8.0 conservan sus instaladores.
+
+| Solicitud | Implementación y resultado |
+|---|---|
+| Aplicar la mezcla aprobada | Tema compartido para administración, maestro, acceso, cuenta del comprador, motorizado y páginas de negocios. Tarjetas blancas, bordes suaves, tipografía legible, azul profundo y verde; cada catálogo conserva sus colores guardados. |
+| Facturación a la izquierda y más grande | Factura y cobro dentro de la columna izquierda del 60 %; carga rápida a la derecha del 40 %. Incluye la pantalla inicial, que conserva la apertura de cuenta únicamente al agregar el primer producto. |
+| Celular y tableta | Distribución nativa que reemplaza el encogimiento de una pantalla de escritorio. Hasta 650 px se alternan Facturación/Productos; arriba se conservan las dos columnas. Precios, cantidades, aviso de pedidos y botón de cobro se comprueban dentro de sus áreas visibles. Formularios y ventanas limitados al ancho y alto disponibles. |
+| Mesas gráficas | Conserva las coordenadas, sillas, formas, sectores y objetos reales. Ajuste/zoom del plano, vista básica, selección táctil y con teclado. La accesibilidad de las mesas se repone después de la actualización automática del estado. |
+| Conservar procesos | Se mantienen autenticación, permisos, cajas autorizadas, turnos, cálculos, aceptación de pedidos, impresión y conexión de IA. El código de descuento se abre en una ventana desde la factura. |
+| Conservar la presentación oficial | La portada oficial no carga los archivos R14; su captura coincide exactamente con la referencia R13 del fixture. Su navegación anterior permanece. |
+
+## Evidencia actual
+
+- **QA-INTERFAZ-R14.json:** 178 combinaciones de ruta y pantalla, con anchos de 320, 360, 390, 600, 768, 820, 844, 1024 y 1366 px y orientaciones vertical/horizontal, incluyendo ventanas móviles de alto reducido (520 px). Venta móvil inicial y repetida, autorización nativa con dispositivo ficticio mediante el protocolo real, apertura de turno, cobro real de prueba e inventario; proporción y ubicación de la factura, precios sin desplazamiento horizontal, total/cobro visibles, diálogos, mesas/zoom/teclado, negocio, maestro, comprador y motorizado. Cero errores de JavaScript en esos recorridos. Revisión adicional del recibo en modo impresión: papel blanco, tipografía monoespaciada y contenido visible, sin llamadas a impresoras. El color primario del catálogo coincide con su configuración guardada.
+- **QA-NAVEGACION-R14.json:** 16 combinaciones adicionales de rol/ruta/pantalla; dueño y vendedor conservan los enlaces y permisos del menú agrupado en Mesas/Venta rápida/Cobro. Se comprueban apertura/cierre, Escape, manual, salida, navegación de compra, acceso del comprador y menú de la presentación oficial.
+- **QA-ACTUALIZADOR-R14.json:** instalación del paquete sobre el ZIP R13 publicado en una segunda base de datos ficticia, con negocio actualizado/pendiente y un turno abierto. Conserva datos, contraseñas, configuración, imágenes, activaciones, código anterior y turno; comprueba maestro/CSRF, rechazo de cambios de código desconocidos, 133 archivos, permisos de extracción 644/755 y repetición idempotente.
+- **QA-SINTAXIS-R14.json:** 79 PHP funcionales, 83 PHP del ZIP completo y 11 JavaScript comprobados. Integridad de 133 archivos, guía incluida idéntica a la fuente y permisos explícitos 644/755.
+
+El instalador usa **releases/1.8.0-r14** y conserva las versiones anteriores. No añade tablas ni cambia las reglas comerciales respecto de R13; reutiliza la preparación idempotente de la instalación acumulativa. Los ZIP anteriores permanecen históricos.
+
+## Alcance y comprobación final en el hosting
+
+Pruebas en PHP/MariaDB/Chromium con datos ficticios. Los tamaños móviles y de tableta son viewports de navegador; quedan para comprobación física Safari/iPhone, Android/tabletas y Windows instalado. No se enviaron mensajes de WhatsApp, pagos externos ni trabajos a impresoras reales. La caja local de Windows sin internet conserva su interfaz existente. Los perfiles de FISIChat permanecen en el código de R13; no se repitieron sus pruebas de proveedor porque su lógica no cambió.
+
+El diseño está integrado en los archivos y el actualizador. Publicar el ZIP en el repositorio no lo ejecuta en fisitaap.com; la instalación del hosting requiere extraerlo en public_html y ejecutar el actualizador como maestro. Esta entrega no dispone de una conexión directa al cPanel.
+
+Las siguientes secciones conservan evidencia histórica de las revisiones anteriores.
+
+---
+
 # Informe QA · FISITAAP web 1.8.0-R13
 
 Fecha: 24 de octubre de 2026. Correcciones del catálogo, navegación interna y especialización de FISIChat. Se conservan los instaladores Windows 1.8.1/Android 1.8.0 y el machote Excel R11.

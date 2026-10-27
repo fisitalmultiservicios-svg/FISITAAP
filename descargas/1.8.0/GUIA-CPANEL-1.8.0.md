@@ -1,10 +1,27 @@
-# Instalar FISITAAP 1.8.0-R13 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R14 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
 R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enteras por unidad y fracciones a granel, menús desplegables de paneles y tiendas en todos los tamaños y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp antes de consultar el PIN. Agrega acceso de clientes por teléfono y mantiene las mejoras de imágenes, Excel, opcionales y alta de negocios de R10.
 
 Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
+
+## Diseño R14: Línea con la identidad de FISITAAP
+
+R14 aplica el diseño aprobado al sistema real: panel del negocio, maestro, catálogo de cada tienda, cuenta del comprador, acceso y portal del motorizado. Combina tarjetas blancas, bordes suaves y espacios de Línea con los azules y verdes de FISITAAP. El catálogo conserva el color primario elegido por cada negocio. **La web oficial de presentación de FISITAAP conserva su diseño y navegación.**
+
+- **Venta rápida:** la factura está a la izquierda con el 60 % del ancho; categorías y productos de carga rápida están a la derecha con el 40 %. La pantalla inicial sin productos sigue sin crear una cuenta hasta agregar el primero.
+- **Celular:** usa las pestañas **Facturación** y **Productos**. Los productos y líneas se desplazan dentro de su área, manteniendo el total y el cobro a mano. El sistema deja de encoger una pantalla de computadora completa para mostrarla en el teléfono. Con poco alto disponible se compactan los controles secundarios y se conservan el importe y el cobro.
+- **Tableta:** mantiene las dos columnas cuando hay espacio; debajo de 651 px usa las pestañas. Los formularios y ventanas se adaptan al ancho, con desplazamiento interno cuando hace falta.
+- **Mesas:** conserva el plano gráfico real, sus mesas, sillas, sectores y objetos guardados. La selección, cuentas, cobros, configuración y vista básica siguen funcionando. Ajustar y +/− controlan el plano; también puedes seleccionarlo con Tab y Enter.
+- **Código de descuento:** está en el botón de acciones de la factura y abre una ventana; ya no queda debajo de la zona visible.
+- **Zoom:** en la factura, +/− cambian el tamaño del texto; Ajustar vuelve a 100 %. En el plano, controlan su acercamiento. El zoom propio del navegador permanece disponible.
+
+Se instala con el mismo actualizador, sobre R13 o versiones anteriores compatibles. Conserva config.php, uploads, negocios, usuarios, ventas, turnos, permisos y la conexión de IA. No requiere SQL ni reinstalar Windows 1.8.1 o Android 1.8.0. La apariencia cambia en la aplicación web; la caja local sin internet de Windows conserva la interfaz incluida en su instalador.
+
+Para instalar: descarga **FISITAAP-1.8.0-CPANEL-R14.zip**, extrae en **/home/fisitaap/public_html** y, como maestro, abre **https://fisitaap.com/actualizador-180/index.php**. Marca el respaldo guardado y pulsa **Instalar archivos**. Conserva **releases/1.8.0-r14**. La extracción del ZIP por sí sola no instala el diseño.
+
+Después revisa en celular y tableta: abrir/cerrar menú, agregar dos productos, cambiar entre Facturación/Productos, abrir el cobro, seleccionar una mesa en el plano y abrir el carrito del catálogo. Las pruebas automatizadas usan tamaños de pantalla en Chromium; también conviene comprobar el navegador de tus dispositivos físicos.
 
 ## Corrección R13: catálogo, menú interno y perfiles de FISIChat
 
@@ -195,7 +212,7 @@ La corrección actualiza inmediatamente los usuarios aprobados al autorizar la s
 13. Si aparece **distinto**, se detectó un archivo modificado fuera de los paquetes conocidos. Guarda el respaldo y los nombres que señala; no fuerces la copia. Si falla la preparación de la base, conserva los archivos instalados y el respaldo, revisa el registro con soporte y repite después de corregir la causa. Repetir una instalación correcta no duplica datos ni activa negocios pendientes.
 14. En el panel maestro, **Administración → Actualizar sistema**, puedes ver los negocios actualizados y pendientes. También abre **https://fisitaap.com/master/actualizar-sistema**. **Comprobar publicación** revisa la preparación; no activa clientes. Para ayudar a uno, selecciona únicamente ese negocio y confirma su preparación.
 
-La aplicación nueva se instala en **public_html/releases/1.8.0-r13**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
+La aplicación nueva se instala en **public_html/releases/1.8.0-r14**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
 
 Si el negocio ya tenía 1.8.0 activada antes de R11, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
 
@@ -229,7 +246,7 @@ El botón prepara y activa el negocio en la web. Los instaladores de Windows/And
 32. Confirma que una caja secundaria necesita conexión y que compras, cuentas, mesas, reportes y permisos funcionan según lo que use el negocio.
 33. Si un navegador conserva un diseño anterior, recarga con **Ctrl+F5**. Los archivos nuevos se sirven desde una carpeta de versión propia.
 34. Descarga y conserva **actualizador-180/backups** fuera del sitio. Cuando lo hayas comprobado, elimina **solo** el ZIP subido, la carpeta **actualizador-180**, **volver-acceso-180.php** y **diagnostico-bienvenida-180.php**. Los dueños podrán seguir actualizando después desde Administración.
-35. **No borres releases ni releases/1.8.0-r13**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
+35. **No borres releases ni releases/1.8.0-r14**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
 
 ## F. Comprobar FISIChat
 

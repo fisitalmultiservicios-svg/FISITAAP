@@ -10,6 +10,8 @@
   document.querySelectorAll('[data-mobile-menu] [data-open-cart]').forEach(button=>button.addEventListener('click',closePublicMenu));
   const mode=document.querySelector('[data-quantity-mode]');
   if(mode){if(mode.form.elements.decimals)mode.form.elements.decimals.max='3';const update=()=>{const form=mode.form,unit=mode.value==='unit';for(const name of ['min_qty','qty_step','decimals']){const el=form.elements[name];if(!el)continue;el.readOnly=unit;el.value=unit?(name==='decimals'?'0':'1'):(name==='decimals'?'3':'.001');}const label=form.elements.unit_label;if(unit)label.value='unidad';else label.value='kg';};mode.addEventListener('change',update);mode.form.elements.decimals?.addEventListener('change',()=>{if(mode.value==='unit')return;const quantum=10**(-Math.min(3,Math.max(1,Number(mode.form.elements.decimals.value)||3)));for(const key of ['min_qty','qty_step'])if(Number(mode.form.elements[key].value)<quantum)mode.form.elements[key].value=String(quantum);});if(mode.value==='unit')for(const name of ['min_qty','qty_step','decimals'])if(mode.form.elements[name])mode.form.elements[name].readOnly=true;}
+  // R14 uses native responsive panels instead of shrinking a desktop canvas.
+  if(document.body.matches('.r14-app'))return;
   const terminal=document.querySelector('.r3-terminal'),main=terminal?.querySelector('.r3-main');
   if(!terminal||!main||!/^\/admin\/(ventas|mesas)(?:\/|$)/.test(location.pathname)||document.querySelector('[data-r3-collect]'))return;
   terminal.classList.add('r11-fit-terminal');const content=document.createElement('div');content.className='r11-fit-content';
