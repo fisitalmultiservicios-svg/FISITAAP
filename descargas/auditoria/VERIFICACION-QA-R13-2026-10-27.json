@@ -1,0 +1,29 @@
+{
+  "artifact": "FISITAAP-CODIGO-COMPLETO-QA-R13-2026-10-27.zip",
+  "source_commit": "29d5a9e11ee67239b37617096f23fd94b7f98eca",
+  "zip_sha256": "e7623f042dbc908590cea65e4af855d526531a5028f84530473602a719d88b6e",
+  "zip_bytes": 3959874,
+  "files": 443,
+  "source_files": 435,
+  "counts": {
+    "web": 137,
+    "windows": 32,
+    "android": 35,
+    "qa": 120
+  },
+  "zip_integrity": true,
+  "source_blob_hashes_verified": true,
+  "r13_payload_matches": true,
+  "secret_shape_and_exclusion_checks": true,
+  "sql_is_ddl_only": true,
+  "schema_import_verified": {
+    "schema": "esquema-r13-sin-datos.sql",
+    "sha256": "8be6560fb9d4e52ef62992f7dad579df05741b8eb799bf86eab2ca710e910044",
+    "imported_without_extra_sql": true,
+    "tables": 102,
+    "rows": 0,
+    "foreign_keys": 136,
+    "source": "fictional R13 QA schema; no production connection",
+    "validation": "Imported exact file in new disposable MariaDB database and removed that database afterward"
+  }
+}
