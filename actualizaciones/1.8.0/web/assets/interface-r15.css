@@ -447,3 +447,20 @@ body.r15-app .r15-driver-page{width:100%}
 body.r15-app .r15-floor-actions{position:relative;z-index:20}
 body.r15-app .r15-floor-actions>.r3-pos-nav{position:absolute;top:calc(100% + 8px);right:0;display:grid;gap:7px;padding:12px;width:min(300px,calc(100vw - 30px));border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 10px 30px #173c5718;margin:0;max-height:55dvh;overflow:auto}
 body.r15-app .r15-floor-actions>.r3-pos-nav>a{margin:0;width:100%;font-size:11px;justify-content:flex-start;white-space:normal}
+/* R16: slightly smaller online product cards; retain two touch-friendly columns on phones. */
+.r15-store [data-catalog-products]{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:14px}
+.r15-store .product-img{height:155px}
+.r15-store .product-info{padding:13px}
+.r15-store .product-info h3{font-size:13px;line-height:1.35}
+.r15-store .product-price{font-size:15px;margin:9px 0}
+.r15-store .product-info>p{margin-block:6px}
+@media(max-width:1200px){.r15-store [data-catalog-products]{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+@media(max-width:950px){.r15-store [data-catalog-products]{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:650px){
+ .r15-store [data-catalog-products]{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px}
+ .r15-store .product-img{height:120px}
+ .r15-store .product-info{padding:10px}
+ .r15-store .product-info h3{font-size:12px}
+ .r15-store .product-price{font-size:14px}
+ .r15-store .qty-row .btn,.r15-store .qty-row input{min-height:36px}
+}

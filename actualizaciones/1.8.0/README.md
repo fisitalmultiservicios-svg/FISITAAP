@@ -1,18 +1,20 @@
-# FISITAAP web 1.8.0-R15 · Windows 1.8.1
+# FISITAAP web 1.8.0-R16 · Windows 1.8.1
 
-R15 corrige la diferencia entre R14 y el HTML aprobado **Línea + FISITAAP**. Reutiliza los estilos de esa propuesta y cambia la estructura PHP: cabecera, resumen con gráfico/pedidos, factura amplia a la izquierda y mesas con detalle lateral. Los datos, controles, permisos y procesos pertenecen a la aplicación real.
+R16 conecta el FISIChat del dueño a consultas y cambios reales de su propia tienda, añade tickets de soporte desde el chat de la web oficial y reduce un poco las tarjetas del catálogo online.
 
-- [Descargar actualización cPanel R15](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R15.zip)
-- [Comparar el HTML con las pantallas reales](https://github.com/fisitalmultiservicios-svg/FISITAAP/blob/main/descargas/1.8.0/VISTAS-R15.md)
-- [Guía de instalación](GUIA-CPANEL.md)
+- [Descargar actualización cPanel R16](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R16.zip)
+- [Guía de instalación y uso](GUIA-CPANEL.md)
+- [Capturas de la actualización](https://github.com/fisitalmultiservicios-svg/FISITAAP/blob/main/descargas/1.8.0/VISTAS-R16.md)
 - [Pruebas y alcance](INFORME-QA.md)
 
-Guarda respaldo de archivos y base de datos. Extrae el ZIP en **/home/fisitaap/public_html** y, como maestro, abre **https://fisitaap.com/actualizador-180/index.php**. Pulsa **Instalar archivos** tras confirmar tu respaldo. Extraer el ZIP solamente no cambia la versión activa. Conserva **releases/1.8.0-r15** y las versiones anteriores.
+El dueño puede pedir ideas, análisis y propuestas de productos, categorías, clientes, cupones, zonas, proveedores, grupos de opcionales y textos/contacto de su web. **Confirmar cambio** guarda los valores revisados; nunca una decisión del modelo. Se validan la tienda, sucursal, permisos, módulos y vigencia. Repetir una confirmación no duplica el cambio y los registros editados desde otra pantalla necesitan una revisión nueva. Se conserva la conexión de IA existente. Crear producto tiene también un formulario dentro del chat.
 
-La web oficial de presentación permanece igual. Las tiendas conservan sus colores, imágenes y plano real. En celular se alternan Facturación/Productos con el total y cobro visibles; en tablet se aprovechan las dos columnas. Resumen y Bienvenida son accesos separados, por lo que se conserva la imagen de bienvenida configurada por el maestro.
+El chat público orienta sobre FISITAAP sin herramientas de las tiendas. Cuando el problema continúa solicita contacto, tienda y detalles para crear un ticket. En el maestro se gestiona desde **Administración → Tickets de soporte**, con estados, notas y conversación. Los datos anónimos quedan identificados como declarados; una sesión dueña válida se vincula a su tienda desde el servidor. No se envían mensajes externos automáticamente.
 
-El paquete incluye 137 archivos funcionales con permisos 644/755. Conserva configuración, imágenes, usuarios, ventas, turnos, activaciones y conexión de IA; no contiene config.php, datos ni claves privadas. Los ZIP R1…R14 permanecen como historial. La versión sin sufijo también corresponde a R15.
+El catálogo muestra tarjetas más pequeñas: 5/4/3/2 columnas según el ancho, imágenes de 155/120 px y menos espacio interno, conservando carrito, opciones y colores de la tienda. Se mantiene la estructura de R15 y la web oficial de presentación.
 
-No se requiere reinstalar Windows 1.8.1 ni Android 1.8.0. El nuevo diseño corresponde a la aplicación web; la caja local de Windows sin internet mantiene la interfaz de su instalador. Las operaciones de efectivo conservan la autorización de equipo, caja y turno.
+Para instalar: guarda respaldo de archivos y base de datos, extrae el ZIP en **/home/fisitaap/public_html** y abre **https://fisitaap.com/actualizador-180/index.php** con la sesión maestra. Pulsa **Instalar archivos**. Extraer solamente no instala la actualización. Conserva **releases/1.8.0-r16** y las versiones anteriores.
 
-Las pruebas usan PHP/MariaDB/Chromium con datos ficticios. No envían WhatsApp ni pagos reales, no conectan impresoras y no sustituyen la revisión en dispositivos físicos. Publicar el ZIP en el repositorio no lo instala automáticamente en el hosting.
+El ZIP incluye 139 archivos funcionales, permisos644/755 y tres tablas nuevas preparadas por el instalador. Conserva config.php, uploads, negocios, usuarios, ventas, turnos, activaciones y conexión de IA; no incluye datos ni claves privadas. Los ZIP R1…R15 permanecen históricos. No requiere SQL manual ni reinstalar Windows1.8.1/Android1.8.0.
+
+Las pruebas usan PHP/MariaDB/Chromium con datos ficticios y un proveedor de IA simulado por TLS local. No conectan un modelo real, WhatsApp, pagos ni impresoras; los dispositivos físicos y la calidad del modelo configurado requieren revisión en tu instalación. Publicar estos archivos no ejecuta el actualizador en cPanel.

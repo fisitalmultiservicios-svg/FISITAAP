@@ -1,10 +1,53 @@
-# Instalar FISITAAP 1.8.0-R15 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R16 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
 R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enteras por unidad y fracciones a granel, menús desplegables de paneles y tiendas en todos los tamaños y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp antes de consultar el PIN. Agrega acceso de clientes por teléfono y mantiene las mejoras de imágenes, Excel, opcionales y alta de negocios de R10.
 
 Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
+
+## R16: FISIChat operativo, soporte y catálogo compacto
+
+### Asistente del dueño: solo su tienda
+
+FISIChat puede consultar información del negocio, aportar ideas y preparar cambios reales. Usa la conexión de IA existente. No cambia de tienda ni administra FISITAAP por cuenta del dueño.
+
+Ejemplos:
+
+- «Crea la categoría Bebidas frías».
+- «Crea un café latte de ₡1.800 en Bebidas, con 20 unidades iniciales».
+- «Cambia el precio de este producto a ₡2.000».
+- «Crea un cupón BIENVENIDA de 10 % hasta el 31 de diciembre».
+- «Crea el grupo Tallas con S, M y L y asígnalo a esta camiseta».
+- «Mejora el texto de bienvenida de mi web y prepáralo para guardar».
+- «Sugiere ideas para vender más con mis productos».
+
+Si faltan datos, pregunta sólo los necesarios. Para modificar algo muestra una tarjeta con el cambio, los valores anteriores/nuevos y la tienda; la existencia inicial indica su sucursal. **Confirmar cambio** guarda; **Descartar** no aplica la propuesta. También puedes escribir «confirmo» mientras esa propuesta está pendiente. Una idea o una consulta no ejecuta escrituras. La tarjeta vence a los 15 minutos. Si el registro fue cambiado desde otra pantalla, se necesita revisar una propuesta nueva. Reintentar una confirmación ya procesada no crea otro registro.
+
+Puede crear o editar productos, categorías, cupones, zonas y proveedores; registrar clientes por nombre/teléfono; crear grupos de opcionales y asignarlos; actualizar contacto, horario, colores y textos permitidos de su web. La disponibilidad depende de los módulos/permisos. Los grupos existentes se editan en Opcionales para conservar las identidades históricas de sus opciones. El chat no cobra, abre/cierra cajas, anula pedidos, cambia claves/permisos, activa planes ni modifica código. Para esas operaciones dirige a sus pantallas autorizadas.
+
+**Crear producto** ofrece además un formulario dentro del chat: nombre, categoría, precio y descripción. Sigue mostrando una revisión antes de guardar y funciona aunque la IA no responda. La conversación natural con consultas/herramientas necesita la conexión de IA. Las creaciones y ediciones quedan en la bitácora. Los accesos antiguos de chat no pueden ejecutar cambios saltándose la revisión nueva.
+
+### Web principal: soporte y tickets
+
+El FISIChat de fisitaap.com mantiene el perfil comercial/técnico de FISITAAP, sin consultar datos privados de tiendas ni tener sus herramientas de modificación. Primero orienta sobre el problema. Si el usuario dice «sigue igual», «no funcionó» o pide un ticket, solicita:
+
+- Nombre de la persona y de la tienda.
+- Enlace público de la tienda, opcional y sin parámetros de acceso.
+- Teléfono o correo para contactar.
+- Asunto, descripción del problema y lo que intentó.
+
+Al pulsar **Crear ticket** guarda el caso y devuelve una referencia **SOP-…**. Incluye los últimos mensajes pertinentes de la conversación pública. No pide contraseñas ni claves; omite patrones comunes de secretos en el caso guardado. Repetir el envío con la misma referencia no duplica el ticket. Hay límites de solicitudes para evitar envíos masivos. No se envían correos ni WhatsApp automáticamente.
+
+Entra al maestro → **Administración → Tickets de soporte**. Puedes filtrar, abrir el detalle, ver contacto/tienda/conversación, cambiar entre Nuevo/En atención/Resuelto/Cerrado y añadir notas internas con su fecha. La lista recibe las actualizaciones del sistema. El asistente del maestro también consulta el resumen de tickets pendientes.
+
+Si la solicitud proviene de una sesión dueña válida, la tienda se asocia desde su cuenta, sin aceptar otro negocio indicado en el formulario. Los datos de solicitudes anónimas se muestran como **declarados por el solicitante**, y deben verificarse antes de intervenir una cuenta.
+
+### Productos más pequeños en el catálogo
+
+Tarjetas más compactas: cinco columnas en pantallas amplias, cuatro en computadora mediana, tres en tablet y dos en celular. Las imágenes bajan a 155 px en pantallas amplias y 120 px en celular; se reducen espacios y títulos manteniendo el precio, cantidades y botones utilizables. Se conserva el color elegido por la tienda, sus fotografías, opciones y carrito. El cambio se limita al catálogo de las tiendas.
+
+R16 prepara tres tablas nuevas de propuestas/tickets al ejecutar el instalador. No requiere importar SQL, volver a configurar la IA ni reinstalar Windows 1.8.1/Android 1.8.0. Conserva los datos y el diseño integrado de R15.
 
 ## Diseño R15: estructura del HTML aprobado
 
@@ -20,7 +63,7 @@ R15 corrige la diferencia visual de R14. Integra las plantillas y los estilos de
 
 Se instala con el mismo actualizador, sobre R14 o versiones anteriores compatibles. Conserva config.php, uploads, negocios, usuarios, ventas, turnos, permisos y conexión de IA. No requiere importar SQL ni reinstalar Windows 1.8.1 o Android 1.8.0. El diseño se aplica a la aplicación web; la caja local de Windows sin internet conserva la interfaz de su instalador.
 
-Descarga **FISITAAP-1.8.0-CPANEL-R15.zip**, extrae en **/home/fisitaap/public_html** y, con tu sesión maestra, abre **https://fisitaap.com/actualizador-180/index.php**. Marca el respaldo guardado y pulsa **Instalar archivos**. Conserva **releases/1.8.0-r15** y las versiones anteriores. La extracción del ZIP por sí sola no instala el diseño. No se dispone de acceso directo al cPanel desde esta entrega.
+Descarga **FISITAAP-1.8.0-CPANEL-R15.zip**, extrae en **/home/fisitaap/public_html** y, con tu sesión maestra, abre **https://fisitaap.com/actualizador-180/index.php**. Marca el respaldo guardado y pulsa **Instalar archivos**. Conserva **releases/1.8.0-r16** y las versiones anteriores. La extracción del ZIP por sí sola no instala el diseño. No se dispone de acceso directo al cPanel desde esta entrega.
 
 Revisa las capturas de comparación en **VISTAS-R15.md**. Las pruebas automatizadas usan PHP, MariaDB y Chromium con datos ficticios y tamaños de computadora, celular y tableta; la revisión en tus dispositivos físicos sigue siendo necesaria.
 
@@ -213,7 +256,7 @@ La corrección actualiza inmediatamente los usuarios aprobados al autorizar la s
 13. Si aparece **distinto**, se detectó un archivo modificado fuera de los paquetes conocidos. Guarda el respaldo y los nombres que señala; no fuerces la copia. Si falla la preparación de la base, conserva los archivos instalados y el respaldo, revisa el registro con soporte y repite después de corregir la causa. Repetir una instalación correcta no duplica datos ni activa negocios pendientes.
 14. En el panel maestro, **Administración → Actualizar sistema**, puedes ver los negocios actualizados y pendientes. También abre **https://fisitaap.com/master/actualizar-sistema**. **Comprobar publicación** revisa la preparación; no activa clientes. Para ayudar a uno, selecciona únicamente ese negocio y confirma su preparación.
 
-La aplicación nueva se instala en **public_html/releases/1.8.0-r15**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
+La aplicación nueva se instala en **public_html/releases/1.8.0-r16**. Se cambia el archivo de entrada al terminar de copiar: los archivos app/assets anteriores se conservan para que las solicitudes que ya estaban ejecutándose puedan terminar.
 
 Si el negocio ya tenía 1.8.0 activada antes de R11, mantiene esa versión y el botón mostrará que está actualizado. No se retrocede a 1.7.9.
 
@@ -247,7 +290,7 @@ El botón prepara y activa el negocio en la web. Los instaladores de Windows/And
 32. Confirma que una caja secundaria necesita conexión y que compras, cuentas, mesas, reportes y permisos funcionan según lo que use el negocio.
 33. Si un navegador conserva un diseño anterior, recarga con **Ctrl+F5**. Los archivos nuevos se sirven desde una carpeta de versión propia.
 34. Descarga y conserva **actualizador-180/backups** fuera del sitio. Cuando lo hayas comprobado, elimina **solo** el ZIP subido, la carpeta **actualizador-180**, **volver-acceso-180.php** y **diagnostico-bienvenida-180.php**. Los dueños podrán seguir actualizando después desde Administración.
-35. **No borres releases ni releases/1.8.0-r15**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
+35. **No borres releases ni releases/1.8.0-r16**: contienen la aplicación en uso. Conserva también app, assets, config.php y uploads. No elimines archivos de una versión anterior durante esta instalación.
 
 ## F. Comprobar FISIChat
 

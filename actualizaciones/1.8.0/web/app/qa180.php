@@ -67,6 +67,7 @@ function qa180_dispatch(App $app,string $path):void {
     if($path==='logout'){
         if(!is_post())redirect(url('owner-login'));verify_csrf();$user=current_user();if($user)audit($app,$user['tenant_id']?(int)$user['tenant_id']:null,(int)$user['id'],'logout','user',(int)$user['id']);$_SESSION=[];session_regenerate_id(true);redirect(url('owner-login'));
     }
+    if($path==='master/soporte'){fc16_support_page($app,require_login(['master']));exit;}
     if($path==='master/kpis'){master_dashboard($app,require_login(['master']));exit;}
     if($path==='master/contactos'){qa180_contacts($app,require_login(['master']),null);exit;}
     if($path==='master/auditoria'){qa180_log($app,require_login(['master']),null);exit;}

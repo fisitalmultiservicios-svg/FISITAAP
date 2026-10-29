@@ -1,0 +1,1086 @@
+{
+  "revision": "1.8.0-R16",
+  "checks": [
+    "Official presentation has identical screenshot and loads no interface assets",
+    "Empty sale uses the same left invoice/right catalog without opening a fake account",
+    "Real mobile start/add/re-add persists product panel and updates the same account exactly once",
+    "Invoice name opens real options/prices/notes; typed quantity and step button submit once; customer selector keeps server validation",
+    "Cash checkout remains native-authorized; real payment, stock and receipt flow pass on phone",
+    "Business pages, saved floor SVG/objects/zoom, persistent real table detail and shared navigation pass across twelve screen sizes",
+    "Master, driver and tenant catalog/cart pass on phone and tablet; tenant primary color remains unchanged",
+    "Print media preserves receipt background/font/visibility without printer calls; catalog preserves its configured primary color"
+  ],
+  "layouts": [
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=68",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=checkout&ticket=68",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=checkout&ticket=68",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=checkout&ticket=68",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=checkout&ticket=68",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 1366,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 1024,
+      "height": 768,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 844,
+      "height": 390,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 390,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/productos",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/clientes-buscar",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/turnos",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/cobro",
+      "width": 360,
+      "height": 520,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/empresas",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/planes",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/configuracion",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/driver",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/laventanita/catalogo?sucursal=principal",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/empresas",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/planes",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/configuracion",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/driver",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/laventanita/catalogo?sucursal=principal",
+      "width": 820,
+      "height": 1180,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/empresas",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/planes",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/configuracion",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/driver",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/laventanita/catalogo?sucursal=principal",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/empresas",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/planes",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/configuracion",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/driver",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/laventanita/catalogo?sucursal=principal",
+      "width": 600,
+      "height": 960,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/empresas",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/planes",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/configuracion",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/driver",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/laventanita/catalogo?sucursal=principal",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/empresas",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/planes",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/configuracion",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/driver",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/laventanita/catalogo?sucursal=principal",
+      "width": 360,
+      "height": 740,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/empresas",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/planes",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/master/configuracion",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/driver",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/laventanita/catalogo?sucursal=principal",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    }
+  ],
+  "layout_cases": 178,
+  "page_errors": [],
+  "scope": "Real PHP/MariaDB/Chromium on guarded fictional database; no production, external messages or printer calls. Desktop and touch-sized viewports; physical iOS/Android tablet/Windows checks remain manual."
+}

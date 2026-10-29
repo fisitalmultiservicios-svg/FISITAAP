@@ -1,3 +1,33 @@
+# Informe QA · FISITAAP web 1.8.0-R16
+
+Fecha: 29 de octubre de 2026. FISIChat operativo para el dueño, soporte público con tickets en el maestro y catálogo online más compacto. Se conserva la aplicación de R15 y la conexión privada de IA existente.
+
+| Solicitud | Resultado |
+|---|---|
+| El asistente del dueño debe operar su tienda | La ventana moderna conecta con herramientas de consulta y preparación de cambios. Consulta su negocio, propone ideas y prepara categorías, productos, clientes, cupones, zonas, proveedores, grupos de opcionales y textos/contacto/colores. Muestra los valores de una propuesta y los guarda sólo tras confirmar. |
+| Mantener sus límites | Tienda/sucursal fijadas por servidor; cuenta dueña activa, permisos y módulos comprobados nuevamente al confirmar. La IA no recibe SQL ni puede autoconfirmarse. No hay herramientas de cobro, apertura/cierre de caja, anulación, claves, permisos, planes o código para el dueño. Los accesos antiguos no ejecutan escrituras saltándose la revisión. |
+| Evitar duplicados o sobrescribir cambios | Token ligado a cuenta/tienda/sucursal, vigencia15min, transacción, comparación del estado previo y bitácora. Confirmar otra vez devuelve el mismo resultado. Descartar, reiniciar la conversación o vencer la propuesta impide aplicarla. Si el registro fue editado desde otra pantalla se necesita una revisión nueva. |
+| Soporte público sin datos sensibles | El asesor de la web oficial conserva contexto público y carece de herramientas del dueño. Una consulta sin resolver ofrece recopilar datos y crear un ticket. También existe Solicitar soporte. Los casos guardan contacto, tienda, problema y últimos mensajes pertinentes, con omisión de patrones comunes de secretos. No se envían mensajes externos. |
+| Tickets en maestro | Administración → Tickets de soporte: filtros, detalle, contacto/tienda, conversación, estados y notas internas fechadas. Solicitudes anónimas quedan como declaradas; una cuenta dueña válida se asocia desde el servidor a su tienda. La lista participa en la actualización automática y el chat maestro consulta pendientes. |
+| Productos un poco más pequeños | Imágenes de155px en pantallas amplias y120px en celular, menos espaciado y 5/4/3/2 columnas según ancho. Conserva color, cantidad, opciones, carrito y acceso de clientes. |
+
+## Evidencia R16
+
+- **QA-FISICHAT-R16.json:** seis grupos HTTP con PHP/MariaDB reales. La revisión no escribe, reintento de propuesta/confirmación no duplica y audita una vez; rechazo de otras cuentas/tiendas, montos inválidos, fracciones por unidad y campos no autorizados. Creación real de producto, publicación de sucursal e inventario inicial. Precios con conflicto de edición, expiración, descarte, reinicio y revocación de cuenta. Opcionales con identidad de grupo y asignación, cupón con fecha inclusiva y textos web con valor anterior. Soporte público, idempotencia, omisión de contraseña ficticia, contacto visible sólo en maestro, estado/historial y vínculo de dueño fijado por servidor.
+- **QA-PROVEEDOR-FISICHAT-R16.json:** cinco grupos con Responses simulado por TLS verificado y clave ficticia. Una petición natural del dueño ejecuta una consulta real de categorías y obtiene una propuesta del servidor. El proveedor intentó autoconfirmar: no se escribió hasta confirmar desde el usuario. Las ideas no crean registros. Un intento de usar una herramienta antigua para abrir caja se rechaza. Se comprueban sustitución de un falso anuncio de escritura, rechazo local de cambio de instrucciones, soporte sin llamar al proveedor y chat público sin herramientas/contexto privado. La configuración original se restaura al terminar.
+- **QA-NAVEGADOR-R16.json:** cuatro recorridos completos desde la ventana real: crear producto con revisión/confirmación móvil; escalar soporte y registrar caso; abrir datos y seguimiento en maestro; conservar revisión de planes del maestro en celular. Seis tamaños de catálogo (320,390,600,768,1024,1440px) con columnas e imágenes reducidas, carrito operativo y sin desbordamiento. Sin errores JavaScript.
+- **QA-INTERFAZ-R16.json:** ocho recorridos y178 combinaciones de pantalla/ruta. Regresión de autorización nativa, turno, alta/repetición de productos, edición/cantidades/cliente, cobro e inventario, recibo, paneles, mesas, plano/zoom y menús. El sitio de presentación conserva la captura anterior fuera del chat. No se conectan impresoras físicas.
+- **QA-ACTUALIZADOR-R16.json:** paquete instalado sobre el ZIP R15 publicado en una segunda base ficticia, sin las tablas R16 inicialmente. Crea las tablas de forma aditiva y conserva datos, contraseñas, config, imágenes, versiones, modificadores y turno abierto. Integridad, protección maestro/CSRF, rechazo de modificaciones de código desconocidas, permisos644/755 y repetición idempotente. Un ticket sembrado después de instalar sobrevive a la reinstalación.
+- **QA-SINTAXIS-R16.json:** 139 archivos funcionales, 82 PHP de payload, 86 PHP del ZIP completo y12 JavaScript; hashes, guía y permisos verificados.
+
+El paquete añade tres tablas de propuestas, tickets y seguimiento durante la instalación explícita. No se crea esquema en solicitudes ordinarias. Los negocios mantienen su activación180/179; los nuevos negocios siguen comenzando actualizados. No requiere SQL manual ni reinstalar Windows1.8.1/Android1.8.0.
+
+Pruebas con datos ficticios en PHP/MariaDB/Chromium. El proveedor de IA fue simulado localmente; se verificaron las herramientas y controles, no la calidad/latencia de un modelo real. Las instrucciones y filtros acotan las respuestas sin garantizar todos los posibles textos de un modelo generativo. Dispositivos físicos quedan para revisión en la instalación. No hubo mensajes de WhatsApp, correos, pagos, impresoras ni modificaciones del hosting público. Publicar el ZIP en el repositorio no instala automáticamente el sitio.
+
+Las siguientes secciones conservan evidencia histórica.
+
+---
+
 # Informe QA · FISITAAP web 1.8.0-R15
 
 Fecha: 27 de octubre de 2026. Corrección de la diferencia entre R14 y el HTML aprobado **Línea + FISITAAP**. Esta revisión cambia la composición de las pantallas PHP reales y reutiliza los estilos de la propuesta. No sustituye los datos del sistema por los del prototipo.

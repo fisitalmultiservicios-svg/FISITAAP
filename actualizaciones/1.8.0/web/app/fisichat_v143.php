@@ -123,7 +123,7 @@ function fisichat_public_prompt():string{
 function fisichat_call(array $config,array $payload):array{
     if($config['api_key']==='')throw new RuntimeException('FISI-CHAT todavía no tiene configurada su clave de IA.');
     $ch=curl_init($config['api_url']);
-    curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_RETURNTRANSFER=>true,CURLOPT_CONNECTTIMEOUT=>8,CURLOPT_TIMEOUT=>45,
+    curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_RETURNTRANSFER=>true,CURLOPT_CONNECTTIMEOUT=>8,CURLOPT_TIMEOUT=>min(45,max(3,(int)($config['timeout']??45))),
         CURLOPT_HTTPHEADER=>['Authorization: Bearer '.$config['api_key'],'Content-Type: application/json'],
         CURLOPT_POSTFIELDS=>json_encode($payload,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)]);
     $body=curl_exec($ch);$status=(int)curl_getinfo($ch,CURLINFO_HTTP_CODE);$err=curl_error($ch);curl_close($ch);
@@ -448,7 +448,7 @@ function fisichat_execute(App $app,array $tenant,array $user,array $branch,strin
     if(($user['role']??'')!=='tenant_admin'||(int)($user['tenant_id']??0)!==(int)$tenant['id']||(!empty($branch['id'])&&!$app->one('SELECT id FROM branches WHERE id=? AND tenant_id=?',[(int)$branch['id'],(int)$tenant['id']])))return ['status'=>'forbidden'];
     if($name==='analyze_business')return fisichat_analyze($app,$tenant,$user,$branch,$a);
     if($name==='inspect_business')return fisichat_inspect($app,$tenant,$user,$branch,$a);
-    if($name==='manage_business')return fisichat_manage($app,$tenant,$user,$branch,$a);
+    if(in_array($name,['manage_business','create_product','create_customer','create_promotion'],true))return ['status'=>'confirmation_required','message'=>'Abre FISIChat en el panel del negocio para preparar y confirmar el cambio con sus valores exactos. Este acceso anterior no ejecuta escrituras.'];
     $tid=(int)$tenant['id'];$bid=(int)($branch['id']??0);
     if($name==='product_count'){
         if(!fisichat_can($user,'productos'))return ['status'=>'forbidden'];

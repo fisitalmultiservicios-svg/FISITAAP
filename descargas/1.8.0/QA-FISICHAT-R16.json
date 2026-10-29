@@ -1,0 +1,13 @@
+{
+  "revision": "1.8.0-R16",
+  "passed": 6,
+  "checks": [
+    "Preview does not write; nonce belongs to owner/store/branch; review retry and confirmation are idempotent and audit once",
+    "Real product creates branch publication, integer quantities and initial stock movement; invalid amounts/fractions and foreign IDs are rejected",
+    "Changed records cannot be overwritten by stale proposals; cancel, reset and expiry block execution",
+    "Named optional groups, assignments, coupons and website text are saved through reviewed tools; plans/cash/technical fields stay outside owner tools",
+    "Unresolved public support asks details, creates one persistent ticket without secrets, and master sees contact/store/context and records status/history",
+    "Authenticated support uses server-owned store identity; public claims are unverified; CSRF and profile boundaries protect store actions and tickets"
+  ],
+  "environment": "Real HTTP/PHP/MariaDB in guarded fictional fixture; no real AI, hosting, messages, payments or printing"
+}

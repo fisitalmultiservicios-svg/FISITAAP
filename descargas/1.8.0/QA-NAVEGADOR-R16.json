@@ -1,0 +1,55 @@
+{
+  "revision": "1.8.0-R16",
+  "checks": [
+    "Phone chat creates a real product only after the explicit review button; success has an actual store record link",
+    "Unresolved public chat requests contact/store/problem and submits a persistent ticket through the actual phone form",
+    "Master opens the ticket with contact/store data and records a real status and internal follow-up",
+    "Existing master plan review remains usable on phone; checkbox size and explicit confirmation stay intact"
+  ],
+  "catalog_sizes": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "columns": 5,
+      "image_height": 155,
+      "cart_works": true
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "columns": 4,
+      "image_height": 155,
+      "cart_works": true
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "columns": 3,
+      "image_height": 155,
+      "cart_works": true
+    },
+    {
+      "width": 600,
+      "height": 960,
+      "columns": 2,
+      "image_height": 120,
+      "cart_works": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "columns": 2,
+      "image_height": 120,
+      "cart_works": true
+    },
+    {
+      "width": 320,
+      "height": 700,
+      "columns": 2,
+      "image_height": 120,
+      "cart_works": true
+    }
+  ],
+  "page_errors": [],
+  "environment": "Chromium real PHP/MariaDB with fictional data; no external services, AI, payments or printers. Physical devices remain manual."
+}

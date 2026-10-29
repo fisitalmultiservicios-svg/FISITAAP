@@ -1,0 +1,12 @@
+{
+  "revision": "1.8.0-R16",
+  "passed": 5,
+  "checks": [
+    "Natural-language owner request runs a real Responses read-tool loop, prepares a server-owned proposal, ignores model self-confirmation and writes exactly once only after explicit confirmation",
+    "Owner assistant can propose grounded commercial ideas without creating records or drifting to platform sales",
+    "A provider attempting an unadvertised cash/legacy write tool cannot execute it",
+    "False mutation claim is replaced by review guidance; prompt overrides stay locally blocked",
+    "Public unresolved support offers the ticket form locally; regular public AI has no owner tools or private store context"
+  ],
+  "environment": "Real PHP/cURL/verified TLS Responses mock in isolated Docker network, fake key only; original fixture config restored; no real provider, production, messages, payment or printer calls"
+}

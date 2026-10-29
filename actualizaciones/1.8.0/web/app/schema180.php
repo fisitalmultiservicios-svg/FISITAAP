@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/operaciones180.php';
+require_once __DIR__.'/chat_actions_r16.php';
+require_once __DIR__.'/support_r16.php';
 
 function qa180_active(App $app,?int $tenantId=null):bool {
     if($app->setting('qa180_active','0')!=='1')return false;
@@ -88,4 +90,5 @@ function schema180(App $app):void {
         if(!$app->one('SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA=DATABASE() AND TABLE_NAME=? AND CONSTRAINT_NAME=?',[$table,$fk]))$app->db->exec('ALTER TABLE '.$table.' ADD CONSTRAINT '.$fk.' FOREIGN KEY('.$column.') REFERENCES '.$parent.'(id) ON DELETE '.$onDelete);
     }
     if(function_exists('op180_schema'))op180_schema($app);
+    fc16_schema($app);
 }

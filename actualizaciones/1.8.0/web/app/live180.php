@@ -18,6 +18,7 @@ function op180_live(App $app):never {
         $revisions=$app->all('SELECT tc.tenant_id,COALESCE(l.revision,0) revision FROM tenant_customers tc JOIN tenants t ON t.id=tc.tenant_id AND t.is_active=1 LEFT JOIN fisitaap_live180 l ON l.tenant_id=tc.tenant_id WHERE tc.user_id=? ORDER BY tc.tenant_id',[$user['id']]);
     }elseif($user['role']==='master'){
         $revisions=$app->all('SELECT tenant_id,revision FROM fisitaap_live180 ORDER BY tenant_id');
+        if(fc16_ready($app))$revisions[]=['support_event'=>$app->one('SELECT COALESCE(MAX(id),0) n FROM fisitaap_support_events_r16')['n']];
     }else{
         $tenant=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$user['tenant_id']]);if(!$tenant)json_response(['ok'=>false,'error'=>'Negocio no disponible.'],403);
         $fresh=$app->one('SELECT id FROM users WHERE id=? AND tenant_id=? AND is_active=1 AND force_password_change=0',[$user['id'],$tenant['id']]);if(!$fresh)json_response(['ok'=>false,'error'=>'Revisa tu acceso.'],403);
