@@ -1,3 +1,49 @@
+# Informe QA · FISITAAP web 1.8.0-R19
+
+Fecha: 30 de octubre de 2026 (Costa Rica). Actualización acumulativa sobre R18, con las solicitudes nuevas de atención, usuarios y mesas. La presentación comercial principal conserva su diseño.
+
+| Solicitud | Resultado R19 |
+|---|---|
+| Venta rápida sin Ver turnos | Solo Abrir turno o Cerrar turno para la caja instalada y usuario autorizados. Cerrar abre su conteo directamente y vuelve a la venta. No ofrece turno de dinero a Caja0. |
+| Quitar Más acciones | Acciones pequeñas visibles en una barra superior que permanece al desplazarse. No hay desplegable ni menú recortado. El refresco automático tampoco reinserta los botones viejos. |
+| Prioridad de búsqueda | El foco vuelve a Buscar producto al preparar la venta o la siguiente carga; no interrumpe cantidades, formularios, diálogos ni FISIChat. Conserva búsqueda, categoría y posición al agregar y al enviar comanda. |
+| Chat tapado por elementos | FISIChat abre en la capa modal del navegador por encima de barras y menús. Conversación desplazable y compositor fijo; ajuste a teclado, poca altura y pantalla horizontal. |
+| Lista y edición de usuarios | Usuarios tiene su lista propia con Editar. El formulario nuevo aparece solo al pulsar Nuevo usuario. Conserva cuentas anteriores, incluso las pendientes de asociar a un empleado. |
+| Selectores con usuarios del negocio | Marcar consulta y refresca la lista actual de usuarios activos de la misma tienda. El acceso conectado en la aplicación instalada obtiene un directorio autenticado por su equipo, aunque su caché solo tuviera el usuario de prueba antiguo. Sin hashes ni claves en la página. |
+| Usuario requiere empleado | Control de personal registra la persona sin contraseña ni rol. Usuarios crea su acceso seleccionando un empleado propio existente. Impide empleado extranjero o un segundo usuario para la misma persona. El propietario conserva su cuenta inicial. |
+| Separación de empleado y acceso | Editar expediente no cambia contraseña, correo de acceso, nombre rápido ni rol. Editar usuario conserva su expediente y permisos personalizados. Desactivar empleado retira su acceso. Registro básico disponible para planes sin Personal avanzado, sin borrar salarios/vacaciones previos. |
+| Navegador como Caja0 | Identificación automática de atención: abre cuentas, carga y envía comandas; no cobra ni abre turnos de dinero. Sus cuentas nuevas no bloquean el cierre de un turno físico ajeno. El cobro posterior pertenece a la caja numerada y su cajero. |
+| Más acciones cortado en celular | Eliminado: la barra visible se ajusta al ancho y sigue accesible en tamaños pequeños y poca altura. |
+| Mesa con todo en un lugar | Cuenta, productos, nota, descuento, precuenta, envío a comanda y seguimiento en la misma vista. Estado actualizado cada 2 segundos. Tras enviar comanda se continúa sobre la misma cuenta, sin reenviar líneas anteriores. |
+| Cargar productos en celular | Una página natural para productos y cuenta, sin dos paneles ocultos ni desplazamientos internos que atrapen el gesto. Categorías en una fila; botones Productos/Cuenta para ir al sector. No muestra cuentas ajenas a esa mesa. |
+| Manuales y configurador | Academiaap y guía actualizadas. El configurador separa Empleados y Usuarios; una instalación conserva el paso equivalente del avance pausado y no lo mueve de nuevo al reinstalar. |
+
+## Comprobaciones
+
+- **8 grupos HTTP/PHP/MariaDB:** alta independiente de empleado, requisito para usuario, edición/login reales, ámbito por tienda, directorio de equipo con caché obsoleta, rechazo de usar ese permiso para cobrar, Caja0, enviar comanda y continuar, cierre propio y registro básico que preserva salarios/saldos.
+- **9 recorridos de navegador y 51 combinaciones de pantalla:** 320–1440 px, tablet, horizontal, poca altura y teclado aproximado con viewport reducido. Comprueba botones fijos, búsqueda sin robo de foco, formularios Usuarios/Personal, mesa con envío y nueva carga conservando el filtro, apertura/cierre propios y chat por encima de la pantalla con compositor visible. La captura de la presentación oficial permanece idéntica.
+- **9 grupos de continuidad offline:** catálogos compartidos, delta de existencias, turno web adoptado, ventas recibidas una vez, respuesta perdida y cierre conciliado. No se cambian los permisos offline del equipo para mostrar el directorio online.
+- **3 grupos de pedidos:** separación Catálogo/Menú, aceptación con comanda una vez, Monitor, entrega directa, zonas, teléfono y color del catálogo conservados.
+- **Motor nativo real de Windows, 1 contrato comprobado:** el puente existente transporta la consulta del directorio sin exponer token/hash, conceder cobro, reemplazar usuarios offline ni modificar ventas/turnos pendientes. No requiere recompilar el instalador.
+- **7 grupos del actualizador sobre el ZIP R18 publicado:** esquema previo reconstruido en una base independiente; conserva contraseñas, usuarios, relaciones de empleado, salarios, progreso, fondos, ventas y turnos abiertos. Agrega identidad independiente de empleado y marca de atención. Conserva config/uploads/árbol R18, rechaza archivos activos desconocidos y verifica 152 hashes. Reinstalar conserva contactos vacíos, empleados sin usuario y cuentas desactivadas, sin crear usuarios ni otro respaldo.
+- **Sintaxis/integridad:** 152 archivos funcionales; 89 PHP de payload, 93 PHP del ZIP y 15 JavaScript. Hashes y permisos explícitos644/755; extracción bajo umask077.
+
+Las pruebas usan exclusivamente datos ficticios y el protocolo nativo simulado donde se indica. No se enviaron mensajes, correos, cobros bancarios ni impresiones físicas. Las capturas muestran la aplicación local de QA, no el hosting real.
+
+## Instalar y alcance
+
+Respalda archivos y base de datos. Extrae el ZIP en la raíz real del dominio (`public_html`) y ejecuta **/actualizador-180/index.php** como maestro. Conserva **releases/1.8.0-r19**, config.php y uploads. No importes SQL. La publicación en GitHub no instala el hosting.
+
+Actualiza la web utilizada dentro de Windows1.8.1/Android1.8.0; no reconstruye ejecutables ni firma APK. El directorio conectado se actualiza desde el negocio autorizado; sin conexión se conserva el acceso previamente sincronizado. Las verificaciones físicas de Windows/Android/iOS, teclado y térmicas se hacen después de instalar. Las estimaciones laborales de R17 mantienen sus límites anteriores; esta entrega no cambia fórmulas ni certifica normativa.
+
+ZIP: **FISITAAP-1.8.0-CPANEL-R19.zip** · 1,743,023 bytes.
+
+SHA256: `1f8f13bb86727df27835894370680c37738828d0215c6852eadd690697bd8009`
+
+---
+
+## Informe de la entrega anterior
+
 # Informe QA · FISITAAP web 1.8.0-R18
 
 Fecha de entrega: 29 de octubre de 2026 (Costa Rica). Revisión acumulativa sobre R17. Se corrigieron las solicitudes nuevas y se conservan los archivos históricos.

@@ -5,6 +5,7 @@ require_once __DIR__.'/chat_actions_r16.php';
 require_once __DIR__.'/support_r16.php';
 require_once __DIR__.'/platform_r17.php';
 require_once __DIR__.'/runtime_r18.php';
+require_once __DIR__.'/runtime_r19.php';
 
 function qa180_active(App $app,?int $tenantId=null):bool {
     if($app->setting('qa180_active','0')!=='1')return false;
@@ -95,4 +96,5 @@ function schema180(App $app):void {
     fc16_schema($app);
     r17_schema($app);
     r18_schema($app);
+    r19_schema($app);
 }

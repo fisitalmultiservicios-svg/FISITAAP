@@ -1,0 +1,36 @@
+/* R19: actions remain in the normal flow; narrow table screens use one scrollable page. */
+body.r15-app #r15App .r19-sale-tools{display:flex!important;position:sticky!important;inset:auto!important;top:0!important;z-index:45;flex:none;flex-wrap:wrap;align-items:center;gap:6px;width:100%;max-width:none!important;height:auto!important;min-height:44px;padding:8px!important;margin:0 0 12px;border:1px solid #dce6ed;border-radius:10px;background:#fff;box-shadow:0 3px 10px #173c5708;overflow:visible!important}
+body.r15-app #r15App .r19-sale-tools :is(.btn,.r3-button){display:inline-flex!important;align-items:center;justify-content:center;width:auto;min-height:32px!important;padding:6px 9px!important;font-size:11px!important;line-height:1.25;white-space:normal;gap:5px}
+body.r15-app #r15App .r19-sale-tools :is(form,nav){margin:0!important;display:contents!important}.r19-sale-tools .r3-icon{height:14px;width:14px}.r19-open-accounts{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 10px;font-size:11px}.r19-open-accounts form,.r19-open-accounts>.r3-spacer{display:none}.r19-open-accounts a{padding:5px 8px;border:1px solid #dce6ed;border-radius:7px;background:#fff}.r19-table-status{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:10px 12px;border:1px solid #dce6ed;border-radius:10px;background:#fff;margin-bottom:10px;font-size:12px}.r19-table-status span{padding:5px 8px;background:#edf4f7;border-radius:7px}.r19-table-status .btn{padding:6px 9px;font-size:11px;min-height:32px}
+.r19-table-jump{display:none}.r19-users-head{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:22px}.r19-users-head h2{font-size:22px;margin:0 0 8px}.r19-users-head p{font-size:13px;color:#647e8e;line-height:1.6;max-width:650px;margin:0}.r19-user-form{max-width:860px}.r19-user-form footer{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.r19-user-form label{display:block;font-size:13px}.r19-user-form select{width:100%;min-height:42px}.r19-users-head+.admin-card table small{display:block;font-size:11px;line-height:1.5;color:#748998;margin-top:5px}.r19-user-form input[type=checkbox]{margin-right:6px}
+@media(max-width:650px){
+ body.r15-app #r15App .r19-sale-tools{gap:5px;padding:7px!important;border-radius:8px}body.r15-app #r15App .r19-sale-tools :is(.btn,.r3-button){font-size:11px!important;min-height:35px!important;padding:7px 8px!important;flex:1 0 auto}
+ body.r15-app #r15App .r19-table-view .pos-layout{display:flex!important;flex-direction:column!important;gap:14px!important;height:auto!important;min-height:0!important;max-height:none!important}
+ body.r15-app #r15App .r19-table-view :is(.ticket,.pos-products){display:flex!important;height:auto!important;max-height:none!important;min-height:0!important;overflow:visible!important;flex:none!important;width:100%}
+ body.r15-app #r15App .r19-table-view .pos-products{order:0;flex-direction:column}body.r15-app #r15App .r19-table-view .ticket{order:1;scroll-margin-top:calc(var(--r19-tools-height,90px) + 12px)}
+ body.r15-app #r15App .r19-table-view .ticket .r3-sale-table-wrap{height:auto!important;min-height:90px!important;max-height:none!important;overflow:visible!important;flex:none!important}
+ body.r15-app #r15App .r19-table-view .pos-products .filter-bar{position:sticky;top:var(--r19-tools-height,90px);z-index:40;background:#fff;padding-block:7px}
+ body.r15-app #r15App .r19-table-view .pos-products .r3-panel{overflow:visible!important}body.r15-app #r15App .r19-sale-view .quick-categories{flex-wrap:nowrap!important;overflow-x:auto!important;gap:6px!important;padding-bottom:6px}
+ body.r15-app #r15App .r19-sale-view .quick-categories .chip{flex:0 0 auto!important;max-width:170px!important;min-height:37px!important;padding:7px 10px!important}.r19-sale-view .quick-categories .chip .icon{display:none}
+ body.r15-app #r15App .r19-table-view .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:visible!important}.r19-table-view .product-plus{width:42px!important;height:42px!important}
+ .r19-table-view .r19-table-jump{display:flex;position:sticky;bottom:0;z-index:46;gap:8px;padding:10px 0 max(10px,env(safe-area-inset-bottom));background:#f4f7fa}.r19-table-jump button{flex:1;font-size:12px!important;min-height:42px}.r19-table-view{padding-bottom:15px!important}
+ .r19-users-head h2{font-size:20px}.r19-user-form :is(input:not([type=checkbox]),select){font-size:16px}
+}
+
+body.r15-app .r19-inline-chat{position:static!important;inset:auto!important;min-height:31px!important;height:31px!important;margin:0;padding:5px 8px!important;font-size:10px!important;box-shadow:none;flex:none}.r19-inline-chat svg{width:17px;height:17px}
+@media(max-width:650px){
+ body.r15-app:has(.r19-sale-view) #r15App>.r15-topbar{height:58px!important;min-height:58px!important;max-height:58px!important;padding:10px 12px!important;flex-wrap:nowrap!important;gap:9px}
+ body.r15-app:has(.r19-sale-view) .r15-topbar :is(.mode-switch,.profile-select,.branch-select){display:none!important}
+ body.r15-app:has(.r19-sale-view) .r15-topbar .brand{flex:1;min-width:0;max-width:none}
+ body.r15-app:has(.r19-sale-view) .breadcrumb{display:none!important}
+ body.r15-app #r15App .r19-sale-view>.page-heading{margin-bottom:9px;min-height:38px;align-items:center;flex-direction:row!important;gap:7px}
+ body.r15-app #r15App .r19-sale-view>.page-heading h1{font-size:19px!important}.r19-sale-view>.page-heading p{display:none!important}
+ .r19-sale-view .r19-cash-bar{padding:9px 11px!important;margin-bottom:9px;gap:8px;flex-wrap:nowrap}
+ .r19-sale-view .r19-cash-bar>div{flex:1 1 auto!important}.r19-cash-bar strong{font-size:12px}.r19-cash-bar span{font-size:10px;line-height:1.35}.r19-cash-bar>div:first-child:only-child>span{display:none}
+ .r19-cash-bar .btn{flex:none;min-height:32px!important;font-size:11px;max-width:115px}
+ body.r15-app .r19-inline-chat{font-size:0!important;padding:6px!important;min-width:30px}.r19-inline-chat [data-r18-alert-count]{display:none!important}
+ .r19-sale-view .page-heading .toolbar{gap:5px!important;flex-wrap:nowrap!important}.r19-sale-view .page-heading .toolbar .icon-button{width:30px!important;min-width:30px!important;height:30px!important}.r19-sale-view .op180-incoming-button{font-size:10px!important;padding:5px!important}
+ .r19-table-status{padding:8px 10px;gap:6px;font-size:11px}.r19-table-status strong{font-size:11px}.r19-table-status .btn{font-size:10px;min-height:28px}
+}
+
+.r19-sale-view>.page-heading p{display:none!important}.r19-sale-view .r19-cash-bar>div:only-child>span{display:none}.r19-sale-view .r19-cash-bar{padding-block:10px}.r19-open-accounts{flex-wrap:nowrap!important;max-height:46px;overflow-x:auto;overflow-y:hidden;flex:none}.r19-open-accounts a{flex:none;white-space:nowrap}

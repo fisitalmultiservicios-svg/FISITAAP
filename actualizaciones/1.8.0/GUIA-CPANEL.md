@@ -1,4 +1,4 @@
-# Instalar FISITAAP 1.8.0-R18 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R19 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
@@ -6,19 +6,32 @@ R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enter
 
 Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
 
-## R18: Venta rápida, mesas, usuarios y cajas
+## R19: atención, usuarios y mesas
 
 1. Guarda un respaldo completo de archivos y base de datos fuera de `public_html`.
-2. Sube **FISITAAP-1.8.0-CPANEL-R18.zip** a la raíz real del dominio, normalmente `/home/tu_usuario/public_html`, y extráelo allí. La carpeta `actualizador-180` debe quedar dentro de `public_html`, junto al `index.php` que sirve el dominio.
-3. En el navegador con sesión maestra abre `https://fisitaap.com/actualizador-180/index.php`. Comprueba **R18**, marca que guardaste respaldo y pulsa **Instalar archivos**. No importes SQL ni reemplaces `config.php`.
-4. La aplicación usará `releases/1.8.0-r18`. Conserva esa carpeta. Los negocios anteriores que tengan pendiente activar 1.8.0 siguen haciéndolo desde Administración → Actualizar sistema; los nuevos empiezan actualizados.
+2. Sube **FISITAAP-1.8.0-CPANEL-R19.zip** a la raíz real del dominio, normalmente `/home/tu_usuario/public_html`, y extráelo allí. La carpeta `actualizador-180` debe quedar dentro de `public_html`, junto al `index.php` que sirve el dominio.
+3. En el navegador con sesión maestra abre `https://fisitaap.com/actualizador-180/index.php`. Comprueba **R19**, marca que guardaste respaldo y pulsa **Instalar archivos**. No importes SQL ni reemplaces `config.php`.
+4. La aplicación usará `releases/1.8.0-r19`. Conserva esa carpeta. Los negocios anteriores que tengan pendiente activar 1.8.0 siguen haciéndolo desde Administración → Actualizar sistema; los nuevos empiezan actualizados.
 5. Prueba Venta rápida, mesas, Caja 0/numerada, apertura/cierre con su cajero, fondos, vendedor, avisos y Academiaap. Retira el actualizador después de verificar. Publicar el ZIP en GitHub no instala el hosting.
 
 
-### Venta rápida, mesas y turnos en R18
+### Cambios de uso en R19
 
-- La factura ocupa el panel izquierdo más grande y la carga rápida el derecho. En celular cambia entre **Facturación** y **Productos**. Se conservan cliente, totales y botoneras; con poca altura o teclado abierto puedes desplazarte sin perderlos. El zoom y pantalla completa siguen disponibles.
-- **Caja y turno** aparece en Venta rápida y Mesas. **Abrir turno** abre el fondo inicial sin abandonar la venta. **Mi turno / Cerrar** lleva al conteo. Solo puede cerrar quien abrió ese turno; ni otro cajero ni el dueño lo cierran en su lugar.
+- **Acciones visibles:** Nota, Descuento, Cancelar, Código, Guardar y Comanda se muestran como botones pequeños en una barra superior que permanece visible al desplazarte. Ya no existe Más acciones ni un menú que se corte en celular. Solo aparecen las funciones del tipo de negocio y de tu rol.
+- **Búsqueda:** Venta rápida devuelve el foco a Buscar producto para la siguiente carga. No quita el foco al escribir cantidades, completar un diálogo o usar FISIChat. Conserva el filtro y la posición al agregar productos.
+- **Navegador = Caja 0:** permite abrir y atender cuentas y enviar comandas; no cobra ni abre turnos de dinero. No necesita una caja física adicional. Las cuentas nuevas capturadas en el navegador no bloquean el cierre de un turno físico sin relación con ellas. Al cobrarlas, la caja numerada registra el cobro en su propio turno.
+- **Mesas:** al tocar una mesa entras a productos, cuenta, comanda, precuenta y seguimiento. En celular se usa el desplazamiento normal de una misma página, con categorías en una fila y botones grandes para agregar. Enviar comanda conserva la cuenta abierta y permite agregar más consumos sin reenviar los anteriores.
+- **FISIChat:** abre por encima de barras y menús. La conversación se desplaza y el cuadro para escribir permanece visible, también con teclado y pantalla horizontal. Se conservan las funciones y límites de cada asistente.
+- **Usuarios:** abre primero la lista de usuarios existentes. Pulsa **Nuevo usuario** para crear o **Editar** en un registro. Selecciona un empleado ya registrado y define nombre rápido, correo único, contraseña, perfil y estado. No crea un segundo empleado. Cambiar el expediente no modifica contraseña ni nombre de acceso.
+- **Control de personal:** registra el empleado antes de crear su acceso; no pide contraseña ni rol. Un empleado puede existir sin usuario. Conserva los expedientes, usuarios, claves y relaciones anteriores. Un acceso anterior sin expediente se muestra para vincularlo, sin borrarlo. El propietario conserva su acceso inicial y puede asociar un expediente para marcar.
+- **Sin Personal avanzado:** Usuarios ofrece un registro básico de empleados para cumplir el paso anterior. Horarios, marcas, vacaciones y cálculos siguen dependiendo del módulo. Editar el registro básico no borra salarios ni saldos laborales anteriores.
+- **Listas del negocio:** Marcar y los selectores usan los usuarios activos de la tienda. El acceso conectado en Windows/Android consulta al negocio autorizado y reemplaza la lista antigua de prueba, sin crear otra contraseña de escritorio. Mostrar un usuario no le concede permiso de cobrar. Sin conexión se conserva el último acceso autorizado; sincroniza antes de operar offline con cambios de usuarios.
+- **Configurador y Academiaap:** ahora separan Empleado y Usuario. El avance pausado mantiene el paso equivalente al agregar Usuarios después de Control de personal.
+
+### Venta rápida, mesas y turnos
+
+- La factura ocupa el panel izquierdo más grande y la carga rápida el derecho. Venta rápida conserva **Facturación / Productos** en celular. Al atender una mesa, ambos sectores están en una sola página y los botones **Productos / Cuenta** llevan al sector sin ocultar el otro. Se conservan cliente, totales y botoneras; con poca altura o teclado abierto puedes desplazarte sin perderlos. El zoom y pantalla completa siguen disponibles.
+- **Caja y turno** aparece en Venta rápida y Mesas. **Abrir turno** abre el fondo inicial sin abandonar la venta. **Cerrar turno** abre directamente el conteo. No se muestra Ver turnos en Venta rápida. Solo puede cerrar quien abrió ese turno; ni otro cajero ni el dueño lo cierran en su lugar.
 - Al tocar una mesa normal se entra a su cuenta para cargar productos. **Volver a mesas** regresa al salón. En barra o si hay varias cuentas, primero se elige la cuenta. El plano conserva sus proporciones y permite zoom.
 - Al retirar el último producto de una cuenta sin cobros, la cuenta se cancela y libera su mesa. La devolución de inventario ocurre una sola vez. **Un total de ₡0 por descuento del 100 % no cancela una cuenta que conserva productos.** Los pedidos web originales y cuentas con pagos no se modifican por esta regla.
 - En **Equipos y cajas** asigna una caja por Windows/Android y un número: **0** solo abre y atiende cuentas; **1 o más** permite cobrar. No confundas el nombre libre con el número. Las cajas antiguas conservan la capacidad de cobro y reciben un número positivo. Cambiar un equipo/caja con turno abierto o principal offline exige sincronizar y cerrar/liberar antes.
@@ -38,7 +51,7 @@ El chat del dueño muestra cumpleaños hoy o en los próximos 7 días, vacacione
 - Se recupera el acceso inicial de registros automáticos antiguos que todavía no se usaron; no se cambian cuentas con acceso utilizado o recuperación completada.
 - En **Clientes → Buscar → ficha → General → Eliminar cliente**, indica el motivo. Se retira del listado y del acceso de esa tienda conservando documentos e historial. Se bloquea si tiene deuda, ventas o pedidos abiertos. Requiere permiso de eliminación.
 - Cada dirección nueva se asigna a una zona activa de esa tienda y puede guardar Google Maps. En checkout se pide dirección y zona; al elegir una dirección guardada se carga también su zona. Las direcciones antiguas sin zona requieren escogerla al usarlas.
-- Los cajeros pueden ingresar por su correo o por el usuario corto asignado en Control de personal. Los correos son únicos en toda FISITAAP; el nombre rápido es obligatorio al crear o editar un colaborador y es único dentro de su empresa. En el equipo instalado se elige en un desplegable; el acceso público con un nombre repetido entre negocios requiere el correo para evitar ambigüedad. Las contraseñas nuevas admiten 4 caracteres o más, incluidos cuatro dígitos. Las cuentas antiguas siguen conservando sus contraseñas y roles.
+- Los cajeros pueden ingresar por su correo o por el nombre rápido asignado en Usuarios, después de registrar al empleado en Control de personal. Los correos son únicos en toda FISITAAP; el nombre rápido es obligatorio al crear o editar un colaborador y es único dentro de su empresa. En el equipo instalado se elige en un desplegable; el acceso público con un nombre repetido entre negocios requiere el correo para evitar ambigüedad. Las contraseñas nuevas admiten 4 caracteres o más, incluidos cuatro dígitos. Las cuentas antiguas siguen conservando sus contraseñas y roles.
 
 ### Catálogo, menú y pedidos
 
@@ -54,13 +67,13 @@ El chat del dueño muestra cumpleaños hoy o en los próximos 7 días, vacacione
 
 **Academiaap** reemplaza el acceso «Manual de uso». Tiene cursos por rol, lecciones actualizadas, progreso guardado por cuenta y botones **Ir a practicar**. Al abrir una pantalla desde una lección aparece **Volver al curso**.
 
-Durante los primeros tres días desde el primer uso de la bienvenida aparece una invitación pequeña **CONFIGUREMOS FISITAAP JUNTOS**. El dueño puede seguir datos generales, sucursales, roles, personal, categorías, opcionales y extras, productos, diseño y equipo. Guarda en cada pantalla y vuelve al configurador para continuar. **Pausar y salir** conserva el paso. El botón **Configurador FISITAAP** del menú permite retomarlo después; los pasos ajenos al plan pueden omitirse.
+Durante los primeros tres días desde el primer uso de la bienvenida aparece una invitación pequeña **CONFIGUREMOS FISITAAP JUNTOS**. El dueño puede seguir datos generales, sucursales, roles, empleados, usuarios, categorías, opcionales y extras, productos, diseño y equipo. Guarda en cada pantalla y vuelve al configurador para continuar. **Pausar y salir** conserva el paso. El botón **Configurador FISITAAP** del menú permite retomarlo después; los pasos ajenos al plan pueden omitirse.
 
 ### Control de personal
 
 Administración → **Control de personal**. El módulo se controla en los planes del maestro. El dueño puede administrarlo; otros colaboradores necesitan permisos explícitos de Personal. No se habilita la consulta de expedientes a un cajero por defecto.
 
-- **Expediente y acceso:** crea o vincula un colaborador del mismo negocio; identificación, nombre, nacimiento, nacionalidad, estado civil, oficio, domicilio, contacto y emergencia; puesto, ingreso/salida, contrato, lugar/fecha, condiciones, salario bruto mensual equivalente y periodicidad; CCSS, referencia INS, cuenta y dependientes. Conserva los roles personalizados existentes. La ficha no sustituye un contrato firmado.
+- **Expediente:** registra a la persona sin crear credenciales. El acceso se crea después en Usuarios; identificación, nombre, nacimiento, nacionalidad, estado civil, oficio, domicilio, contacto y emergencia; puesto, ingreso/salida, contrato, lugar/fecha, condiciones, salario bruto mensual equivalente y periodicidad; CCSS, referencia INS, cuenta y dependientes. Conserva los roles personalizados existentes. La ficha no sustituye un contrato firmado.
 - **Horario:** días, entrada/salida y pausa remunerada o no. Valida jornadas ordinarias diurna/nocturna/mixta, descanso y días del expediente. Detecta por el horario los tramos nocturnos; jornadas excepcionales o regímenes especiales requieren revisión. Los avisos no imponen descuentos ni sanciones.
 - **Marcas:** el botón superior **Marcar** aparece solo dentro de Windows/Android instalado con la interfaz nativa. El servidor exige equipo vinculado y sesión autorizada, y luego usuario/contraseña de la persona que marca. Consulta su último evento y propone Entrada/Pausa/Regreso/Salida. Guarda hora del servidor, sucursal y equipo. Repetir la misma solicitud no duplica; secuencias inválidas y marcas casi simultáneas se rechazan. Una jornada abierta más de 24 horas requiere corrección. **Necesita internet**; no inventa horas ni sincroniza marcas offline.
 - **Bitácora:** conserva marcas originales. Una corrección de hora o marca omitida requiere justificación y registra al responsable. Valida el orden de eventos. Las horas mostradas son tramos cerrados sin pausas marcadas; el cálculo de horas extra o pausas pagadas requiere revisión.

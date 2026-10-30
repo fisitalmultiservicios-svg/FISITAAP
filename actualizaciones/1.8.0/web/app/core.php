@@ -160,6 +160,7 @@ function business_login_problem180(App $app,array $user):?string {
     $id=(int)($user['tenant_id']??0);
     $tenant=$id?$app->cached('login-business180:'.$id,static fn()=>$app->one('SELECT id,is_active FROM tenants WHERE id=?',[$id])):null;
     if(!$tenant)return 'Esta cuenta no tiene un negocio válido asignado. Solicita a la cuenta maestra que revise su asociación. Puedes ingresar con otra cuenta.';
+    if(function_exists('r19_ready')&&r19_ready($app)&&$app->one('SELECT id FROM fisitaap_employees_r17 WHERE tenant_id=? AND user_id=? AND is_active=0',[$id,$user['id']]))return 'El expediente de este empleado está inactivo. Solicita revisión al dueño del negocio.';
     return $tenant['is_active']?null:'Tienda fuera de servicio. El negocio de esta cuenta está suspendido. Solicita a la cuenta maestra que revise su estado. Puedes ingresar con otra cuenta.';
 }
 function reject_business_login180(string $message,string $route='owner-login'):never {
@@ -306,6 +307,7 @@ function layout_start(string $title, ?array $tenant = null, bool $admin = false,
     if($r14Scope!==''){echo '<link rel="stylesheet" href="'.url('assets/interface-r14.css?v=r14').'">';if($admin)echo '<link rel="stylesheet" href="'.url('assets/linea-reference-r15.css?v=r15').'">';if($admin||$tenant)echo '<link rel="stylesheet" href="'.url('assets/interface-r15.css?v=r15').'">';}
     echo '<link rel="stylesheet" href="'.url('assets/platform-r17.css?v=r17').'">';
     if($admin)echo '<link rel="stylesheet" href="'.url('assets/runtime-r18.css?v=r18').'">';
+    if($admin)echo '<link rel="stylesheet" href="'.url('assets/workflow-r19.css?v=r19').'">';
     $GLOBALS['r14_interface']=$r14Scope!=='';
     echo '</head><body class="'.($admin?'admin-body':'public-body').($r14Scope!==''?' '.$r14Scope:'').($admin?' r15-app':($tenant?' r15-store':'')).'"'.($admin?' data-design="fusion"':'').'>';
     if(!empty($GLOBALS['demo_context']))demo_banner();
@@ -318,5 +320,5 @@ function layout_end(): void
     if(function_exists('op180_ui')&&qa180_active($GLOBALS['app']))op180_ui($GLOBALS['app']);
     if(function_exists('qa180_active')&&qa180_active($GLOBALS['app']))echo '<script>window.FISITAAP180='.r3_json(qa180_ui_context($GLOBALS['app'])).'</script><script src="'.url('assets/qa180.js?v=180').'" defer></script>';
     if(in_array(explode('/',request_path())[0],['admin','master'],true))echo '<script src="'.url('assets/image-upload.js?v=1810').'" defer></script>';
-    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.'<script src="'.url('assets/experience-r11.js?v=r11').'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').(!empty($GLOBALS['r14_interface'])?'<script src="'.url('assets/interface-r15.js?v=r15').'" defer></script>':'').'</body></html>';
+    global $app;$cacheVersion=($app instanceof App?$app->setting('cache_version','1'):'1').'-180';echo '<script>window.FISITAPP={csrf:"'.e(csrf_token()).'",base:"'.e(url()).'",cacheVersion:"'.e($cacheVersion).'"}</script><script src="'.url('assets/app.js?v='.rawurlencode($cacheVersion)).'" defer></script>'.'<script src="'.url('assets/experience-r11.js?v=r11').'" defer></script>'.((request_path()==='admin'||str_starts_with(request_path(),'admin/'))?'<script src="'.url('assets/direct-print.js?v='.rawurlencode($cacheVersion)).'" defer></script>':'').(!empty($GLOBALS['r14_interface'])?'<script src="'.url('assets/interface-r15.js?v=r15').'" defer></script>':'').(in_array(explode('/',request_path())[0],['admin','master','owner-login'],true)?'<script src="'.url('assets/workflow-r19.js?v=r19').'" defer></script>':'').'</body></html>';
 }

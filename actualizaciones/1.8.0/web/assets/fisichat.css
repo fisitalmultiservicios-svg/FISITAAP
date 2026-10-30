@@ -17,3 +17,9 @@
 @media(max-width:650px){.fc-actions{max-height:55%;padding:12px}.fc-actions :is(input,select,textarea){font-size:16px}.fc-actions dl{grid-template-columns:1fr;gap:3px}.fc-actions dd{margin-bottom:6px}.fc-hstack button{min-height:40px}}
 .fc-actions>.fc-hstack{position:sticky;bottom:-1px;background:#f4f9f9;padding-block:9px 2px;border-top:1px solid #dce7eb;z-index:1}
 @media(max-width:650px){.fc-actions dl{grid-template-columns:minmax(90px,.8fr) minmax(0,1.2fr);gap:7px 10px}.fc-actions dd{margin:0}}
+
+/* The conversation alone scrolls; the composer remains visible above the keyboard. */
+dialog.fc-panel:not(.fc-full){margin:0;left:auto;top:auto;padding:0;max-width:none;z-index:2147483000}dialog.fc-panel::backdrop{background:#142d4038}.fc-scroll{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;background:#f5f8fa;scrollbar-width:thin}.fc-scroll .fc-messages{overflow:visible;min-height:150px;flex:none}.fc-scroll .r18-chat-alerts{max-height:150px;overflow:auto}.fc-scroll .fc-actions{max-height:none;overflow:visible}.fc-scroll .fc-suggestions{max-height:none}.fc-panel .fc-compose,.fc-panel .fc-header,.fc-panel .fc-footer,.fc-panel .fc-status{position:relative;flex:none;z-index:2}.fc-panel .fc-compose{padding-bottom:max(12px,env(safe-area-inset-bottom))}
+@media(max-width:520px){dialog.fc-panel:not(.fc-full){left:8px;right:8px;top:8px;bottom:auto;width:calc(100vw - 16px);margin:0}.fc-panel .fc-header{padding:12px}.fc-scroll .fc-messages{min-height:140px}.fc-panel .fc-footer{padding:6px 12px;font-size:10px}}
+
+dialog.fc-panel:not(.fc-full){border-radius:14px!important}

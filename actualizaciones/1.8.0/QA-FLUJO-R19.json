@@ -1,0 +1,15 @@
+{
+  "revision": "1.8.0-R19",
+  "passed": 8,
+  "checks": [
+    "Personnel creates a real employee without a user or credentials; default screen lists staff and opens creation only through Nuevo empleado",
+    "Usuarios has a separate list/new/edit flow; new access requires an existing own-store employee and duplicate/foreign links are rejected atomically",
+    "Linked user edits preserve the employee and really change quick login/password; posting credentials to Personnel cannot change access fields",
+    "Attendance/seller roster comes from active business users, is own-store isolated and exposes no password hashes or obsolete offline passwords",
+    "Installed online login replaces obsolete cache with current business directory; proof is nonce/session/device bound and cannot become a cash grant",
+    "Browser sessions are Caja0: cannot open money shifts or collect, but can open a table, send a comanda, keep the bill open and add the next product",
+    "Installed numbered register still opens/closes only the actual cashier shift, with direct close dialog and return to quick sale",
+    "Basic employee registry works without advanced Personnel; it cannot post salary changes or erase existing salary/vacation balances when edited"
+  ],
+  "environment": "Real HTTP/PHP/MariaDB guarded fictional fixture; production native authorization protocol simulated, no physical printer or real people"
+}

@@ -25,6 +25,7 @@ function qa180_prepare_native(App $app):void {
     if(empty($_SESSION['native_nonce180']))session_change176(static function(){$_SESSION['native_nonce180']=bin2hex(random_bytes(32));});
 }
 function qa180_proof(App $app,array $device,array $data):array {
+    if(r19_ready($app)&&str_starts_with((string)($data['nonce']??''),R19_DIRECTORY_PREFIX))return r19_directory_proof($app,$device,$data);
     $nonce=(string)($data['nonce']??'');$uid=(int)($data['user_id']??0);
     if(!preg_match('/^[a-f0-9]{64}$/D',$nonce))throw new DomainException('Solicitud de autorización inválida.');
     $user=$app->one('SELECT * FROM users WHERE id=? AND tenant_id=? AND is_active=1 AND force_password_change=0',[$uid,$device['tenant_id']]);
@@ -47,6 +48,7 @@ function qa180_bind(App $app):never {
         $parts=explode('.',(string)($_POST['proof']??''));
         if(count($parts)!==2||strlen($parts[0])>2000||!ctype_xdigit($parts[0])||!hash_equals(hash_hmac('sha256',$parts[0],$app->config['app_key']),$parts[1]))throw new DomainException('El equipo no confirmó su autorización.');
         $claims=json_decode((string)hex2bin($parts[0]),true,32,JSON_THROW_ON_ERROR);
+        if(isset($claims['purpose']))throw new DomainException('Esta autorización solo permite consultar usuarios.');
         if($claims['expires']<time()||$claims['user']!==(int)$user['id']||$claims['tenant']!==(int)$user['tenant_id']||!hash_equals((string)($_SESSION['native_nonce180']??''),(string)$claims['nonce']))throw new DomainException('La autorización venció o pertenece a otra sesión.');
         $_SESSION['native180']=$claims+['session_expires'=>time()+900];
         if(empty($_SESSION['physical_branch'][(int)$user['tenant_id']]))$_SESSION['physical_branch'][(int)$user['tenant_id']]=(int)$claims['branch'];
@@ -105,7 +107,7 @@ function qa180_cash_expected(App $app,array $shift):int {
 function qa180_pending_shift(App $app,array $shift):bool {
     // Include pre-update web tickets belonging to this cashier. Accounts from
     // other devices/cashiers do not block an independent register's closing.
-    return (bool)$app->one('SELECT id FROM pos_tickets WHERE tenant_id=? AND branch_id=? AND status NOT IN("paid","void","merged") AND (shift_id=? OR (shift_id IS NULL AND opened_by=? AND source_order_id IS NULL AND (register_id IS NULL OR register_id='.(int)$shift['register_id'].'))) AND (table_id IS NOT NULL OR paid_total>0 OR EXISTS(SELECT 1 FROM pos_ticket_items i WHERE i.ticket_id=pos_tickets.id)) LIMIT 1',[$shift['tenant_id'],$shift['branch_id'],$shift['id'],$shift['user_id']]);
+    return (bool)$app->one('SELECT id FROM pos_tickets WHERE tenant_id=? AND branch_id=? AND status NOT IN("paid","void","merged") AND (shift_id=? OR (shift_id IS NULL AND opened_by=? AND source_order_id IS NULL '.(r19_ready($app)?'AND attention_only_r19=0 ':'').'AND (register_id IS NULL OR register_id='.(int)$shift['register_id'].'))) AND (table_id IS NOT NULL OR paid_total>0 OR EXISTS(SELECT 1 FROM pos_ticket_items i WHERE i.ticket_id=pos_tickets.id)) LIMIT 1',[$shift['tenant_id'],$shift['branch_id'],$shift['id'],$shift['user_id']]);
 }
 
 function qa180_roles_upgrade(App $app,int $tenantId=0):void {

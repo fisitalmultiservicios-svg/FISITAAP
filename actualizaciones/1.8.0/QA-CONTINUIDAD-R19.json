@@ -1,0 +1,15 @@
+{
+  "passed": 9,
+  "checks": [
+    "snapshot uses the existing assigned active users and the authorized principal register",
+    "two assigned boxes reuse one product list and one client list while keeping their device authorizations separate",
+    "stock changes update the response without storing another full catalog",
+    "an unchanged catalog returns only current stock and cash metadata, without downloading client lists or password hashes again",
+    "price changes create a new immutable catalog while the old pending-sale catalog remains available",
+    "offline adoption of a web-opened UUID does not create a second shift",
+    "altered opening cash is rejected without changing the adopted web shift",
+    "offline sales are received once in the same shift, with authoritative cash and lost-response acknowledgment",
+    "offline denomination closing includes web cash movements and reconciles the shared shift once"
+  ],
+  "environment": "isolated real PHP/MariaDB HTTP device API; no production"
+}

@@ -1,0 +1,349 @@
+{
+  "revision": "1.8.0-R19",
+  "passed": 9,
+  "checks": [
+    "Browser sale displays Caja0, no Ver turnos or More dropdown, prioritizes product search and preserves query through first and repeated product additions",
+    "All action buttons and real dialogs remain reachable/sticky across twelve sizes, including low-height phones; invoice stays larger on the left at desktop widths",
+    "Usuarios opens its own existing-user list then explicit new/edit screen; Personnel creation has no login, password or role fields",
+    "Phone table opens one product/account/comanda screen, sends the first comanda, keeps the same account and allows the next product without resending old lines",
+    "Table uses a single natural scrolling page on phones, both products/account visible, sticky actions and direct jump between sections; all twelve widths/heights pass",
+    "Installed cashier opens/closes own turn in quick sale with no Ver turnos; the same employee’s browser-Caja0 bill stays open and does not lock that physical register",
+    "FISIChat is in the browser top layer above sticky UI, keeps message composer visible, scrolls long history, permits internal forms and never loses focus to sale search",
+    "Existing installed bridge replaces a stale test-only cache with the current business users without exposing hashes, changing cash authority or rebuilding installers",
+    "Users/Personnel list and new screens fit desktop/tablet/phone; official presentation screenshot remains unchanged when chat is closed"
+  ],
+  "layouts": [
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 1440,
+      "height": 1000,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 1366,
+      "height": 768,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 1024,
+      "height": 768,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 820,
+      "height": 1180,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 768,
+      "height": 1024,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 600,
+      "height": 960,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 390,
+      "height": 844,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 360,
+      "height": 740,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 320,
+      "height": 700,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 844,
+      "height": 390,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 390,
+      "height": 520,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=136",
+      "width": 360,
+      "height": 520,
+      "visible_sticky_actions": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 1440,
+      "height": 1000,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 1366,
+      "height": 768,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 1024,
+      "height": 768,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 820,
+      "height": 1180,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 768,
+      "height": 1024,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 600,
+      "height": 960,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 390,
+      "height": 844,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 360,
+      "height": 740,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 320,
+      "height": 700,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 844,
+      "height": 390,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 390,
+      "height": 520,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=137",
+      "width": 360,
+      "height": 520,
+      "unified_table_flow": true,
+      "no_page_overflow": true
+    },
+    {
+      "path": "FISIChat modal",
+      "width": 1366,
+      "height": 768,
+      "compose_not_obscured": true
+    },
+    {
+      "path": "FISIChat modal",
+      "width": 768,
+      "height": 1024,
+      "compose_not_obscured": true
+    },
+    {
+      "path": "FISIChat modal",
+      "width": 390,
+      "height": 844,
+      "compose_not_obscured": true
+    },
+    {
+      "path": "FISIChat modal",
+      "width": 360,
+      "height": 520,
+      "compose_not_obscured": true
+    },
+    {
+      "path": "FISIChat modal",
+      "width": 844,
+      "height": 390,
+      "compose_not_obscured": true
+    },
+    {
+      "path": "FISIChat modal",
+      "width": 844,
+      "height": 260,
+      "compose_not_obscured": true
+    },
+    {
+      "path": "FISIChat modal",
+      "width": 390,
+      "height": 320,
+      "compose_not_obscured": true
+    },
+    {
+      "path": "/admin/usuarios",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/usuarios",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/usuarios",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/usuarios",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/usuarios?new=1",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/usuarios?new=1",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/usuarios?new=1",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/usuarios?new=1",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/personal?new=1",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/personal?new=1",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/personal?new=1",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/personal?new=1",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 1366,
+      "height": 900,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 768,
+      "height": 1024,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 390,
+      "height": 844,
+      "no_page_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 320,
+      "height": 700,
+      "no_page_overflow": true
+    }
+  ],
+  "page_errors": [],
+  "environment": "Chromium real HTTP/PHP/MariaDB guarded fictional fixture. Native bridge transport simulated with real production authentication. No external AI, payments, messages or physical prints."
+}

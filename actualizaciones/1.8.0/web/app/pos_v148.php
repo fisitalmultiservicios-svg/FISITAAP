@@ -122,6 +122,7 @@ function pos_open_148(App $app,array $tenant,array $user,array $branch,string $t
         $app->exec('INSERT INTO pos_tickets(tenant_id,branch_id,table_id,customer_id,display_label,ticket_number,sale_type,opened_by,service_rate,open_key,delivery_address) VALUES(?,?,?,?,?,?,?,?,?,?,?)',[$tenant['id'],$branch['id'],$tableId,$customer,$label?:null,physical_number_v14('CM'),$type,$user['id'],$rate,$key,$address]);$id=(int)$app->db->lastInsertId();if($tableId)pos_table_state_148($app,(int)$tenant['id'],$tableId);
         if(function_exists('qa180_active')&&qa180_active($app)){
             $register=qa180_native($app,$user);
+            if(r19_ready($app)&&!$register)$app->exec('UPDATE pos_tickets SET attention_only_r19=1 WHERE id=? AND tenant_id=?',[$id,$tenant['id']]);
             if($tableId)$app->exec('INSERT IGNORE INTO fisitaap_ticket_tables180(tenant_id,branch_id,ticket_id,table_id) VALUES(?,?,?,?)',[$tenant['id'],$branch['id'],$id,$tableId]);
             if($register){$shift=$app->one('SELECT id FROM pos_shifts WHERE tenant_id=? AND register_id=? AND user_id=? AND status="open"',[$tenant['id'],$register['id'],$user['id']]);$app->exec('UPDATE pos_tickets SET register_id=?,shift_id=? WHERE id=?',[$register['id'],$shift['id']??null,$id]);}
         }
@@ -184,10 +185,10 @@ function pos_edit_148(App $app,array $tenant,array $user,array $branch,int $id,b
         if(qa180_active($app)&&!in_array($action,['coupon','discount','void','prebill','send_kitchen'],true))qa180_coupon_refresh($app,$t);pos_recalculate_148($app,$id);$autoCancelled=r18_ready($app)&&r18_cancel_empty($app,$tenant,$user,$t,$action);$app->exec('UPDATE pos_tickets SET revision=revision+1 WHERE id=?',[$id]);if($t['table_id'])pos_table_state_148($app,(int)$tenant['id'],(int)$t['table_id']);if(qa180_active($app)&&$action==='send_kitchen')qa180_print_commands($app,$tenant,$branch,$user,$id,$ids,'command-'.$id.'-'.hash('sha256',implode(',',$ids)));audit($app,(int)$tenant['id'],(int)$user['id'],'pos_'.$action,'pos_ticket',$id);if($ownsTransaction)$app->db->commit();if(!$navigate)return;
         if($autoCancelled){flash('success','Cuenta vacía cancelada automáticamente.');redirect(url($t['table_id']?'admin/mesas':'admin/ventas'));}
         if($action==='prebill')redirect(url('admin/recibo?precuenta='.$id));
-        if($action==='send_kitchen'&&qa180_active($app)){flash('success','Comanda enviada a la cola de la impresora configurada.');redirect(url('admin/ventas?screen=order&ticket='.$id));}if($action==='send_kitchen')redirect(url('admin/recibo?comanda='.$id.'&auto=1&items='.implode(',',$ids)));
+        if($action==='send_kitchen'&&qa180_active($app)){flash('success','Comanda enviada a la cola de la impresora configurada.');$return='admin/ventas?screen=order&ticket='.$id;if(r19_ready($app)){$query=mb_substr(trim((string)($_POST['return_query_r19']??'')),0,100);$category=(int)($_POST['return_category_r19']??0);if($query!=='')$return.='&q='.rawurlencode($query);if($category)$return.='&category='.$category;}redirect(url($return));}if($action==='send_kitchen')redirect(url('admin/recibo?comanda='.$id.'&auto=1&items='.implode(',',$ids)));
         if(in_array($action,['void','suspend'],true))redirect(url('admin/ventas'));flash('success','Cuenta guardada.');
     }catch(Throwable $e){if($ownsTransaction&&$app->db->inTransaction())$app->db->rollBack();if(!$navigate)throw $e;flash('error',$e->getMessage());}
-    redirect(url('admin/ventas?screen=order&ticket='.$id));
+    $return='admin/ventas?screen=order&ticket='.$id;if(r19_ready($app)){$query=mb_substr(trim((string)($_POST['return_query_r19']??'')),0,100);if($query!=='')$return.='&q='.rawurlencode($query);$category=(int)($_POST['return_category_r19']??0);if($category)$return.='&category='.$category;}redirect(url($return));
 }
 // Pure, deterministic quote reused by the payment transaction. No client totals are trusted.
 function pos_quote_148(array $tickets,array $items,string $mode,array $quantities,int $parts):array {

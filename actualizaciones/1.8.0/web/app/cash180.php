@@ -53,7 +53,7 @@ function qa180_shifts(App $app,array $user,array $tenant):void {
             else throw new DomainException('Operación de turno desconocida.');
             flash('success',$closed?'Turno cerrado. El detalle se conserva en Turnos.':'Turno abierto.');
         }catch(Throwable $error){flash('error',$error instanceof PDOException?'No se pudo guardar el turno. Revisa su estado antes de intentar de nuevo.':$error->getMessage());}
-        $return=(string)($_POST['return_to_r18']??'');if(!$closed&&preg_match('~^admin/(?:ventas|mesas)(?:\?[^#\r\n]{0,400})?$~D',$return))redirect(url($return));
+        $return=(string)($_POST['return_to_r18']??'');if(preg_match('~^admin/(?:ventas|mesas)(?:\?[^#\r\n]{0,400})?$~D',$return))redirect(url($return));
         redirect(url('admin/turnos'.($closed?'?detail='.$closed.'&closed=1':'')));
     }
     $current=$register?$app->one('SELECT * FROM pos_shifts WHERE tenant_id=? AND branch_id=? AND register_id=? AND status="open" ORDER BY id DESC LIMIT 1',[$tenant['id'],$branch['id'],$register['id']]):null;

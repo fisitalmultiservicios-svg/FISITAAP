@@ -18,7 +18,6 @@
   if(event.target.closest('[data-r15-chat]'))$('.fc-launch')?.click();
   if(event.target.closest('[data-r15-search]')){const d=$('#r15Command');if(d){d.showModal();$('[data-r15-command-input]',d).focus();showResults('');}}
   if(event.target.closest('[data-r15-close]'))event.target.closest('dialog')?.close();
-  if(event.target.closest('[data-r15-more]'))$('.r3-sale-actions')?.classList.toggle('r15-actions-open');
  });
  document.addEventListener('change',event=>{const e=event.target;if(e.matches('[data-r15-submit]'))e.form?.requestSubmit();if(e.matches('[data-r15-client]'))e.form?.requestSubmit();if(e.matches('.r3-quantity input[name=quantity]')&&!e.disabled)e.form?.requestSubmit();});
  function showResults(query){const results=$('[data-r15-command-results]');if(!results)return;results.replaceChildren();for(const a of $$('#navigation .side-link')){if(query&&!a.textContent.toLocaleLowerCase('es').includes(query.toLocaleLowerCase('es')))continue;const copy=a.cloneNode(true);copy.className='';results.append(copy);}}

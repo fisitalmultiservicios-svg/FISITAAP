@@ -32,6 +32,8 @@ function qa180_ui_context(App $app):array {
         $register=qa180_native($app,$user,false,'print');
         if($register)$context['native']=['id'=>(int)$register['id'],'name'=>$register['name'],'device_id'=>(int)($register['device_id']??0),'branch_id'=>(int)$register['branch_id']];
     }
+    if(r19_ready($app)&&request_path()==='owner-login')$context['directory_nonce_r19']=r19_directory_nonce();
+    $context['attention_only_r19']=$user&&r19_ready($app)&&!qa180_native($app,$user,false,'cash');
     return $context;
 }
 
@@ -46,6 +48,7 @@ function qa180_activate(App $app):void { qa180_updates_page($app,true); }
 function qa180_dispatch(App $app,string $path):void {
     if(in_array($path,['master/actualizar-180','master/actualizar-sistema'],true)){qa180_updates_page($app,true);exit;}
     if($path==='admin/actualizar-sistema'){qa180_updates_page($app,false);exit;}
+    r19_dispatch($app,$path);
     r18_dispatch($app,$path);
     r17_dispatch($app,$path);
     // Shared welcome is a platform view, independent of each tenant's activation.

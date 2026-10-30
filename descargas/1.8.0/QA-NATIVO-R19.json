@@ -1,0 +1,8 @@
+{
+  "revision": "1.8.0-R19",
+  "passed": 1,
+  "checks": [
+    "Existing Windows local engine transports the directory-only native challenge; it does not expose device token/password hashes, grant cash authority, replace offline users or rewrite pending sales/shifts"
+  ],
+  "environment": "Actual Node Windows-local-server engine with fictional remote response, temporary journal and loopback server. No installed executable or Android hardware."
+}

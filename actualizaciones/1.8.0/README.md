@@ -1,3 +1,17 @@
+# FISITAAP web 1.8.0-R19
+
+[**Descargar actualización R19**](../../descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R19.zip) · [Instalar y usar](GUIA-CPANEL.md) · [Solicitudes y QA](INFORME-QA.md)
+
+Acciones pequeñas visibles en Venta rápida, apertura/cierre directo, foco de búsqueda, FISIChat por encima de otros elementos, Usuarios separado de Control de personal, directorio actual de la tienda, navegador como Caja0 y atención de mesas en una página cómoda en celular.
+
+Actualización acumulativa: conserva usuarios, contraseñas, expedientes, ventas y fondos de R18. Instala desde `/actualizador-180/index.php` como maestro, después de respaldar. Conserva `releases/1.8.0-r19`. Publicar el paquete no instala el hosting.
+
+No necesita reinstalar Windows1.8.1/Android1.8.0. El directorio conectado utiliza su puente existente; offline conserva la autorización sincronizada. Las estimaciones laborales de R17 no cambian ni reciben certificación legal en esta revisión.
+
+---
+
+## Entregas anteriores
+
 # FISITAAP web 1.8.0-R18 · Windows 1.8.1
 
 [**Descargar actualización cPanel R18**](../../descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R18.zip) · [Guía](GUIA-CPANEL.md) · [Solicitudes y QA](INFORME-QA.md)

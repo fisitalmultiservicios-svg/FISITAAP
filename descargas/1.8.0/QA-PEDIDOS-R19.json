@@ -1,0 +1,10 @@
+{
+  "revision": "1.8.0-R19",
+  "passed": 3,
+  "checks": [
+    "Catalog hides and rejects kitchen, tables, Express and driver features; delivery checkout requires own zone, creates phone access, persists zone and retries once; direct business acceptance/completion creates no kitchen print or delivery task",
+    "Menu acceptance queues comanda exactly once; Pedidos cannot run preparation, Monitor prepares/marks ready, and the business may hand over delivery directly without Entregas",
+    "Catalog slider text color is saved and rendered on active slides, rejects CSS injection, and does not change the official presentation"
+  ],
+  "environment": "Real HTTP/PHP/MariaDB fictional fixture. No WhatsApp messages or printer output executed."
+}
