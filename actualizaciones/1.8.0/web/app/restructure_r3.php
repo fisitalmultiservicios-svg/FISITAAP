@@ -43,7 +43,7 @@ function r3_shell_start(App $app,array $u,array $t,array $branch,string $title,b
 {
     if(qa180_active($app)){$reg=qa180_native($app,$u);$shift=$reg?$app->one('SELECT id FROM pos_shifts WHERE tenant_id=? AND branch_id=? AND user_id=? AND register_id=? AND status="open" ORDER BY id DESC LIMIT 1',[$t['id'],$branch['id'],$u['id'],$reg['id']]):null;}else{$shift=$app->one('SELECT id FROM pos_shifts s WHERE tenant_id=? AND branch_id=? AND user_id=? AND status="open" AND NOT EXISTS(SELECT 1 FROM fisitaap_r2_shift_links l WHERE l.shift_id=s.id) ORDER BY id DESC LIMIT 1',[$t['id'],$branch['id'],$u['id']]);}
     layout_start($title,$t,true);r15_shell_start($app,$u,$t,$title,substr(request_path(),6),false,true,$branch);
-    if(qa180_active($app)){echo '<details class="r15-cash-popover"><summary>Caja y turno</summary>';qa180_cash_tools($app,$u,$t,$branch);echo '</details>';}
+    if(qa180_active($app))r18_cash_bar($app,$u,$t,$branch);
 }
 function r3_shell_end(): void {r15_shell_end();}
 function r3_pos_nav(array $t): void

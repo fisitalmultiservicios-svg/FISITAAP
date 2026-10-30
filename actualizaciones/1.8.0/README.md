@@ -1,3 +1,17 @@
+# FISITAAP web 1.8.0-R18 · Windows 1.8.1
+
+[**Descargar actualización cPanel R18**](../../descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R18.zip) · [Guía](GUIA-CPANEL.md) · [Solicitudes y QA](INFORME-QA.md)
+
+R18 mejora Venta rápida y Mesas en celular/tablet, hace visible Abrir turno, cancela únicamente cuentas vacías, incorpora Caja 0 de atención, fondos separados por caja, vendedor opcional y cierre exclusivo por el cajero que abrió turno. Agrega nombres rápidos, contraseñas desde cuatro caracteres, avisos del dueño en FISIChat y lecciones de Academiaap actualizadas.
+
+Es acumulativa: conserva R17 y las mejoras anteriores. Respalda archivos/base, extrae en la raíz real del dominio y ejecuta `/actualizador-180/index.php` como maestro. Conserva `releases/1.8.0-r18`, config.php y uploads. Publicar archivos en GitHub no instala el hosting.
+
+148 archivos funcionales con permisos 644/755. No se reconstruyeron instaladores Windows/Android: las funciones conectadas cargan desde la web actualizada. La venta sin internet existente conserva compatibilidad; el vendedor offline es su operador original. Los cálculos laborales de R17 siguen siendo estimaciones para revisar, sin certificación legal ni pagos automáticos.
+
+---
+
+## Entrega anterior
+
 # FISITAAP web 1.8.0-R17 · Windows 1.8.1
 
 R17 corrige accesos de clientes/cajeros, separa Catálogo y Menú, añade **Academiaap**, configurador pausado y **Control de personal**. Conserva las mejoras de FISIChat y el catálogo compacto de R16.

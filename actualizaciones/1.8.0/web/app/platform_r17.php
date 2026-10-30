@@ -39,9 +39,9 @@ function r17_address_zone(App $app,int $tenant,int $address,int $zone):void {
     if(!$app->one('SELECT a.id FROM customer_addresses a JOIN tenant_customers c ON c.user_id=a.user_id WHERE a.id=? AND c.tenant_id=?',[$address,$tenant]))throw new DomainException('Dirección no disponible.');
     $app->exec('INSERT INTO fisitaap_address_zones_r17(tenant_id,address_id,zone_id) VALUES(?,?,?) ON DUPLICATE KEY UPDATE zone_id=VALUES(zone_id)',[$tenant,$address,$zone]);
 }
-function r17_staff_identity(App $app,string $login):?array {
-    $login=mb_strtolower(trim($login));
-    return $app->one('SELECT * FROM users WHERE is_active=1 AND (LOWER(email)=?'.(r17_ready($app)?' OR username_r17=?':'').')',r17_ready($app)?[$login,$login]:[$login]);
+function r17_staff_identity(App $app,string $login,?int $tenant=null):?array {
+    $login=mb_strtolower(trim($login));$email=$app->one('SELECT * FROM users WHERE is_active=1 AND LOWER(email)=?'.($tenant?' AND tenant_id=?':''),$tenant?[$login,$tenant]:[$login]);if($email)return $email;
+    if(!r17_ready($app))return null;$rows=$app->all('SELECT * FROM users WHERE is_active=1 AND username_r17=?'.($tenant?' AND tenant_id=?':'').' LIMIT 2',$tenant?[$login,$tenant]:[$login]);return count($rows)===1?$rows[0]:null;
 }
 function r17_email_unique(App $app,string $email,int $except=0):void {
     if(!filter_var($email,FILTER_VALIDATE_EMAIL)||$app->one('SELECT id FROM users WHERE LOWER(TRIM(email))=? AND id<>?',[mb_strtolower(trim($email)),$except]))throw new DomainException('Ese correo ya está en uso o no es válido. Cada usuario debe tener un correo único en FISITAAP.');

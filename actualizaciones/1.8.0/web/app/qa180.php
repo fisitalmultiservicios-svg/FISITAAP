@@ -46,6 +46,7 @@ function qa180_activate(App $app):void { qa180_updates_page($app,true); }
 function qa180_dispatch(App $app,string $path):void {
     if(in_array($path,['master/actualizar-180','master/actualizar-sistema'],true)){qa180_updates_page($app,true);exit;}
     if($path==='admin/actualizar-sistema'){qa180_updates_page($app,false);exit;}
+    r18_dispatch($app,$path);
     r17_dispatch($app,$path);
     // Shared welcome is a platform view, independent of each tenant's activation.
     if(qa180_active($app,0)){

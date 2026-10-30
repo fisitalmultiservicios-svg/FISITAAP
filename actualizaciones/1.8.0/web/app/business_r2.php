@@ -76,7 +76,7 @@ function r2_customer_access(App $app):void {
     $u=require_login(['customer']);$u=$app->one('SELECT * FROM users WHERE id=? AND role="customer" AND is_active=1',[$u['id']]);if(!$u){http_response_code(403);exit;}$temporary=str_ends_with($u['email'],'@registro.fisitaap.local');
     if(is_post()){verify_csrf();try{
         $email=strtolower(trim((string)($_POST['email']??'')));$password=(string)($_POST['password']??'');if(!$temporary)throw new DomainException('Tu cuenta ya tiene un acceso guardado. Usa Cambiar contraseña para modificarlo.');
-        if(!filter_var($email,FILTER_VALIDATE_EMAIL)||str_ends_with($email,'.local')||strlen($password)<12||strlen($password)>72||$password!==(string)($_POST['confirm']??''))throw new DomainException('Escribe un correo válido y dos contraseñas iguales de 12 a 72 caracteres.');
+        if(!filter_var($email,FILTER_VALIDATE_EMAIL)||str_ends_with($email,'.local')||strlen($password)<4||strlen($password)>72||$password!==(string)($_POST['confirm']??''))throw new DomainException('Escribe un correo válido y dos contraseñas iguales de 4 a 72 caracteres.');
         if($app->one('SELECT id FROM users WHERE email=? AND id<>?',[$email,$u['id']]))throw new DomainException('Este correo ya tiene una cuenta. Usa otro correo para guardar este acceso.');
         $app->exec('UPDATE users SET email=?,password_hash=?,email_verified_at=NULL WHERE id=? AND email=?',[$email,password_hash($password,PASSWORD_BCRYPT),$u['id'],$u['email']]);session_regenerate_id(true);$_SESSION['user']['email']=$email;flash('success','Acceso guardado. La próxima vez ingresa con este correo y contraseña.');redirect(url('account'));
     }catch(DomainException $ex){flash('error',$ex->getMessage());}}

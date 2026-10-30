@@ -1,3 +1,20 @@
+# Descargas FISITAAP · web 1.8.0-R18
+
+[**Descargar actualización R18 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R18.zip)
+
+Venta rápida y mesas adaptadas a pantalla, apertura de turno visible, cancelación de cuentas sin productos, Caja 0, fondos separados, vendedor opcional, acceso rápido del empleado, avisos del dueño y Academiaap actualizada.
+
+- [Guía de instalación y uso](GUIA-CPANEL-1.8.0.md)
+- [Solicitudes revisadas y resultados](INFORME-QA-1.8.0.md)
+- [Capturas R18](VISTAS-R18.md)
+- [Integridad de archivos](SHA256SUMS-1.8.0.txt)
+
+Respalda, extrae en `public_html` y ejecuta `/actualizador-180/index.php` como maestro. La publicación no instala el hosting. Conserva Windows1.8.1/Android1.8.0. La pregunta de vendedor nueva funciona conectada; offline conserva el operador original.
+
+---
+
+## Entregas anteriores
+
 # Descargas FISITAAP · web 1.8.0-R17
 
 [**Descargar actualización R17 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R17.zip)

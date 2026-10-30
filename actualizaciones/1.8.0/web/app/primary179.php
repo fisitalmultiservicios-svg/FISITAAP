@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 function primary179_active(App $app): bool { return $app->setting('primary179_active','0')==='1'; }
 function primary179_policy(App $app,array $device,bool $lock=false): array {
+    if(r18_ready($app)&&($register=qa180_offline_register($app,$device))&&r18_order_only($register))return ['version'=>179,'allowed'=>false,'generation'=>0];
     if (!primary179_active($app)) return ['version'=>179,'allowed'=>false,'generation'=>0];
     $row=$app->one('SELECT device_id,generation FROM fisitaap_primary179 WHERE tenant_id=?'.($lock?' FOR UPDATE':''),[$device['tenant_id']]);
     return ['version'=>179,'allowed'=>$row&&(int)$row['device_id']===(int)$device['id'],'generation'=>(int)($row['generation']??0)];
@@ -14,6 +15,7 @@ function primary179_assert_snapshot(App $app,array $device,array $snapshot): voi
     if(empty($snapshot['offline_policy']['allowed'])||!$current['allowed']||$current['generation']!==($snapshot['offline_policy']['generation']??0))throw new DomainException('Este catálogo no autoriza ventas sin internet: solo el equipo principal actual puede registrar operaciones nuevas.');
 }
 function primary179_select(App $app,array $tenant,int $id): void {
+    if(r18_ready($app)){$check=$app->one('SELECT * FROM fisitaap_registers180 WHERE device_id=? AND tenant_id=?',[$id,$tenant['id']]);if($check)r18_assert_collecting($check);}
     if (!primary179_active($app)) throw new DomainException('Completa primero la actualización 1.7.9 como administrador maestro.');
     $app->db->beginTransaction();
     try {

@@ -1,4 +1,4 @@
-# Instalar FISITAAP 1.8.0-R17 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R18 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
@@ -6,13 +6,31 @@ R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enter
 
 Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
 
-## R17: accesos, catálogo, Academiaap y Control de personal
+## R18: Venta rápida, mesas, usuarios y cajas
 
 1. Guarda un respaldo completo de archivos y base de datos fuera de `public_html`.
-2. Sube **FISITAAP-1.8.0-CPANEL-R17.zip** a la raíz real del dominio, normalmente `/home/tu_usuario/public_html`, y extráelo allí. La carpeta `actualizador-180` debe quedar dentro de `public_html`, junto al `index.php` que sirve el dominio.
-3. En el navegador con sesión maestra abre `https://fisitaap.com/actualizador-180/index.php`. Comprueba **R17**, marca que guardaste respaldo y pulsa **Instalar archivos**. No importes SQL ni reemplaces `config.php`.
-4. La aplicación usará `releases/1.8.0-r17`. Conserva esa carpeta. Los negocios anteriores que tengan pendiente activar 1.8.0 siguen haciéndolo desde Administración → Actualizar sistema; los nuevos empiezan actualizados.
-5. Prueba acceso de cliente, cajero, Pedidos, Academiaap y Personal. Retira el actualizador después de verificar. Publicar el ZIP en GitHub no instala el hosting.
+2. Sube **FISITAAP-1.8.0-CPANEL-R18.zip** a la raíz real del dominio, normalmente `/home/tu_usuario/public_html`, y extráelo allí. La carpeta `actualizador-180` debe quedar dentro de `public_html`, junto al `index.php` que sirve el dominio.
+3. En el navegador con sesión maestra abre `https://fisitaap.com/actualizador-180/index.php`. Comprueba **R18**, marca que guardaste respaldo y pulsa **Instalar archivos**. No importes SQL ni reemplaces `config.php`.
+4. La aplicación usará `releases/1.8.0-r18`. Conserva esa carpeta. Los negocios anteriores que tengan pendiente activar 1.8.0 siguen haciéndolo desde Administración → Actualizar sistema; los nuevos empiezan actualizados.
+5. Prueba Venta rápida, mesas, Caja 0/numerada, apertura/cierre con su cajero, fondos, vendedor, avisos y Academiaap. Retira el actualizador después de verificar. Publicar el ZIP en GitHub no instala el hosting.
+
+
+### Venta rápida, mesas y turnos en R18
+
+- La factura ocupa el panel izquierdo más grande y la carga rápida el derecho. En celular cambia entre **Facturación** y **Productos**. Se conservan cliente, totales y botoneras; con poca altura o teclado abierto puedes desplazarte sin perderlos. El zoom y pantalla completa siguen disponibles.
+- **Caja y turno** aparece en Venta rápida y Mesas. **Abrir turno** abre el fondo inicial sin abandonar la venta. **Mi turno / Cerrar** lleva al conteo. Solo puede cerrar quien abrió ese turno; ni otro cajero ni el dueño lo cierran en su lugar.
+- Al tocar una mesa normal se entra a su cuenta para cargar productos. **Volver a mesas** regresa al salón. En barra o si hay varias cuentas, primero se elige la cuenta. El plano conserva sus proporciones y permite zoom.
+- Al retirar el último producto de una cuenta sin cobros, la cuenta se cancela y libera su mesa. La devolución de inventario ocurre una sola vez. **Un total de ₡0 por descuento del 100 % no cancela una cuenta que conserva productos.** Los pedidos web originales y cuentas con pagos no se modifican por esta regla.
+- En **Equipos y cajas** asigna una caja por Windows/Android y un número: **0** solo abre y atiende cuentas; **1 o más** permite cobrar. No confundas el nombre libre con el número. Las cajas antiguas conservan la capacidad de cobro y reciben un número positivo. Cambiar un equipo/caja con turno abierto o principal offline exige sincronizar y cerrar/liberar antes.
+- Los cobros se realizan únicamente en la caja instalada autorizada, con el usuario que abrió su turno. Caja 0 no abre turnos de dinero, no cobra y no puede ser principal de venta sin internet.
+- Cada caja numerada tiene fondos propios. **Efectivo** se concilia en su turno; **Tarjeta, SINPE y Banco** tienen cuentas contables separadas por caja. Los cobros nuevos con Tarjeta/SINPE ingresan una vez en su cuenta. Estos ingresos no se suman al efectivo contado.
+- Las cuentas y saldos anteriores se conservan como fondos administrativos generales: no se redistribuye dinero automáticamente. Desde **Cuentas de dinero** puedes crear otras cuentas y asignarlas a una caja. Una caja instalada solo ofrece sus fondos; el dueño desde el navegador administra las cuentas generales. Las cuentas desactivadas se conservan.
+- En **Generales → Vendedor de la venta**, activa o desactiva **Preguntar vendedor al cobrar**. Si está activo, se pide elegir un colaborador de la tienda. El reporte de ventas distingue **cajero** y **vendedor**. El vendedor nunca cambia quién responde por el turno.
+- Esta entrega actualiza el sistema web usado dentro de las aplicaciones instaladas existentes. No reconstruye ni firma instaladores. La venta offline anterior conserva compatibilidad y atribuye vendedor al operador original; la nueva pregunta de vendedor funciona en el cobro conectado. Marcas y avisos requieren conexión.
+
+### Avisos de FISIChat para el propietario
+
+El chat del dueño muestra cumpleaños hoy o en los próximos 7 días, vacaciones asignadas próximas, saldo estimado de vacaciones para revisar, contratos con salida próxima, existencias bajas y cuentas por cobrar vencidas, según los módulos activos. **Revisar** abre el registro; **Visto** oculta ese aviso para esa cuenta. También puedes pedir **Ver avisos de mi negocio** sin depender de la IA. Los datos de personal son solo para el dueño de esa tienda; no se muestran en el chat público ni al comprador y no se envían mensajes al empleado.
 
 ### Acceso y clientes
 
@@ -20,7 +38,7 @@ Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesit
 - Se recupera el acceso inicial de registros automáticos antiguos que todavía no se usaron; no se cambian cuentas con acceso utilizado o recuperación completada.
 - En **Clientes → Buscar → ficha → General → Eliminar cliente**, indica el motivo. Se retira del listado y del acceso de esa tienda conservando documentos e historial. Se bloquea si tiene deuda, ventas o pedidos abiertos. Requiere permiso de eliminación.
 - Cada dirección nueva se asigna a una zona activa de esa tienda y puede guardar Google Maps. En checkout se pide dirección y zona; al elegir una dirección guardada se carga también su zona. Las direcciones antiguas sin zona requieren escogerla al usarlas.
-- Los cajeros pueden ingresar por su correo o por el usuario corto asignado en Control de personal. Los correos son únicos en toda FISITAAP; un usuario corto también es único. Las cuentas antiguas siguen conservando sus contraseñas y roles.
+- Los cajeros pueden ingresar por su correo o por el usuario corto asignado en Control de personal. Los correos son únicos en toda FISITAAP; el nombre rápido es obligatorio al crear o editar un colaborador y es único dentro de su empresa. En el equipo instalado se elige en un desplegable; el acceso público con un nombre repetido entre negocios requiere el correo para evitar ambigüedad. Las contraseñas nuevas admiten 4 caracteres o más, incluidos cuatro dígitos. Las cuentas antiguas siguen conservando sus contraseñas y roles.
 
 ### Catálogo, menú y pedidos
 
@@ -36,7 +54,7 @@ Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesit
 
 **Academiaap** reemplaza el acceso «Manual de uso». Tiene cursos por rol, lecciones actualizadas, progreso guardado por cuenta y botones **Ir a practicar**. Al abrir una pantalla desde una lección aparece **Volver al curso**.
 
-Durante los primeros tres días desde el primer uso de la bienvenida aparece una invitación pequeña **CONFIGUREMOS FISITAAP JUNTOS**. El dueño puede seguir datos generales, sucursales, roles, personal, categorías, productos, extras, diseño y equipo. Guarda en cada pantalla y vuelve al configurador para continuar. **Pausar y salir** conserva el paso. El botón **Configurador FISITAAP** del menú permite retomarlo después; los pasos ajenos al plan pueden omitirse.
+Durante los primeros tres días desde el primer uso de la bienvenida aparece una invitación pequeña **CONFIGUREMOS FISITAAP JUNTOS**. El dueño puede seguir datos generales, sucursales, roles, personal, categorías, opcionales y extras, productos, diseño y equipo. Guarda en cada pantalla y vuelve al configurador para continuar. **Pausar y salir** conserva el paso. El botón **Configurador FISITAAP** del menú permite retomarlo después; los pasos ajenos al plan pueden omitirse.
 
 ### Control de personal
 

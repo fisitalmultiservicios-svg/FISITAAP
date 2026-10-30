@@ -1,0 +1,749 @@
+{
+  "revision": "1.8.0-R18",
+  "passed": 7,
+  "checks": [
+    "Visible Abrir turno opens real modal on phone, posts opening and returns to Venta rápida with own-turn controls",
+    "Invoice, client, totals, payment and secondary buttons remain reachable at twelve desktop/tablet/phone/low-height sizes; desktop invoice stays larger and left of products",
+    "Reachable mobile payment completes a real native-authorized sale without physical print",
+    "Clicking a normal table opens its real product/billing workspace, Volver a mesas returns, and selecting again resumes the same account",
+    "Graphical floor preserves saved aspect ratio with zoom and no persistent account panel; business screens fit all twelve sizes",
+    "Installed attendance chooses own-store employee from dropdown and inspects a four-digit password; owner chat shows real reminders without provider access",
+    "Official presentation screenshot and loaded interface assets remain unchanged"
+  ],
+  "layouts": [
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 1440,
+      "height": 1000,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 1366,
+      "height": 768,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 1024,
+      "height": 768,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 820,
+      "height": 1180,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 768,
+      "height": 1024,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 600,
+      "height": 960,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 390,
+      "height": 844,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 360,
+      "height": 740,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 320,
+      "height": 700,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 844,
+      "height": 390,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 390,
+      "height": 520,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/ventas?screen=order&ticket=112",
+      "width": 360,
+      "height": 520,
+      "controls_reachable": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 1440,
+      "height": 1000,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 1366,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 1024,
+      "height": 768,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 820,
+      "height": 1180,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 768,
+      "height": 1024,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 600,
+      "height": 960,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 360,
+      "height": 740,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 320,
+      "height": 700,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 844,
+      "height": 390,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 390,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=graphic",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/mesas?view=basic",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/personal",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    },
+    {
+      "path": "/admin/configuracion",
+      "width": 360,
+      "height": 520,
+      "no_horizontal_overflow": true
+    }
+  ],
+  "page_errors": [],
+  "environment": "Chromium real HTTP/PHP/MariaDB fictional fixture. Native bridge/transport simulated; physical Windows/Android/iOS verification remains manual."
+}

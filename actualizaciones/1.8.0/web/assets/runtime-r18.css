@@ -1,0 +1,45 @@
+/* R18 keeps controls reachable; compact screens scroll instead of cutting actions. */
+body.r15-app #r15App .r18-sale-view{height:auto!important;min-height:100%;max-height:none!important;overflow:visible!important;display:flex!important;flex-direction:column;padding-bottom:18px!important}
+body.r15-app #r15App .r18-sale-view>.page-heading{display:flex!important;flex:none!important;min-height:45px;margin-bottom:12px;gap:12px}
+body.r15-app #r15App .r18-sale-view>.page-heading h1{display:block!important;white-space:normal!important;line-height:1.25;font-size:clamp(20px,2vw,27px)}
+body.r15-app #r15App .r18-sale-view .pos-layout{height:var(--r18-panel-height,550px)!important;min-height:390px!important;max-height:none!important;flex:0 0 auto!important;display:grid!important;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);overflow:visible!important;gap:18px;align-items:stretch}
+body.r15-app .r18-sale-view .ticket{height:100%!important;min-height:0!important;max-height:none!important;display:flex!important;flex-direction:column;overflow:hidden!important}
+body.r15-app .r18-sale-view .ticket-head{display:flex!important;flex:none!important;min-height:46px!important;padding:12px 16px!important}
+body.r15-app .r18-sale-view .ticket-customer{display:flex!important;flex:none!important;padding:9px 14px!important;min-height:44px}
+body.r15-app .r18-sale-view .ticket .r3-sale-table-wrap{flex:1 1 auto!important;min-height:90px!important;max-height:none!important;overflow:auto!important}
+body.r15-app .r18-sale-view .r15-billing-footer{flex:none!important;position:relative!important;margin-top:auto;display:block!important}
+body.r15-app .r18-sale-view .ticket-summary .summary-row{display:flex!important;font-size:12px;min-height:20px}
+body.r15-app .r18-sale-view .ticket-summary{padding:11px 16px!important}
+body.r15-app .r18-sale-view .ticket-summary .total{padding-top:8px!important;margin-top:6px!important;border-top:1px solid var(--line)!important}
+body.r15-app .r18-sale-view .ticket-actions{display:flex!important;flex-direction:column;flex:none;gap:8px;padding:10px 14px!important}
+body.r15-app .r18-sale-view .ticket-actions>.hstack{display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:7px}
+body.r15-app .r18-sale-view .ticket-actions>.hstack>.btn{min-height:34px!important;flex:1 1 auto}
+body.r15-app .r18-sale-view .ticket-actions>.btn{display:flex!important;min-height:43px!important;white-space:normal;font-size:14px}
+body.r15-app .r18-sale-view .pos-products{height:100%!important;min-height:0!important;max-height:none;overflow:auto!important;overscroll-behavior:contain}
+body.r15-app .r18-sale-view .quick-heading{display:flex!important;margin-bottom:12px!important}
+body.r15-app .r18-sale-view .quick-categories{display:flex!important;flex-wrap:wrap!important;overflow:visible!important;gap:8px}
+body.r15-app .r18-sale-view .quick-categories .chip{flex:1 1 86px!important;max-width:none!important;min-height:48px!important;white-space:normal!important;overflow:visible!important}
+body.r15-app .r18-sale-view .quick-categories .chip span{white-space:normal;overflow:visible!important;text-overflow:clip!important;line-height:1.25}
+body.r15-app .r18-sale-view .pos-products .r3-panel{min-height:0!important;overflow:visible!important}
+body.r15-app .r18-sale-view .product-grid{min-height:0!important;max-height:none!important;overflow:visible!important}
+body.r15-app .r18-sale-view .r15-open-accounts{max-height:120px;overflow:auto}
+.r18-cash-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:none!important;margin:0 0 14px;padding:12px 15px;border:1px solid #d8e5ed;border-radius:11px;background:#fff;color:#274456;min-width:0}
+.r18-cash-bar>div{flex:1 1 220px;min-width:0}.r18-cash-bar strong{display:block;font-size:13px;overflow-wrap:anywhere}.r18-cash-bar span{display:block;color:#6d8392;font-size:11px;line-height:1.45;margin-top:3px}.r18-cash-bar .btn{font-size:12px;min-height:37px!important;white-space:normal}.r18-cash-locked{padding:7px 10px;background:#fff6e9;border-radius:8px;color:#94621c!important}
+body.r15-app #r15App .r15-floor-layout{display:block!important;grid-template-columns:1fr!important}
+body.r15-app #r15App .r15-floor-card{width:100%;max-width:none;overflow:hidden}
+body.r15-app #r15App .r15-floor-card .r3-floor-canvas{height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:1000/680;overflow:auto!important;touch-action:pan-x pan-y}
+body.r15-app #r15App .r15-floor-card .r3-floor-canvas>svg{display:block;width:100%;height:auto!important;min-width:0;aspect-ratio:1000/680;max-width:none}
+body.r15-app #r15App .r15-floor-filter{flex-wrap:wrap;min-width:0}.r15-floor-filter .r3-room-tabs{max-width:100%;overflow:auto}
+body.r15-app #r3TableAccount:not([open]){display:none!important}body.r15-app #r3TableAccount[open]{position:fixed!important;inset:50% auto auto 50%!important;transform:translate(-50%,-50%)!important;width:min(900px,calc(100vw - 24px))!important;max-height:calc(100dvh - 24px)!important;min-height:0;overflow:auto!important;margin:0!important;border-radius:16px!important}
+.r18-seller-choice{padding:16px;margin:10px 0 18px;border:1px solid #dbe7ee;border-radius:12px;background:#f7fafc}.r18-seller-choice legend{font-size:15px;font-weight:700}.r18-seller-choice label{display:block}.r18-seller-choice select{width:100%;font-size:16px;min-height:42px}.r18-seller-choice small{display:block;line-height:1.5;color:#657d8e;margin-top:8px}
+.r18-chat-alerts{flex:0 1 auto;max-height:40%;overflow:auto;background:#f1f7fa;border-bottom:1px solid #d8e6eb;padding:12px 16px;font-size:12px}.r18-chat-alerts[hidden]{display:none}.r18-chat-alerts>strong{display:block;padding:2px 0 9px;font-size:13px}.r18-chat-alerts article{padding:10px;border:1px solid #dae8ed;border-radius:10px;background:white;margin-bottom:8px}.r18-chat-alerts article b{font-size:12px;display:block;line-height:1.4}.r18-chat-alerts p{font-size:11px;line-height:1.5;margin:7px 0}.r18-chat-alerts a{color:#176d75;font-weight:600;font-size:11px}.r18-chat-alerts button{font:inherit;border:0;background:#e7f1f1;color:#276267;border-radius:6px;padding:5px 9px;float:right}.fc-launch [data-r18-alert-count]{display:inline-flex;align-items:center;justify-content:center;min-width:20px;min-height:20px;padding:2px 4px;border-radius:12px;background:#dc733c;color:white;font-size:11px}.fc-launch [data-r18-alert-count][hidden]{display:none}
+@media(max-width:900px){body.r15-app #r15App .r18-sale-view .pos-layout{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:12px}}
+@media(max-width:650px){body.r15-app #r15App .r18-sale-view{padding-inline:12px!important}.r18-cash-bar{padding:10px 12px;gap:7px}.r18-cash-bar>div{flex-basis:100%}.r18-cash-bar .btn{flex:1 1 auto}.r18-sale-view .pos-mobile-tabs{display:flex!important;flex:none!important;min-height:42px!important;margin:0 0 12px!important}.r18-sale-view .pos-mobile-tabs button{min-height:40px!important;font-size:14px!important;flex:1}body.r15-app #r15App .r18-sale-view .pos-layout{grid-template-columns:minmax(0,1fr)!important;min-height:420px!important;height:var(--r18-panel-height,500px)!important}.r18-sale-view .ticket-customer input,.r18-sale-view .ticket-customer select{font-size:16px!important;min-height:40px!important}.r18-sale-view .ticket-actions .hstack .btn{font-size:12px!important}body.r15-app #r15App .r15-floor-card .r3-floor-canvas{aspect-ratio:1000/680!important}.r18-chat-alerts{max-height:34%;padding:9px 12px}}
+@media(max-height:600px){body.r15-app #r15App>.view-container{overflow:auto!important}body.r15-app #r15App .r18-sale-view{height:auto!important}body.r15-app #r15App .r18-sale-view .pos-layout{min-height:430px!important}body.r15-app .r18-sale-view .ticket-head,body.r15-app .r18-sale-view .ticket-summary .summary-row,body.r15-app .r18-sale-view .ticket-actions>.hstack{display:flex!important}}
+
+body.r15-app .r15-topbar .hr17-clock-button{display:inline-flex!important;align-items:center;justify-content:center;flex:0 0 auto;min-height:33px;margin-left:auto;font-size:11px!important;padding:7px 9px!important;white-space:nowrap}
+.r18-back-tables{align-self:flex-start;margin-bottom:12px}
+@media(max-width:650px){body.r15-app .r15-topbar:has(.hr17-clock-button) .profile-select{display:none!important}}
+@media print{body.r15-app .r15-topbar .hr17-clock-button{display:none!important}}
+
+body.r15-app .r18-sale-view .ticket-actions>.hstack>form{flex:1 1 140px}body.r15-app .r18-sale-view .ticket-actions>.hstack>form>.btn{width:100%;min-height:34px}

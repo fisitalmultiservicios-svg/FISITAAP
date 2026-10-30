@@ -1,0 +1,11 @@
+{
+  "revision": "1.8.0-R18",
+  "passed": 4,
+  "checks": [
+    "Generales seller switch saves through its real form and can be turned off without changing the business type",
+    "Installed login selector displays quick name and submits the real assigned identity rather than an ambiguous cross-store alias",
+    "Real Equipos y cajas saves number/independent funds, rejects duplicate active positive number, and creates Caja0 without money funds",
+    "Team screen without Personnel also requires a quick name; four-digit temporary login and four-digit forced password change succeed"
+  ],
+  "environment": "Real PHP/MariaDB/Chromium fictional fixture; login bridge safe metadata simulated, no physical device"
+}

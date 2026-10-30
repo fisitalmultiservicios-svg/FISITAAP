@@ -1,3 +1,50 @@
+# Informe QA · FISITAAP web 1.8.0-R18
+
+Fecha de entrega: 29 de octubre de 2026 (Costa Rica). Revisión acumulativa sobre R17. Se corrigieron las solicitudes nuevas y se conservan los archivos históricos.
+
+| Solicitud | Resultado R18 |
+|---|---|
+| Venta rápida sin sectores ocultos | Altura calculada con los controles reales de la factura. Conserva encabezado, cliente, totales y botoneras. Factura izquierda más amplia; pestañas en teléfono y desplazamiento accesible con poca altura o teclado. |
+| Cancelar una cuenta en ₡0 | Según la aclaración: solo al retirar el último producto de una cuenta sin cobros. Devuelve inventario una vez, libera mesas unidas y deja bitácora. Una cuenta con productos y descuento del 100 % sigue abierta. |
+| Abrir turno en Venta rápida | Barra visible Caja y turno con apertura en ventana, fondo inicial y retorno a la venta. Controles del turno propio y entrada/salida de efectivo. |
+| Usuarios en desplegables | Acceso del equipo instalado con nombres rápidos, selector de empleado al marcar, vendedor y asignaciones. El acceso público conserva correo/usuario escrito: no publica un directorio global de tiendas. |
+| Nombre rápido de empleado | Obligatorio al crear/editar desde Personal o Usuarios; único dentro de la empresa. Correos únicos en toda la plataforma. Un alias ambiguo en el acceso público exige usar el correo; el selector instalado identifica su cuenta exacta. |
+| Contraseñas desde 4 dígitos | Alta, restablecimiento y cambio admiten cuatro caracteres o más, incluidos cuatro dígitos. Conserva contraseñas existentes. Comprobado también el acceso temporal y cambio obligatorio. |
+| Avisos del dueño en FISIChat | Cumpleaños hoy/próximos 7 días, vacaciones asignadas próximas, saldos estimados para revisar, salida de contrato próxima, existencias y cuentas vencidas según módulos. Revisar abre la pantalla; Visto persiste por propietario. Disponible sin IA y aislado por tienda. |
+| Caja por dispositivo; Caja 0 | Un Windows/Android vinculado por caja. Número 0 abre/atiende cuentas sin turnos de dinero, cobros ni venta offline. Positivos cobran con su propio turno. Se rechazan números positivos activos duplicados. Cajas previas conservan cobro y reciben número positivo. |
+| Vendedor de la venta | Switch en Generales; cuando está activo, selector obligatorio de colaborador de la misma tienda al cobrar conectado. Reporte distingue vendedor y cajero. El vendedor no cambia al responsable del turno. |
+| Cierre exclusivo del turno | Solo el usuario que lo abrió puede cerrarlo en esa caja. El dueño tampoco cierra el turno de otra persona. Se conservan validaciones de cuentas pendientes, conteo y reintentos. |
+| Fondos independientes | Efectivo por turno; Tarjeta/SINPE/Banco contables por caja. Cobros nuevos Tarjeta/SINPE acreditados una vez. No inflan efectivo. Selector de fondos limita cada equipo a su caja. Saldos anteriores no se redistribuyen. |
+| Opcionales/extras antes del producto | Configurador reordenado: categorías, opcionales/extras y después productos. Conserva pausa y avance. |
+| Menú en celular y Mesas | Plano con proporción original, zoom y opciones actuales. Tocar mesa normal crea o abre su cuenta real para cargar productos; Volver a mesas regresa al salón. Barra o varias cuentas conservan selección inicial. |
+| Manuales y funciones nuevas | Academiaap incorpora cajas, fondos, vendedor, accesos, avisos, mesas y cuenta vacía; guía de instalación/uso actualizada. |
+
+## Pruebas de esta entrega
+
+- Operación: 8 grupos con HTTP, CSRF, PHP y MariaDB reales. Incluyen cuatro dígitos, alias entre tiendas, turnos, mesas unidas, descuento total, Caja 0, vendedor, fondos y avisos.
+- Formularios: 4 grupos; switch real de Generales, selector instalado, alta de cajas con cuentas independientes y alta/cambio de contraseña desde Usuarios sin módulo Personal.
+- Navegador: 7 recorridos y **120 combinaciones de pantalla**, de 320 a 1440 px, tablet, horizontal y poca altura. Comprueba que la factura no se desplaza dentro de un área recortada. La presentación oficial conserva su captura idéntica.
+- Continuidad offline: 9 grupos; catálogo compartido estable con nombres repetidos, deltas de existencias, adopción del turno web, venta recibida una sola vez, reconocimiento de respuesta perdida y cierre conciliado con movimientos web.
+- Pedidos: 3 grupos; Catálogo sin cocina/comanda, Menú imprime al aceptar una vez, Monitor prepara y Pedidos entrega; zonas, teléfono y diseño conservados.
+- Actualizador: 7 grupos sobre el ZIP R17 publicado y esquema R17 en una base independiente. Conserva usuarios/contraseñas, saldos/movimientos, ventas/productos, Personal, Academiaap, configurador, versiones mixtas 179/180 y turnos abiertos. No altera config.php, uploads ni árbol R17. Rechaza código activo modificado; reintentar no duplica respaldo ni reactiva cuentas deshabilitadas.
+- Sintaxis e integridad: 148 archivos funcionales, 87 PHP de payload, 91 PHP del ZIP y 14 JavaScript; hashes y permisos explícitos 644/755. Extracción comprobada con umask077.
+
+Los archivos JSON de cada prueba acompañan la descarga. Las capturas usan registros ficticios. No se usaron negocios reales ni se enviaron mensajes, pagos bancarios o impresiones físicas.
+
+## Instalación y alcance
+
+Respalda archivos y base de datos, extrae el ZIP en la raíz real del dominio (`public_html`) y ejecuta **/actualizador-180/index.php** con sesión maestra. Extraer solo no instala. Conserva **releases/1.8.0-r18**. No importes SQL ni cambies config.php. La publicación del repositorio no instala el hosting.
+
+Esta entrega actualiza la web que usan las aplicaciones instaladas existentes; no reconstruye ni firma ejecutables/APK. La nueva pregunta de vendedor funciona conectada; offline conserva el operador original para admitir las ventas pendientes anteriores. Marcas y avisos necesitan conexión. Se verificó el protocolo nativo con equipos ficticios; la comprobación final de Windows/Android/iOS e impresoras físicas se hace después de instalar. Los cálculos laborales de R17 mantienen su carácter de estimación, sin certificación legal ni pagos automáticos.
+
+Archivo: **FISITAAP-1.8.0-CPANEL-R18.zip** · 1,724,350 bytes.
+
+SHA256: `88192bbbaa904fe4c9cdda52ba8ef101e16ce64a483bc83d90c067ba096f9b04`
+
+---
+
+## Informe de la entrega anterior
+
 # Informe QA · FISITAAP web 1.8.0-R17
 
 Fecha de entrega: 29 de octubre de 2026 (Costa Rica). Actualización acumulativa sobre R16. Este informe distingue lo comprobado en el entorno local de lo que necesita revisión en el hosting o dispositivo físico.

@@ -29,14 +29,15 @@ function qa180_proof(App $app,array $device,array $data):array {
     if(!preg_match('/^[a-f0-9]{64}$/D',$nonce))throw new DomainException('Solicitud de autorización inválida.');
     $user=$app->one('SELECT * FROM users WHERE id=? AND tenant_id=? AND is_active=1 AND force_password_change=0',[$uid,$device['tenant_id']]);
     if(!$user)throw new DomainException('El usuario no pertenece al negocio de este equipo.');
-    $cash=true;try{qa180_permission($app,$user,'ventas','charge');}catch(DomainException $error){$cash=false;qa180_permission($app,$user,'cocina','write');}
+    $cash=true;try{qa180_permission($app,$user,'ventas','charge');}catch(DomainException $error){$cash=false;try{qa180_permission($app,$user,'ventas','write');}catch(DomainException){qa180_permission($app,$user,'cocina','write');}}
     $register=$app->one('SELECT * FROM fisitaap_registers180 WHERE device_id=? AND tenant_id=? AND branch_id=? AND is_active=1',[$device['id'],$device['tenant_id'],$device['branch_id']]);
     if(!$register||($cash&&$register['user_id']&&(int)$register['user_id']!==$uid&&$user['role']!=='tenant_admin'))throw new DomainException('El dueño debe asignar una caja y un cajero autorizado a este equipo.');
+    if(r18_order_only($register))$cash=false;
     $claims=['nonce'=>$nonce,'user'=>$uid,'tenant'=>(int)$device['tenant_id'],'device'=>(int)$device['id'],'token_hash'=>$device['token_hash'],'register'=>(int)$register['id'],'branch'=>(int)$device['branch_id'],'cash'=>$cash,'print'=>true,'expires'=>time()+120];
     $bound=false;if(!empty($data['confirm'])){$bound=(bool)$app->one('SELECT id FROM fisitaap_operations180 WHERE tenant_id=? AND user_id=? AND result_id=? AND operation_key=? AND payload_hash=? AND kind="native_binding" AND created_at>=DATE_SUB(NOW(),INTERVAL 2 MINUTE)',[$device['tenant_id'],$uid,$device['id'],substr(hash('sha256','native|'.$nonce),0,32),hash('sha256',$nonce)]);if(!$bound)throw new DomainException('Primero confirma el acceso del usuario en la web.');}
     $encoded=bin2hex(json_encode($claims,JSON_THROW_ON_ERROR));
     $owns=!$app->db->inTransaction();if($owns)$app->db->beginTransaction();
-    try{$state=qa180_cash_state($app,$device,(array)($data['pending']??[]));$state['web_payments']=[];$webKeys=array_slice(array_values(array_filter((array)($data['web_payment_keys']??[]),fn($key)=>is_string($key)&&preg_match('/^[a-f0-9]{32}$/D',$key))),0,100);if($webKeys){$marks=implode(',',array_fill(0,count($webKeys),'?'));$state['web_payments']=array_column($app->all('SELECT s.payment_key FROM sales s JOIN pos_shifts h ON h.id=s.shift_id WHERE s.tenant_id=? AND s.branch_id=? AND h.device_id=? AND s.created_by=? AND s.payment_key IN('.$marks.')',[$device['tenant_id'],$device['branch_id'],$device['id'],$uid,...$webKeys]),'payment_key');}$policy=primary179_policy($app,$device);$policy['version']=180;$policy['allowed']=$policy['allowed']&&$cash&&count(qa180_snapshot_users($app,$device))>0;if($owns)$app->db->commit();}
+    try{$state=qa180_cash_state($app,$device,(array)($data['pending']??[]));$state['web_payments']=[];$webKeys=array_slice(array_values(array_filter((array)($data['web_payment_keys']??[]),fn($key)=>is_string($key)&&preg_match('/^[a-f0-9]{32}$/D',$key))),0,100);if($webKeys){$marks=implode(',',array_fill(0,count($webKeys),'?'));$state['web_payments']=array_column($app->all('SELECT s.payment_key FROM sales s JOIN pos_shifts h ON h.id=s.shift_id WHERE s.tenant_id=? AND s.branch_id=? AND h.device_id=? AND s.created_by=? AND s.payment_key IN('.$marks.')',[$device['tenant_id'],$device['branch_id'],$device['id'],$uid,...$webKeys]),'payment_key');}$policy=primary179_policy($app,$device);$policy['version']=180;$policy['allowed']=$policy['allowed']&&$cash&&count(qa180_snapshot_users($app,$device))>0&&!r18_order_only($register);if($owns)$app->db->commit();}
     catch(Throwable $error){if($owns&&$app->db->inTransaction())$app->db->rollBack();throw $error;}
     return ['ok'=>true,'users180'=>qa180_snapshot_users($app,$device),'proof'=>$encoded.'.'.hash_hmac('sha256',$encoded,$app->config['app_key']),'cash'=>$cash,'bound'=>$bound,'cash_state'=>$state,'offline_policy'=>$policy];
 }
@@ -66,6 +67,7 @@ function qa180_native(App $app,array $user,bool $required=false,string $capabili
         try{qa180_permission($app,$user,$capability==='cash'?'ventas':'cocina',$capability==='cash'?'charge':'write');}catch(DomainException $error){if($capability==='cash')return $required?throw $error:null;qa180_permission($app,$user,'ventas','read');}
         $register=$app->one('SELECT r.*,d.last_sync FROM fisitaap_registers180 r JOIN fisitaap_r2_devices d ON d.id=r.device_id AND d.tenant_id=r.tenant_id AND d.branch_id=r.branch_id WHERE r.id=? AND r.device_id=? AND r.tenant_id=? AND r.is_active=1 AND d.is_active=1 AND d.token_hash=? AND (?="print" OR r.user_id IS NULL OR r.user_id=? OR ?="tenant_admin")',[$grant['register'],$grant['device'],$user['tenant_id'],$grant['token_hash']??'',$capability,$user['id'],$user['role']]);
     }
+    if($register&&$capability==='cash'&&r18_order_only($register)){if($required)r18_assert_collecting($register);$register=null;}
     if(!$register&&$required)throw new DomainException('Abre esta operación en FISITAAP Windows o Android, desde un equipo y una caja autorizados.');
     return $register;
 }
@@ -89,6 +91,7 @@ function qa180_money(App $app,array $user,array $branch,int $account,int $cents,
     }else{
         $money=$app->one('SELECT * FROM fisitaap_money_accounts180 WHERE id=? AND tenant_id=? AND is_active=1 FOR UPDATE',[$account,$user['tenant_id']]);
         if(!$money)throw new DomainException('La cuenta de dinero no está disponible para este negocio.');
+        $scoped=r18_ready($app)?r18_money_scope($app,$user,$money,$kind):null;if($scoped){$shift=qa180_cash_shift($app,$user,$branch);$register=(int)$scoped['id'];}elseif(!empty($money['register_id_r18']))$register=(int)$money['register_id_r18'];
         $app->exec('UPDATE fisitaap_money_accounts180 SET balance=balance+? WHERE id=? AND tenant_id=?',[$cents/100,$account,$user['tenant_id']]);
     }
     $app->exec('INSERT INTO fisitaap_money_entries180(tenant_id,branch_id,account_id,register_id,shift_id,user_id,operation_key,payload_hash,kind,amount,reason,reference,entity_type,entity_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$user['tenant_id'],$branch['id'],$account?:null,$register,$shift['id']??null,$user['id'],$key,$hash,$kind,$cents/100,mb_substr($reason,0,250),mb_substr($reference,0,150),$entity,$entityId]);
@@ -96,13 +99,13 @@ function qa180_money(App $app,array $user,array $branch,int $account,int $cents,
 }
 function qa180_cash_expected(App $app,array $shift):int {
     $sales=(float)$app->one('SELECT COALESCE(SUM(p.amount),0) total FROM pos_payments p JOIN sales s ON s.id=p.sale_id WHERE s.tenant_id=? AND s.shift_id=? AND s.status="completed" AND p.payment_method="Efectivo"',[$shift['tenant_id'],$shift['id']])['total'];
-    $moves=(float)$app->one('SELECT COALESCE(SUM(amount),0) total FROM fisitaap_money_entries180 WHERE tenant_id=? AND shift_id=?',[$shift['tenant_id'],$shift['id']])['total'];
+    $moves=(float)$app->one('SELECT COALESCE(SUM(amount),0) total FROM fisitaap_money_entries180 WHERE tenant_id=? AND shift_id=? AND account_id IS NULL',[$shift['tenant_id'],$shift['id']])['total'];
     return pos_cents_148($shift['opening_cash'])+(int)round(($sales+$moves)*100);
 }
 function qa180_pending_shift(App $app,array $shift):bool {
     // Include pre-update web tickets belonging to this cashier. Accounts from
     // other devices/cashiers do not block an independent register's closing.
-    return (bool)$app->one('SELECT id FROM pos_tickets WHERE tenant_id=? AND branch_id=? AND status NOT IN("paid","void","merged") AND (shift_id=? OR (shift_id IS NULL AND opened_by=? AND source_order_id IS NULL)) AND (table_id IS NOT NULL OR paid_total>0 OR EXISTS(SELECT 1 FROM pos_ticket_items i WHERE i.ticket_id=pos_tickets.id)) LIMIT 1',[$shift['tenant_id'],$shift['branch_id'],$shift['id'],$shift['user_id']]);
+    return (bool)$app->one('SELECT id FROM pos_tickets WHERE tenant_id=? AND branch_id=? AND status NOT IN("paid","void","merged") AND (shift_id=? OR (shift_id IS NULL AND opened_by=? AND source_order_id IS NULL AND (register_id IS NULL OR register_id='.(int)$shift['register_id'].'))) AND (table_id IS NOT NULL OR paid_total>0 OR EXISTS(SELECT 1 FROM pos_ticket_items i WHERE i.ticket_id=pos_tickets.id)) LIMIT 1',[$shift['tenant_id'],$shift['branch_id'],$shift['id'],$shift['user_id']]);
 }
 
 function qa180_roles_upgrade(App $app,int $tenantId=0):void {

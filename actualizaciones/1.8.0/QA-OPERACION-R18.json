@@ -1,0 +1,15 @@
+{
+  "revision": "1.8.0-R18",
+  "passed": 8,
+  "checks": [
+    "Four-digit staff password works; quick name required and scoped per business; ambiguous global alias cannot choose another store",
+    "Only the actual opener can close a shift; owner on the same real native register cannot close it or open a duplicate",
+    "Removing the final product auto-voids the empty bill and restores stock once and frees linked tables; a 100% discount with products leaves the account open",
+    "Seller prompt rejects missing/foreign staff, preserves cashier identity; card/SINPE credit own-register accounts once and do not inflate shift cash",
+    "A second register receives its own funds; account selectors do not offer another register’s funds",
+    "Caja 0 gets attention/print capability only: can open and add products, cannot collect, open cash shifts or gain offline sales",
+    "Owner-only birthday/vacation alerts are own-store scoped, persist Visto per owner; staff selector exposes no password data",
+    "Original cashier closes its own shift with independent cash reconciliation after noncash sales"
+  ],
+  "environment": "Real HTTP/PHP/MariaDB, guarded fictional fixture; native transport simulated using production authorization, no bank/WhatsApp/physical printer"
+}

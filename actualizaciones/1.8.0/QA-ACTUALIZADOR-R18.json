@@ -1,0 +1,15 @@
+{
+  "revision": "1.8.0-R18",
+  "baseline": "Published R17 ZIP, cloned R17 schema, mixed A180/B179 and open shifts",
+  "passed": 7,
+  "checks": [
+    "Explicit additive migration creates register numbers, scoped fund/seller columns, own-store alias index and owner reminder reads",
+    "Existing users/passwords, money accounts/balances/entries, sales/products, personnel, salaries, learning/setup, tenant versions and open shifts preserved",
+    "config/uploads/shared files and immutable R17 tree untouched",
+    "Master-only/CSRF and custom active-code safeguards retained",
+    "148 final hashes, 644/755 portable ZIP extraction under umask077; R18 entry/CSS and private-PHP HTTP guards verified",
+    "Each positive register receives separate zero-balance funds without reassigning old balances",
+    "Repeat install keeps disabled accounts disabled and creates no second backup; rollback blocked after publication"
+  ],
+  "environment": "Independent fictional PHP/MariaDB database; no production hosting"
+}

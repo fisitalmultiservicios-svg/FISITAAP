@@ -31,7 +31,7 @@ function qa180_shift_close(App $app,array $user,array $branch,int $id,array $for
     try{
         $app->one('SELECT id FROM branches WHERE id=? AND tenant_id=? FOR UPDATE',[$branch['id'],$user['tenant_id']]);
         $shift=$app->one('SELECT * FROM pos_shifts WHERE id=? AND tenant_id=? AND branch_id=? AND register_id=? FOR UPDATE',[$id,$user['tenant_id'],$branch['id'],$register['id']]);
-        if(!$shift||(!in_array($user['role'],['tenant_admin','manager'],true)&&(int)$shift['user_id']!==(int)$user['id']))throw new DomainException('El turno no pertenece a tu caja o usuario.');
+        if(!$shift||(int)$shift['user_id']!==(int)$user['id'])throw new DomainException('El turno no pertenece a tu caja o usuario.');
         if($shift['status']==='closed'){
             if($shift['closing_key']!==$key||!hash_equals((string)$shift['closing_payload_hash'],$hash))throw new DomainException('El turno ya se cerró con otro conteo. Revisa el detalle.');
             $app->db->commit();return $id;
@@ -53,13 +53,14 @@ function qa180_shifts(App $app,array $user,array $tenant):void {
             else throw new DomainException('Operación de turno desconocida.');
             flash('success',$closed?'Turno cerrado. El detalle se conserva en Turnos.':'Turno abierto.');
         }catch(Throwable $error){flash('error',$error instanceof PDOException?'No se pudo guardar el turno. Revisa su estado antes de intentar de nuevo.':$error->getMessage());}
+        $return=(string)($_POST['return_to_r18']??'');if(!$closed&&preg_match('~^admin/(?:ventas|mesas)(?:\?[^#\r\n]{0,400})?$~D',$return))redirect(url($return));
         redirect(url('admin/turnos'.($closed?'?detail='.$closed.'&closed=1':'')));
     }
     $current=$register?$app->one('SELECT * FROM pos_shifts WHERE tenant_id=? AND branch_id=? AND register_id=? AND status="open" ORDER BY id DESC LIMIT 1',[$tenant['id'],$branch['id'],$register['id']]):null;
     admin_shell_start('Turnos',$user,$tenant,'turnos');
     if($register){
         echo '<section class="card admin-card"><h2>'.e($register['name']).'</h2>';
-        if($current){
+        if($current&&(int)$current['user_id']!==(int)$user['id']){echo '<p>Este turno lo abrió otro usuario. Solo esa persona puede cerrarlo.</p>';}elseif($current){
             $expected=qa180_cash_expected($app,$current);
             echo '<form method="post" data-cash-counter data-expected="'.$expected.'">'.csrf_field().pos_hidden_148('action','close').pos_hidden_148('id',$current['id']).pos_hidden_148('closing_key',bin2hex(random_bytes(16))).'<h3>Contar efectivo y cerrar</h3><div class="qa180-coins">';
             foreach(qa180_denominations() as $value)echo '<label>'.money((float)$value).'<input class="input" name="denominations['.$value.']" type="number" value="0" min="0" max="999999" step="1" data-denomination="'.$value.'"></label>';
