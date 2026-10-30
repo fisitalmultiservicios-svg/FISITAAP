@@ -1,0 +1,15 @@
+{
+  "revision": "1.8.0-R20",
+  "baseline": "Published R19 ZIP, cloned R19 schema, mixed A180/B179 and open shifts",
+  "passed": 7,
+  "checks": [
+    "Additive web register identity and per-sale output/paper fields are installed; existing native devices, employee links and staff passwords remain unchanged",
+    "Existing users/passwords, money accounts/balances/entries, sales/products, personnel, salaries, learning/setup, tenant versions and open shifts preserved",
+    "config/uploads/shared files and immutable R19 tree untouched",
+    "Master-only/CSRF and custom active-code safeguards retained",
+    "156 final hashes, 644/755 portable ZIP extraction under umask077; R20 entry/CSS and private-PHP HTTP guards verified",
+    "Setup/learning progress and employee identities remain unchanged; new browser register metadata is additive and installed-only remains the default",
+    "Repeat install preserves disabled accounts, blank contact emails and unlinked employees without creating users or a second backup; rollback blocked after publication"
+  ],
+  "environment": "Independent fictional PHP/MariaDB database; no production hosting"
+}

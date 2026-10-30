@@ -70,6 +70,8 @@ function qa180_native(App $app,array $user,bool $required=false,string $capabili
         $register=$app->one('SELECT r.*,d.last_sync FROM fisitaap_registers180 r JOIN fisitaap_r2_devices d ON d.id=r.device_id AND d.tenant_id=r.tenant_id AND d.branch_id=r.branch_id WHERE r.id=? AND r.device_id=? AND r.tenant_id=? AND r.is_active=1 AND d.is_active=1 AND d.token_hash=? AND (?="print" OR r.user_id IS NULL OR r.user_id=? OR ?="tenant_admin")',[$grant['register'],$grant['device'],$user['tenant_id'],$grant['token_hash']??'',$capability,$user['id'],$user['role']]);
     }
     if($register&&$capability==='cash'&&r18_order_only($register)){if($required)r18_assert_collecting($register);$register=null;}
+    if(!$register&&$capability==='cash'&&r20_ready($app))$register=r20_web_register($app,$user);
+    if(!$register&&$required&&$capability==='cash'&&r20_web_allowed($app,$user))throw new DomainException('Abre tu propio turno para cobrar desde el navegador. Mientras tanto puedes atender ventas sin cobrar.');
     if(!$register&&$required)throw new DomainException('Abre esta operación en FISITAAP Windows o Android, desde un equipo y una caja autorizados.');
     return $register;
 }

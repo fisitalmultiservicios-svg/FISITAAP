@@ -57,7 +57,7 @@ function r18_register_account(App $app,array $tenant,array $register,string $cha
     $base=mb_substr('Caja '.(int)($register['number_r18']??$register['id']).' · '.$label.' · #'.$register['id'],0,85);$name=$base;$suffix=0;while($app->one('SELECT id FROM fisitaap_money_accounts180 WHERE tenant_id=? AND name=?',[$tenant['id'],$name]))$name=$base.' · R18 '.(++$suffix);$app->exec('INSERT INTO fisitaap_money_accounts180(tenant_id,name,kind,balance,is_active,register_id_r18,channel_r18) VALUES(?,?,"bank",0,1,?,?)',[$tenant['id'],$name,$register['id'],$channel]);return (int)$app->db->lastInsertId();
 }
 function r18_money_scope(App $app,array $user,array $account,string $kind):?array {
-    $register=qa180_native($app,$user,false,'print');
+    $register=qa180_native($app,$user,false,'cash')??qa180_native($app,$user,false,'print');
     if($register){r18_assert_collecting($register);if((int)($account['register_id_r18']??0)!==(int)$register['id'])throw new DomainException('Esta cuenta de dinero no pertenece a la caja de este equipo.');return $register;}
     if(!in_array($user['role'],['tenant_admin','manager'],true))throw new DomainException('Usa una caja instalada y su cuenta de dinero.');
     if($kind!=='account_opening')qa180_permission($app,$user,'configuracion','configure');return null;

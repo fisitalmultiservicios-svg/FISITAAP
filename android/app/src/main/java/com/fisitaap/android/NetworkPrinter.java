@@ -30,9 +30,9 @@ public final class NetworkPrinter {
     }
     private static String hexDigest(String value) throws Exception {StringBuilder hex=new StringBuilder();for(byte b:java.security.MessageDigest.getInstance("SHA-256").digest(value.getBytes(java.nio.charset.StandardCharsets.UTF_8)))hex.append(String.format(Locale.ROOT,"%02x",b&255));return hex.toString();}
     private JSONObject savePDF(String id,String text,int width) throws Exception {
-        if(width!=58&&width!=80)throw new IOException("El papel debe ser de 58 u 80 mm.");String digest=hexDigest(id);File target=new File(printDir,digest+".pdf");
+        if(width!=58&&width!=80&&width!=216)throw new IOException("El papel debe ser de 58 mm, 80 mm o carta.");String digest=hexDigest(id);File target=new File(printDir,digest+".pdf");
         boolean duplicate=ledger.deliver(id,"PDF|"+width+"|"+text,()->{
-            int dots=width==58?384:576,lineHeight=width==58?27:30;Paint paint=new Paint();paint.setColor(Color.BLACK);paint.setTypeface(Typeface.MONOSPACE);paint.setTextSize(width==58?20:22);paint.setAntiAlias(false);List<String> lines=wrap(text,paint,dots-16);ReceiptPdf.write(target,lines,paint,width,dots,lineHeight);
+            int dots=width==216?1275:width==58?384:576,lineHeight=width==216?30:width==58?27:30;Paint paint=new Paint();paint.setColor(Color.BLACK);paint.setTypeface(Typeface.MONOSPACE);paint.setTextSize(width==58?20:22);paint.setAntiAlias(false);List<String> lines=wrap(text,paint,dots-(width==216?120:16));ReceiptPdf.write(target,lines,paint,width,dots,lineHeight);
         });return new JSONObject().put("ok",true).put("status","pdf_created").put("duplicate",duplicate);
     }
     private void send(String host,int port,String text,int width,boolean cut,boolean drawer) throws Exception {

@@ -1,10 +1,29 @@
-# Instalar FISITAAP 1.8.0-R19 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R20 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
 R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enteras por unidad y fracciones a granel, menús desplegables de paneles y tiendas en todos los tamaños y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp antes de consultar el PIN. Agrega acceso de clientes por teléfono y mantiene las mejoras de imágenes, Excel, opcionales y alta de negocios de R10.
 
-Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
+Esta entrega incluye la web R20 y Windows **1.8.2** para impresión en hoja carta y las opciones del cobro local. Instala Windows sobre la versión existente, conservando sus datos y conexión. No cambies app_key ni importes otra base SQL. El APK publicado conserva 1.8.0; no se ha generado un APK nuevo.
+
+## R20: cobro, comprobantes y cajas web
+
+1. Guarda un respaldo completo de archivos y base de datos fuera de `public_html`.
+2. Extrae **FISITAAP-1.8.0-CPANEL-R20.zip** en la raíz real del dominio, junto al `index.php` principal.
+3. Inicia sesión maestra, abre `/actualizador-180/index.php`, verifica R20 e instala los archivos. Conserva `releases/1.8.0-r20`, `config.php` y `uploads`. Retira el actualizador al terminar.
+4. Para imprimir carta y usar las opciones del cobro local en Windows, instala **FISITAAP-Escritorio-1.8.2-Windows-x64.exe** sobre la instalación actual. Primero sincroniza las ventas pendientes y guarda un respaldo local. No desinstales ni borres datos de la aplicación.
+5. En **Administración → Generales → Dónde se permite cobrar**, elige solo las aplicaciones instaladas o también navegador web. El valor inicial conserva solo aplicaciones instaladas. El permiso del rol sigue siendo obligatorio.
+6. Si habilitas web, cada usuario pulsa **Abrir turno** y registra su fondo inicial. Se asigna la primera caja positiva libre del negocio, diferente de las existentes. Otra persona debe abrir su propio turno; mientras tanto solo atiende. El mismo usuario conserva su caja/fondos en turnos posteriores y pestañas distintas. Solo el responsable cierra su turno. Cierra los turnos web antes de desactivar el cobro web.
+7. Al cobrar hay dos botones: **Solo cobrar** registra sin imprimir recibo; **Cobrar e imprimir** usa la salida seleccionada justo debajo: **Hoja carta · PDF**, **Tipo recibo · PDF** o **Impresora configurada**. En la web, F8 confirma Solo cobrar. La comanda conserva sus reglas de aceptación/envío; no es el recibo de cobro.
+8. En **Administración → Impresión → Caja / recibo**, configura equipo, conexión e impresora. Papel ofrece 58 mm, 80 mm y **Hoja carta**. Carta física usa el controlador de Windows 1.8.2 y tamaño Letter; no se envían bytes ESC/POS a una impresora carta. Si cobras desde web o Android, asigna el Windows que tiene la impresora. Ese equipo debe estar abierto y conectado para procesar la cola. El sistema no cambia el destino de un trabajo ya guardado.
+9. Los PDF de ventas conectadas se generan en el servidor sin depender de una impresora. La descarga comienza tras registrar la venta; queda un botón **Descargar PDF** por si el navegador la bloquea. Carta mide 612 × 792 puntos, y recibo respeta 58/80 mm (80 mm si el perfil es carta). Importes mostrados como CRC en PDF para compatibilidad con fuentes estándar. Sin gaveta ni trabajos físicos. Se conserva la salida elegida y las descargas no vuelven a cobrar.
+10. En Windows local 1.8.2 también hay Solo cobrar / Cobrar e imprimir y la misma selección. Los PDF locales se guardan en el equipo: menú **Imprimir → Abrir comprobantes PDF**. Una confirmación repetida tras perder conexión conserva la selección y el identificador de la venta.
+
+**Compatibilidad Android:** la web conectada muestra los nuevos controles y permite enviar el recibo a un Windows configurado. El APK 1.8.0 existente mantiene su pantalla local anterior; la nueva selección local y el PDF carta nativo quedaron preparados en código para la próxima compilación. No se compiló ni firmó un APK nuevo porque este entorno no dispone del SDK ni de la clave de firma de la aplicación. En un WebView que no descargue PDF, abre la web de la tienda en el navegador para descargarlo. No se modificó la firma existente.
+
+Se probaron HTTP, turnos simultáneos, autoridad por usuario/tienda, reintentos, fondos separados, PDFs y pantallas adaptables. La impresión en una impresora física y la instalación en Windows/Android reales se verifican después de instalar; las pruebas usaron un negocio ficticio. No se instaló nada en cPanel automáticamente.
+
+### Historial R19 (comportamiento de navegador ampliado por R20)
 
 ## R19: atención, usuarios y mesas
 

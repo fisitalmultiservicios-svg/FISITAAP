@@ -84,6 +84,7 @@
   },true);
   document.addEventListener('submit',event=>{
     const form=event.target;
+    if(form.matches('[data-r3-collect]')&&form.elements.receipt_output_r20)return;
     if(!native()||!(form instanceof HTMLFormElement)||form.method.toLowerCase()!=='post')return;
     const action=event.submitter?.name==='action'?event.submitter.value:form.elements.namedItem('action')?.value;
     if(!['send_kitchen','prebill'].includes(action)&&!form.matches('[data-collect],[data-r3-collect],.p148-payment'))return;

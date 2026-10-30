@@ -7,7 +7,7 @@ function pos_cents_148($value):int {
     return (int)round((float)$value*100);
 }
 function pos_payment_identity_qa(array $ids,array $form): string {
-    unset($form['csrf'],$form['payment_key'],$form['print_receipt']);
+    unset($form['csrf'],$form['payment_key'],$form['print_receipt'],$form['receipt_output_r20']);
     $canonical=static function(array $values)use(&$canonical):array {
         ksort($values,SORT_STRING);
         foreach($values as &$value)if(is_array($value))$value=$canonical($value);
@@ -40,12 +40,12 @@ function printer_profile_148(array $branch,string $point='receipt'):array {
     ];
     $profiles=json_decode((string)($branch['printer_points_json']??''),true);
     $profile=is_array($profiles)&&is_array($profiles[$point]??null)?$profiles[$point]:[];
-    $width=in_array((string)($profile['width']??''),['58','80'],true)?(string)$profile['width']:$legacy['width'];
+    $width=in_array((string)($profile['width']??''),['58','80','216'],true)?(string)$profile['width']:$legacy['width'];
     $type=in_array((string)($profile['type']??''),['browser','network','usb','bluetooth'],true)?(string)$profile['type']:$legacy['type'];
     return [
         'point'=>$point,
         'device_id'=>(int)($profile['device_id']??0),'drawer'=>!empty($profile['drawer']),
-        'width'=>in_array($width,['58','80'],true)?(int)$width:80,
+        'width'=>in_array($width,['58','80','216'],true)?(int)$width:80,
         'type'=>$type,
         'name'=>mb_substr(trim((string)($profile['name']??$legacy['name'])),0,150),
         'host'=>mb_substr(trim((string)($profile['host']??$legacy['host'])),0,150),
@@ -219,6 +219,7 @@ function pos_quote_148(array $tickets,array $items,string $mode,array $quantitie
 function pos_settle_148(App $app,array $tenant,array $user,array $branch,array $ids):int {
     verify_csrf();$key=(string)($_POST['payment_key']??'');if(!preg_match('/^[a-f0-9]{32}$/',$key))throw new RuntimeException('Recarga el cobro.');sort($ids,SORT_NUMERIC);
     if(function_exists('qa180_active')&&qa180_active($app)){qa180_permission($app,$user,'ventas','charge');qa180_native($app,$user,true);}
+    $output=r20_ready($app)?r20_output($_POST):'none';
     $identity=pos_payment_identity_qa($ids,$_POST);
     $app->db->beginTransaction();try{
         if(qa180_active($app))$app->one('SELECT id FROM branches WHERE id=? AND tenant_id=? FOR UPDATE',[$branch['id'],$tenant['id']]);
@@ -263,6 +264,7 @@ function pos_settle_148(App $app,array $tenant,array $user,array $branch,array $
         $jobs=[];if(($tenant['catalog_label']??'')==='Menú')foreach($tickets as $t){$pending=array_column($app->all('SELECT id FROM pos_ticket_items WHERE ticket_id=? AND kitchen_status="pending"',[$t['id']]),'id');if($pending){if(qa180_active($app))$app->exec('UPDATE pos_tickets SET fulfillment180=IF(fulfillment180="new","confirmed",fulfillment180) WHERE id=?',[$t['id']]);$app->exec('UPDATE pos_ticket_items SET kitchen_status="sent",sent_at=NOW() WHERE ticket_id=? AND kitchen_status="pending"',[$t['id']]);$jobs[]=['ticket_id'=>(int)$t['id'],'items'=>$pending];}}
         $app->exec('UPDATE sales SET kitchen_jobs_json=? WHERE id=?',[json_encode($jobs),$saleId]);
         if(r18_ready($app))r18_sale_funds($app,$tenant,$user,$branch,$shift,$saleId,$payments,$seller);
+        if(r20_ready($app)){$profile=printer_profile_148($branch);if($output==='printer'&&$profile['type']==='browser')$output=$profile['width']===216?'letter_pdf':'receipt_pdf';$app->exec('UPDATE sales SET receipt_output_r20=?,receipt_width_r20=? WHERE id=?',[$output,$profile['width'],$saleId]);}
         if(qa180_active($app))qa180_print_sale($app,$tenant,$branch,$user,$saleId,!empty($_POST['print_receipt']));if(function_exists('r2_active')&&r2_active($app))r2_loyalty_sale($app,$saleId);audit($app,(int)$tenant['id'],(int)$user['id'],'pos_payment','sale',$saleId);$app->db->commit();return $saleId;
     }catch(Throwable $e){if($app->db->inTransaction())$app->db->rollBack();throw $e;}
 }

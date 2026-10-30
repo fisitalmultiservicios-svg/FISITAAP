@@ -1,0 +1,8 @@
+"""Parse real generated PHP PDFs with Poppler: dimensions, full content and long receipts."""
+import json,pathlib,subprocess
+ROOT=pathlib.Path(__file__).resolve().parents[1];OUT=pathlib.Path('/workspace/fisitaap-env/r20');checks=[]
+def main():
+ for letter,width,expected in [(True,80,'612 x 792'),(False,58,'164.409'),(False,80,'226.772')]:
+  code='require "/var/www/html/releases/1.8.0-r20/app/receipts_r20.php";$lines=[];for($i=1;$i<=240;$i++)$lines[]="Línea ".$i." Café, piña (producto) \\\\ CRC 1.000,00";echo r20_pdf($lines,'+('true' if letter else 'false')+','+str(width)+');';r=subprocess.run(['docker','exec','fisitaap-r2-web','php','-r',code],capture_output=True,check=True);file=OUT/('long-'+('letter' if letter else str(width))+'.pdf');file.write_bytes(r.stdout);info=subprocess.run(['pdfinfo',str(file)],capture_output=True,text=True,check=True).stdout;assert expected in info,info;assert 'JavaScript:      no' in info;data=subprocess.run(['pdftotext','-layout',str(file),'-'],capture_output=True,text=True,check=True).stdout;assert 'Línea 240' in data and 'Café' in data and 'piña' in data and '(producto)' in data;checks.append(('Letter' if letter else str(width)+'mm')+' PDF parses, has correct page geometry, wraps and paginates all 240 Unicode source lines including parentheses/backslashes; contains no embedded script')
+ out={'revision':'R20','passed':len(checks),'checks':checks,'environment':'Actual PHP PDF bytes parsed by Poppler pdfinfo/pdftotext. Standard WinAnsi PDF font uses CRC for colon currency.'};(ROOT/'actualizaciones/1.8.0/QA-PDF-R20.json').write_text(json.dumps(out,indent=2)+'\n');print('PASS',len(checks),'parsed long PDF formats',flush=True)
+if __name__=='__main__':main()

@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 function qa180_denominations():array {return [5,10,25,50,100,500,1000,2000,5000,10000,20000];}
 function qa180_shift_open(App $app,array $user,array $branch,array $form):int {
-    qa180_permission($app,$user,'turnos');$register=qa180_native($app,$user,true);
-    if((int)$register['branch_id']!==(int)$branch['id'])throw new DomainException('Selecciona la sucursal asignada a este equipo.');
+    qa180_permission($app,$user,'turnos');$register=qa180_native($app,$user);
+    if(!$register&&!r20_web_allowed($app,$user))qa180_native($app,$user,true);
+    if($register&&(int)$register['branch_id']!==(int)$branch['id'])throw new DomainException('Selecciona la sucursal asignada a este equipo.');
     $key=(string)($form['opening_key']??'');$cash=pos_cents_148($form['opening_cash']??0);
     if(!preg_match('/^[a-f0-9]{32}$/D',$key))throw new DomainException('Recarga el formulario de apertura.');
     $app->db->beginTransaction();
     try{
+        if(!$register)$register=r20_open_web_register($app,$user,$branch);
         $app->one('SELECT id FROM branches WHERE id=? AND tenant_id=? FOR UPDATE',[$branch['id'],$user['tenant_id']]);
         $app->one('SELECT id FROM fisitaap_registers180 WHERE id=? AND tenant_id=? FOR UPDATE',[$register['id'],$user['tenant_id']]);
         $prior=$app->one('SELECT * FROM pos_shifts WHERE tenant_id=? AND user_id=? AND opening_key=?',[$user['tenant_id'],$user['id'],$key]);
@@ -21,7 +23,7 @@ function qa180_shift_open(App $app,array $user,array $branch,array $form):int {
     }catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();throw $error;}
 }
 function qa180_shift_close(App $app,array $user,array $branch,int $id,array $form):int {
-    qa180_permission($app,$user,'turnos');$register=qa180_native($app,$user,true);$key=(string)($form['closing_key']??'');
+    qa180_permission($app,$user,'turnos');$register=qa180_native($app,$user);if(!$register&&r20_web_allowed($app,$user))$register=$app->one('SELECT r.* FROM fisitaap_registers180 r JOIN pos_shifts s ON s.register_id=r.id AND s.user_id=r.web_user_r20 WHERE s.id=? AND s.user_id=? AND s.tenant_id=? AND s.branch_id=? AND r.tenant_id=s.tenant_id AND r.web_user_r20=? AND r.device_id IS NULL AND r.is_active=1',[$id,$user['id'],$user['tenant_id'],$branch['id'],$user['id']]);if(!$register)qa180_native($app,$user,true);$key=(string)($form['closing_key']??'');
     if(!preg_match('/^[a-f0-9]{32}$/D',$key))throw new DomainException('Recarga el contador de cierre.');
     $denoms=[];$cash=0;
     foreach(qa180_denominations() as $value){$count=(string)($form['denominations'][$value]??'0');if(!preg_match('/^\d{1,6}$/D',$count))throw new DomainException('Las cantidades de monedas y billetes deben ser números enteros positivos.');$denoms[$value]=(int)$count;$cash+=$value*(int)$count*100;}
@@ -67,7 +69,8 @@ function qa180_shifts(App $app,array $user,array $tenant):void {
             echo '</div>'.field('Otro efectivo','other_cash',0,false,'number','.01').'<p>Contado: <strong data-counted>₡0,00</strong> · Diferencia: <strong data-difference>'.money(-$expected/100).'</strong></p><button class="btn">Cerrar turno</button></form>';
         }else echo r2_form('open').pos_hidden_148('opening_key',bin2hex(random_bytes(16))).field('Fondo inicial de caja','opening_cash',0,true,'number','.01').'<button class="btn">Iniciar turno</button></form>';
         echo '</section>';
-    }else echo '<section class="card admin-card"><p>Consulta aquí los turnos. Para abrir, contar o cerrar efectivo, usa FISITAAP Windows o Android con una caja autorizada.</p></section>';
+    }elseif(r20_web_allowed($app,$user))echo '<section class="card admin-card"><h2>Abrir mi caja web</h2><p>Al abrir el turno, tu usuario recibe la siguiente caja disponible. Los demás usuarios atenderán sin cobrar hasta abrir su propio turno.</p>'.r2_form('open').pos_hidden_148('opening_key',bin2hex(random_bytes(16))).field('Fondo inicial de caja','opening_cash',0,true,'number','.01').'<button class="btn">Abrir turno</button></form></section>';
+    else echo '<section class="card admin-card"><p>Consulta aquí los turnos. Para abrir, contar o cerrar efectivo, usa FISITAAP Windows o Android con una caja autorizada.</p></section>';
     [$from,$to]=valid_report_dates_v1();$manage=in_array($user['role'],['tenant_admin','manager'],true);$who=$manage?(int)($_GET['user_id']??0):(int)$user['id'];
     $rows=$app->all('SELECT s.*,u.name cashier,r.name register_name FROM pos_shifts s JOIN users u ON u.id=s.user_id LEFT JOIN fisitaap_registers180 r ON r.id=s.register_id AND r.tenant_id=s.tenant_id WHERE s.tenant_id=? AND s.branch_id=? AND s.opened_at>=? AND s.opened_at<DATE_ADD(?,INTERVAL 1 DAY) AND (?=0 OR s.user_id=?) ORDER BY s.id DESC LIMIT 200',[$tenant['id'],$branch['id'],$from,$to,$who,$who]);
     echo '<section class="card admin-card"><h2>Historial de turnos</h2><form method="get"><div class="split">'.field('Desde','from',$from,true,'date').field('Hasta','to',$to,true,'date').'</div><button class="btn btn-light">Filtrar</button></form><div class="table-wrap"><table class="table"><tr><th>Caja / cajero</th><th>Apertura</th><th>Estado</th><th>Contado</th><th>Diferencia</th><th></th></tr>';

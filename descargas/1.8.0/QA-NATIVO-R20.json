@@ -1,0 +1,10 @@
+{
+  "version": "1.8.2",
+  "bundled_source_verified": true,
+  "bytes": 103253042,
+  "sha256": "dbd2585ca0643720733f1341bd83dc4f417b62d12cfea9b50840cf0f2b282ae7",
+  "node_tests": 54,
+  "physical_windows_driver_tested": false,
+  "android_apk_rebuilt": false,
+  "installer_compression": "NSIS solid LZMA; same reviewed program payload; fits standard GitHub download without LFS"
+}

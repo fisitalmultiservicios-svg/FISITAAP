@@ -1,0 +1,11 @@
+{
+  "revision": "Windows1.8.2/R20",
+  "passed": 4,
+  "checks": [
+    "Same real local Node checkout exposes both actions and three formats across five desktop/tablet/phone layouts",
+    "Local Solo cobrar really saves without calling the native printer",
+    "Local Cobrar e imprimir forwards the selected format only after the durable local sale succeeds",
+    "Loss of transport keeps the original operation and output; retry via Solo cobrar default cannot change prior print intent or duplicate the five saved sales"
+  ],
+  "environment": "Actual Node local engine and Chromium/UI on temporary fictional data; fake printLocal bridge, no Windows driver or printer."
+}

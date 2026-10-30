@@ -1,6 +1,7 @@
 ; Complete per-user Windows installer. NSIS generates its uninstaller directly;
 ; building this script does not require executing Windows programs on Linux.
-SetCompressor /SOLID zlib
+SetCompressor /SOLID lzma
+SetCompressorDictSize 64
 !include "MUI2.nsh"
 !include "x64.nsh"
 Name "FISITAAP Escritorio"

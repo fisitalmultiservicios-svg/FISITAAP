@@ -1,0 +1,99 @@
+{
+  "revision": "1.8.0-R20",
+  "passed": 6,
+  "checks": [
+    "Phone browser opens own real shift directly from quick sale and displays its automatically numbered web register",
+    "Both payment buttons share real amount validation; output selector and actions remain reachable without horizontal overflow in fourteen desktop/tablet/phone/low-height layouts",
+    "Clicking Solo cobrar commits once and returns to sales without printing, even when carta PDF was selected below the other button",
+    "Cobrar e imprimir produces actual automatic carta/thermal downloads with correct geometry, retains a manual recovery link and creates no physical printer jobs",
+    "Web default-printer click queues exactly one carta receipt on the configured Windows device and returns to work",
+    "Installed web bridge tracking resubmits asynchronously without losing Solo cobrar vs Cobrar e imprimir intent or charging twice"
+  ],
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 820,
+      "height": 1180,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 600,
+      "height": 960,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 320,
+      "height": 700,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 390,
+      "height": 520,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 360,
+      "height": 520,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 844,
+      "height": 260,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    },
+    {
+      "width": 390,
+      "height": 320,
+      "dialog_overflow": false,
+      "both_buttons_and_output_reachable": true
+    }
+  ],
+  "environment": "Real Chromium/HTTP/CSRF/MariaDB. Native bridge pre-submit tracking simulated; no physical printer or live hosting."
+}

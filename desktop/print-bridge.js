@@ -11,11 +11,13 @@ const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 function normalizeJob(raw,defaults={}) {
   if(!raw||typeof raw!=='object'||typeof raw.id!=='string'||!raw.id||raw.id.length>240||typeof raw.text!=='string'||Buffer.byteLength(raw.text)>180000)throw new Error('Trabajo de impresión inválido.');
   const p=raw.printer||{},width=Number(p.width||raw.width||defaults.width||80);
-  if(![58,80].includes(width))throw new Error('El papel debe ser de 58 u 80 mm.');
+  if(![58,80,216].includes(width))throw new Error('El papel debe ser de 58 mm, 80 mm o carta.');
   const type=p.type||defaults.type||'browser';if(!['browser','usb','bluetooth','network'].includes(type))throw new Error('Tipo de impresora no disponible.');
+  if(width===216&&['network','bluetooth'].includes(type))throw new Error('Hoja carta requiere una impresora instalada en Windows o PDF.');
   return {id:raw.id,document:String(raw.document||'receipt').slice(0,30),text:raw.text.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/g,''),width,printer:{type,name:String(p.name||defaults.name||'').slice(0,150),host:String(p.host||'').slice(0,150),port:Number(p.port||9100)},...(raw.demo===true?{demo:true}:{}),...(raw.drawer===true?{drawer:true}:{})};
 }
 function receiptHTML(job) {
+  if(job.width===216)return '<!doctype html><html lang="es"><meta charset="utf-8"><title>Recibo FISITAAP</title><style>@page{size:letter;margin:15mm}body{margin:0;font:12px Consolas,monospace;color:#000}pre{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;margin:0}</style><body><pre>'+esc(job.text)+'</pre></body></html>';
   return '<!doctype html><html lang="es"><meta charset="utf-8"><style>@page{size:'+job.width+'mm auto;margin:3mm}body{margin:0;width:'+(job.width-6)+'mm;font:11px "Consolas",monospace;color:#000}pre{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.35;margin:0}</style><body><pre>'+esc(job.text)+'</pre></body></html>';
 }
 function save(file,value) {
@@ -39,12 +41,12 @@ function electronPrinter(electron) {
       if(job.printer.type==='browser') {
         // Electron PDF dimensions are inches; webContents.print uses microns instead.
         const heightMM=Math.max(150,Math.min(3000,job.text.split('\n').length*5));
-        const pdf=await win.webContents.printToPDF({printBackground:true,pageSize:{width:job.width/25.4,height:heightMM/25.4},margins:{top:0,right:0,bottom:0,left:0}});
+        const pdf=await win.webContents.printToPDF({printBackground:true,pageSize:job.width===216?'Letter':{width:job.width/25.4,height:heightMM/25.4},margins:{top:0,right:0,bottom:0,left:0}});
         fs.writeFileSync(pdfFile,pdf,{mode:0o600});return {status:'pdf_created'};
       }
       const printers=await win.webContents.getPrintersAsync();if(!job.printer.name||!printers.some(p=>p.name===job.printer.name))throw new Error('La impresora no aparece en Windows. Instala su controlador y selecciona su nombre exacto.');
-      await new Promise((resolve,reject)=>win.webContents.print({silent:true,deviceName:job.printer.name,printBackground:true,margins:{marginType:'none'},pageSize:{width:job.width*1000,height:300000}},(ok,error)=>ok?resolve():reject(new Error(error||'Windows no aceptó el trabajo de impresión.'))));
-      if(job.drawer)await windowsDrawer(job.printer.name);
+      await new Promise((resolve,reject)=>win.webContents.print({silent:true,deviceName:job.printer.name,printBackground:true,margins:{marginType:'none'},pageSize:job.width===216?'Letter':{width:job.width*1000,height:300000}},(ok,error)=>ok?resolve():reject(new Error(error||'Windows no aceptó el trabajo de impresión.'))));
+      if(job.drawer&&job.width!==216)await windowsDrawer(job.printer.name);
       return {status:'sent_to_printer'};
     }finally{win.destroy();}
   };
@@ -56,7 +58,7 @@ async function createPrintBridge(options) {
   async function processJob(raw,verified=false) {
     raw={...raw};if(!verified||raw.demo||raw.copy||!['receipt','invoice'].includes(raw.document))delete raw.drawer;
     if(raw?.demo===true)raw={...raw,printer:{type:'browser',name:'',host:'',width:raw.width||raw.printer?.width||80}};
-    else if(!verified&&raw?.printer?.type==='browser' && config().printer?.name)raw={...raw,printer:{...raw.printer,...config().printer}};
+    else if(!verified&&!raw.pdf_only&&raw?.printer?.type==='browser' && config().printer?.name)raw={...raw,printer:{...raw.printer,...config().printer}};
     const job=normalizeJob(raw,config().printer||{}),key=crypto.createHash('sha256').update(job.id).digest('hex'),hash=crypto.createHash('sha256').update(JSON.stringify(job)).digest('hex'),file=path.join(dir,key+'.json'),pdfFile=path.join(dir,key+'.pdf');
     if(fs.existsSync(file)) {
       const previous=JSON.parse(fs.readFileSync(file,'utf8'));if(previous.hash!==hash)throw new Error('El identificador corresponde a otro contenido. Usa Reimprimir para generar una copia nueva.');

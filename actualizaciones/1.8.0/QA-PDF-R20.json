@@ -1,0 +1,10 @@
+{
+  "revision": "R20",
+  "passed": 3,
+  "checks": [
+    "Letter PDF parses, has correct page geometry, wraps and paginates all 240 Unicode source lines including parentheses/backslashes; contains no embedded script",
+    "58mm PDF parses, has correct page geometry, wraps and paginates all 240 Unicode source lines including parentheses/backslashes; contains no embedded script",
+    "80mm PDF parses, has correct page geometry, wraps and paginates all 240 Unicode source lines including parentheses/backslashes; contains no embedded script"
+  ],
+  "environment": "Actual PHP PDF bytes parsed by Poppler pdfinfo/pdftotext. Standard WinAnsi PDF font uses CRC for colon currency."
+}

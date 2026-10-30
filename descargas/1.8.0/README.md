@@ -1,3 +1,22 @@
+# Descargas FISITAAP · web 1.8.0-R20 / Windows 1.8.2
+
+[**Actualización R20 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R20.zip)
+
+[**Windows 1.8.2 · impresión carta y cobro local**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.2-Windows-x64.exe)
+
+Solo cobrar / Cobrar e imprimir, PDF carta o recibo y uso de impresora configurada. Generales permite habilitar cobro web con una caja/turno propios por usuario; sin turno solo atiende. Cajas y fondos separados, cierres del abridor y reintentos sin duplicados. Acumulativa sobre R19.
+
+- [Guía de instalación y uso](GUIA-CPANEL-1.8.0.md)
+- [Solicitudes revisadas y pruebas](INFORME-QA-1.8.0.md)
+- [Capturas R20](VISTAS-R20.md)
+- [Integridad de archivos](SHA256SUMS-1.8.0.txt)
+
+Respalda y extrae el ZIP en la raíz real del dominio; ejecuta `/actualizador-180/index.php` como maestro. Para carta física y opciones locales nuevas instala Windows 1.8.2 sobre la instalación actual, conservando sus datos. El APK publicado sigue en 1.8.0: su pantalla local no cambia con este ZIP; no se compiló ni firmó un APK nuevo. En Android conectado puedes enviar recibos al Windows configurado. La publicación no instala el hosting.
+
+---
+
+## Entregas anteriores
+
 # Descargas FISITAAP · web 1.8.0-R19
 
 [**Descargar actualización R19 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R19.zip)

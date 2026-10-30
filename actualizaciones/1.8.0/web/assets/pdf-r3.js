@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
         $('[data-payment-method=credit]',payment).disabled=!creditAllowed;
         if(amount('credit')&&(!creditAllowed||amount('credit')>cents(cp.credit_limit)-cents(cp.current_balance)))throw Error('El cliente no tiene crédito suficiente para este cobro.');
         const valid=q.lines.length>0&&q.total>=0&&noncash<=q.total&&missing===0;const message=noncash>q.total?'Los pagos superan el cobro.':missing?'Falta pagar '+money(missing):'';
-        $('[data-payment-message]',payment).textContent=message;$('[data-confirm-payment]',payment).disabled=!valid||submitted;
-      }catch(error){$('[data-payment-message]',payment).textContent=error.message||'Revisa los datos de cobro.';$('[data-confirm-payment]',payment).disabled=true;}
+        $('[data-payment-message]',payment).textContent=message;$$('[data-confirm-payment]',payment).forEach(b=>b.disabled=!valid||submitted);
+      }catch(error){$('[data-payment-message]',payment).textContent=error.message||'Revisa los datos de cobro.';$$('[data-confirm-payment]',payment).forEach(b=>b.disabled=true);}
     }
     if(window.FISITAAP180?.enabled){
       let lookupTimer,lookupVersion=0;
-      const lookup=()=>{clearTimeout(lookupTimer);const code=payment.elements.gift_code.value.trim().toUpperCase(),cid=customer(),version=++lookupVersion;if(!code)return;lookupTimer=setTimeout(async()=>{try{$('[data-gift-status]',payment).textContent='Comprobando saldo…';const base=window.FISITAPP.base.replace(/\/$/,''),response=await fetch(base+'/api/gift-preview',{method:'POST',headers:{Accept:'application/json'},body:new URLSearchParams({csrf:window.FISITAPP.csrf,code,customer_id:cid})}),out=await response.json();if(version!==lookupVersion)return;if(!response.ok||!out.ok)throw new Error(out.error||'No se confirmó el saldo.');paymentData.gifts=paymentData.gifts.filter(card=>!(card.code===code&&Number(card.customer_id)===cid));paymentData.gifts.push(out.card);refreshPayment();}catch(error){if(version===lookupVersion){$('[data-gift-status]',payment).textContent=error.message;$('[data-confirm-payment]',payment).disabled=true;}}},300);};
+      const lookup=()=>{clearTimeout(lookupTimer);const code=payment.elements.gift_code.value.trim().toUpperCase(),cid=customer(),version=++lookupVersion;if(!code)return;lookupTimer=setTimeout(async()=>{try{$('[data-gift-status]',payment).textContent='Comprobando saldo…';const base=window.FISITAPP.base.replace(/\/$/,''),response=await fetch(base+'/api/gift-preview',{method:'POST',headers:{Accept:'application/json'},body:new URLSearchParams({csrf:window.FISITAPP.csrf,code,customer_id:cid})}),out=await response.json();if(version!==lookupVersion)return;if(!response.ok||!out.ok)throw new Error(out.error||'No se confirmó el saldo.');paymentData.gifts=paymentData.gifts.filter(card=>!(card.code===code&&Number(card.customer_id)===cid));paymentData.gifts.push(out.card);refreshPayment();}catch(error){if(version===lookupVersion){$('[data-gift-status]',payment).textContent=error.message;$$('[data-confirm-payment]',payment).forEach(b=>b.disabled=true);}}},300);};
       payment.elements.gift_code.addEventListener('input',lookup);payment.elements.customer_id?.addEventListener('change',lookup);
     }
     function method(key) {
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       refreshPayment();
     });
-    payment.addEventListener('submit',event=>{refreshPayment();if($('[data-confirm-payment]',payment).disabled){event.preventDefault();return;}submitted=true;$('[data-confirm-payment]',payment).disabled=true;$('[data-confirm-payment]',payment).textContent='Registrando cobro…';});
+    payment.addEventListener('submit',event=>{refreshPayment();if($('[data-confirm-payment]',payment).disabled){event.preventDefault();return;}if(payment.elements.print_receipt)payment.elements.print_receipt.value=event.submitter?.dataset.receiptAction||payment.elements.print_receipt.value||'0';submitted=true;$$('[data-confirm-payment]',payment).forEach(b=>{b.disabled=true;b.textContent='Registrando cobro…';});});
     modal.addEventListener('cancel',event=>{event.preventDefault();location.assign($('.r3-dialog-x',modal).href);});
     refreshPayment();method('cash');
   }

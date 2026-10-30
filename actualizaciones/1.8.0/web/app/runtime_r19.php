@@ -30,7 +30,8 @@ function r19_directory_api(App $app):never {
     }catch(Throwable $e){json_response(['ok'=>false,'error'=>$e instanceof DomainException?$e->getMessage():'No se pudo consultar el negocio.'],403);}
 }
 function r19_cash_bar(App $app,array $actor,array $tenant,array $branch):void {
-    $reg=qa180_native($app,$actor,false,'print');echo '<section class="r18-cash-bar r19-cash-bar" aria-label="Caja y turno" data-r18-cash-bar data-return-to="'.e(current_url_v1()).'">';
+    if(r20_ready($app)&&r20_web_bar($app,$actor))return;
+    $reg=qa180_native($app,$actor,false,'cash')??qa180_native($app,$actor,false,'print');echo '<section class="r18-cash-bar r19-cash-bar" aria-label="Caja y turno" data-r18-cash-bar data-return-to="'.e(current_url_v1()).'">';
     if(!$reg||r18_order_only($reg)){echo '<div><strong>Caja 0 · '.(!$reg?'Navegador':'Solo atención').'</strong><span>Abre cuentas, carga productos y envía pedidos. El cobro se realiza en una caja numerada.</span></div>';}
     elseif(!qa180_native($app,$actor,false,'cash')){echo '<div><strong>Caja '.(int)($reg['number_r18']??$reg['id']).' · Solo atención para este usuario</strong><span>Tu acceso no tiene autorización de cobro en esta caja.</span></div>';}
     else{$shift=$app->one('SELECT s.*,u.name opened_name FROM pos_shifts s JOIN users u ON u.id=s.user_id WHERE s.tenant_id=? AND s.register_id=? AND s.status="open" ORDER BY s.id DESC LIMIT 1',[$tenant['id'],$reg['id']]);echo '<div><strong>Caja '.(int)($reg['number_r18']??$reg['id']).' · '.e($reg['name']).'</strong><span>'.($shift?'Turno de '.e($shift['opened_name']):'Sin turno abierto').'</span></div>';

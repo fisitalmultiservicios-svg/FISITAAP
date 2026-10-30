@@ -29,7 +29,7 @@ app.whenReady().then(async () => {
   ipcMain.handle('fisitaap:printers',async event=>{settingsOnly(event);return event.sender.getPrintersAsync();});
   ipcMain.handle('fisitaap:settings',event=>{settingsOnly(event);return {origin:printConfig.origin,printer:printConfig.printer,token:token(),bridge:printService.status()};});
   ipcMain.handle('fisitaap:retry-print-bridge',event=>{settingsOnly(event);return printService.retry();});
-  ipcMain.handle('fisitaap:save-settings',(event,value)=>{settingsOnly(event);const u=new URL(value.origin);if(u.protocol!=='https:'||u.username||u.password)throw new Error('Usa la dirección https:// de FISITAAP.');const width=Number(value.printer?.width);if(![58,80].includes(width))throw new Error('Selecciona papel de 58 u 80 mm.');const name=String(value.printer?.name||'').slice(0,150);printConfig={...printConfig,origin:u.origin,printer:{name,width,type:name?'usb':'browser'}};fs.writeFileSync(printFile,JSON.stringify(printConfig),{mode:0o600});return {ok:true};});
+  ipcMain.handle('fisitaap:save-settings',(event,value)=>{settingsOnly(event);const u=new URL(value.origin);if(u.protocol!=='https:'||u.username||u.password)throw new Error('Usa la dirección https:// de FISITAAP.');const width=Number(value.printer?.width);if(![58,80,216].includes(width))throw new Error('Selecciona papel de 58 mm, 80 mm o carta.');const name=String(value.printer?.name||'').slice(0,150);printConfig={...printConfig,origin:u.origin,printer:{name,width,type:name?'usb':'browser'}};fs.writeFileSync(printFile,JSON.stringify(printConfig),{mode:0o600});return {ok:true};});
   ipcMain.handle('fisitaap:print',(event,job)=>{
     const frame=event.senderFrame;
     const origin=new URL(frame.url).origin;
@@ -50,8 +50,8 @@ app.whenReady().then(async () => {
     const snapshot=service.store.data.snapshot,lines=[snapshot.tenant.name,snapshot.branch.name,'RECIBO · '+sale.id];if(snapshot.tenant.tax_id)lines.push('Identificación: '+snapshot.tenant.tax_id);
     for(const line of sale.quote.lines){lines.push(line.quantity/1000+' × '+line.name+' · CRC '+((line.net+line.tax)/100).toFixed(2));lines.push(...(line.option_labels||[]));if(line.note)lines.push('Nota: '+line.note);}
     lines.push('TOTAL CRC '+(sale.quote.total/100).toFixed(2),'Vuelto CRC '+(sale.change/100).toFixed(2),'Gracias por su compra.');
-    const printer=snapshot.branch.printers?.receipt||printConfig.printer,copy=value.copy===true;
-    return printService.printVerified({id:'local-'+sale.id+(copy?'-copy-'+crypto.randomUUID():''),document:'receipt',text:lines.join('\n'),printer,width:printer.width,copy,drawer:!copy&&sale.cashApplied>0&&snapshot.cash_state?.register?.drawer_enabled===true&&printer.drawer===true});
+    let printer=snapshot.branch.printers?.receipt||printConfig.printer;const copy=value.copy===true,output=value.output||'printer';if(!['printer','letter_pdf','receipt_pdf'].includes(output))throw new Error('Formato de comprobante inválido.');if(output!=='printer')printer={type:'browser',width:output==='letter_pdf'?216:([58,80].includes(printer.width)?printer.width:80)};
+    return printService.printVerified({id:'local-'+sale.id+(output!=='printer'?'-'+output:'')+(copy?'-copy-'+crypto.randomUUID():''),document:'receipt',text:lines.join('\n'),printer,width:printer.width,copy,drawer:output==='printer'&&printer.width!==216&&!copy&&sale.cashApplied>0&&snapshot.cash_state?.register?.drawer_enabled===true&&printer.drawer===true});
   });
   ipcMain.handle('fisitaap:track-payment',(event,data)=>{
     const frame=event.senderFrame;if(frame.parent||event.sender!==workspace?.webView.webContents||!service.store.data.connection||new URL(frame.url).origin!==new URL(service.store.data.connection.url).origin)throw new Error('Confirma el cobro en el negocio autorizado.');return service.trackWebPayment(data);
