@@ -32,10 +32,11 @@ function r2_landing(App $app,?array $t):void {
 }
 
 function r2_new_customer(App $app,array $t,string $name,string $phone,?array $creator=null,string $source='web'):array {
-    $name=trim($name);$phone=preg_replace('/\D/','',$phone);if($name===''||mb_strlen($name)>150||!preg_match('/^(506)?[0-9]{8}$/',$phone))throw new DomainException('Escribe tu nombre y un teléfono de Costa Rica de 8 dígitos.');
+    $name=trim($name);$phone=op180_phone($phone);if($name===''||mb_strlen($name)>150||!preg_match('/^(506)?[0-9]{8}$/',$phone))throw new DomainException('Escribe tu nombre y un teléfono de Costa Rica de 8 dígitos.');
     $email='cliente-'.bin2hex(random_bytes(16)).'@registro.fisitaap.local';
-    $app->exec('INSERT INTO users(name,email,phone,password_hash,role,is_active) VALUES(?,?,?,?,"customer",1)',[$name,$email,$phone,password_hash(bin2hex(random_bytes(32)),PASSWORD_BCRYPT)]);$id=(int)$app->db->lastInsertId();
+    $app->exec('INSERT INTO users(name,email,phone,password_hash,role,is_active) VALUES(?,?,?,?,"customer",1)',[$name,$email,$phone,password_hash(r17_ready($app)?$phone:bin2hex(random_bytes(32)),PASSWORD_BCRYPT)]);$id=(int)$app->db->lastInsertId();
     $app->exec('INSERT INTO tenant_customers(tenant_id,user_id) VALUES(?,?)',[$t['id'],$id]);$app->exec('INSERT INTO fisitaap_r2_customer_sources(tenant_id,user_id,source,created_by) VALUES(?,?,?,?)',[$t['id'],$id,$source,$creator['id']??null]);
+    if(r17_ready($app)&&!is_demo_tenant_v12($t))$app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id,phone_login181) VALUES(?,?,?,1) ON DUPLICATE KEY UPDATE user_id=VALUES(user_id),phone_login181=1',[$t['id'],$phone,$id]);
     return (array)$app->one('SELECT id,name,email,phone,role,tenant_id,is_active,force_password_change FROM users WHERE id=?',[$id]);
 }
 function r2_customer_checkout(App $app,array $t,array $raw):?array {

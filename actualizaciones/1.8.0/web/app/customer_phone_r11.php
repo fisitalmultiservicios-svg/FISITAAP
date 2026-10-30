@@ -29,6 +29,7 @@ function r11_customer_login(App $app,array $tenant):void {
         verify_csrf();try{$phone=op180_phone((string)($_POST['phone']??''));if(!rate_limit_persistent($app,'customer_phone_login',client_identity($tenant['id'].':'.$phone),8,300))throw new DomainException('Demasiados intentos. Espera unos minutos antes de volver a ingresar.');
             $contact=$app->one('SELECT u.* FROM fisitaap_guest_contacts180 c JOIN users u ON u.id=c.user_id WHERE c.tenant_id=? AND c.phone=? AND u.role="customer" AND u.is_active=1',[$tenant['id'],$phone]);
             if(!$contact)foreach($app->all('SELECT u.* FROM users u JOIN tenant_customers tc ON tc.user_id=u.id WHERE tc.tenant_id=? AND u.role="customer" AND u.is_active=1 AND u.phone LIKE ? ORDER BY u.id LIMIT 100',[$tenant['id'],'%'.substr($phone,-4).'%']) as $candidate){try{if(op180_phone((string)$candidate['phone'])===$phone){$contact=$candidate;break;}}catch(DomainException){}}
+            if($contact&&r17_ready($app)&&$app->one('SELECT user_id FROM fisitaap_customer_archive_r17 WHERE tenant_id=? AND user_id=?',[$tenant['id'],$contact['id']]))$contact=null;
             if(!$contact||!password_verify((string)($_POST['password']??''),(string)$contact['password_hash']))throw new DomainException('Teléfono o contraseña incorrectos.');
             r11_customer_session($contact,$tenant);$app->exec('UPDATE users SET last_login_at=NOW() WHERE id=?',[$contact['id']]);redirect(url('account'));
         }catch(DomainException $e){$error=$e->getMessage();}

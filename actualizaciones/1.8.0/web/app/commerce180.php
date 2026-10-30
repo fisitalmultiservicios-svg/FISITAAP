@@ -26,15 +26,15 @@ function op180_contact(App $app,array $tenant,string $name,string $phone):array 
     $created=false;$owns=!$app->db->inTransaction();if($owns)$app->db->beginTransaction();
     try{
         $app->one('SELECT id FROM tenants WHERE id=? FOR UPDATE',[$tenant['id']]);
-        $contact=$app->one('SELECT u.* FROM fisitaap_guest_contacts180 c JOIN users u ON u.id=c.user_id AND u.role="customer" AND u.is_active=1 WHERE c.tenant_id=? AND c.phone=?',[$tenant['id'],$phone]);
-        if(!$contact){foreach($app->all('SELECT u.* FROM users u JOIN tenant_customers tc ON tc.user_id=u.id WHERE tc.tenant_id=? AND u.role="customer" AND u.is_active=1 AND u.phone LIKE ? ORDER BY u.id LIMIT 100',[$tenant['id'],'%'.substr($phone,-4).'%']) as $candidate){try{if(op180_phone((string)$candidate['phone'])===$phone){$contact=$candidate;break;}}catch(DomainException){}}}
+        $contact=$app->one('SELECT u.* FROM fisitaap_guest_contacts180 c JOIN users u ON u.id=c.user_id AND u.role="customer" AND u.is_active=1 WHERE NOT EXISTS(SELECT 1 FROM fisitaap_customer_archive_r17 ar WHERE ar.tenant_id=c.tenant_id AND ar.user_id=u.id) AND c.tenant_id=? AND c.phone=?',[$tenant['id'],$phone]);
+        if(!$contact){foreach($app->all('SELECT u.* FROM users u JOIN tenant_customers tc ON tc.user_id=u.id WHERE NOT EXISTS(SELECT 1 FROM fisitaap_customer_archive_r17 ar WHERE ar.tenant_id=tc.tenant_id AND ar.user_id=u.id) AND tc.tenant_id=? AND u.role="customer" AND u.is_active=1 AND u.phone LIKE ? ORDER BY u.id LIMIT 100',[$tenant['id'],'%'.substr($phone,-4).'%']) as $candidate){try{if(op180_phone((string)$candidate['phone'])===$phone){$contact=$candidate;break;}}catch(DomainException){}}}
         if(!$contact&&r11_ready($app)&&!is_demo_tenant_v12($tenant)&&($session=current_user())&&$session['role']==='customer'){
             $signed=$app->one('SELECT * FROM users WHERE id=? AND role="customer" AND is_active=1',[$session['id']]);
             try{$samePhone=$signed&&op180_phone((string)$signed['phone'])===$phone;}catch(DomainException){$samePhone=false;}
             if($samePhone){$contact=$signed;$app->exec('INSERT IGNORE INTO tenant_customers(tenant_id,user_id) VALUES(?,?)',[$tenant['id'],$signed['id']]);}
         }
         if(!$contact){if(!rate_limit_persistent($app,'delivery_new_contact',client_identity(),20,3600))throw new DomainException('Espera antes de registrar otro contacto.');$contact=r2_new_customer($app,$tenant,$name,$phone);$created=true;}
-        if(r11_ready($app))$app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id,phone_login181) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)',[$tenant['id'],$phone,$contact['id'],$created&&!is_demo_tenant_v12($tenant)?2:0]);else $app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id) VALUES(?,?,?) ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)',[$tenant['id'],$phone,$contact['id']]);
+        if(r11_ready($app))$app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id,phone_login181) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)',[$tenant['id'],$phone,$contact['id'],$created&&!is_demo_tenant_v12($tenant)?(r17_ready($app)?1:2):0]);else $app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id) VALUES(?,?,?) ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)',[$tenant['id'],$phone,$contact['id']]);
         if($owns)$app->db->commit();unset($contact['password_hash']);return $contact;
     }catch(Throwable $e){if($owns&&$app->db->inTransaction())$app->db->rollBack();throw $e;}
 }
@@ -50,7 +50,8 @@ function op180_address_lookup(App $app):never {
     try{
         $phone=op180_phone((string)($_POST['phone']??''));$user=$app->one('SELECT c.user_id FROM fisitaap_guest_contacts180 c JOIN users u ON u.id=c.user_id AND u.role="customer" AND u.is_active=1 WHERE c.tenant_id=? AND c.phone=?',[$tenant['id'],$phone]);
         if(!$user){foreach($app->all('SELECT u.id user_id,u.phone FROM users u JOIN tenant_customers tc ON tc.user_id=u.id WHERE tc.tenant_id=? AND u.role="customer" AND u.is_active=1 AND u.phone LIKE ? ORDER BY u.id LIMIT 100',[$tenant['id'],'%'.substr($phone,-4).'%']) as $candidate){try{if(op180_phone((string)$candidate['phone'])===$phone){$user=$candidate;break;}}catch(DomainException){}}}
-        $addresses=$user?$app->all('SELECT id,label,address,maps_url180,is_default FROM customer_addresses WHERE user_id=? ORDER BY is_default DESC,id LIMIT 20',[$user['user_id']]):[];
+        $addresses=$user?$app->all('SELECT a.id,a.label,a.address,a.maps_url180,a.is_default,z.zone_id FROM customer_addresses a LEFT JOIN fisitaap_address_zones_r17 z ON z.address_id=a.id AND z.tenant_id=? WHERE a.user_id=? AND (z.zone_id IS NOT NULL OR NOT EXISTS(SELECT 1 FROM fisitaap_address_zones_r17 zz WHERE zz.address_id=a.id)) ORDER BY a.is_default DESC,a.id LIMIT 20',[$tenant['id'],$user['user_id']]):[];
+        if($user&&$app->one('SELECT user_id FROM fisitaap_customer_archive_r17 WHERE tenant_id=? AND user_id=?',[$tenant['id'],$user['user_id']]))$addresses=[];
         json_response(['ok'=>true,'addresses'=>$addresses]);
     }catch(DomainException $e){json_response(['ok'=>false,'error'=>$e->getMessage()],422);}
 }
@@ -71,11 +72,12 @@ function op180_customer_address_fields():string {
     return '<fieldset class="op180-address-fields"><legend>Dirección principal (opcional al crear)</legend>'.field('Dirección','address','').field('Ubicación de Google Maps','maps_url','',false, 'url').'</fieldset><p class="muted">Después de guardar podrás agregar otras direcciones y elegir la principal desde la ficha del cliente.</p>';
 }
 function op180_customer_addresses(App $app,array $tenant,int $customer):void {
-    echo '<h3>Direcciones de entrega</h3>'.r2_form('address_save').pos_hidden_148('customer_id',$customer).field('Nombre de esta dirección','label','Casa',true).field('Dirección','address','',true).field('Enlace de Google Maps','maps_url','',false,'url').'<label><input type="checkbox" name="is_default"> Usar como principal</label><button class="btn">Guardar dirección</button></form>';
+    echo '<h3>Direcciones de entrega</h3>'.r2_form('address_save').pos_hidden_148('customer_id',$customer).field('Nombre de esta dirección','label','Casa',true).field('Dirección','address','',true).field('Enlace de Google Maps','maps_url','',false,'url').r17_zone_select($app,$tenant).'<label><input type="checkbox" name="is_default"> Usar como principal</label><button class="btn">Guardar dirección</button></form>';
     foreach($app->all('SELECT * FROM customer_addresses WHERE user_id=? ORDER BY is_default DESC,id',[$customer]) as $a)echo '<article class="card admin-card"><strong>'.e($a['label']).($a['is_default']?' · Principal':'').'</strong><p>'.e($a['address']).'</p>'.($a['maps_url180']?'<a target="_blank" rel="noopener noreferrer" href="'.e($a['maps_url180']).'">Abrir ubicación en Maps</a>':'').r2_form('address_default').pos_hidden_148('customer_id',$customer).pos_hidden_148('address_id',$a['id']).'<button class="btn btn-light">Elegir como principal</button></form></article>';
 }
 function op180_checkout_validate(App $app,array $tenant,array $user,array $raw):void {
     if(trim((string)$user['name'])==='')throw new DomainException('Completa tu nombre.');op180_phone((string)($user['phone']??''));op180_maps((string)($raw['maps_url']??''));
+    if(($raw['delivery_type']??'')!=='pickup'&&!$app->one('SELECT id FROM delivery_zones WHERE tenant_id=? AND id=? AND is_active=1',[$tenant['id'],(int)($raw['zone_id']??0)]))throw new DomainException('Selecciona una zona de envío para esta dirección.');
     if(preg_match('/sinpe/i',(string)($raw['payment']??''))){
         $token=(string)($raw['proof_token']??'');$proof=$app->one('SELECT * FROM fisitaap_order_uploads180 WHERE token_hash=? AND tenant_id=? AND operation_key=? AND browser_hash=? AND created_at>DATE_SUB(NOW(),INTERVAL 1 DAY)',[hash('sha256',$token),$tenant['id'],$raw['checkout_key']??'',op180_browser()]);
         if(!preg_match('/^[a-f0-9]{64}$/D',$token)||!$proof||!is_file(ROOT_PATH.'/'.$proof['path']))throw new DomainException('Adjunta la imagen del comprobante SINPE antes de enviar el pedido.');
@@ -83,7 +85,7 @@ function op180_checkout_validate(App $app,array $tenant,array $user,array $raw):
 }
 function op180_checkout_saved(App $app,array $tenant,array $user,array $raw,int $id):void {
     $maps=op180_maps((string)($raw['maps_url']??''));$app->exec('UPDATE orders SET maps_url180=? WHERE id=? AND tenant_id=?',[$maps?:null,$id,$tenant['id']]);
-    if(!empty($raw['address']))op180_address_save($app,(int)$user['id'],(string)$raw['address'],$maps,'Principal');
+    if(!empty($raw['address'])){$aid=op180_address_save($app,(int)$user['id'],(string)$raw['address'],$maps,'Principal');if(!empty($raw['zone_id']))r17_address_zone($app,(int)$tenant['id'],$aid,(int)$raw['zone_id']);}
     if(preg_match('/sinpe/i',(string)$raw['payment'])){
         $proof=$app->one('SELECT * FROM fisitaap_order_uploads180 WHERE token_hash=? AND tenant_id=? FOR UPDATE',[hash('sha256',(string)$raw['proof_token']),$tenant['id']]);
         if(!$proof||($proof['order_id']&&(int)$proof['order_id']!==$id))throw new DomainException('Ese comprobante ya pertenece a otro pedido.');

@@ -1,10 +1,58 @@
-# Instalar FISITAAP 1.8.0-R16 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R17 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
 R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enteras por unidad y fracciones a granel, menús desplegables de paneles y tiendas en todos los tamaños y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp antes de consultar el PIN. Agrega acceso de clientes por teléfono y mantiene las mejoras de imágenes, Excel, opcionales y alta de negocios de R10.
 
 Esta entrega actualiza solo la web. **Si ya instalaste Windows 1.8.1, no necesitas reinstalarlo.** Si todavía usas Windows 1.8.0, actualiza a 1.8.1 para la corrección de venta local incluida en R9. Android conserva 1.8.0. No cambies app_key de config.php.
+
+## R17: accesos, catálogo, Academiaap y Control de personal
+
+1. Guarda un respaldo completo de archivos y base de datos fuera de `public_html`.
+2. Sube **FISITAAP-1.8.0-CPANEL-R17.zip** a la raíz real del dominio, normalmente `/home/tu_usuario/public_html`, y extráelo allí. La carpeta `actualizador-180` debe quedar dentro de `public_html`, junto al `index.php` que sirve el dominio.
+3. En el navegador con sesión maestra abre `https://fisitaap.com/actualizador-180/index.php`. Comprueba **R17**, marca que guardaste respaldo y pulsa **Instalar archivos**. No importes SQL ni reemplaces `config.php`.
+4. La aplicación usará `releases/1.8.0-r17`. Conserva esa carpeta. Los negocios anteriores que tengan pendiente activar 1.8.0 siguen haciéndolo desde Administración → Actualizar sistema; los nuevos empiezan actualizados.
+5. Prueba acceso de cliente, cajero, Pedidos, Academiaap y Personal. Retira el actualizador después de verificar. Publicar el ZIP en GitHub no instala el hosting.
+
+### Acceso y clientes
+
+- Un cliente nuevo creado desde pedido, panel o caja usa su **celular de 8 dígitos como usuario y contraseña inicial**. Entra desde **Iniciar sesión de cliente** en el catálogo de su tienda. Si el mismo teléfono tiene cuentas en varias tiendas, usa siempre ese enlace de la tienda. Una contraseña que el cliente cambió se conserva.
+- Se recupera el acceso inicial de registros automáticos antiguos que todavía no se usaron; no se cambian cuentas con acceso utilizado o recuperación completada.
+- En **Clientes → Buscar → ficha → General → Eliminar cliente**, indica el motivo. Se retira del listado y del acceso de esa tienda conservando documentos e historial. Se bloquea si tiene deuda, ventas o pedidos abiertos. Requiere permiso de eliminación.
+- Cada dirección nueva se asigna a una zona activa de esa tienda y puede guardar Google Maps. En checkout se pide dirección y zona; al elegir una dirección guardada se carga también su zona. Las direcciones antiguas sin zona requieren escogerla al usarlas.
+- Los cajeros pueden ingresar por su correo o por el usuario corto asignado en Control de personal. Los correos son únicos en toda FISITAAP; un usuario corto también es único. Las cuentas antiguas siguen conservando sus contraseñas y roles.
+
+### Catálogo, menú y pedidos
+
+- **Catálogo:** no muestra cocina, monitor de preparación, mesas, comanda ni sus destinos de impresión. Aceptar un pedido no genera comanda. Usa Pedidos para aceptarlo y registrar la entrega.
+- **Menú:** Pedidos es un listado con acciones y bitácora. Aceptar imprime la comanda una sola vez. En **Monitor de preparación** pulsa Preparar y Preparado. La asignación de Express se realiza desde Pedidos.
+- Sin **Entregas** (Express + Red de motorizados), se ocultan afiliados, invitaciones, seguimiento y asignación de motos. El checkout sigue admitiendo domicilio: la tienda coordina y confirma la entrega directamente. No se crean tareas de moto.
+- Con Entregas, la tienda asigna el pedido preparado directamente a una moto o lo libera a afiliados. En Menú el monitor prepara; Pedidos asigna.
+- Diseño web → Slider del catálogo permite **color de títulos y textos**, además de tres imágenes y tiempo configurable. El menú del comprador muestra acciones actuales de compra, sin los enlaces antiguos Inicio/Blog/Contacto.
+- Los productos sin fotografía muestran un ícono neutro sobre blanco con «Solicita la imagen». Venta rápida distingue categorías, búsqueda y filtros sin resultados, y no muestra el acceso de cuentas de mesas en Catálogo.
+- Al ingresar al sistema se muestra siempre **Bienvenida**. Resumen sigue disponible desde el menú.
+
+### Academiaap y configurador
+
+**Academiaap** reemplaza el acceso «Manual de uso». Tiene cursos por rol, lecciones actualizadas, progreso guardado por cuenta y botones **Ir a practicar**. Al abrir una pantalla desde una lección aparece **Volver al curso**.
+
+Durante los primeros tres días desde el primer uso de la bienvenida aparece una invitación pequeña **CONFIGUREMOS FISITAAP JUNTOS**. El dueño puede seguir datos generales, sucursales, roles, personal, categorías, productos, extras, diseño y equipo. Guarda en cada pantalla y vuelve al configurador para continuar. **Pausar y salir** conserva el paso. El botón **Configurador FISITAAP** del menú permite retomarlo después; los pasos ajenos al plan pueden omitirse.
+
+### Control de personal
+
+Administración → **Control de personal**. El módulo se controla en los planes del maestro. El dueño puede administrarlo; otros colaboradores necesitan permisos explícitos de Personal. No se habilita la consulta de expedientes a un cajero por defecto.
+
+- **Expediente y acceso:** crea o vincula un colaborador del mismo negocio; identificación, nombre, nacimiento, nacionalidad, estado civil, oficio, domicilio, contacto y emergencia; puesto, ingreso/salida, contrato, lugar/fecha, condiciones, salario bruto mensual equivalente y periodicidad; CCSS, referencia INS, cuenta y dependientes. Conserva los roles personalizados existentes. La ficha no sustituye un contrato firmado.
+- **Horario:** días, entrada/salida y pausa remunerada o no. Valida jornadas ordinarias diurna/nocturna/mixta, descanso y días del expediente. Detecta por el horario los tramos nocturnos; jornadas excepcionales o regímenes especiales requieren revisión. Los avisos no imponen descuentos ni sanciones.
+- **Marcas:** el botón superior **Marcar** aparece solo dentro de Windows/Android instalado con la interfaz nativa. El servidor exige equipo vinculado y sesión autorizada, y luego usuario/contraseña de la persona que marca. Consulta su último evento y propone Entrada/Pausa/Regreso/Salida. Guarda hora del servidor, sucursal y equipo. Repetir la misma solicitud no duplica; secuencias inválidas y marcas casi simultáneas se rechazan. Una jornada abierta más de 24 horas requiere corrección. **Necesita internet**; no inventa horas ni sincroniza marcas offline.
+- **Bitácora:** conserva marcas originales. Una corrección de hora o marca omitida requiere justificación y registra al responsable. Valida el orden de eventos. Las horas mostradas son tramos cerrados sin pausas marcadas; el cálculo de horas extra o pausas pagadas requiere revisión.
+- **Vacaciones:** saldo inicial con fecha y motivo de ajuste, devengo estimado, asignación por días del horario y cancelación justificada. Evita superposiciones y reservas que excedan saldo; excluye feriados nacionales estándar. Verifica traslados extraordinarios o regímenes especiales.
+- **Salarios brutos:** registra periodos reales, salario ordinario y extraordinario. No admite periodos superpuestos ni futuros. Son bases de cálculo y no transferencias de dinero.
+- **Cálculos:** aguinaldo proporcional, vacaciones y salida/despido con resultado guardado, fecha, base e hipótesis. El aguinaldo usa salarios del 1 de diciembre al 30 de noviembre / 12; cesantía y preaviso dependen de antigüedad y causa de salida. El cálculo estándar de salida admite contrato indefinido; plazo/obra exige revisión específica. Las vacaciones distinguen días laborables y días remunerados según la periodicidad y descanso; en mensual/quincenal dos semanas incluyen 14 días remunerados. Se puede indicar base y días verificados.
+
+**Límite de los cálculos laborales:** son estimaciones para revisión de planilla, no finiquitos ni pagos automáticos. Las referencias usadas son Código de Trabajo (arts. 28–29, 136–139, 152–157) y Ley 2412. El acceso a SCIJ/MTSS fue bloqueado por la red de este entorno; no se pudo comprobar la vigencia del texto oficial. Verifica régimen, salarios, interrupciones, feriados y condiciones contractuales con MTSS o quien lleve la planilla antes de liquidar. No se implementan deducciones de planilla, cálculo fiscal, CCSS o mínimos salariales automáticos.
+
+La presentación comercial de FISITAAP conserva su diseño. Promociones y Fidelización ordenan sus formularios, accesos y ayuda. Se mantiene la conexión de IA y las funciones R16.
 
 ## R16: FISIChat operativo, soporte y catálogo compacto
 

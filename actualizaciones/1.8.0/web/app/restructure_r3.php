@@ -49,8 +49,8 @@ function r3_shell_end(): void {r15_shell_end();}
 function r3_pos_nav(array $t): void
 {
     echo '<nav class="r3-pos-nav"><form method="post" action="'.url('admin/ventas').'">'.csrf_field().pos_hidden_148('action',($t['catalog_label']??'')==='Menú'?'quick':'catalog').pos_hidden_148('open_key',bin2hex(random_bytes(16))).'<button class="r3-button primary">'.r3_icon('bolt').'Venta rápida</button></form>';
-    if(($t['catalog_label']??'')==='Menú') echo '<a class="r3-button" href="'.url('admin/ventas?screen=express').'">'.r3_icon('cart').'Express</a><a class="r3-button" href="'.url('admin/mesas').'">'.r3_icon('table').'Mesas</a>';
-    echo '<a class="r3-button" href="'.url('admin/cobro').'">'.r3_icon('cash').'Cobrar cuentas</a><a class="r3-button" href="'.url('admin/ventas?waiting=1').'">'.r3_icon('note').'Ventas en espera</a><a class="r3-button" href="'.url('admin/ventas?history=1').'">'.r3_icon('clock').'Historial / Reimprimir</a></nav>';
+    if(($t['catalog_label']??'')==='Menú') echo (r17_delivery($GLOBALS['app'],$t)?'<a class="r3-button" href="'.url('admin/ventas?screen=express').'">'.r3_icon('cart').'Express</a>':'').'<a class="r3-button" href="'.url('admin/mesas').'">'.r3_icon('table').'Mesas</a>';
+    echo (r17_menu($t)?'<a class="r3-button" href="'.url('admin/cobro').'">'.r3_icon('cash').'Cobrar cuentas</a>':'').'<a class="r3-button" href="'.url('admin/ventas?waiting=1').'">'.r3_icon('note').'Ventas en espera</a><a class="r3-button" href="'.url('admin/ventas?history=1').'">'.r3_icon('clock').'Historial / Reimprimir</a></nav>';
 }
 function r3_business_user(App $app,string $section): array
 {

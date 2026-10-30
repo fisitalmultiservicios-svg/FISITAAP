@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once __DIR__.'/operaciones180.php';
 require_once __DIR__.'/chat_actions_r16.php';
 require_once __DIR__.'/support_r16.php';
+require_once __DIR__.'/platform_r17.php';
 
 function qa180_active(App $app,?int $tenantId=null):bool {
     if($app->setting('qa180_active','0')!=='1')return false;
@@ -91,4 +92,5 @@ function schema180(App $app):void {
     }
     if(function_exists('op180_schema'))op180_schema($app);
     fc16_schema($app);
+    r17_schema($app);
 }

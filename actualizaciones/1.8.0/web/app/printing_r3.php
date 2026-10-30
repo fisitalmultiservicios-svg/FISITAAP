@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 function r3_print_points(App $app,array $t): array
 {
+    if(!r17_menu($t))return ['receipt'=>'Caja / recibo','copy'=>'Copia'];
     $points=['receipt'=>'Caja / recibo','kitchen'=>'Cocina','bar'=>'Barra','dispatch'=>'Despacho','copy'=>'Copia'];
     $extra=json_decode(r2_setting($app,(int)$t['id'],'printer_zones','{}'),true)?:[];
     foreach($extra as $key=>$label)if(preg_match('/^zone_[a-f0-9]{12}$/',(string)$key))$points[$key]=mb_substr((string)$label,0,80);

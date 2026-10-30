@@ -1,3 +1,22 @@
+# Descargas FISITAAP · web 1.8.0-R17
+
+[**Descargar actualización R17 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R17.zip)
+
+Accesos de cliente/cajero, archivo de clientes, direcciones con zona, separación Catálogo/Menú, entrega directa sin módulo, Academiaap, configurador pausado y Control de personal. Incluye FISIChat y la interfaz acumulada anterior.
+
+- [Guía e instalación](GUIA-CPANEL-1.8.0.md)
+- [Solicitudes revisadas y pruebas](INFORME-QA-1.8.0.md)
+- [Capturas R17](VISTAS-R17.md)
+- [Integridad de archivos](SHA256SUMS-1.8.0.txt)
+
+Los cálculos laborales son estimaciones con bases y supuestos visibles; la vigencia del texto oficial no pudo verificarse desde este entorno. Marcar requiere conexión dentro de Windows/Android vinculado. Conserva Windows1.8.1; no hace falta reinstalarlo para esta entrega web.
+
+Respalda, extrae en `public_html` y ejecuta `/actualizador-180/index.php` como maestro. La publicación de estos archivos no instala el hosting.
+
+---
+
+## Descargas y documentación de entregas anteriores
+
 # FISITAAP web 1.8.0-R16 · Windows 1.8.1
 
 R16 conecta el FISIChat del dueño a consultas y cambios reales de su propia tienda, añade tickets de soporte desde el chat de la web oficial y reduce un poco las tarjetas del catálogo online.

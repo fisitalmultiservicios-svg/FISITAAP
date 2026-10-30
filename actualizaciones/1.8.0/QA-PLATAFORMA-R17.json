@@ -1,0 +1,17 @@
+{
+  "revision": "1.8.0-R17",
+  "passed": 9,
+  "checks": [
+    "Panel-created customer immediately logs in by cellphone; changing the password is preserved and the old cellphone password fails",
+    "Addresses reject missing/foreign zones atomically and return their saved own-store zone with Maps location",
+    "Removing a customer archives only its own-store listing and login while preserving the underlying history",
+    "Personnel creates a real cashier that logs in by assigned alias or case-insensitive email and sees welcome; global duplicate email and unauthorized personnel access are rejected",
+    "Schedules enforce ordinary daily/weekly limits; vacations count scheduled workdays, reject overlap and preserve reasoned cancellation",
+    "Audited benefit estimates match verified salary test cases: aguinaldo /12, cause-specific preaviso/cesantía, vacations and separated totals; no payment is created",
+    "Clock requires a real session-bound native device and own-store employee credentials; stamp retries write once, invalid sequences and near duplicates fail",
+    "Attendance correction preserves original event and adds named audit history; another business cannot read the expediente",
+    "Academiaap persists learner progress and practice links; guided setup retains the current step when paused"
+  ],
+  "legal_status": "Formulas tested as estimates; live authoritative source access blocked by environment, not certified legal validation.",
+  "environment": "Real HTTP/PHP/MariaDB guarded fictional fixture; trusted native protocol simulated, no live hosting, services or employees"
+}

@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__.'/kanban180.php';
 
-function qa180_order_states():array {return ['new'=>'Nuevo','confirmed'=>'Aceptado','preparing'=>'Preparación','ready'=>'Listo','sent'=>'Despacho / Express','delivered'=>'Entregado','cancelled'=>'Cancelado'];}
+function qa180_order_states():array {return ['new'=>'Nuevo','confirmed'=>'Aceptado','preparing'=>'Preparación','ready'=>'Listo','sent'=>'En entrega','delivered'=>'Entregado','cancelled'=>'Cancelado'];}
 
 /** Copies immutable checkout amounts. Stock was already taken by checkout. */
 function qa180_order_receive(App $app,array $tenant,array $actor,int $id,bool $automatic=false):int {
@@ -35,7 +35,7 @@ function qa180_order_receive(App $app,array $tenant,array $actor,int $id,bool $a
         pos_recalculate_148($app,$ticket);$copied=$app->one('SELECT total FROM pos_tickets WHERE id=?',[$ticket]);if(pos_cents_148($copied['total'])!==pos_cents_148($order['total']))throw new DomainException('El total del pedido requiere revisión antes de recibirlo.');
         $app->exec('INSERT INTO fisitaap_order_receipts180(tenant_id,branch_id,order_id,ticket_id,received_by) VALUES(?,?,?,?,?)',[$tenant['id'],$branch['id'],$id,$ticket,$automatic?null:$actor['id']]);
         $app->exec('UPDATE orders SET status=?,revision180=revision180+1 WHERE id=?',[$status,$id]);
-        if(op180_ready($app))op180_event($app,$order,'confirmed','Pedido aceptado por el vendedor; comanda enviada.',(int)$actor['id']);
+        if(op180_ready($app))op180_event($app,$order,'confirmed','Pedido aceptado por el vendedor.',(int)$actor['id']);
         if($newOrder)qa180_print_commands($app,$tenant,$branch,$actor,$ticket,$newIds,'web-order-'.$id.'-command');
         qa180_audit($app,$actor,'web_order_receive','order',$id,($automatic?'Recibió automáticamente':'Recibió').' el pedido web #'.$order['order_number'].'; abrió una cuenta sin repetir el inventario');
         if($owns)$app->db->commit();return $ticket;
@@ -77,6 +77,8 @@ function qa180_orders(App $app,array $user,array $tenant,string $section):void {
         verify_csrf();$action=(string)($_POST['action']??'status');
         try {
             $notice='Pedido actualizado.';
+            if($section==='cocina'&&(!in_array($action,['prepare','prepared'],true)))throw new DomainException('La aceptación, entrega y asignación se gestionan desde Pedidos.');
+            if($section==='pedidos'&&r17_menu($tenant)&&in_array($action,['prepare','prepared'],true))throw new DomainException('Prepara y marca listo desde Monitor de preparación.');
             qa180_permission($app,$user,$section,'write');$id=(int)($_POST['id']??0);$app->db->beginTransaction();$app->one('SELECT id FROM branches WHERE id=? AND tenant_id=? FOR UPDATE',[$branch['id'],$tenant['id']]);
             if(($_POST['origin']??'web')==='web'){
                 $order=$app->one('SELECT * FROM orders WHERE id=? AND tenant_id=? AND branch_id=? FOR UPDATE',[$id,$tenant['id'],$branch['id']]);if(!$order)throw new DomainException('El pedido no pertenece a esta sucursal.');
@@ -87,7 +89,7 @@ function qa180_orders(App $app,array $user,array $tenant,string $section):void {
                 if(in_array($action,['prepare','prepared','handover','dispatch'],true))$notice=qa180_board_web_action($app,$user,$tenant,$branch,$order,$action);
                 elseif($action==='receive'){qa180_order_receive($app,$tenant,$user,$id);}
                 else {
-                    $next=(string)($_POST['status']??'');$transitions=['new'=>['cancelled'],'confirmed'=>['preparing','cancelled'],'preparing'=>['ready','cancelled'],'ready'=>['sent','delivered','cancelled'],'sent'=>['delivered'],'delivered'=>[],'cancelled'=>[]];
+                    $next=(string)($_POST['status']??'');$transitions=['new'=>['cancelled'],'confirmed'=>r17_menu($tenant)?['preparing','cancelled']:['ready','delivered','cancelled'],'preparing'=>r17_menu($tenant)?['ready','cancelled']:['ready','delivered','cancelled'],'ready'=>['sent','delivered','cancelled'],'sent'=>['delivered'],'delivered'=>[],'cancelled'=>[]];
                     if(!in_array($next,$transitions[$order['status']]??[],true))throw new DomainException('Ese cambio no corresponde al estado actual. Primero recibe los pedidos nuevos.');
                     if($next==='delivered'&&$app->one('SELECT id FROM delivery_jobs WHERE order_id=? AND status NOT IN("cancelled","expired")',[$id]))throw new DomainException('Esta entrega se confirma desde el portal del motorizado con su PIN.');
                     order_status_qa($app,(int)$tenant['id'],$id,$next,(int)$user['id']);qa180_audit($app,$user,'order_status','order',$id,'Cambió el pedido #'.$order['order_number'].' a '.qa180_order_states()[$next]);
@@ -109,6 +111,7 @@ function qa180_orders(App $app,array $user,array $tenant,string $section):void {
         }catch(Throwable $error){if($app->db->inTransaction())$app->db->rollBack();flash('error',$error instanceof PDOException?'No se completó el cambio. Revisa el pedido antes de repetir.':$error->getMessage());}
         redirect(url('admin/'.$section));
     }
+    if($section==='cocina'){qa180_board_render($app,$user,$tenant,$branch,$section);return;}
     if(op180_ready($app))op180_orders_list($app,$user,$tenant,$branch,$section);else qa180_board_render($app,$user,$tenant,$branch,$section);
 }
 

@@ -21,7 +21,7 @@ function restructure_sections_r1(): array
         'contenido'=>'Diseño y página del negocio', 'delivery'=>'Zonas de envío',
         'impresion'=>'Impresión', 'recibo'=>'Comprobantes', 'express'=>'Afiliados e invitaciones',
         'repartidor'=>'Seguimiento de entregas', 'blog'=>'Blog', 'contactos'=>'Contactos', 'auditoria'=>'Auditoría',
-        'fisichat'=>'FISIChat',
+        'fisichat'=>'FISIChat', 'personal'=>'Control de personal',
     ] + (function_exists('r2_sections') ? r2_sections() : []);
     if(function_exists('qa180_active')&&qa180_active($GLOBALS['app'])){unset($sections['blog'],$sections['cobro']);$sections['auditoria']='Bitácora';$sections['dashboard']='Bienvenida';}return $sections;
 }
@@ -36,7 +36,7 @@ function restructure_available_actions_r1(string $section): array
     if ($section === 'credito') return ['view','credit'];
     if (in_array($section, ['dashboard','reportes','recibo','auditoria','fisichat','kpis','clientes-historial','entregas-historial'], true)) return ['view'];
     $actions = ['view', 'write'];if(function_exists('qa180_active')&&qa180_active($GLOBALS['app'])&&in_array($section,['ventas','cobro'],true))array_push($actions,'price','discount','credit_sale','accept_orders');
-    if (in_array($section, ['categorias','productos','opciones','extras','opcionales','combos','promociones','proveedores','cupones','delivery','contenido','blog','ventas','pedidos','cocina'], true)) $actions[] = 'delete';
+    if (in_array($section, ['categorias','productos','opciones','extras','opcionales','combos','promociones','proveedores','cupones','delivery','contenido','blog','ventas','pedidos','cocina','clientes','personal'], true)) $actions[] = 'delete';
     if (in_array($section, ['ventas','cobro','express-pendientes'], true)) $actions[] = 'charge';
     if ($section === 'clientes') $actions[] = 'credit';
     if (in_array($section,['ventas','mesas','salones','escritorio','impresion','configuracion','cuentas-dinero','express'],true)) $actions[] = 'configure';

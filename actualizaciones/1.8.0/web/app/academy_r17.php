@@ -1,0 +1,95 @@
+<?php
+declare(strict_types=1);
+
+function academy17_courses(array $tenant=[]):array {
+    $menu=r17_menu($tenant);$mode=$menu?'menú':'catálogo';
+    return [
+      'store'=>['title'=>'Administra tu negocio','intro'=>'Configura, vende y acompaña a tus clientes con FISITAAP. Cada lección abre la pantalla donde puedes practicar.','lessons'=>[
+        ['bienvenida','Tu espacio de trabajo','admin/bienvenida',['Al ingresar siempre verás Bienvenida. Abre Resumen desde el menú para consultar indicadores.','El menú de tres rayas reúne las pantallas autorizadas para tu rol y plan.']],
+        ['configuracion','Datos, contacto y formas de pago','admin/configuracion',['Completa nombre, teléfono, WhatsApp, horario, logo y colores.','Las zonas de envío se crean en Administración → Zonas de envío, aunque entregues con tus propios medios.']],
+        ['equipo','Equipo y accesos','admin/personal',['En Control de personal crea o vincula al empleado con un usuario. Cada correo y alias de acceso debe ser único en FISITAAP.','El perfil cajero permite vender; los roles personalizados limitan pantallas y acciones. No compartas contraseñas.']],
+        ['productos','Categorías, productos e importación','admin/productos',['Crea categorías antes de registrar o importar productos con el machote de Excel.','Por unidad solo permite cantidades enteras; a granel permite decimales.','Sin foto se muestra un ícono neutro que invita a cargar una imagen.']],
+        ['opcionales','Extras y grupos de selección','admin/opcionales',['Crea grupos con nombre, por ejemplo Tallas o Colores, y escribe una opción por línea.','Define selección única o múltiple y si es obligatoria; asigna a productos o categorías.']],
+        ['diseno','Diseña la portada y el catálogo','admin/contenido',['Diseño web separa portada, contacto y slider del '.$mode.'.','Carga hasta tres imágenes, define el tiempo entre cambios y el color de sus textos. Las imágenes se optimizan al guardarlas.']],
+        ['clientes','Clientes, direcciones y zonas','admin/clientes-buscar',['El nombre y teléfono identifican al cliente de cada tienda. Una cuenta nueva usa inicialmente su celular como usuario y contraseña.','Cada dirección conserva su ubicación de Maps y una zona de envío de esta tienda.','Eliminar un cliente lo retira del listado y acceso de la tienda, conservando historial. Primero resuelve deudas y pedidos abiertos.']],
+        ['pedidos','Acepta y tramita pedidos','admin/pedidos',['Pedidos muestra una lista con estado, cuenta y bitácora. Acepta los pedidos nuevos antes de tramitarlos.',$menu?'Solo al aceptar se imprime la comanda. Usa Monitor para preparar y marcar listo; regresa a Pedidos para asignar Express.':'En Catálogo no hay cocina ni comanda. Acepta y registra la entrega directamente desde Pedidos.','Sin Entregas, el negocio organiza el domicilio directamente. Con Entregas puedes asignar a un motorizado o liberar a los afiliados.','Para cancelar necesitas permiso y una justificación; con cobros previos hay que revisar la devolución.']],
+        ['ventas',$menu?'Mesas y caja':'Venta rápida',$menu?'admin/mesas':'admin/ventas',['Abre un turno y selecciona el cliente antes de cobrar.','La factura y los productos se ajustan al espacio; revisa cantidades, descuento, impuestos y vuelto.',$menu?'Envía los artículos a preparación desde la cuenta y cobra al finalizar.':'Escanea o busca productos, revisa la factura y selecciona el medio de pago.','Sin internet solo vende desde el equipo principal instalado y autorizado; sincroniza antes de cambiar equipo.']],
+        ['beneficios','Promociones y fidelización','admin/promociones',['Promociones define precio especial o 2 × 1 por producto; los cupones aplican por código y condiciones.','Fidelización establece la meta y el premio. Identifica al cliente en las ventas para acreditar su progreso.','Un premio se canjea una sola vez. Consulta el historial antes de repetir una operación.']],
+        ['inventario','Existencias e inventario','admin/inventario',['Revisa las existencias por sucursal y los mínimos de cada producto.','Registra entradas, salidas o ajustes con su motivo. Una unidad usa cantidades enteras; a granel acepta su incremento configurado.','No edites existencias para corregir una venta: revisa primero su documento y movimiento.']],
+        ['compras','Compras y proveedores','admin/compras',['Crea proveedores con sus datos de contacto y condiciones de pago.','Registra cada compra recibida con producto, cantidad, costo e impuesto. Comprueba el inventario de la sucursal.','Si queda saldo, consulta Cuentas por pagar; al abonar elige la cuenta de dinero y conserva la referencia.']],
+        ['credito','Crédito y cuentas de dinero','admin/cxc',['Autoriza el crédito desde la ficha del cliente con límite y plazo; una venta a crédito crea su cuenta por cobrar.','Registra los abonos por el medio correcto y evita repetir pagos ya procesados.','Las cuentas de dinero se crean en Administración: caja principal, caja chica, banco y otras cuentas. El registro no ejecuta transferencias en el banco.']],
+        ['impresion','Equipos e impresión','admin/impresion',['Vincula Windows o Android desde Equipos y cajas y asigna una caja y usuario autorizado.',$menu?'Configura recibo y destinos de comanda; los pedidos web imprimen al ser aceptados.':'Configura el recibo y sus copias. Catálogo no utiliza cocina ni comanda.','Para operar sin internet designa un único equipo principal, sincroniza y conserva las ventas locales hasta subirlas.']],
+        ['personal','Horarios, marcas y vacaciones','admin/personal',['Completa expediente, contrato, salario, puesto, horario, descansos y contactos del empleado.','Marcar aparece solo en Windows o Android instalado con equipo vinculado. Cada marca pide las credenciales del empleado.','Entrada, pausa, regreso y salida siguen un orden. Las marcas originales se conservan; las correcciones requieren motivo y quedan en bitácora.','Asigna vacaciones por días laborables según el horario. El saldo usa fecha de ingreso, derecho configurado y ajustes documentados.']],
+        ['calculos','Cálculos laborales de Costa Rica','admin/personal?tab=calculos',['Registra los salarios brutos reales por periodo; no confundas salario neto con la base de prestaciones.','Aguinaldo: salarios ordinarios y extraordinarios devengados del 1 de diciembre al 30 de noviembre, divididos entre 12; proporcional al terminar.','Preaviso y cesantía dependen del motivo de salida, antigüedad y contrato. Vacaciones: mínimo dos semanas por cada 50 semanas de trabajo continuo, con proporcionalidad aplicable.','Los resultados son estimaciones desglosadas. Verifica salarios, interrupciones, régimen de vacaciones y normas vigentes con quien lleve tu planilla. No generan pagos automáticos.']],
+        ['asistente','FISIChat y soporte','admin/bienvenida',['El asistente del dueño solo trabaja con su tienda. Puede consultar, proponer y preparar cambios autorizados; revisa y confirma antes de guardarlos.','Si no puedes resolver un problema, solicita soporte en la web oficial. Completa tienda, contacto y problema; conserva el número del ticket.']]
+      ]],
+      'master'=>['title'=>'Control de la plataforma','intro'=>'Administra tiendas, planes, actualizaciones y soporte.','lessons'=>[
+        ['negocios','Tiendas y planes','master/empresas',['Crea la tienda, su tipo y dueño. Los negocios nuevos usan el código publicado actual.','Revisa módulos y límites sin borrar registros al suspender una función.']],
+        ['soporte','Tickets de soporte','master/soporte',['Revisa contacto, tienda declarada o verificada y conversación.','Registra notas y avanza el estado hasta resolver el caso.']],
+        ['actualizaciones','Actualiza con respaldo','master/actualizar-sistema',['Usa el ZIP oficial y ejecuta el actualizador con la cuenta maestra.','Verifica la revisión instalada y conserva los respaldos.']],
+        ['bienvenida','Bienvenida compartida','master/bienvenida',['La imagen que guardes aquí se muestra en la bienvenida de todos los negocios.','La portada de la web oficial se edita por separado.']]
+      ]],
+      'driver'=>['title'=>'Tu trabajo como motorizado','intro'=>'Ofertas, recogida, entrega e historial.','lessons'=>[
+        ['trabajo','Acepta y entrega','driver',['Activa tu disponibilidad y acepta una oferta autorizada.','Avanza por recogida y traslado; confirma con el PIN del cliente.','Si hay un problema registra una incidencia y comunícate con el negocio.']],
+        ['pagos','Historial y cortes','driver#driver-history',['Consulta tus entregas y montos a pagar. Los cortes conservan el detalle de cada entrega.']]
+      ]],
+      'customer'=>['title'=>'Compra y sigue tu pedido','intro'=>'Tu catálogo, direcciones y seguimiento.','lessons'=>[
+        ['comprar','Arma y envía tu pedido','account',['Elige productos y completa las opciones requeridas.','Escribe nombre y celular. Si tienes direcciones guardadas para ese teléfono, elige una o agrega otra con zona.','Para SINPE adjunta la imagen del comprobante. Revisa el pedido antes de abrir y enviar WhatsApp.']],
+        ['acceso','Tu acceso y PIN','account',['Para cuentas nuevas creadas por la tienda o al pedir, usa tu celular de ocho dígitos como usuario y contraseña inicial desde el catálogo de esa tienda.','Si cambiaste tu contraseña, usa la actual. En Mis pedidos consulta estado, bitácora y PIN.','Comparte el PIN con el motorizado al recibir el pedido.']]
+      ]]
+    ];
+}
+function academy17_visible(array $u):array {return match($u['role']){'master'=>['master','store','driver','customer'],'tenant_admin'=>['store','driver','customer'],'driver'=>['driver'],'customer'=>['customer'],default=>['store']};}
+function academy17_page(App $app,string $path):void {
+    $u=require_login();$t=!empty($u['tenant_id'])?$app->one('SELECT * FROM tenants WHERE id=?',[$u['tenant_id']]):null;$courses=academy17_courses($t??[]);$visible=academy17_visible($u);$course=(string)($_GET['perfil']??$_POST['course']??$visible[0]);if(!in_array($course,$visible,true))$course=$visible[0];$data=$courses[$course];
+    if(is_post()){
+        verify_csrf();$key=(string)($_POST['step']??'');if(!in_array($key,array_column($data['lessons'],0),true))json_response(['ok'=>false,'error'=>'Lección no disponible.'],422);
+        $app->exec('INSERT INTO fisitaap_learning_r17(tenant_id,user_id,course_key,step_key,done) VALUES(?,?,?,?,?) ON DUPLICATE KEY UPDATE done=VALUES(done)',[(int)($u['tenant_id']??0),$u['id'],$course,$key,!empty($_POST['done'])?1:0]);json_response(['ok'=>true]);
+    }
+    session_change176(static function(){unset($_SESSION['academy17_return']);});$progress=[];foreach($app->all('SELECT step_key,done FROM fisitaap_learning_r17 WHERE user_id=? AND course_key=?',[$u['id'],$course]) as $p)$progress[$p['step_key']]=(bool)$p['done'];$done=count(array_filter($progress));$home=match($u['role']){'master'=>'master','customer'=>'account','driver'=>'driver',default=>'admin'};
+    layout_start('Academiaap · '.$data['title'],$t);echo '<main class="a17-page"><header class="a17-hero"><a class="brand" href="'.e(url($home)).'"><img src="'.e(url('assets/fisitapp-logo.webp')).'" alt="FISITAAP"></a><a class="btn btn-light" href="'.e(url($home)).'">Volver al sistema</a><div><span class="eyebrow">APRENDE · PRACTICA · AVANZA</span><h1>Academiaap</h1><p>'.e($data['intro']).'</p></div></header><nav class="a17-courses" aria-label="Cursos">';foreach($visible as $c)echo '<a class="'.($c===$course?'active':'').'" href="'.e(url('academiaap?perfil='.$c)).'">'.e($courses[$c]['title']).'</a>';echo '</nav><div class="a17-layout"><aside class="a17-index"><h2>Tu ruta de aprendizaje</h2><p><strong data-a17-count>'.$done.'</strong> de '.count($data['lessons']).' lecciones</p><progress data-a17-progress max="'.count($data['lessons']).'" value="'.$done.'"></progress>';foreach($data['lessons'] as [$key,$title])echo '<a href="#'.$key.'">'.(!empty($progress[$key])?'✓ ':'').e($title).'</a>';echo '</aside><section class="a17-lessons" data-academy-course="'.e($course).'">';foreach($data['lessons'] as $i=>[$key,$title,$route,$steps]){
+        echo '<article class="card a17-lesson" id="'.$key.'"><header><span class="a17-number">'.str_pad((string)($i+1),2,'0',STR_PAD_LEFT).'</span><div><small>LECCIÓN '.($i+1).'</small><h2>'.e($title).'</h2></div></header><ol>';foreach($steps as $step)echo '<li>'.e($step).'</li>';
+        $may=true;if($t&&str_starts_with($route,'admin/')){$section=explode('/',explode('?',$route)[0])[1];$may=r17_section($app,$t,$section)&&module_enabled_v12($app,$t,section_module_v12($section));if($may)try{qa180_permission($app,$u,$section,'view');}catch(DomainException){$may=false;}}
+        $parts=explode('#',$route,2);$link=$parts[0].(str_contains($parts[0],'?')?'&':'?').'academy_course='.$course.'&academy_step='.$key.(isset($parts[1])?'#'.$parts[1]:'');
+        echo '</ol><footer>'.($may?'<a class="btn" href="'.e(url($link)).'">Ir a practicar →</a>':'<span class="muted">La práctica requiere el módulo y permiso de esa pantalla.</span>').'<label><input type="checkbox" data-a17-step="'.$key.'" '.(!empty($progress[$key])?'checked':'').'> Lección completada</label><small data-a17-status role="status"></small></footer></article>';
+    }echo '</section></div><footer class="a17-footer">Tu progreso se guarda en tu cuenta. Puedes pausar y regresar cuando quieras.</footer></main>';layout_end();
+}
+function academy17_setup_steps(array $t):array {return [
+ ['Datos del negocio','Nombre, contacto, horario, logo y medios de pago.','admin/configuracion'],
+ ['Sucursales y zonas','Configura dónde vendes y las zonas donde entregas.','admin/sucursales'],
+ ['Roles y permisos','Define qué puede hacer cada persona.','admin/roles'],
+ ['Personal y accesos','Registra a tu equipo y sus cuentas.','admin/personal'],
+ ['Categorías','Organiza tus productos para encontrarlos fácilmente.','admin/categorias'],
+ ['Productos','Agrega productos o importa el machote de Excel.','admin/productos'],
+ ['Extras y opcionales','Crea grupos como Tallas y Colores, si los necesitas.','admin/opcionales'],
+ ['Diseño web','Personaliza imágenes, textos y colores de tu tienda.','admin/contenido'],
+ ['Caja e impresión','Vincula el equipo instalado y configura su caja.','admin/escritorio'],
+ ['Prueba tu tienda','Abre el catálogo y comprueba precios, opciones y contacto.',$t['slug'].'/'.catalog_segment($t)]
+ ];}
+function academy17_setup(App $app,array $u,array $t):void {
+    if($u['role']!=='tenant_admin'){http_response_code(403);simple_error('Acceso restringido','El configurador está disponible para el dueño.');return;}
+    $app->exec('INSERT IGNORE INTO fisitaap_setup_r17(tenant_id) VALUES(?)',[$t['id']]);$row=$app->one('SELECT * FROM fisitaap_setup_r17 WHERE tenant_id=?',[$t['id']]);$steps=academy17_setup_steps($t);$step=min(count($steps),(int)$row['step']);
+    if(is_post()){
+        verify_csrf();$action=(string)($_POST['action']??'');
+        if($action==='pause'){$app->exec('UPDATE fisitaap_setup_r17 SET paused=1 WHERE tenant_id=?',[$t['id']]);flash('success','Configurador pausado. Puedes retomarlo desde el menú.');redirect(url('admin'));}
+        if($action==='next'&&(int)($_POST['step']??-1)===$step){$step=min(count($steps),$step+1);$app->exec('UPDATE fisitaap_setup_r17 SET step=?,paused=0,completed_at=IF(?=?,NOW(),NULL) WHERE tenant_id=?',[$step,$step,count($steps),$t['id']]);}
+        if($action==='back'){$step=max(0,$step-1);$app->exec('UPDATE fisitaap_setup_r17 SET step=?,paused=0,completed_at=NULL WHERE tenant_id=?',[$step,$t['id']]);}
+        redirect(url('admin/configurador'));
+    }
+    session_change176(static function(){$_SESSION['setup17_return']=true;});admin_shell_start('Configurador FISITAAP',$u,$t,'configurador');echo '<section class="card a17-config"><span class="eyebrow">A TU RITMO</span><h1>Configuremos FISITAAP juntos</h1><p>Completa cada pantalla, guarda y vuelve con el botón «Volver al configurador». Puedes omitir pasos que no correspondan a tu plan.</p><progress max="'.count($steps).'" value="'.$step.'"></progress><p>Paso '.min(count($steps),$step+1).' de '.count($steps).'</p>';
+    if($step<count($steps)){[$title,$body,$route]=$steps[$step];echo '<h2>'.e($title).'</h2><p>'.e($body).'</p><a class="btn" href="'.e(url($route)).'">Abrir '.e(mb_strtolower($title)).' →</a>'.r2_form('next').pos_hidden_148('step',$step).'<button class="btn btn-light">Listo, continuar</button></form>';}
+    else echo '<h2>Tu recorrido de configuración está completo</h2><p>Puedes volver a cualquier pantalla desde el menú o practicar en Academiaap.</p><a class="btn" href="'.e(url('academiaap')).'">Abrir Academiaap</a>';
+    echo '<div class="a17-config-actions">'.($step?r2_form('back').'<button class="btn btn-light">Paso anterior</button></form>':'').r2_form('pause').'<button class="btn btn-light">Pausar y salir</button></form></div></section>';admin_shell_end();
+}
+function academy17_capture(App $app):void {
+    $u=current_user();if(!$u)return;$course=(string)($_GET['academy_course']??'');$step=(string)($_GET['academy_step']??'');$courses=academy17_courses();
+    if(in_array($course,academy17_visible($u),true)&&in_array($step,array_column($courses[$course]['lessons'],0),true))$_SESSION['academy17_return']=['course'=>$course,'step'=>$step];
+}
+function academy17_shell(App $app,array $u,?array $t):void {
+    if(!r17_ready($app))return;
+    if($return=$_SESSION['academy17_return']??null)echo '<a class="a17-return" href="'.e(url('academiaap?perfil='.$return['course']).'#'.$return['step']).'">← Volver al curso · Academiaap</a>';
+    elseif(!empty($_SESSION['setup17_return'])&&$t&&$u['role']==='tenant_admin'&&request_path()!=='admin/configurador')echo '<a class="a17-return" href="'.e(url('admin/configurador')).'">← Volver al configurador</a>';
+    if(!$t||$u['role']!=='tenant_admin'||!in_array(request_path(),['admin','admin/bienvenida'],true))return;
+    $app->exec('INSERT IGNORE INTO fisitaap_setup_r17(tenant_id) VALUES(?)',[$t['id']]);$setup=$app->one('SELECT *,started_at>=DATE_SUB(NOW(),INTERVAL 3 DAY) invite FROM fisitaap_setup_r17 WHERE tenant_id=?',[$t['id']]);
+    if($setup['invite']&&!$setup['paused']&&!$setup['completed_at'])echo '<aside class="a17-invite" data-setup-invite><button type="button" class="icon-button" data-setup-dismiss aria-label="Cerrar invitación">×</button><small>BIENVENIDO A TU NEGOCIO</small><h2>Vamos paso a paso</h2><p>Te acompañamos a dejar tu tienda lista. Puedes pausar cuando necesites.</p><a class="btn" href="'.e(url('admin/configurador')).'">CONFIGUREMOS FISITAAP JUNTOS</a></aside>';
+}

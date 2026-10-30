@@ -1,0 +1,290 @@
+{
+  "revision": "1.8.0-R17",
+  "passed": 5,
+  "checks": [
+    "Personnel tabs, Academy, setup, benefits, orders and sale screens fit desktop/tablet/phone widths without page overflow or server errors",
+    "Lesson practice opens the right real screen and returns to the course; completion survives reload",
+    "First-three-use-days invitation launches guided setup, pause hides invitation and Configurador resumes",
+    "Buyer catalog drawer has current shopping actions and no old Inicio/Blog/Contacto navigation",
+    "Marcar is absent in normal browser, appears only with installed bridge, inspects real credentials under server native grant and clears password on close"
+  ],
+  "layouts": [
+    {
+      "path": "/admin/personal?employee=1",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=horario",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=horario",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=horario",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=horario",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=horario",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=marcas",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=marcas",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=marcas",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=marcas",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=marcas",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=vacaciones",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=vacaciones",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=vacaciones",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=vacaciones",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=vacaciones",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=calculos",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=calculos",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=calculos",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=calculos",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/personal?employee=1&tab=calculos",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/academiaap",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/configurador",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/fidelizacion",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/promociones",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/pedidos",
+      "width": 320,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/ventas",
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/ventas",
+      "width": 1024,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/ventas",
+      "width": 768,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/ventas",
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "path": "/admin/ventas",
+      "width": 320,
+      "no_overflow": true
+    }
+  ],
+  "page_errors": [],
+  "environment": "Chromium real HTTP/PHP/MariaDB fictional fixture. Native bridge presence simulated with server native protocol; actual Windows/Android hardware remains manual."
+}

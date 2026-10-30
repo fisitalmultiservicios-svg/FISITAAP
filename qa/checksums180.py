@@ -3,7 +3,7 @@ import hashlib,pathlib,re,sys
 ROOT=pathlib.Path(__file__).resolve().parents[1]/'descargas/1.8.0'
 def main():
     entries=[];pointers=0
-    for file in sorted(p for p in ROOT.iterdir() if p.suffix in ['.zip','.exe','.apk','.xlsx']):
+    for file in sorted(p for p in ROOT.iterdir() if p.is_file() and p.name!='SHA256SUMS-1.8.0.txt' and not p.name.startswith('.')):
         data=file.read_bytes()
         pointer=re.fullmatch(rb'version https://git-lfs.github.com/spec/v1\noid sha256:([a-f0-9]{64})\nsize [0-9]+\n',data)
         if pointer:pointers+=1

@@ -1,3 +1,46 @@
+# Informe QA · FISITAAP web 1.8.0-R17
+
+Fecha de entrega: 29 de octubre de 2026 (Costa Rica). Actualización acumulativa sobre R16. Este informe distingue lo comprobado en el entorno local de lo que necesita revisión en el hosting o dispositivo físico.
+
+| Solicitud | Resultado R17 |
+|---|---|
+| Cliente nuevo por celular/celular | Alta unificada en panel, caja y pedido web. Acceso inicial inmediato; se conserva contraseña cambiada. El catálogo ofrece acceso de su tienda y el acceso general detecta teléfonos ambiguos entre tiendas. |
+| Eliminar clientes | Eliminación del listado mediante archivo por tienda, motivo y permiso; conserva historial y bloquea deuda o documentos abiertos. |
+| Cajero con acceso asignado | Correo o alias único; creación/vinculación desde Personal y conservación de rol personalizado. Correo duplicado rechazado globalmente al crear/editar. |
+| Comanda y cocina solo en Menú | Catálogo oculta y rechaza cocina/mesas/monitor; no encola comanda y no muestra sus destinos. Menú imprime al aceptar una vez. |
+| Pedidos listado; Monitor prepara | Lista con estado, cuenta y bitácora. Preparar/Preparado se ejecutan en Monitor de Menú; asignar Express desde Pedidos. |
+| Sin Entregas | Oculta y bloquea herramientas de motos. Domicilio sigue activo como entrega directa del negocio, sin tarea de motorizado. |
+| Zona por dirección | Panel, cuenta, caja Express y checkout vinculan direcciones con zonas activas propias. Elegir dirección existente devuelve su zona. |
+| Portada del catálogo | Color de texto configurable y validado; conserva slider y tiempo. |
+| Menú antiguo del comprador | Navegación de compras independiente de la antigua navegación informativa. |
+| Venta rápida e imagen faltante | Textos coherentes para categorías/búsqueda/sin resultados y accesos de Menú ocultos en Catálogo; ícono en blanco «Solicita la imagen». |
+| Manuales y aprendizaje | Academiaap por rol, progreso persistente, práctica en pantalla real y botón para volver al curso. Lecciones de las funciones nuevas y operativas existentes. |
+| Primeros tres días y pausa | Invitación desde primer uso; configurador por pasos persistente y acceso permanente para retomar. |
+| Personal y usuarios | Expediente privado, contrato/datos, acceso del colaborador, horario, estado, bases salariales y permisos del módulo. |
+| Marcar en instalado | Interfaz visible solo con puente Windows/Android; servidor exige vinculación real. Credenciales por persona, secuencia, hora servidor, idempotencia y correcciones justificadas conservando original. Requiere conexión. |
+| Vacaciones/aguinaldo/despido | Estimaciones guardadas y desglosadas; salarios reales, causa/antigüedad, régimen de vacaciones, descansos y feriados estándar. No generan pago. Vigencia jurídica pendiente de verificación externa. |
+| Bienvenida siempre | Entrada principal de maestro y negocio muestra Bienvenida; Resumen tiene enlace independiente. |
+| Fidelización y promociones | Formularios y tarjetas ordenados, accesos entre beneficios y lección de ayuda. |
+
+## Validación
+
+- `QA-PLATAFORMA-R17.json`: HTTP/CSRF/PHP/MariaDB reales: accesos, contraseña cambiada, archivo del cliente, zonas, creación de cajero, correo repetido, aislamiento, horario, vacaciones y superposición, cálculos con bases conocidas, vinculación nativa, marcas/reintentos/secuencia, corrección con original intacto, progreso y pausa.
+- `QA-PEDIDOS-R17.json`: checkout nuevo real, acceso automático, zona guardada y reintento; Catálogo sin comanda y entrega directa; Menú con una sola impresión al aceptar, preparación exclusivamente en Monitor y entrega desde Pedidos; color del slider y rechazo de inyección CSS.
+- `QA-NAVEGADOR-R17.json`: cinco recorridos y 55 combinaciones de pantalla/tamaño de 320 a 1440px, sin desbordamiento horizontal ni errores JavaScript. Incluye práctica/retorno/progreso, invitación/pausa y formulario nativo de marca con credenciales reales de prueba.
+- `QA-INTERFAZ-R17.json`: ocho recorridos y178 combinaciones. Venta real con autorización nativa, cantidades/cliente, cobro, inventario, cupón, recibo, plano de mesas/zoom, menú compartido y paneles. La captura de la presentación oficial permanece idéntica en el entorno de prueba.
+- `QA-ACTUALIZADOR-R17.json`: instalación sobre el ZIP R16 publicado, en segunda base ficticia. Crea el esquema aditivo y conserva registros, config, uploads, versiones179/180 y un turno abierto. Maestro/CSRF, rechazo de código personalizado desconocido, rutas privadas, permisos y reintento. Recupera solo una cuenta automática sin uso y conserva la contraseña cambiada después; expedientes, salarios, progreso/configurador y tickets sobreviven a la repetición.
+- `QA-SINTAXIS-R17.json`: 144 archivos funcionales,85 PHP de payload,89 PHP del ZIP y13 JavaScript. Manifiesto, guía, hashes y permisos644/755 del archivo final.
+
+## Límites explícitos
+
+Las pruebas usan datos ficticios y transporte nativo simulado, con servidor y base de datos reales. No se probaron impresoras ni equipos Windows/Android físicos en esta revisión. No hubo mensajes de WhatsApp, correos, pagos reales ni cambios de hosting.
+
+Los cálculos laborales son estimaciones para revisión. El entorno bloqueó las fuentes oficiales SCIJ/MTSS; no se afirma validación jurídica vigente. Se referencia Código de Trabajo (28–29, 136–139, 152–157) y Ley 2412. Casos de plazo/obra, jornadas excepcionales, salarios incompletos, interrupciones, regímenes especiales o traslados de feriados necesitan revisión. No se automatizan planilla fiscal/CCSS, mínimos salariales, sanciones ni pagos. Marcar necesita conexión y no sustituye el registro de ventas offline.
+
+El paquete se instala en cPanel por la cuenta maestra. Su publicación en el repositorio no actualiza automáticamente `fisitaap.com`.
+
+---
+
 # Informe QA · FISITAAP web 1.8.0-R16
 
 Fecha: 29 de octubre de 2026. FISIChat operativo para el dueño, soporte público con tickets en el maestro y catálogo online más compacto. Se conserva la aplicación de R15 y la conexión privada de IA existente.

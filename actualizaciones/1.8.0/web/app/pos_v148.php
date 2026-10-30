@@ -80,8 +80,8 @@ function pos_create_customer_148(App $app,array $tenant,array $user):int {
     if($existing)throw new RuntimeException('Ya existe un cliente con esos datos en tu tienda. Selecciónalo en la lista.');
     if($email!==''&&$app->one('SELECT id FROM users WHERE email=?',[$email]))throw new RuntimeException('No se puede usar ese correo para crear un cliente. Usa la cuenta ya vinculada al negocio u otro correo.');
     if($email==='')$email='pos-'.bin2hex(random_bytes(16)).'@registro.fisitaap.local';
-    $app->exec('INSERT INTO users(name,email,phone,password_hash,role,is_active) VALUES(?,?,?,?,"customer",1)',[$name,$email,$phone,password_hash(bin2hex(random_bytes(32)),PASSWORD_DEFAULT)]);
-    $id=(int)$app->db->lastInsertId();$app->exec('INSERT INTO tenant_customers(tenant_id,user_id) VALUES(?,?)',[$tenant['id'],$id]);
+    $app->exec('INSERT INTO users(name,email,phone,password_hash,role,is_active) VALUES(?,?,?,?,"customer",1)',[$name,$email,$phone,password_hash(r17_ready($app)?op180_phone($phone):bin2hex(random_bytes(32)),PASSWORD_DEFAULT)]);
+    $id=(int)$app->db->lastInsertId();if(r17_ready($app))$app->exec('INSERT INTO fisitaap_guest_contacts180(tenant_id,phone,user_id,phone_login181) VALUES(?,?,?,1)',[$tenant['id'],op180_phone($phone),$id]);$app->exec('INSERT INTO tenant_customers(tenant_id,user_id) VALUES(?,?)',[$tenant['id'],$id]);
     $app->exec('INSERT INTO customer_credit_profiles(tenant_id,user_id,notes) VALUES(?,?,?)',[$tenant['id'],$id,$identity!==''?'Identificación: '.mb_substr($identity,0,80):'']);
     if(function_exists('r2_active')&&r2_active($app))$app->exec('INSERT IGNORE INTO fisitaap_r2_customer_sources(tenant_id,user_id,source,created_by) VALUES(?,?,"caja",?)',[$tenant['id'],$id,$user['id']]);audit($app,(int)$tenant['id'],(int)$user['id'],'pos_customer_created','user',$id);return $id;
 }
@@ -101,6 +101,7 @@ function pos_recalculate_148(App $app,int $id):array {
     return (array)$app->one('SELECT * FROM pos_tickets WHERE id=?',[$id]);
 }
 function pos_open_148(App $app,array $tenant,array $user,array $branch,string $type,?int $tableId=null):int {
+    if($type==='express'&&!r17_delivery($app,$tenant))throw new DomainException('Entregas no está habilitado para este negocio.');
     if(!in_array($type,['table','quick','express','catalog'],true))throw new RuntimeException('Tipo de venta inválido.');
     $key=(string)($_POST['open_key']??'');if(!preg_match('/^[a-f0-9]{32}$/',$key))throw new RuntimeException('Recarga la ventana para iniciar la cuenta.');
     $ownsTransaction=!$app->db->inTransaction();if($ownsTransaction)$app->db->beginTransaction();try{
@@ -124,7 +125,7 @@ function pos_open_148(App $app,array $tenant,array $user,array $branch,string $t
             if($tableId)$app->exec('INSERT IGNORE INTO fisitaap_ticket_tables180(tenant_id,branch_id,ticket_id,table_id) VALUES(?,?,?,?)',[$tenant['id'],$branch['id'],$id,$tableId]);
             if($register){$shift=$app->one('SELECT id FROM pos_shifts WHERE tenant_id=? AND register_id=? AND user_id=? AND status="open"',[$tenant['id'],$register['id'],$user['id']]);$app->exec('UPDATE pos_tickets SET register_id=?,shift_id=? WHERE id=?',[$register['id'],$shift['id']??null,$id]);}
         }
-        if(op180_ready($app)&&$type==='express'){$fee=r2_number($_POST['delivery_fee']??0,0,999999999);$maps=op180_maps((string)($_POST['maps_url']??''));$app->exec('UPDATE pos_tickets SET delivery_fee180=?,maps_url180=? WHERE id=?',[$fee,$maps?:null,$id]);if($fee>0)$app->exec('INSERT INTO pos_ticket_items(ticket_id,product_name,quantity,unit_price,line_subtotal,kitchen_status) VALUES(?,"Entrega Express",1,?,?,"served")',[$id,$fee,$fee]);pos_recalculate_148($app,$id);}
+        if(op180_ready($app)&&$type==='express'){$aid=op180_address_save($app,$customer,$address,(string)($_POST['maps_url']??''),'Entrega');r17_address_zone($app,(int)$tenant['id'],$aid,(int)($_POST['zone_id']??0));$fee=r2_number($_POST['delivery_fee']??0,0,999999999);$maps=op180_maps((string)($_POST['maps_url']??''));$app->exec('UPDATE pos_tickets SET delivery_fee180=?,maps_url180=? WHERE id=?',[$fee,$maps?:null,$id]);if($fee>0)$app->exec('INSERT INTO pos_ticket_items(ticket_id,product_name,quantity,unit_price,line_subtotal,kitchen_status) VALUES(?,"Entrega Express",1,?,?,"served")',[$id,$fee,$fee]);pos_recalculate_148($app,$id);}
         if($openHash)qa180_open_record($app,$tenant,$branch,$user,$key,$openHash,$id);audit($app,(int)$tenant['id'],(int)$user['id'],'pos_open_'.$type,'pos_ticket',$id);if($ownsTransaction)$app->db->commit();return $id;
     }catch(Throwable $e){if($ownsTransaction&&$app->db->inTransaction())$app->db->rollBack();throw $e;}
 }
@@ -168,6 +169,7 @@ function pos_edit_148(App $app,array $tenant,array $user,array $branch,int $id,b
             $app->exec('UPDATE pos_ticket_items SET quantity=?,unit_price=?,line_subtotal=?,line_tax=?,options_json=?,notes=?,pricing_json=? WHERE id=?',[$qty,$priced['price'],$priced['subtotal'],$priced['tax'],$o['json'],mb_substr(trim((string)($_POST['notes']??'')),0,500),json_encode($recipe,JSON_THROW_ON_ERROR),$i['id']]);
         }elseif($action==='customer'){$cid=!empty($_POST['create_customer'])?pos_create_customer_148($app,$tenant,$user):(int)($_POST['customer_id']??0);pos_customer_148($app,$tenant,$cid);$app->exec('UPDATE pos_tickets SET customer_id=? WHERE id=?',[$cid,$id]);
         }elseif($action==='send_kitchen'){
+            if(!r17_menu($tenant))throw new DomainException('El catálogo no utiliza comandas.');
             $ids=array_column($app->all('SELECT id FROM pos_ticket_items WHERE ticket_id=? AND kitchen_status="pending" FOR UPDATE',[$id]),'id');if(!$ids)throw new RuntimeException('No hay artículos nuevos para cocina.');
             $app->exec('UPDATE pos_ticket_items SET kitchen_status="sent",sent_at=NOW() WHERE ticket_id=? AND kitchen_status="pending"',[$id]);if(qa180_active($app))$app->exec('UPDATE pos_tickets SET fulfillment180=IF(fulfillment180="new","confirmed",fulfillment180) WHERE id=?',[$id]);
         }elseif($action==='coupon'&&qa180_active($app)){qa180_coupon_apply($app,$tenant,$user,$t,(string)($_POST['coupon_code']??''));
@@ -266,7 +268,7 @@ function pos_assets_148():void {
 function pos_hidden_148(string $name,$value):string{return '<input type="hidden" name="'.e($name).'" value="'.e((string)$value).'">';}
 function pos_customers_ui_148(App $app,array $tenant,int $selected=0):void {
     $canCreate=true;$canCredit=true;if(qa180_active($app)){try{qa180_permission($app,current_user(),'clientes','write');}catch(DomainException){$canCreate=false;}try{qa180_permission($app,current_user(),'ventas','credit_sale');}catch(DomainException){$canCredit=false;}}
-    $customers=$app->all('SELECT u.id,u.name,u.phone,COALESCE(c.credit_enabled,0) credit_enabled,COALESCE(c.credit_limit-c.current_balance,0) credit_available FROM tenant_customers tc JOIN users u ON u.id=tc.user_id LEFT JOIN customer_credit_profiles c ON c.tenant_id=tc.tenant_id AND c.user_id=tc.user_id WHERE tc.tenant_id=? AND u.role="customer" AND u.is_active=1 ORDER BY u.name',[$tenant['id']]);
+    $customers=$app->all('SELECT u.id,u.name,u.phone,COALESCE(c.credit_enabled,0) credit_enabled,COALESCE(c.credit_limit-c.current_balance,0) credit_available FROM tenant_customers tc JOIN users u ON u.id=tc.user_id LEFT JOIN customer_credit_profiles c ON c.tenant_id=tc.tenant_id AND c.user_id=tc.user_id WHERE NOT EXISTS(SELECT 1 FROM fisitaap_customer_archive_r17 a17 WHERE a17.tenant_id=tc.tenant_id AND a17.user_id=u.id) AND tc.tenant_id=? AND u.role="customer" AND u.is_active=1 ORDER BY u.name',[$tenant['id']]);
     echo '<div class="p148-customer"><label>Buscar cliente<input class="input" type="search" data-customer-search placeholder="Nombre o teléfono"></label><label>Cliente registrado<select class="input" name="customer_id" required><option value="0">Consumidor final</option>';
     foreach($customers as $c)echo '<option value="'.(int)$c['id'].'" '.($selected===(int)$c['id']?'selected':'').'>'.e($c['name'].' · '.$c['phone'].($canCredit&&$c['credit_enabled']?' · Crédito disponible '.money(max(0,(float)$c['credit_available'])):'')).'</option>';
     echo '</select></label><label class="p148-new-toggle"><input type="checkbox" name="create_customer" value="1" data-new-customer '.($canCreate?'':'disabled title="Tu rol no permite crear clientes"').'> + Crear cliente</label><div class="p148-new-fields" hidden><label>Nombre completo<input class="input" name="new_name" maxlength="150" data-new-required></label><label>Teléfono<input class="input" name="new_phone" inputmode="tel" maxlength="16" data-new-required></label><label>Identificación<input class="input" name="new_identity" maxlength="80"></label><label>Correo (opcional)<input class="input" type="email" name="new_email" maxlength="190"></label></div></div>';

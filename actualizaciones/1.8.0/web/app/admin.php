@@ -30,7 +30,7 @@ function admin_sidebar(App $app,array $user,?array $tenant,string $active='dashb
         foreach($links as $key=>$label)echo '<a class="side-link nav-link '.($active===$key?'active':'').'" href="'.e(url($base.($key==='dashboard'?'':'/'.$key))).'">'.e($label).'</a>';
         echo '</div></details>';
     }
-    echo '</nav><div class="sidebar-foot nav-foot"><a class="side-link" target="_blank" href="'.e(url('ayuda?perfil='.($user['role']==='master'?'master':($user['role']==='driver'?'driver':'store')))).'">? Manual de uso</a><span>'.e($user['name']).'</span><form method="post" action="'.e(url('logout')).'">'.csrf_field().'<button class="side-logout">Cerrar sesión</button></form></div></aside>';
+    echo '</nav><div class="sidebar-foot nav-foot"><a class="side-link" target="_blank" href="'.e(url('ayuda?perfil='.($user['role']==='master'?'master':($user['role']==='driver'?'driver':'store')))).'">Academiaap</a><span>'.e($user['name']).'</span><form method="post" action="'.e(url('logout')).'">'.csrf_field().'<button class="side-logout">Cerrar sesión</button></form></div></aside>';
 }
 function admin_shell_start(string $title,array $user,?array $tenant=null,string $active='dashboard',bool $welcome=false):void{global $app;layout_start($title,$tenant,true);r15_shell_start($app,$user,$tenant,$title,$active,$welcome);}
 

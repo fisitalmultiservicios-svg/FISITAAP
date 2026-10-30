@@ -1,20 +1,22 @@
-# FISITAAP web 1.8.0-R16 · Windows 1.8.1
+# FISITAAP web 1.8.0-R17 · Windows 1.8.1
 
-R16 conecta el FISIChat del dueño a consultas y cambios reales de su propia tienda, añade tickets de soporte desde el chat de la web oficial y reduce un poco las tarjetas del catálogo online.
+R17 corrige accesos de clientes/cajeros, separa Catálogo y Menú, añade **Academiaap**, configurador pausado y **Control de personal**. Conserva las mejoras de FISIChat y el catálogo compacto de R16.
 
-- [Descargar actualización cPanel R16](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R16.zip)
+- [Descargar actualización cPanel R17](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R17.zip)
 - [Guía de instalación y uso](GUIA-CPANEL.md)
-- [Capturas de la actualización](https://github.com/fisitalmultiservicios-svg/FISITAAP/blob/main/descargas/1.8.0/VISTAS-R16.md)
-- [Pruebas y alcance](INFORME-QA.md)
+- [Repaso de todas las solicitudes y QA](INFORME-QA.md)
+- [Capturas](https://github.com/fisitalmultiservicios-svg/FISITAAP/blob/main/descargas/1.8.0/VISTAS-R17.md)
 
-El dueño puede pedir ideas, análisis y propuestas de productos, categorías, clientes, cupones, zonas, proveedores, grupos de opcionales y textos/contacto de su web. **Confirmar cambio** guarda los valores revisados; nunca una decisión del modelo. Se validan la tienda, sucursal, permisos, módulos y vigencia. Repetir una confirmación no duplica el cambio y los registros editados desde otra pantalla necesitan una revisión nueva. Se conserva la conexión de IA existente. Crear producto tiene también un formulario dentro del chat.
+El cliente nuevo usa su celular de ocho dígitos como usuario y contraseña inicial desde el catálogo de su tienda. Se conserva la contraseña que haya cambiado. Los clientes pueden retirarse del listado con motivo, permiso y conservación del historial; primero se resuelven documentos y deuda pendientes. Los cajeros pueden usar correo o alias asignado; los correos son únicos entre tiendas.
 
-El chat público orienta sobre FISITAAP sin herramientas de las tiendas. Cuando el problema continúa solicita contacto, tienda y detalles para crear un ticket. En el maestro se gestiona desde **Administración → Tickets de soporte**, con estados, notas y conversación. Los datos anónimos quedan identificados como declarados; una sesión dueña válida se vincula a su tienda desde el servidor. No se envían mensajes externos automáticamente.
+Catálogo no muestra cocina, mesas o comanda. Menú imprime al aceptar y prepara en Monitor. Pedidos mantiene la lista y asigna Express. Sin Entregas, el negocio coordina el domicilio directamente. Las direcciones nuevas guardan su zona de envío; el slider permite color del texto y el comprador usa su navegación de compra actual.
 
-El catálogo muestra tarjetas más pequeñas: 5/4/3/2 columnas según el ancho, imágenes de 155/120 px y menos espacio interno, conservando carrito, opciones y colores de la tienda. Se mantiene la estructura de R15 y la web oficial de presentación.
+Academiaap guarda el progreso y abre la pantalla de práctica con retorno al curso. El configurador acompaña durante los primeros días y se puede pausar. Personal reúne expediente/acceso, horario, marcas, vacaciones y bases salariales. Marcar se muestra en Windows/Android instalado, valida el equipo y pide credenciales de la persona; necesita conexión.
 
-Para instalar: guarda respaldo de archivos y base de datos, extrae el ZIP en **/home/fisitaap/public_html** y abre **https://fisitaap.com/actualizador-180/index.php** con la sesión maestra. Pulsa **Instalar archivos**. Extraer solamente no instala la actualización. Conserva **releases/1.8.0-r16** y las versiones anteriores.
+**Los cálculos laborales son estimaciones para revisar**, con salarios, causa de salida y supuestos visibles. No generan finiquitos ni pagos. No se pudo verificar el texto oficial vigente de SCIJ/MTSS por bloqueo de red del entorno. Consulta los límites en la guía antes de liquidar.
 
-El ZIP incluye 139 archivos funcionales, permisos644/755 y tres tablas nuevas preparadas por el instalador. Conserva config.php, uploads, negocios, usuarios, ventas, turnos, activaciones y conexión de IA; no incluye datos ni claves privadas. Los ZIP R1…R15 permanecen históricos. No requiere SQL manual ni reinstalar Windows1.8.1/Android1.8.0.
+Instalación: respalda archivos y base de datos, extrae el ZIP en la raíz real del dominio (`public_html`) y ejecuta **/actualizador-180/index.php** con sesión maestra. Extraer solamente no instala. Conserva **releases/1.8.0-r17**, config.php, uploads y versiones anteriores. No requiere SQL manual ni reinstalar Windows1.8.1/Android1.8.0.
 
-Las pruebas usan PHP/MariaDB/Chromium con datos ficticios y un proveedor de IA simulado por TLS local. No conectan un modelo real, WhatsApp, pagos ni impresoras; los dispositivos físicos y la calidad del modelo configurado requieren revisión en tu instalación. Publicar estos archivos no ejecuta el actualizador en cPanel.
+El ZIP contiene **144 archivos funcionales** con permisos644/755. El esquema nuevo se crea durante la instalación explícita. Se preservan datos, activaciones por negocio y turnos. Las versiones R1…R16 siguen disponibles como historial. Publicar el paquete en GitHub no modifica el hosting.
+
+Pruebas con PHP/MariaDB/Chromium reales y datos ficticios. Los equipos/impresoras físicos y el hosting necesitan verificación después de instalar. No se enviaron WhatsApp/correos ni se ejecutaron pagos reales. La presentación comercial de FISITAAP mantiene su diseño.

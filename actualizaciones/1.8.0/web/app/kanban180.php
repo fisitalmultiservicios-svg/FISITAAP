@@ -72,7 +72,7 @@ function qa180_board_web_action(App $app,array $user,array $tenant,array $branch
         order_status_qa($app,(int)$tenant['id'],(int)$order['id'],'ready',(int)$user['id']);qa180_audit($app,$user,'order_prepared','order',(int)$order['id'],'Marcó preparado el pedido #'.$order['order_number']);return 'Pedido preparado.';
     }
     if($action==='handover'){
-        if($order['delivery_type']!=='pickup'||!in_array($order['status'],['ready','sent'],true))throw new DomainException('Este pedido necesita asignación de Express.');
+        if(($order['delivery_type']!=='pickup'&&r17_delivery($app,$tenant))||!in_array($order['status'],['ready','sent'],true))throw new DomainException('Este pedido necesita asignación de Express.');
         if($app->one('SELECT id FROM delivery_jobs WHERE order_id=? AND status NOT IN("cancelled","expired")',[$order['id']]))throw new DomainException('Esta entrega se confirma desde el portal del motorizado con su PIN.');
         order_status_qa($app,(int)$tenant['id'],(int)$order['id'],'delivered',(int)$user['id']);qa180_audit($app,$user,'order_handover','order',(int)$order['id'],'Entregó el retiro #'.$order['order_number']);return 'Retiro entregado al cliente.';
     }
@@ -117,7 +117,7 @@ function qa180_board_render(App $app,array $user,array $tenant,array $branch,str
     foreach($cards as $card)if($card['origin']==='web')$webIds[]=$card['id'];else $posIds[]=$card['id'];
     foreach([['web','order_items','order_id',$webIds],['pos','pos_ticket_items','ticket_id',$posIds]] as [$kind,$table,$fk,$ids])if($ids){$marks=implode(',',array_fill(0,count($ids),'?'));foreach($app->all('SELECT '.$fk.' parent,product_name,quantity,options_json,notes FROM '.$table.' WHERE '.$fk.' IN('.$marks.') ORDER BY id',$ids) as $item)$items[$kind.'-'.$item['parent']][]=$item;}
     $may=true;try{qa180_permission($app,$user,$section,'write');}catch(DomainException){$may=false;}
-    $dispatch=$may&&qa180_board_can_dispatch($app,$user,$tenant);
+    $dispatch=false; // Dispatch is exclusive to the orders list.
     $active=(int)$app->one('SELECT COUNT(*) n FROM delivery_jobs j JOIN orders o ON o.id=j.order_id AND o.tenant_id=j.tenant_id WHERE j.tenant_id=? AND o.branch_id=? AND j.status IN("available","assigned","arrived","picked_up","in_transit","issue") AND o.status NOT IN("cancelled","delivered")',[$tenant['id'],$branch['id']])['n'];
     admin_shell_start('Pedidos · '.$branch['name'],$user,$tenant,$section);
     echo '<section class="qa180-board-toolbar"><div><span class="qa180-board-eyebrow">OPERACIÓN DEL DÍA</span><h2>Prepara y entrega, en tres pasos</h2><p>Elige un pedido para comenzar. El cobro se gestiona desde su cuenta.</p></div><a class="btn btn-light" href="'.e(url('admin/express-pendientes')).'">Express activos <span>'.(int)$active.'</span></a><form method="get" class="qa180-filter"><label>Origen<select class="input" name="origin">';
@@ -146,7 +146,7 @@ function qa180_board_card(array $card,array $items,string $stage,bool $may,bool 
         if($stage==='todo')echo qa180_order_form($card,'prepare','','Preparar');
         elseif($stage==='preparing')echo qa180_order_form($card,'prepared','','Preparado');
         elseif($delivery&&$dispatch)echo '<button class="btn" type="button" data-board-dispatch data-origin="'.e($card['origin']).'" data-id="'.(int)$card['id'].'" data-revision="'.(int)$card['revision'].'" data-number="'.e($card['number']).'" data-payout="'.e($card['payout']).'">Asignar a Express</button>';
-        elseif(!$delivery)echo qa180_order_form($card,'handover','','Entregar');
+        elseif(!$delivery||!$dispatch)echo '<a class="btn btn-light" href="'.e(url('admin/pedidos')).'">Continuar desde Pedidos</a>';
         else echo '<p class="muted">Preparado para que un encargado asigne la entrega.</p>';
     }
     echo '<details class="qa180-order-more"><summary>Más opciones</summary>';

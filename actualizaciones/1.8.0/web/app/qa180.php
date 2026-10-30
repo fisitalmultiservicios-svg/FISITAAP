@@ -46,12 +46,14 @@ function qa180_activate(App $app):void { qa180_updates_page($app,true); }
 function qa180_dispatch(App $app,string $path):void {
     if(in_array($path,['master/actualizar-180','master/actualizar-sistema'],true)){qa180_updates_page($app,true);exit;}
     if($path==='admin/actualizar-sistema'){qa180_updates_page($app,false);exit;}
+    r17_dispatch($app,$path);
     // Shared welcome is a platform view, independent of each tenant's activation.
     if(qa180_active($app,0)){
-        if($path==='master'){r15_master_dashboard($app,require_login(['master']));exit;}
+        if($path==='master'){qa180_welcome($app,require_login(['master']),null);exit;}
+        if($path==='master/resumen'){r15_master_dashboard($app,require_login(['master']));exit;}
         if($path==='master/inicio'){qa180_welcome($app,require_login(['master']),null);exit;}
         if($path==='master/bienvenida'){qa180_welcome_editor($app,require_login(['master']));exit;}
-        if(in_array($path,['admin','admin/bienvenida'],true)){if((current_user()['role']??'')==='master')redirect(url('master'));$user=require_login(['tenant_admin','manager','editor','cashier','kitchen']);$tenant=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$user['tenant_id']]);if(!$tenant)reject_business_login180('Tienda fuera de servicio. La cuenta maestra debe revisar la asociación y el estado del negocio.');if($path==='admin'&&in_array($user['role'],['tenant_admin','manager','editor'],true))r15_owner_dashboard($app,$user,$tenant);else qa180_welcome($app,$user,$tenant);exit;}
+        if(in_array($path,['admin','admin/bienvenida'],true)){if((current_user()['role']??'')==='master')redirect(url('master'));$user=require_login(['tenant_admin','manager','editor','cashier','kitchen']);$tenant=$app->one('SELECT * FROM tenants WHERE id=? AND is_active=1',[$user['tenant_id']]);if(!$tenant)reject_business_login180('Tienda fuera de servicio. La cuenta maestra debe revisar la asociación y el estado del negocio.');qa180_welcome($app,$user,$tenant);exit;}
     }
     if(!qa180_active($app))return;
     r11_customer_routes($app,$path);
@@ -64,6 +66,7 @@ function qa180_dispatch(App $app,string $path):void {
         if($path==='admin/pedido-detalle180'){op180_order_detail($app);exit;}
         if($path==='pedido/seguimiento'){op180_order_detail($app,true);exit;}
     }
+    if($path==='admin/resumen'){[$u,$t]=qa180_business($app,'dashboard');r15_owner_dashboard($app,$u,$t);exit;}
     if($path==='logout'){
         if(!is_post())redirect(url('owner-login'));verify_csrf();$user=current_user();if($user)audit($app,$user['tenant_id']?(int)$user['tenant_id']:null,(int)$user['id'],'logout','user',(int)$user['id']);$_SESSION=[];session_regenerate_id(true);redirect(url('owner-login'));
     }

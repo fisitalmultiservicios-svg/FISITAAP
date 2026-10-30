@@ -3,11 +3,13 @@ declare(strict_types=1);
 require_once __DIR__.'/schema180.php';
 
 function qa180_permission(App $app,array $user,string $section,string $action='write'):void {
+    if($section==='personal'&&$user['role']!=='tenant_admin'&&restructure_can_r1($app,$user,'personal',$action)!==true)throw new DomainException('Solo el dueño o un rol autorizado puede administrar personal.');
     if($section==='cobro')$section='ventas';
     if($action==='read')$action='view';
     $fresh=$app->one('SELECT * FROM users WHERE id=? AND tenant_id=? AND is_active=1',[$user['id'],$user['tenant_id']]);
     if($fresh&&!empty($fresh['force_password_change']))throw new DomainException('Actualiza tu contraseña antes de realizar esta operación.');
     if(!$fresh)throw new DomainException('Tu acceso cambió. Inicia sesión nuevamente.');
+    $scopeTenant=$app->one('SELECT * FROM tenants WHERE id=?',[$fresh['tenant_id']]);if($scopeTenant&&!r17_section($app,$scopeTenant,$section))throw new DomainException('Esta función no corresponde al tipo de tienda o módulos.');
     $allowed=restructure_can_r1($app,$fresh,$section,$action);
     $default=role_can($fresh['role'],r2_alias($section));
     if(in_array($action,['configure','credit','price'],true))$default=$default&&in_array($fresh['role'],['tenant_admin','manager'],true);
