@@ -1,10 +1,25 @@
-# Instalar FISITAAP 1.8.0-R20 y actualizar cada negocio
+# Instalar FISITAAP 1.8.0-R21 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.
 
 R11 reúne el slider de tres imágenes con tiempo configurable, cantidades enteras por unidad y fracciones a granel, menús desplegables de paneles y tiendas en todos los tamaños y ajuste de Venta rápida/Mesas con zoom. Simplifica el checkout y abre WhatsApp antes de consultar el PIN. Agrega acceso de clientes por teléfono y mantiene las mejoras de imágenes, Excel, opcionales y alta de negocios de R10.
 
-Esta entrega incluye la web R20 y Windows **1.8.2** para impresión en hoja carta y las opciones del cobro local. Instala Windows sobre la versión existente, conservando sus datos y conexión. No cambies app_key ni importes otra base SQL. El APK publicado conserva 1.8.0; no se ha generado un APK nuevo.
+Esta entrega actualiza la web a **R21**. Conserva Windows **1.8.2** y APK **1.8.0**: estas correcciones del sistema conectado no necesitan reinstalarlos. No cambies app_key ni importes otra base SQL. No se ha generado un APK nuevo.
+
+## R21: precio del combo, comanda y cancelación desktop
+
+1. Guarda respaldo de archivos y base de datos fuera de `public_html`.
+2. Extrae **FISITAAP-1.8.0-CPANEL-R21.zip** en la raíz real del dominio, junto al `index.php` principal.
+3. Con sesión maestra abre `/actualizador-180/index.php`, verifica **R21** e instala. Conserva `releases/1.8.0-r21`, `config.php` y `uploads`; retira el actualizador al terminar.
+4. Prueba una venta nueva con el combo: el precio normal de ₡5.000 ya no queda anulado por un campo promocional sin usar guardado como cero. Crear en Combos deja ese campo vacío. Las tarjetas y el cálculo usan las mismas reglas, incluidos los precios asignados a la sucursal. Las promociones reales, los extras y el IVA se conservan; una promoción explícita gratuita se muestra como tal y sigue siendo gratuita.
+5. Las líneas guardadas antes de actualizar conservan su precio. Para una línea errónea en ₡0, quítala y agrégala de nuevo si aún no se envió; si necesitas cancelar la cuenta, usa **Cancelar**, escribe el motivo y confirma con un usuario autorizado. No se recalculan ventas cobradas ni pedidos históricos automáticamente.
+6. **Enviar comanda** guarda el trabajo en la cola configurada y regresa al pedido. Ya no lo procesa además como si fuera un recibo, evitando el aviso falso «No se recibió un comprobante». Repetir sin artículos nuevos no crea una comanda nueva. **Precuenta** sigue enviando su documento estructurado a la impresora nativa.
+7. **Cancelar** abre una ventana con un campo visible de **Justificación de la cancelación**, mínimo 8 caracteres, y botones Volver / Confirmar cancelación. Funciona en la aplicación instalada y en el navegador, sin depender de `prompt`/`confirm` nativos. El motivo queda en la bitácora. Los permisos y la protección de cuentas cobradas siguen siendo obligatorios; las existencias se restituyen una sola vez.
+8. Si utilizarás la caja sin internet, sincroniza con el sistema actualizado antes de desconectarte para renovar el catálogo. Las ventas locales pendientes conservan sus precios y referencias; no borres los datos locales ni repitas un cobro ya registrado.
+
+Esta entrega conserva los botones Solo cobrar / Cobrar e imprimir, PDF carta/recibo, la impresora configurada y los turnos propios por usuario de R20. La página comercial de presentación no cambia. No se instaló automáticamente el hosting ni se hicieron impresiones físicas durante QA.
+
+### Historial R20
 
 ## R20: cobro, comprobantes y cajas web
 

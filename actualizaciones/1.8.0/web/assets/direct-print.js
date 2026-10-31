@@ -87,6 +87,9 @@
     if(form.matches('[data-r3-collect]')&&form.elements.receipt_output_r20)return;
     if(!native()||!(form instanceof HTMLFormElement)||form.method.toLowerCase()!=='post')return;
     const action=event.submitter?.name==='action'?event.submitter.value:form.elements.namedItem('action')?.value;
+    // The current server stores comanda jobs durably and returns the workspace.
+    // Its successful response is not a receipt and must not be printed a second time here.
+    if(window.FISITAAP180?.enabled&&action==='send_kitchen')return;
     if(!['send_kitchen','prebill'].includes(action)&&!form.matches('[data-collect],[data-r3-collect],.p148-payment'))return;
     event.preventDefault();event.stopImmediatePropagation();
     if(busy||form.dataset.printSaved||form.dataset.printPending)return;

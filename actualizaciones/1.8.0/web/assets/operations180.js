@@ -49,10 +49,15 @@
   document.addEventListener('submit',event=>{
     const form=event.target;if(!(form instanceof HTMLFormElement))return;
     const action=event.submitter?.name==='action'?event.submitter.value:form.elements.action?.value;
-    if(action!=='void'||form.elements.cancel_reason?.value)return;
-    const reason=window.prompt('Justificación de la anulación (mínimo 8 caracteres):');
-    if(!reason||reason.trim().length<8){event.preventDefault();event.stopImmediatePropagation();return;}
-    const input=document.createElement('input');input.type='hidden';input.name='cancel_reason';input.value=reason.trim();form.append(input);
+    if(action!=='void')return;
+    const existing=form.elements.cancel_reason;
+    if(existing&&existing.value.trim().length>=8)return;
+    event.preventDefault();event.stopImmediatePropagation();
+    if(existing&&existing.type!=='hidden'){existing.setCustomValidity('Escribe una justificación de al menos 8 caracteres.');existing.reportValidity();existing.addEventListener('input',()=>existing.setCustomValidity(''),{once:true});return;}
+    const submitter=event.submitter;let dialog=document.querySelector('#op180VoidReason');
+    if(!dialog){dialog=document.createElement('dialog');dialog.id='op180VoidReason';dialog.className='r3-dialog';dialog.innerHTML='<h2>Cancelar cuenta</h2><form><label>Justificación de la cancelación<textarea class="r3-input" name="reason" rows="4" minlength="8" maxlength="1000" required></textarea></label><footer><button type="button" data-dialog-close>Volver</button><button type="submit">Confirmar cancelación</button></footer></form>';document.body.append(dialog);}
+    const reason=dialog.querySelector('textarea');reason.value='';reason.setCustomValidity('');dialog.querySelector('form').onsubmit=event=>{event.preventDefault();if(reason.value.trim().length<8){reason.setCustomValidity('Escribe una justificación de al menos 8 caracteres.');reason.reportValidity();reason.oninput=()=>reason.setCustomValidity('');return;}const input=existing||document.createElement('input');input.type='hidden';input.name='cancel_reason';input.value=reason.value.trim();if(!existing)form.append(input);dialog.close();form.requestSubmit(submitter);};
+    dialog.showModal();reason.focus();
   },true);
   document.addEventListener('click',event=>{
     const close=event.target.closest('[data-dialog-close]');if(close)close.closest('dialog')?.close();

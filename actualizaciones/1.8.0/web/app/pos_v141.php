@@ -25,7 +25,12 @@ function pos_handle_action_v141(App $app,array $user,array $tenant,array $ticket
 
 function pos_catalog_products_v141(App $app,array $tenant,array $branch):array
 {
-    $q=trim((string)($_GET['q']??''));$category=(int)($_GET['category']??0);$params=[$branch['id'],$tenant['id']];$where='p.tenant_id=? AND p.status="active"';if($q!==''){$where.=' AND (p.name LIKE ? OR p.sku LIKE ? OR p.description LIKE ?)';$like='%'.$q.'%';array_push($params,$like,$like,$like);}if($category){$where.=' AND p.category_id=?';$params[]=$category;}$result=$app->all('SELECT p.*,COALESCE(i.quantity,0) stock FROM products p LEFT JOIN product_inventory i ON i.product_id=p.id AND i.branch_id=? WHERE '.$where.' ORDER BY '.($q!==''?'(p.sku=?) DESC,':'').'p.name LIMIT 80',$q!==''?[...$params,$q]:$params);return qa180_active($app)?array_map('r11_quantity_product',$result):$result;
+    $q=trim((string)($_GET['q']??''));$category=(int)($_GET['category']??0);$byBranch=($tenant['catalog_mode']??'global')==='branches';
+    $params=$byBranch?[$branch['id'],$branch['id'],$tenant['id']]:[$branch['id'],$tenant['id']];$where='p.tenant_id=? AND p.status="active"'.($byBranch?' AND bp.is_active=1':'');
+    if($q!==''){$where.=' AND (p.name LIKE ? OR p.sku LIKE ? OR p.description LIKE ?)';$like='%'.$q.'%';array_push($params,$like,$like,$like);}if($category){$where.=' AND p.category_id=?';$params[]=$category;}
+    $result=$app->all('SELECT p.*,COALESCE(i.quantity,0) stock'.($byBranch?',bp.price_override,bp.sale_price_override':'').' FROM products p LEFT JOIN product_inventory i ON i.product_id=p.id AND i.branch_id=?'.($byBranch?' LEFT JOIN branch_products bp ON bp.product_id=p.id AND bp.branch_id=?':'').' WHERE '.$where.' ORDER BY '.($q!==''?'(p.sku=?) DESC,':'').'p.name LIMIT 80',$q!==''?[...$params,$q]:$params);
+    if($byBranch)foreach($result as &$product){$product['price']=$product['price_override']??$product['price'];$product['sale_price']=$product['sale_price_override']??$product['sale_price'];}unset($product);
+    return qa180_active($app)?array_map('r11_quantity_product',$result):$result;
 }
 
 function pos_order_screen_v141(App $app,array $user,array $tenant,array $ticket):void {pos_workspace_148($app,$user,$tenant,(int)$ticket['id']);}

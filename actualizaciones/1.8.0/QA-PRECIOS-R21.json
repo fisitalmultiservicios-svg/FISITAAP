@@ -1,0 +1,15 @@
+{
+  "revision": "R21",
+  "passed": 8,
+  "checks": [
+    "Creating a combo through the actual Combos form with only components and price5000 initializes no hidden sale price, displays5000 and adds5000; component cost/stock stay independent of selling price",
+    "An unused legacy sale field stored as0 or0.00 cannot override the combo’s5000 price; UI and stored recipe match",
+    "Positive sale prices and explicit special promotions—including a deliberately free promotion—are preserved and displayed at the actual charged amount",
+    "Quick catalog filters branch assignments and uses the same branch override as addition, including a deliberate zero base price; clearing an override restores general pricing",
+    "Legacy zero sale cannot erase a combo base with extras and included IVA; quantity edits keep the saved base/extras/tax recipe",
+    "Actual web checkout uses5000+500extra with included IVA and does not trust the client’s forged price1",
+    "Refreshed offline catalog and actual Node local calculator agree on combo base5000 and total5500; no new Windows/APK binary is required for corrected catalog data",
+    "Already completed sales and their totals/payment keys remain unchanged; historical zero lines are not silently repriced"
+  ],
+  "environment": "Guarded fictional MariaDB/HTTP/CSRF; actual Node calculator. No live hosting, money or messages."
+}

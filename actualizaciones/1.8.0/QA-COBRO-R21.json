@@ -1,0 +1,19 @@
+{
+  "revision": "1.8.0-R21",
+  "passed": 12,
+  "checks": [
+    "Installed-only default denies browser opening/collection without manufacturing a cash register; order entry remains available",
+    "Web mode offers opening without side effects on page loads; staff lacking cashier permission still cannot acquire a box or collect",
+    "A web opening waiting behind a settings change rereads the policy after its lock and cannot open a new cash shift after web collection is disabled",
+    "Concurrent browser opening allocates only one own-user shift/register; a second cashier gets a different sequential number and separate funds",
+    "Another user without a shift can sell but not collect; posted register/user IDs cannot borrow another cashier’s authority or close their turn",
+    "General-settings switch is permission checked and refuses to strand open browser turns when disabling web collection",
+    "Solo cobrar commits the sale without receipt jobs; replay with a changed print preference cannot charge twice, create a job or alter original receipt intent",
+    "Carta and thermal PDFs are real authenticated PDFs with correct page geometry, sale amounts and multi-use download without physical jobs; another store cannot access them",
+    "Configured carta Windows printer is queued exactly once with carta dimensions; card/SINPE receipts accrue in each web register’s own ledger",
+    "Printer settings reject carta sent as ESC/POS thermal bytes instead of silently producing an incorrectly sized receipt",
+    "Enabling browser cash does not upgrade a signed native Caja0 grant, alter a paired register or bypass the actual installed-cashier rules",
+    "Only opener closes with reconciled cash; close replay is safe, next own shift reuses its funds/register, and browser switches back to attention-only after closing or disabling"
+  ],
+  "environment": "Actual HTTP/CSRF/PHP8.3/MariaDB fictional fixtures, native proof transport simulated. No physical printer, bank or live hosting."
+}

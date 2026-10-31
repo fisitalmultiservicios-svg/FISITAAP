@@ -89,7 +89,7 @@ function r2_combos(App $app,array $u,array $t):void {
             $comboCost=0.0;$components=[];foreach((array)($_POST['components']??[]) as $pid=>$qty)if((float)$qty>0){$p=$app->one('SELECT * FROM products WHERE id=? AND tenant_id=? AND product_type="simple"',[(int)$pid,$t['id']]);if(!$p)throw new DomainException('Los componentes deben ser productos simples de este negocio.');$components[(int)$pid]=r2_number($qty,.001,99999);$comboCost+=(float)$p['cost']*$components[(int)$pid];}
             if(!$components)throw new DomainException('Selecciona los productos del combo.');$cat=$app->one('SELECT id FROM categories WHERE tenant_id=? AND slug="combos"',[$t['id']]);if(!$cat){$app->exec('INSERT INTO categories(tenant_id,name,slug) VALUES(?,"Combos","combos")',[$t['id']]);$cat=['id'=>(int)$app->db->lastInsertId()];}
             if($id)$app->exec('UPDATE products SET name=?,price=?,tax_rate=?,description=?,category_id=?,status="active",track_inventory=1 WHERE id=? AND tenant_id=?',[$name,$price,$tax,trim((string)($_POST['description']??'')),$cat['id'],$id,$t['id']]);
-            else{$app->exec('INSERT INTO products(tenant_id,category_id,name,slug,price,tax_rate,description,product_type,track_inventory) VALUES(?,?,?,?,?,?,?,"combo",1)',[$t['id'],$cat['id'],$name,slugify($name).'-'.bin2hex(random_bytes(3)),$price,$tax,trim((string)($_POST['description']??''))]);$id=(int)$app->db->lastInsertId();}
+            else{$app->exec('INSERT INTO products(tenant_id,category_id,name,slug,price,tax_rate,description,product_type,track_inventory,sale_price) VALUES(?,?,?,?,?,?,?,"combo",1,NULL)',[$t['id'],$cat['id'],$name,slugify($name).'-'.bin2hex(random_bytes(3)),$price,$tax,trim((string)($_POST['description']??''))]);$id=(int)$app->db->lastInsertId();}
             $app->exec('UPDATE products SET cost=? WHERE id=? AND tenant_id=?',[round($comboCost,4),$id,$t['id']]);$image=upload_image('image');if($image)$app->exec('UPDATE products SET image=? WHERE id=? AND tenant_id=?',[$image,$id,$t['id']]);
             $app->exec('DELETE FROM fisitaap_r2_combo_items WHERE combo_id=?',[$id]);foreach($components as $pid=>$qty)$app->exec('INSERT INTO fisitaap_r2_combo_items(combo_id,product_id,quantity) VALUES(?,?,?)',[$id,$pid,$qty]);
         }
@@ -110,10 +110,20 @@ function r2_promotion(App $app,int $tenant,int $product):?array {
     });
     return $promotions[$product]??null;
 }
+function r2_base_price(array $p):float {
+    $regular=(float)($p['effective_price']??$p['branch_price']??$p['price']);
+    $sale=array_key_exists('effective_sale_price',$p)?$p['effective_sale_price']:(array_key_exists('branch_sale_price',$p)?$p['branch_sale_price']:($p['sale_price']??null));
+    // Legacy databases may store an unused sale field as numeric/string zero.
+    // A free product has a zero regular price; an explicit free promotion is applied separately.
+    return $sale!==null&&is_numeric($sale)&&(float)$sale>0?(float)$sale:$regular;
+}
+function r2_current_price(App $app,array $t,array $p):float {
+    $base=r2_base_price($p);$promo=r2_active($app)?r2_promotion($app,(int)$t['id'],(int)$p['id']):null;
+    return $promo&&$promo['kind']==='special'?min($base,(float)$promo['value']):$base;
+}
 function r2_line(App $app,array $t,array $p,float $qty,float $extra=0):array {
-    $base=(float)($p['effective_sale_price']??$p['sale_price']??$p['effective_price']??$p['price']);
-        $promo=r2_active($app)?r2_promotion($app,(int)$t['id'],(int)$p['id']):null;
-    if($promo&&$promo['kind']==='special')$base=min($base,(float)$promo['value']);
+    $base=r2_current_price($app,$t,$p);
+    $promo=r2_active($app)?r2_promotion($app,(int)$t['id'],(int)$p['id']):null;
     $recipe=['base'=>pos_cents_148($base),'extra'=>pos_cents_148($extra),'rate'=>(int)round((float)$p['tax_rate']*100),'included'=>!empty($t['tax_included']),'bogo'=>(bool)($promo&&$promo['kind']==='bogo')];
     return r2_recipe($recipe,$qty)+['recipe'=>$recipe];
 }
@@ -126,7 +136,7 @@ function r2_recipe(array $r,float $qty):array {
 }
 function r2_catalog_prices(App $app,array $t,array $products):array {
     if(!r2_active($app))return $products;
-    foreach($products as &$p){$promo=r2_promotion($app,(int)$t['id'],(int)$p['id']);if(!$promo)continue;if($promo['kind']==='special'){$p['sale_price']=min((float)($p['sale_price']?:$p['price']),(float)$promo['value']);$p['effective_sale_price']=min((float)($p['effective_sale_price']??$p['sale_price']),(float)$promo['value']);}$p['badge']=$promo['kind']==='bogo'?'2 × 1':($p['badge']?:'Precio especial');}unset($p);return $products;
+    foreach($products as &$p){$promo=r2_promotion($app,(int)$t['id'],(int)$p['id']);if(!$promo)continue;if($promo['kind']==='special'){$price=r2_current_price($app,$t,$p);$p['sale_price']=$price;$p['effective_sale_price']=$price;if(array_key_exists('branch_sale_price',$p))$p['branch_sale_price']=$price;}$p['badge']=$promo['kind']==='bogo'?'2 × 1':($p['badge']?:'Precio especial');}unset($p);return $products;
 }
 function r2_promotions(App $app,array $u,array $t):void {
     if(is_post()){verify_csrf();try{$id=(int)($_POST['id']??0);if($id&&!$app->one('SELECT id FROM fisitaap_r2_promotions WHERE id=? AND tenant_id=?',[$id,$t['id']]))throw new DomainException('Promoción no disponible.');

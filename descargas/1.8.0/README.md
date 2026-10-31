@@ -1,3 +1,20 @@
+# Descargas FISITAAP · web 1.8.0-R21
+
+[**Descargar actualización R21 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R21.zip)
+
+Corrige el precio del combo con promoción vacía/0, unifica tarjetas y precios de sucursal, elimina el aviso falso de recibo al enviar comanda y muestra la justificación de cancelación dentro de una ventana compatible con desktop. Conserva los cobros y cajas de R20.
+
+- [Guía de instalación](GUIA-CPANEL-1.8.0.md)
+- [Solicitudes y pruebas](INFORME-QA-1.8.0.md)
+- [Capturas de la justificación](VISTAS-R21.md)
+- [Integridad de archivos](SHA256SUMS-1.8.0.txt)
+
+Respalda, extrae el ZIP en la raíz real del dominio y ejecuta `/actualizador-180/index.php` como maestro. No necesitas reinstalar Windows1.8.2 ni APK1.8.0 para el sistema conectado. Sincroniza el catálogo antes de utilizar caja sin internet. Las líneas anteriores en cero no se recalculan automáticamente. La publicación no instala el hosting.
+
+---
+
+## Entregas anteriores
+
 # Descargas FISITAAP · web 1.8.0-R20 / Windows 1.8.2
 
 [**Actualización R20 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R20.zip)
