@@ -1,0 +1,14 @@
+{
+  "revision": "R22",
+  "passed": 7,
+  "checks": [
+    "Native quick card shows5000 for an unused zero sale field and actual click stores5000 on the same bill",
+    "Cancellation has a real textarea on desktop/tablet/phone with required8-character validation; no unsupported native prompt/confirm is called",
+    "Authorized cancellation commits once, restores stock and records the entered justification in the audit log",
+    "Installed Enviar comanda queues once and stays in the bill; legacy receipt parsing no longer reports failure or prints a duplicate",
+    "Precuenta still uses the structured native print payload successfully, without a false missing-receipt message or a second server print job",
+    "A cashier without cancellation permission sees no cancellation control and a forged justified POST cannot cancel the bill",
+    "Legacy cancellation forms also use an HTML reason dialog and retain their named void submitter; native confirm/prompt remain unused and stock is released once"
+  ],
+  "environment": "Actual Chromium and PHP/MariaDB; simulated installed bridge and printer, native prompt/confirm deliberately unavailable; no physical printing."
+}

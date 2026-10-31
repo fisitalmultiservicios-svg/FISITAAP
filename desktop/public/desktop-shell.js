@@ -8,6 +8,8 @@
     web.disabled=!value.webUrl;web.setAttribute('aria-pressed',String(value.mode==='web'));web.hidden=value.mode==='web'||!value.configured;web.textContent='Volver al sistema completo';label.textContent=value.mode==='web'?'Sistema web completo':value.configured?'Venta sin internet':'Conectar equipo';
   };
   api.onWorkspaceStatus(render);local.onclick=async()=>render(await api.useLocal());
+  const full=document.getElementById('fullScreen'),showWindow=value=>{full.setAttribute('aria-pressed',String(value.fullscreen));full.setAttribute('aria-label',value.fullscreen?'Salir de pantalla completa':'Pantalla completa');full.title=full.getAttribute('aria-label')+' · F11';};
+  api.onWindowState(showWindow);showWindow(await api.windowState());full.onclick=async()=>showWindow(await api.setFullscreen(full.getAttribute('aria-pressed')!=='true'));
   web.onclick=async()=>{web.disabled=true;try{render(await api.useWeb());}catch(error){status.textContent=error.message;}finally{render(await api.workspaceState());}};
 
   render(await api.workspaceState());

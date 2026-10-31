@@ -1,0 +1,37 @@
+{
+  "revision": "R22",
+  "passed": 5,
+  "layouts": [
+    {
+      "width": 1366,
+      "height": 768,
+      "whole_floor_visible": true,
+      "svg_aspect_preserved": true
+    },
+    {
+      "width": 1366,
+      "height": 630,
+      "whole_floor_visible": true,
+      "svg_aspect_preserved": true
+    },
+    {
+      "width": 1024,
+      "height": 600,
+      "whole_floor_visible": true,
+      "svg_aspect_preserved": true
+    },
+    {
+      "width": 900,
+      "height": 520,
+      "whole_floor_visible": true,
+      "svg_aspect_preserved": true
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "whole_floor_visible": true,
+      "svg_aspect_preserved": true
+    }
+  ],
+  "environment": "Real Chromium/PHP/MariaDB, fictional store, no production hosting."
+}

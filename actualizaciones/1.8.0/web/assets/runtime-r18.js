@@ -6,7 +6,7 @@
  const grid=$('[data-r14-pos]');
  if(grid){
   const main=grid.closest('[data-r15-page]');main?.classList.add('r18-sale-view');
-  let frame=0;const fit=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{const viewport=window.visualViewport?.height||innerHeight,top=grid.getBoundingClientRect().top,invoice=$('.ticket',grid);const fixed=invoice?[...invoice.children].filter(el=>!el.classList.contains('r3-sale-table-wrap')).reduce((sum,el)=>sum+el.getBoundingClientRect().height,0):0;const height=Math.max(390,Math.ceil(fixed+116),Math.floor(viewport-top-18));grid.style.setProperty('--r18-panel-height',height+'px');});};
+  let frame=0;const fit=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{if(main?.classList.contains('r22-pos'))return;const viewport=window.visualViewport?.height||innerHeight,top=grid.getBoundingClientRect().top,invoice=$('.ticket',grid);const fixed=invoice?[...invoice.children].filter(el=>!el.classList.contains('r3-sale-table-wrap')).reduce((sum,el)=>sum+el.getBoundingClientRect().height,0):0;const height=Math.max(390,Math.ceil(fixed+116),Math.floor(viewport-top-18));grid.style.setProperty('--r18-panel-height',height+'px');});};
   const observer=new ResizeObserver(fit);if(main)observer.observe(main);const invoice=$('.r3-cart-panel',grid);if(invoice)observer.observe(invoice);document.addEventListener('click',event=>{if(event.target.closest('[data-r15-panel]'))fit();});window.addEventListener('resize',fit);window.visualViewport?.addEventListener('resize',fit);document.addEventListener('op180:updated',fit);fit();
  }
  document.querySelectorAll('input[type=password]').forEach(el=>{if(el.getAttribute('minlength'))el.minLength=4;});

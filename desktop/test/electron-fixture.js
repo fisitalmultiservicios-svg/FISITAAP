@@ -20,6 +20,7 @@ function electronFixture(){
   constructor(options={}){super();this.options=options;this.webContents=new Contents(options.webPreferences);this.children=[];this.contentView={addChildView:view=>this.children.push(view),removeChildView:view=>{this.children=this.children.filter(v=>v!==view);}};windows.push(this);}
   loadURL(url){this.url=url;return this.webContents.loadURL(url);}
   setTitle(value){this.title=value;}
+  setFullScreen(value){this.fullscreen=value;this.emit(value?'enter-full-screen':'leave-full-screen');}
   getContentSize(){return [1360,950];}
   close(){this.emit('closed');}
   destroy(){this.destroyed=true;}

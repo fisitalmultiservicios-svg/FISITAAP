@@ -3,6 +3,9 @@ const {contextBridge,ipcRenderer}=require('electron');
 // The device secret stays in the main process. Web pages receive only a
 // short-lived proof bound to their existing user and server nonce.
 contextBridge.exposeInMainWorld('fisitaapWindows',{
+  windowState:()=>ipcRenderer.invoke('fisitaap:window-state'),
+  setFullscreen:value=>ipcRenderer.invoke('fisitaap:fullscreen',value),
+  onWindowState:handler=>{const listener=(_event,value)=>handler(value);ipcRenderer.on('fisitaap:window-state',listener);return()=>ipcRenderer.removeListener('fisitaap:window-state',listener);},
   loginUsers:()=>ipcRenderer.invoke('fisitaap:login-users'),
   trackWebPayment:data=>ipcRenderer.invoke('fisitaap:track-payment',data),
   printerInfo:()=>ipcRenderer.invoke('fisitaap:web-printers'),

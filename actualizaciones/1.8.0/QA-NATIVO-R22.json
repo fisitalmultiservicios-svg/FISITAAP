@@ -1,0 +1,36 @@
+{
+  "revision": "Windows1.8.3/R22",
+  "file": "FISITAAP-Escritorio-1.8.3-Windows-x64.exe",
+  "bytes": 103226851,
+  "sha256": "f2c9a3a3618101770fad941a19094c93c2f5d02f623220266c99b492f0a0b9da",
+  "node_tests_passed": 57,
+  "compiled_sources_match": {
+    "matched": 15,
+    "files": [
+      "main.js",
+      "workspace.js",
+      "preload.js",
+      "web-preload.js",
+      "server.js",
+      "local-store.js",
+      "print-bridge.js",
+      "public/app.js",
+      "public/desktop-shell.css",
+      "public/desktop-shell.html",
+      "public/desktop-shell.js",
+      "public/index.html",
+      "public/print-settings.html",
+      "public/print-settings.js",
+      "public/style.css"
+    ],
+    "package_runtime_fields_match": true
+  },
+  "checks": [
+    "Persistent native full-screen survives navigation/reload/local-web switch and restart preference, explicit exit persists false",
+    "Main shell, configured top-level web and local views can control window; foreign frames, popups and non-boolean requests rejected",
+    "Local real engine/UI retains fixed frame, item scroll, history and payment/print intent in QA-LOCAL-R22.json",
+    "Compiled app.asar contains the exact reviewed runtime/preload/local UI files and package runtime fields; builder strips development-only metadata",
+    "NSIS solid LZMA64MB executable is complete and fits normal GitHub download without LFS"
+  ],
+  "environment": "Windows x64 installer cross-built on Linux; Node57 tests and Chromium local UI with simulated native transport. No physical Windows display, driver or printer."
+}

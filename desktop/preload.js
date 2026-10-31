@@ -1,6 +1,9 @@
 'use strict';
 const {contextBridge,ipcRenderer}=require('electron');
 contextBridge.exposeInMainWorld('fisitaapWindows',{
+  windowState:()=>ipcRenderer.invoke('fisitaap:window-state'),
+  setFullscreen:value=>ipcRenderer.invoke('fisitaap:fullscreen',value),
+  onWindowState:handler=>{const listener=(_event,value)=>handler(value);ipcRenderer.on('fisitaap:window-state',listener);return()=>ipcRenderer.removeListener('fisitaap:window-state',listener);},
   workspaceState:()=>ipcRenderer.invoke('fisitaap:workspace-state'),
   useWeb:()=>ipcRenderer.invoke('fisitaap:use-web'),
   exportConnection:()=>ipcRenderer.invoke('fisitaap:export-connection'),

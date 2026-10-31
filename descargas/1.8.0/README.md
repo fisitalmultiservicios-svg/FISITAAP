@@ -1,3 +1,22 @@
+# Descargas FISITAAP · web 1.8.0-R22 / Windows 1.8.3
+
+[**Actualizar web R22 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R22.zip)
+
+[**Instalar Windows 1.8.3**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-Escritorio-1.8.3-Windows-x64.exe)
+
+Venta rápida queda en el marco visible, con cabecera compacta, factura mayor a la izquierda, listas que se desplazan por separado y total/Cobrar fijos. Mejora cuenta de mesa y cobro. Windows conserva la pantalla completa al navegar y reiniciar hasta que la desactives. En el carrito, direcciones, zona y Maps aparecen solo en Delivery.
+
+- [Guía de instalación y uso](GUIA-CPANEL-1.8.0.md)
+- [Pantallas del nuevo encuadre](VISTAS-R22.md)
+- [Solicitudes y pruebas](INFORME-QA-1.8.0.md)
+- [Integridad de archivos](SHA256SUMS-1.8.0.txt)
+
+Respalda, extrae el ZIP en la raíz del dominio y ejecuta `/actualizador-180/index.php` como maestro. Instala Windows 1.8.3 conservando sus datos para el nuevo control nativo de pantalla completa. En navegador utiliza F11 para conservar ese modo al cambiar de página. La publicación no instala el hosting. APK 1.8.0 se conserva.
+
+---
+
+## Entregas anteriores
+
 # Descargas FISITAAP · web 1.8.0-R21
 
 [**Descargar actualización R21 para cPanel**](https://raw.githubusercontent.com/fisitalmultiservicios-svg/FISITAAP/main/descargas/1.8.0/FISITAAP-1.8.0-CPANEL-R21.zip)

@@ -1,3 +1,24 @@
+# Instalar FISITAAP web 1.8.0-R22 y Windows 1.8.3
+
+Actualización acumulativa sobre R21. Conserva negocios, usuarios, ventas, cuentas de dinero, productos, imágenes y configuración. No importes otra base SQL, no cambies `config.php` ni la clave de la aplicación.
+
+## R22: Venta rápida en un marco fijo, mesas y carrito
+
+1. Guarda un respaldo completo de archivos y base de datos fuera de `public_html`. Sincroniza las ventas pendientes de las aplicaciones instaladas y conserva sus respaldos locales.
+2. Extrae **FISITAAP-1.8.0-CPANEL-R22.zip** en la raíz real del dominio, junto al `index.php` principal. Con sesión maestra abre `/actualizador-180/index.php`, verifica **R22** e instala. Conserva `releases/1.8.0-r22`, `config.php`, `uploads` y las versiones anteriores. Retira el actualizador al terminar la verificación.
+3. En cada Windows instala **FISITAAP-Escritorio-1.8.3-Windows-x64.exe** sobre la instalación actual. Conserva la carpeta de datos del usuario; no desinstales ni borres ventas o accesos locales. Windows 1.8.3 es necesario para el nuevo control persistente de pantalla completa y el encuadre de Caja local. La web conectada recibe su diseño desde el ZIP.
+4. **Venta rápida:** título, caja y accesos usan una cabecera compacta. La factura ocupa el panel izquierdo más grande; productos, búsqueda y categorías están a la derecha. Total y Cobrar permanecen en el marco visible, sin desplazar la página. Las listas largas de la cuenta y de productos se recorren dentro de sus paneles. Las categorías ocupan una fila horizontal. Agregar otro producto conserva búsqueda y posición de ambas listas.
+5. **Celular:** Venta rápida conserva Facturación / Productos para aprovechar el ancho sin reducir todo a texto diminuto. Al atender una mesa en celular se mantiene la vista continua de productos y cuenta con accesos para saltar entre ambas. En desktop, la cuenta de la mesa usa el mismo marco fijo de factura y carga rápida, con sus botones de comanda y seguimiento. El plano gráfico también se encuadra en la altura disponible, mantiene sus proporciones y conserva los controles para acercar, alejar y ajustar.
+6. **Cobrar:** la cabecera, Solo cobrar, Cobrar e imprimir y la salida elegida permanecen en la ventana. Solo se desplazan los datos del pago cuando no caben. Se conservan validación, permisos, caja/turno propios, comprobantes y protección contra cobros repetidos. La impresión física requiere la impresora configurada y su equipo disponible.
+7. **Pantalla completa en Windows 1.8.3:** actívala con el botón ⛶ del sistema, el de la barra del programa o Vista → Pantalla completa / F11. Se conserva al cargar productos, cobrar, navegar entre Venta rápida y Mesas, cambiar entre sistema web y caja local, recargar y volver a abrir el programa. Se desactiva con el mismo control o F11. El programa guarda solo esa preferencia de pantalla en `pantalla.json`, sin cambiar la conexión del negocio.
+8. **Pantalla completa en navegador:** usa **F11** para conservarla mientras navegas entre páginas. El botón dentro de la web usa la API del navegador; este puede salir de ese modo al navegar y exige una acción del usuario para volver a entrar. No se fuerzan permisos del navegador.
+9. **Caja local Windows:** cliente, factura, búsqueda, categorías, total y Cobrar aprovechan la ventana; productos y líneas se desplazan por separado. Historial y herramientas de respaldos se abren en una ventana aparte con Volver a la venta. No se cambia el motor de cobro ni se borran operaciones pendientes.
+10. **Carrito del catálogo:** solo al elegir **Delivery** aparecen dirección, direcciones guardadas del teléfono, zona y ubicación de Maps. En **Recoger en el negocio** y **Envío coordinado**, el bloque se oculta, se deshabilita y no se envía. Si vuelves a Delivery se conservan los datos que estabas llenando. Una consulta de direcciones que termine tarde no lo vuelve a mostrar en retiro. El servidor conserva las validaciones de dirección/zona para Delivery y descarta datos de entrega antiguos en otras opciones, sin generar otro domicilio ni cobrar una zona.
+
+No se ha instalado automáticamente el hosting. Se verificaron pantallas y operaciones con datos ficticios, puente nativo simulado y motor local Node; no se probó un monitor Windows real ni una impresora física. El APK publicado permanece en 1.8.0: usa la web actualizada con conexión; no se compiló un APK nuevo. La página comercial de presentación de FISITAAP conserva su diseño.
+
+## Historial de entregas anteriores
+
 # Instalar FISITAAP 1.8.0-R21 y actualizar cada negocio
 
 Esta entrega actualiza tu instalación existente y conserva negocios, usuarios, productos, ventas, imágenes y configuración. No importes otra base SQL ni cambies config.php.

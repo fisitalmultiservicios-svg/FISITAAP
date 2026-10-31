@@ -1,0 +1,148 @@
+{
+  "revision": "1.8.0-R22/Windows1.8.3",
+  "passed": 8,
+  "checks": [
+    "Ten desktop/tablet/phone sizes keep the sale in the viewport, invoice larger left, fixed total/charge and independently scrollable 22-line invoice / 32-product catalog",
+    "Real repeated product addition retains product/invoice scroll and search while storing precisely one additional line",
+    "Reduced CSS viewport at 125/150 percent zoom retains charge, product search and the fixed frame",
+    "Desktop table account shares fixed invoice/products frame, preparation status and command controls without page scrolling",
+    "Phone table retains continuous account/products navigation and touch-friendly section jumps",
+    "Payment header, Solo cobrar, Cobrar e imprimir and output stay visible across seven sizes while the payment body scrolls independently",
+    "Pinned Solo cobrar uses the original real settlement exactly once without creating a physical receipt",
+    "Installed full-screen button uses the restricted native window bridge and reflects state across reload and table navigation; explicit exit clears it"
+  ],
+  "layouts": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 1366,
+      "height": 630,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 1280,
+      "height": 580,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 1024,
+      "height": 600,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 900,
+      "height": 520,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "outer_scroll": false,
+      "fixed_total": true,
+      "long_lists_reachable": true
+    },
+    {
+      "width": 1093,
+      "height": 504,
+      "zoom_equivalent": true
+    },
+    {
+      "width": 911,
+      "height": 420,
+      "zoom_equivalent": true
+    },
+    {
+      "width": 1366,
+      "height": 630,
+      "table_frame": true
+    },
+    {
+      "width": 1024,
+      "height": 600,
+      "table_frame": true
+    },
+    {
+      "width": 900,
+      "height": 520,
+      "table_frame": true
+    },
+    {
+      "width": 1366,
+      "height": 630,
+      "payment_header_and_footer_fixed": true
+    },
+    {
+      "width": 1024,
+      "height": 600,
+      "payment_header_and_footer_fixed": true
+    },
+    {
+      "width": 900,
+      "height": 520,
+      "payment_header_and_footer_fixed": true
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "payment_header_and_footer_fixed": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "payment_header_and_footer_fixed": true
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "payment_header_and_footer_fixed": true
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "payment_header_and_footer_fixed": true
+    }
+  ],
+  "page_errors": [],
+  "environment": "Actual Chromium/HTTP/PHP/MariaDB guarded fictional fixture; native bridge simulated, no physical Windows display or printer."
+}

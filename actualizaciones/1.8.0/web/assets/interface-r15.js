@@ -14,7 +14,6 @@
  const svg=(name)=>{const p={plus:'M12 5v14M5 12h14',bag:'M5 7h14l2 14H3L5 7zm3 0V5a4 4 0 0 1 8 0v2',overview:'M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm11 0h7v7h-7z',search:'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0'};const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('class','icon');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('aria-hidden','true');const path=document.createElementNS(s.namespaceURI,'path');path.setAttribute('d',p[name]||p.bag);s.append(path);return s;};
  const profile=$('.r15-profile>div'),cash=$('.r15-cash-popover');if(cash&&profile)profile.append(cash);
  document.addEventListener('click',async event=>{
-  if(event.target.closest('[data-r15-full]')){try{if(document.fullscreenElement)await document.exitFullscreen();else await $('#r15App').requestFullscreen?.();}catch(_){} }
   if(event.target.closest('[data-r15-chat]'))$('.fc-launch')?.click();
   if(event.target.closest('[data-r15-search]')){const d=$('#r15Command');if(d){d.showModal();$('[data-r15-command-input]',d).focus();showResults('');}}
   if(event.target.closest('[data-r15-close]'))event.target.closest('dialog')?.close();

@@ -1,0 +1,13 @@
+{
+  "revision": "R22",
+  "passed": 6,
+  "checks": [
+    "Real delivery creates the customer address with its valid zone and adds delivery fee once",
+    "Only Delivery shows zone, written address, Maps/current location and saved addresses; pickup/coordinated hide and omit all of them, with switch-back preserving usable data",
+    "Phone-address lookup finishing after switching to pickup cannot expose delivery controls or make them submit",
+    "Actual pickup/coordinated orders accept no delivery fields, ignore stale address/zone IDs, charge no delivery and create no saved address",
+    "Delivery still enforces address and an active store zone on the server",
+    "A pickup-only store starts with delivery fields hidden and disabled in server HTML, before any selection"
+  ],
+  "environment": "Actual Chromium/HTTP/CSRF/PHP/MariaDB on a guarded fictional store. No WhatsApp or external messages sent."
+}

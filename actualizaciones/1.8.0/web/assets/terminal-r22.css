@@ -1,0 +1,85 @@
+/* One viewport-sized sale, with independently scrolling item lists. */
+body.r15-app.r22-terminal #r15App>.r15-topbar{height:52px!important;min-height:52px!important;padding:6px 16px!important;gap:12px}
+body.r15-app.r22-terminal #r15App>.breadcrumb{display:none!important}
+body.r15-app #r15App>.r22-fixed-viewport{overflow:hidden!important;min-height:0!important;flex:1}
+body.r15-app #r15App .r22-pos{height:100%!important;min-height:0!important;max-height:100%!important;overflow:hidden!important;display:flex!important;flex-direction:column;padding:10px 14px!important;gap:0}
+.r22-workspace-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;flex:none;min-width:0;margin-bottom:8px}
+body.r15-app #r15App .r22-workspace-heading>.page-heading{display:flex!important;align-items:center;gap:12px;flex:1;min-width:0;margin:0!important;min-height:38px}
+body.r15-app #r15App .r22-workspace-heading h1{font-size:20px!important;line-height:1.2;white-space:nowrap;letter-spacing:-.4px}
+.r22-workspace-heading .page-heading p{display:none!important}.r22-workspace-heading .toolbar{margin-left:auto;flex-wrap:nowrap!important;gap:6px!important}
+body.r15-app #r15App .r22-workspace-heading>.r19-cash-bar{margin:0!important;padding:5px 9px!important;flex:0 1 45%;min-height:36px;gap:9px;flex-wrap:nowrap;background:#fff}
+.r22-workspace-heading .r19-cash-bar>div{flex:1!important;min-width:0}.r22-workspace-heading .r19-cash-bar strong{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.r22-workspace-heading .r19-cash-bar span{font-size:10px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.r15-app #r15App .r22-workspace-heading .r19-cash-bar .btn{min-height:29px!important;flex:none;font-size:11px;padding:5px 8px}
+body.r15-app #r15App .r22-pos>.r19-sale-tools{position:relative!important;top:auto!important;min-height:36px;padding:5px 7px!important;gap:5px;margin-bottom:7px;box-shadow:none;flex:none}
+body.r15-app #r15App .r22-pos>.r19-sale-tools :is(.btn,.r3-button){min-height:28px!important;padding:5px 7px!important;font-size:10px!important;white-space:nowrap}
+body.r15-app #r15App .r22-pos>.r19-open-accounts{margin:0 0 6px;max-height:29px;min-height:0;gap:5px;flex:none}
+.r22-pos>.r19-open-accounts a{padding:4px 6px;font-size:10px}.r22-pos>.r19-table-status{padding:5px 9px;margin-bottom:7px;gap:6px;font-size:10px;flex:none}.r22-pos>.r19-table-status .btn{padding:4px 6px;min-height:26px;font-size:10px}
+body.r15-app #r15App .r22-pos .pos-layout{display:grid!important;flex:1 1 0!important;height:0!important;min-height:0!important;max-height:none!important;grid-template-rows:minmax(0,1fr)!important;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)!important;gap:12px!important;overflow:hidden!important}
+body.r15-app #r15App .r22-pos :is(.ticket,.pos-products){height:100%!important;min-height:0!important;max-height:100%!important;overflow:hidden!important;display:flex!important;flex-direction:column}
+body.r15-app #r15App .r22-pos .ticket-head{display:flex!important;min-height:35px!important;padding:6px 12px!important;flex:none}
+.r22-pos .ticket-head h2{font-size:14px!important}.r22-pos .ticket-head small{font-size:9px!important;margin-top:2px!important}
+body.r15-app #r15App .r22-pos .ticket-customer{min-height:39px!important;padding:5px 10px!important;flex:none}.r22-pos .ticket-customer select{min-height:29px!important;padding:5px 8px!important}
+body.r15-app #r15App .r22-pos .ticket .r3-sale-table-wrap{flex:1 1 0!important;min-height:0!important;height:0!important;max-height:none!important;overflow:auto!important;overscroll-behavior:contain;scrollbar-gutter:stable}
+body.r15-app #r15App .r22-pos .r3-sale-table tr{margin-inline:12px;padding-block:10px;grid-template-columns:minmax(70px,1fr) 90px 65px 95px;gap:8px}
+body.r15-app #r15App .r22-pos .ticket-summary{display:grid!important;grid-template-columns:1fr 1fr;gap:2px 16px;padding:6px 12px!important}
+body.r15-app #r15App .r22-pos .ticket-summary .summary-row{display:flex!important;padding:1px 0;min-height:16px;font-size:10px}
+body.r15-app #r15App .r22-pos .ticket-summary .total{grid-column:1/-1;min-height:29px;padding:3px 0 0!important;margin-top:2px!important}.r22-pos .summary-row.total strong{font-size:23px!important}
+body.r15-app #r15App .r22-pos .ticket-actions{padding:5px 10px 7px!important;gap:5px;flex:none}
+body.r15-app #r15App .r22-pos .ticket-actions>.btn{min-height:35px!important;font-size:13px}.r22-pos .ticket-actions .hstack{gap:5px!important}.r22-pos .ticket-actions .hstack:empty{display:none!important}
+body.r15-app #r15App .r22-pos .pos-products{padding:10px!important;gap:7px}
+body.r15-app #r15App .r22-pos .quick-heading{display:flex!important;min-height:23px;margin:0!important;flex:none}.r22-pos .quick-heading h2{font-size:14px!important}.r22-pos .quick-heading .eyebrow{display:none}
+body.r15-app #r15App .r22-pos .filter-bar{margin:0!important;flex:none}.r22-pos .r3-search{min-height:34px!important}.r22-pos .r3-search input{padding-block:7px!important}
+body.r15-app #r15App .r22-pos .quick-categories{display:flex!important;flex:none!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;min-height:36px!important;max-height:42px!important;gap:5px!important;margin:0!important;padding:0 0 4px!important;scrollbar-width:thin}
+body.r15-app #r15App .r22-pos .quick-categories .chip{display:inline-flex!important;flex:0 0 auto!important;min-width:0!important;min-height:28px!important;max-width:145px!important;padding:5px 8px!important;white-space:nowrap!important;font-size:10px!important;overflow:hidden!important;gap:0}
+.r22-pos .quick-categories .chip .icon{display:none!important}.r22-pos .quick-categories .chip span{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+body.r15-app #r15App .r22-pos .product-grid{display:grid!important;flex:1 1 0!important;height:0!important;min-height:0!important;max-height:none!important;overflow:auto!important;overscroll-behavior:contain;scrollbar-gutter:stable;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-content:start;gap:8px!important}
+body.r15-app #r15App .r22-pos form.pos-product{min-height:132px!important;padding:9px!important}.r22-pos .pos-product>img{height:55px!important}.r22-pos .product-bottom{padding-top:6px!important}
+body.r15-app #r15App .r22-pos>.alert{flex:none;max-height:50px;overflow:auto;margin-bottom:7px;padding:8px 12px;font-size:11px}
+/* Keep payment controls in the dialog's frame; only its body scrolls. */
+body.r15-app .r22-payment{padding:0!important;overflow:hidden!important;max-height:calc(100dvh - 20px)!important;width:min(1020px,calc(100vw - 20px));border:1px solid var(--line)}
+body.r15-app .r22-payment[open]{display:flex!important;flex-direction:column}
+body.r15-app .r22-payment>form{display:flex!important;flex-direction:column;min-height:0;max-height:calc(100dvh - 22px);overflow:hidden}
+body.r15-app .r22-payment>form>header{flex:none;margin:0;padding:12px 18px;min-height:48px}
+.r22-payment-body{overflow:auto;min-height:0;padding:12px 18px;overscroll-behavior:contain;scrollbar-gutter:stable}
+body.r15-app .r22-payment>form>footer{flex:none;position:relative!important;inset:auto!important;padding:10px 18px!important;margin:0!important;border-top:1px solid var(--line);background:#fff;max-height:45dvh;overflow:auto}
+.r22-payment .r20-checkout-actions{gap:9px}.r22-payment .r20-checkout-actions small{font-size:10px}.r22-payment .r3-pay-amount{margin-block:8px;padding:12px}.r22-payment .r3-method-tiles{margin-bottom:12px;gap:8px}.r22-payment .r3-method{min-height:58px;padding:8px}.r22-payment .r3-pay-grid{gap:16px}
+@media(min-width:651px) and (max-width:1100px){
+ body.r15-app #r15App .r22-pos .r3-sale-table tr{grid-template-columns:minmax(65px,1fr) 84px 85px;gap:5px;margin-inline:8px}.r22-pos .r3-sale-table :is(td,th):nth-child(3){display:none!important}
+ .r22-workspace-heading{gap:8px}.r22-workspace-heading .toolbar{gap:4px!important}.r22-workspace-heading .page-heading h1{font-size:18px!important}
+}
+@media(max-width:650px){
+ body.r15-app.r22-terminal #r15App>.r15-topbar{height:48px!important;min-height:48px!important;padding:5px 10px!important}
+ body.r15-app #r15App .r22-pos{padding:7px 8px!important}.r22-workspace-heading{flex-wrap:wrap;gap:5px;margin-bottom:6px}.r22-workspace-heading>.page-heading{flex-basis:100%!important;min-height:31px!important}.r22-workspace-heading h1{font-size:18px!important}
+ body.r15-app #r15App .r22-workspace-heading>.r19-cash-bar{flex:1 0 100%;min-height:30px}.r22-workspace-heading .r19-cash-bar span{display:none!important}
+ body.r15-app #r15App .r22-pos .pos-layout{grid-template-columns:minmax(0,1fr)!important}
+ body.r15-app #r15App .r22-pos:not(.r19-table-view) .pos-layout[data-pos-tab=ticket]>.pos-products{display:none!important}
+ body.r15-app #r15App .r22-pos:not(.r19-table-view) .pos-layout[data-pos-tab=products]>.ticket{display:none!important}
+ body.r15-app #r15App .r22-pos .r3-sale-table tr{grid-template-columns:minmax(60px,1fr) 85px 85px;gap:4px;margin-inline:8px}.r22-pos .r3-sale-table :is(td,th):nth-child(3){display:none!important}
+ .r22-pos .pos-mobile-tabs{margin-block:0 6px!important;min-height:31px;flex:none}.r22-pos .pos-mobile-tabs button{padding:6px!important}
+ /* A phone table retains the requested continuous product/account page. */
+ body.r15-app #r15App .r22-pos.r19-table-view{height:auto!important;max-height:none!important;overflow:visible!important}
+ body.r15-app #r15App .r22-fixed-viewport:has(.r19-table-view){overflow:auto!important}
+ body.r15-app #r15App .r22-pos.r19-table-view .pos-layout{display:flex!important;height:auto!important;overflow:visible!important;flex:none!important}
+ body.r15-app #r15App .r22-pos.r19-table-view :is(.ticket,.pos-products){height:auto!important;max-height:none!important;overflow:visible!important}
+ body.r15-app #r15App .r22-pos.r19-table-view :is(.product-grid,.r3-sale-table-wrap){height:auto!important;overflow:visible!important;flex:none!important;min-height:80px!important}
+ body.r15-app .r22-payment>form>header{padding:9px 12px}.r22-payment-body{padding:10px 12px}.r22-payment .r20-checkout-actions{grid-template-columns:1fr 1fr!important}.r22-payment .r20-checkout-actions>div{padding:0!important;border:0!important}.r22-payment .r20-checkout-actions button{min-height:36px;font-size:12px;padding:7px}.r22-payment .r20-checkout-actions small{display:none}.r22-payment .r20-checkout-actions select{font-size:12px;min-height:32px}.r22-payment .r20-checkout-actions label{font-size:10px}.r22-payment>form>footer>a{font-size:11px;padding:5px!important;min-height:28px!important}
+}
+@media(max-height:600px) and (min-width:651px){
+ body.r15-app.r22-terminal #r15App>.r15-topbar{height:44px!important;min-height:44px!important}
+ body.r15-app #r15App .r22-pos{padding-block:6px!important}.r22-workspace-heading{margin-bottom:5px}
+ body.r15-app #r15App .r22-pos>.r19-sale-tools{margin-bottom:5px}.r22-pos .ticket-head small{display:none!important}
+}
+@media print{body.r15-app.r22-terminal #r15App>.r15-topbar{display:none!important}}
+@media(min-width:651px){
+ body.r15-app #r15App .view-container:has(.r22-floor){overflow:hidden!important}
+ body.r15-app #r15App .r22-floor{height:100%;min-height:0;max-height:100%;overflow:hidden;display:flex;flex-direction:column;padding:10px 14px!important}
+ body.r15-app #r15App .r22-floor>.r19-sale-tools{position:relative!important;top:auto!important;padding:5px 7px!important;min-height:36px;margin-bottom:7px;gap:5px;flex:none;box-shadow:none}
+ body.r15-app #r15App .r22-floor>.r19-sale-tools :is(.btn,.r3-button){min-height:28px!important;font-size:10px!important;padding:5px 7px!important}
+ body.r15-app #r15App .r22-floor .r15-floor-filter{flex:none;margin:0 0 7px;min-height:32px;gap:8px}
+ body.r15-app #r15App .r22-floor .r15-floor-layout{flex:1;min-height:0;height:0;display:flex!important;align-items:stretch!important}
+ body.r15-app #r15App .r22-floor .r15-floor-card{flex:1;min-height:0!important;height:100%!important;max-height:100%;display:flex;flex-direction:column;margin:0;overflow:hidden}
+ body.r15-app #r15App .r22-floor .floor-toolbar{flex:none;min-height:32px;padding:5px 10px;font-size:10px}
+ body.r15-app #r15App .r22-floor .r3-floor-canvas{flex:1;height:0!important;min-height:0!important;max-height:none!important;aspect-ratio:auto;margin:0!important}
+ body.r15-app #r15App .r22-floor .r3-floor-canvas svg{width:100%;height:100%;display:block}
+ body.r15-app #r15App .r22-floor .floor-hint{flex:none;padding:5px 10px;min-height:24px;font-size:10px}
+}

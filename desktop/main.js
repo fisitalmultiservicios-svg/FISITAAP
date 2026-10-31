@@ -71,11 +71,15 @@ app.whenReady().then(async () => {
   if(fs.existsSync(modeFile)){try{const saved=JSON.parse(fs.readFileSync(modeFile,'utf8'));destination=clientURL(saved.url);if(saved.webUrl)cachedWebURL=webBase(saved.webUrl);}catch{fs.rmSync(modeFile,{force:true});destination=service.url;}}
   if(service.store.data.connection){destination=service.url;cachedWebURL=service.store.data.connection.url;}
   localOrigins.add(new URL(destination).origin);
-  workspace=new DesktopWorkspace({electron:require('electron'),service,localURL:destination,cachedWebURL,onWebURL:url=>{
+  const displayFile=path.join(dir,'pantalla.json');let displayState={};
+  try{displayState=JSON.parse(fs.readFileSync(displayFile,'utf8'));}catch{}
+  workspace=new DesktopWorkspace({electron:require('electron'),service,localURL:destination,cachedWebURL,displayState,onDisplayState:value=>fs.writeFileSync(displayFile,JSON.stringify(value),{mode:0o600}),onWebURL:url=>{
     if(workspace.localURL!==service.url)fs.writeFileSync(modeFile,JSON.stringify({url:workspace.localURL,webUrl:url}),{mode:0o600});
   }});
   const shellOnly=event=>{const u=trustedLocal(event);if(event.sender!==workspace.win.webContents||u.pathname!=='/desktop-shell.html')throw new Error('Usa los botones del programa FISITAAP.');};
   ipcMain.handle('fisitaap:workspace-state',event=>{shellOnly(event);return workspace.snapshot();});
+  ipcMain.handle('fisitaap:window-state',event=>workspace.windowControl(event));
+  ipcMain.handle('fisitaap:fullscreen',(event,value)=>workspace.windowControl(event,value));
   ipcMain.handle('fisitaap:local-request',(event,value)=>{
     if(event.sender!==workspace.localView.webContents||event.senderFrame.parent||new URL(event.senderFrame.url).origin!==new URL(service.url).origin)throw new Error('Opera la caja desde la aplicación instalada de este equipo.');
     return service.localRequest(value);
@@ -105,7 +109,7 @@ app.whenReady().then(async () => {
       {type:'separator'},{role:'quit',label:'Salir'}
     ]},
     {label:'Edición',submenu:[{role:'undo'},{role:'redo'},{type:'separator'},{role:'cut'},{role:'copy'},{role:'paste'}]},
-    {label:'Vista',submenu:[{label:'Recargar',accelerator:'CmdOrCtrl+R',click:()=>workspace.activeView.webContents.reload()},{label:'Aumentar zoom',click:()=>workspace.activeView.webContents.setZoomLevel(workspace.activeView.webContents.getZoomLevel()+1)},{label:'Reducir zoom',click:()=>workspace.activeView.webContents.setZoomLevel(workspace.activeView.webContents.getZoomLevel()-1)},{label:'Restablecer zoom',click:()=>workspace.activeView.webContents.setZoomLevel(0)}]},
+    {label:'Vista',submenu:[{label:'Pantalla completa',accelerator:'F11',click:()=>workspace.setFullscreen(!workspace.windowState().fullscreen)},{label:'Recargar',accelerator:'CmdOrCtrl+R',click:()=>workspace.activeView.webContents.reload()},{label:'Aumentar zoom',click:()=>workspace.activeView.webContents.setZoomLevel(workspace.activeView.webContents.getZoomLevel()+1)},{label:'Reducir zoom',click:()=>workspace.activeView.webContents.setZoomLevel(workspace.activeView.webContents.getZoomLevel()-1)},{label:'Restablecer zoom',click:()=>workspace.activeView.webContents.setZoomLevel(0)}]},
     {label:'Imprimir',submenu:[{label:'Configurar impresoras',click:()=>{const w=new BrowserWindow({width:850,height:700,webPreferences:{nodeIntegration:false,contextIsolation:true,sandbox:true,preload:path.join(__dirname,'preload.js')}});w.webContents.setWindowOpenHandler(()=>({action:'deny'}));w.webContents.on('will-navigate',(e,url)=>{if(url!==service.url+'/print-settings.html')e.preventDefault();});w.loadURL(service.url+'/print-settings.html');}},{label:'Guardar página como PDF',click:async()=>{try{const chosen=await dialog.showSaveDialog({title:'Guardar la página como PDF',defaultPath:'FISITAAP.pdf',filters:[{name:'Documento PDF',extensions:['pdf']}]});if(!chosen.canceled&&chosen.filePath){const pdf=await workspace.activeView.webContents.printToPDF({printBackground:true});fs.writeFileSync(chosen.filePath,pdf,{mode:0o600});}}catch(error){dialog.showErrorBox('No se pudo guardar el PDF',error.message);}}},{label:'Abrir comprobantes PDF',click:()=>require('electron').shell.openPath(path.join(dir,'impresion'))}]}
   ]));
   await workspace.start();

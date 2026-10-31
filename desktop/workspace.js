@@ -1,6 +1,6 @@
 'use strict';
 
-const BAR_HEIGHT=86;
+const BAR_HEIGHT=48;
 const WEB_PERMISSIONS=['media','geolocation','notifications','clipboard-sanitized-write','local-network','local-network-access','loopback-network','web-printing','fullscreen'];
 function webBase(value) {
   const url=new URL(value);
@@ -8,13 +8,14 @@ function webBase(value) {
   return url.origin+url.pathname.replace(/\/+$/,'');
 }
 class DesktopWorkspace {
-  constructor({electron,service,localURL=service.url,cachedWebURL=null,onWebURL=()=>{},fetch:request=fetch,monitorMs=2000}) {
+  constructor({electron,service,localURL=service.url,cachedWebURL=null,onWebURL=()=>{},displayState={},onDisplayState=()=>{},fetch:request=fetch,monitorMs=2000}) {
     this.electron=electron;this.service=service;this.localURL=localURL;this.request=request;this.onWebURL=onWebURL;
     this.state={mode:'local',available:false,configured:false,centralReady:true,pending:0,webUrl:cachedWebURL?webBase(cachedWebURL):null,message:'Comprobando la conexión…'};
     this.closed=false;this.refreshing=null;this.webLoaded=false;this.webFailed=false;this.notice='';this.connectionError='';this.action=0;this.generation=0;
     const prefs={nodeIntegration:false,contextIsolation:true,sandbox:true};
     const icon=electron.app?.isPackaged?require('node:path').resolve(process.resourcesPath,'..','icon.ico'):require('node:path').join(__dirname,'icon.ico');
-    this.win=new electron.BrowserWindow({width:1360,height:950,minWidth:900,minHeight:700,icon,webPreferences:{...prefs,preload:require('node:path').join(__dirname,'preload.js')}});
+    this.win=new electron.BrowserWindow({width:1360,height:950,minWidth:780,minHeight:500,fullscreen:displayState.fullscreen===true,icon,webPreferences:{...prefs,preload:require('node:path').join(__dirname,'preload.js')}});
+    this.fullscreen=displayState.fullscreen===true;this.onDisplayState=onDisplayState;
     this.localView=new electron.WebContentsView({webPreferences:{...prefs,preload:require('node:path').join(__dirname,'preload.js')}});
     // The live web has a persistent session and a restricted printing-only preload.
     this.webView=new electron.WebContentsView({webPreferences:{...prefs,partition:'persist:fisitaap-web',preload:require('node:path').join(__dirname,'web-preload.js')}});
@@ -52,6 +53,10 @@ class DesktopWorkspace {
       if(!this.webLoaded||this.automaticOffline())this.show('local');else this.publish();
     });
     this.win.on('resize',()=>this.resize());
+    for(const event of ['enter-full-screen','leave-full-screen'])this.win.on(event,()=>{
+      this.fullscreen=event==='enter-full-screen';this.onDisplayState(this.windowState());this.resize();
+      for(const contents of [this.win.webContents,this.webView.webContents,this.localView.webContents])contents.send('fisitaap:window-state',this.windowState());
+    });
     this.win.on('closed',()=>this.close());
     this.show('local');
     Promise.resolve(this.win.loadURL(service.url+'/desktop-shell.html')).catch(()=>{});
@@ -61,6 +66,21 @@ class DesktopWorkspace {
     if(monitorMs>0){this.timer=setInterval(()=>void this.refresh(),monitorMs);this.timer.unref();}
   }
   automaticOffline(){return this.localURL===this.service.url&&this.service.isPrincipal?.()===true&&this.service.store.data.snapshot?.offline_policy?.version===180;}
+  windowState(){return {fullscreen:this.fullscreen};}
+  windowControl(event,value){
+    const frame=event.senderFrame,url=new URL(frame.url);
+    const shell=event.sender===this.win.webContents&&url.origin===new URL(this.service.url).origin&&url.pathname==='/desktop-shell.html';
+    const local=event.sender===this.localView.webContents&&url.origin===new URL(this.localURL).origin;
+    const web=event.sender===this.webView.webContents&&this.state.webUrl&&url.origin===new URL(this.state.webUrl).origin;
+    if(frame.parent||!(shell||local||web))throw new Error('Usa pantalla completa desde la ventana principal de FISITAAP.');
+    if(value!==undefined){if(typeof value!=='boolean')throw new Error('Estado de pantalla inválido.');return this.setFullscreen(value);}
+    return this.windowState();
+  }
+  setFullscreen(value){
+    this.fullscreen=value;this.win.setFullScreen(value);this.onDisplayState(this.windowState());this.resize();
+    for(const contents of [this.win.webContents,this.webView.webContents,this.localView.webContents])contents.send('fisitaap:window-state',this.windowState());
+    return this.windowState();
+  }
   snapshot(){return {...this.state};}
   publish() {
     if(this.closed)return;
