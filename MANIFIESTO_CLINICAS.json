@@ -1,0 +1,142 @@
+{
+  "base": "FISITAAP ERP 4.22",
+  "base_zip_sha256": "a48406d04df00351d690bc4568e611b17449ff8a5035740cc0513fc0bacd20ad",
+  "modulo": "clinicas-1.0-rc1",
+  "fecha": "2026-11-11",
+  "estado": "Candidato para instalación y aceptación; no instalado en cPanel",
+  "datos_persistentes_incluidos": false,
+  "archivos": [
+    {
+      "ruta": "app/auth.py",
+      "antes": "994b9ae10c38dfa7df5f4621ef2b604d66976cd386b26e3100e0497ddcc0e6f3",
+      "despues": "55f26bbc1dc12b2b39117bdc6f91bc1518892616b465c6e0922d3c9ef80ad488",
+      "bytes": 211719
+    },
+    {
+      "ruta": "app/clinicas.py",
+      "antes": null,
+      "despues": "1e3eae94524cc7d27457037fbcf2a931b106d4c4ecd514e04d8ba472eba72abf",
+      "bytes": 61015
+    },
+    {
+      "ruta": "app/clinicas_modelos.py",
+      "antes": null,
+      "despues": "7485b7b91162a52e872418f7d53dc229e9a50b3577e32dc152a7686ccd3d0ece",
+      "bytes": 6684
+    },
+    {
+      "ruta": "app/db.py",
+      "antes": "b48930bc114ec561a8ef385f112751275decf74b03ae5ae79896840f618ebf17",
+      "despues": "3ccd82e2d279b8a7f8ce28400718ab03e89a381d46e8ad149f875d1739e93597",
+      "bytes": 29028
+    },
+    {
+      "ruta": "app/inventario.py",
+      "antes": "94f8f92bc56563fdcb79ee965a5906fa424987a3d1883f451738f51e94261ee5",
+      "despues": "5e8a77f75e74e6a5f67de2a19c4eda17c18563d545a056113f3c70ae1f7bdc60",
+      "bytes": 59175
+    },
+    {
+      "ruta": "app/main.py",
+      "antes": "e14829af5b767690ea7dcd93abba07db6b7b6c183b7884e1795b3af695b7a884",
+      "despues": "838333897b683449d03c273c7cf841c826cacdbb4bf8a73244a940d5b5bc58ff",
+      "bytes": 500788
+    },
+    {
+      "ruta": "app/planes.py",
+      "antes": "b0fee50818d869a2b2b9048d693a0a4a9df68274f2c8972877af50ebf1b7285a",
+      "despues": "6f331159d33055523efc054c86f4b5b89c271d72a4b47b80768b8648ef713886",
+      "bytes": 34905
+    },
+    {
+      "ruta": "app/respaldo.py",
+      "antes": "377d50d58ea6affaa8120cf1c6043244730ea4d22890389721dfef164f77cfed",
+      "despues": "c0e0169992686b52506ccd541dfd8d76a6669e90ab81cdff049545d27fc2a303",
+      "bytes": 25164
+    },
+    {
+      "ruta": "app/static/js/app.js",
+      "antes": "2d73816f3c1d50d8e9015c001928df02b820698dfda8cd454a4efe5caeddef61",
+      "despues": "9c98fd90f3a28da2ad05e6e4b904f3e6651c0b26354a58feeeb81a62fbc76e60",
+      "bytes": 82440
+    },
+    {
+      "ruta": "app/static/js/menu.js",
+      "antes": "61dd3b5187ff9e3aecad12ed23948c9b88e052ad2d4a82ed69c92abe2ff89ab3",
+      "despues": "dc22eb64c5e70ebf48465e0210081cc3c9a037ff47c0070850f58b55d76f8ba1",
+      "bytes": 33320
+    },
+    {
+      "ruta": "app/static/js/pages/clinicas/index.js",
+      "antes": null,
+      "despues": "58f81936d34cdb5d68018541f57db97e87decd48ad05c454d678ed490c08e8e2",
+      "bytes": 37924
+    },
+    {
+      "ruta": "app/static/js/pages/ventas/factura-form.js",
+      "antes": "e1af8de2ac983ba20b23b39513fb94e524107d302523b8a10e7323c33dca91b4",
+      "despues": "0aaa610fc326dedee8903020e534d6329f78cf846ef64166d670ba74b8549950",
+      "bytes": 48591
+    },
+    {
+      "ruta": "NOVEDADES.txt",
+      "antes": "38e6956afcceab48a2a21fef4430289e9dea153490e1e122b3de79633ffe6ffa",
+      "despues": "aa1066d85a694072b85990639e77e365809d4a60455c91f95cae55fe35fc8ce0",
+      "bytes": 261913
+    },
+    {
+      "ruta": "ACTUALIZAR_CLINICAS.md",
+      "antes": null,
+      "despues": "0507240ca95331fe187ce09318e76fc350e13e2dafcc9a64683da643edef0ba9",
+      "bytes": 10257
+    },
+    {
+      "ruta": "docs/CLINICAS_ALCANCE.md",
+      "antes": null,
+      "despues": "a4bc0280e02869086d12a1cda3ecc9d834ab06cd75c4585e19d8ee50009a803d",
+      "bytes": 13477
+    },
+    {
+      "ruta": "docs/CLINICAS_VALIDACION.md",
+      "antes": null,
+      "despues": "6f0c7e3016d1f941491cc8119508d23176a2850e32b417d67a794ce3db81c736",
+      "bytes": 8684
+    },
+    {
+      "ruta": "tests/test_clinicas.py",
+      "antes": null,
+      "despues": "1d0c702afdef8c6b6f9d51c22ceed8db28259b35e71d56c05c78c2e3bd375286",
+      "bytes": 27056
+    },
+    {
+      "ruta": "tests/test_permisos.py",
+      "antes": "e2c138ad692281db4b02e7f8afc23df484993d48d7f24ceb019fed4d46459533",
+      "despues": "4d6dbda7023e5406711abb44533519abef9a40027d4ce1ca995b093aa07c18f6",
+      "bytes": 2710
+    },
+    {
+      "ruta": "tests/test_planes.py",
+      "antes": "dcc53e170d60dd324a3b50a7e6df83a393b75e821e0076f6742488173950b04c",
+      "despues": "32087be40d493e1c18b379b8c15997162682f65253d95fc10235227f28404985",
+      "bytes": 11292
+    },
+    {
+      "ruta": "tests/test_rol_avanzado.py",
+      "antes": "1b59b55626e4821ed5304a73f8c557402f2800314a14be473849cf65b1e866af",
+      "despues": "194bbea11a99eb925a87213c9bbe0280d8e685519034e4476a80c20f52a92592",
+      "bytes": 2546
+    },
+    {
+      "ruta": "tools/verificar_clinicas.py",
+      "antes": null,
+      "despues": "fb698fafd8e046ab1d19f585f19f840c9207fe103cfe83eef17c7e350921ca7c",
+      "bytes": 2237
+    },
+    {
+      "ruta": "tools/construir_clinicas.py",
+      "antes": null,
+      "despues": "05529ed2e2e7e7633908157f6282459d20af8eba07c00a4392c28fa2a19c6a4c",
+      "bytes": 4101
+    }
+  ]
+}
