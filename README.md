@@ -1,40 +1,39 @@
-# FISITAAP ERP 4.40.1 — instalador para Windows
+# FISITAAP ERP 4.40.2 — instalador para Windows
 
-[Descargar instalador 4.40.1 para Windows 10/11 de 64 bits](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/descargas-windows/FISITAAP-ERP-4.40.1-Instalador.exe)
+[Descargar instalador 4.40.2 para Windows 10/11 de 64 bits](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/descargas-windows/FISITAAP-ERP-4.40.2-Instalador.exe)
 
-Esta entrega parte del paquete oficial ERP 4.40 y agrega los ajustes solicitados por su propietario. La rama `descargas-windows` solo distribuye instaladores, es independiente de la rama principal y no representa el código fuente del ERP.
+La rama `descargas-windows` distribuye instaladores. Es independiente de la rama principal y no representa el código fuente del ERP. La base de esta entrega es el paquete oficial ERP 4.40 y los cambios autorizados por su propietario.
 
-## Cambios de 4.40.1
+## Correcciones de 4.40.2
 
-- Catálogo web, Clientes web y Mi página se administran exclusivamente en cloud. Se ocultan del menú y del buscador local; un enlace guardado muestra un aviso para abrir la versión online. El servidor local también rechaza las operaciones directas de administración.
-- FISITAAP abre en una ventana propia de Windows con Microsoft WebView2. El acceso directo del escritorio abre el programa y lleva su icono.
-- El inicio de sesión local ofrece un selector de usuarios sincronizados de empresas vinculadas. No incluye cuentas bloqueadas, de soporte o de empresas no vinculadas. La contraseña, MFA, PIN y el primer ingreso con internet conservan sus reglas. Incluye actualizar lista e ingreso manual por correo.
-- Se mantienen sincronización de productos, operación de pedidos web, caja, impresión y red local.
+- Se corrige el aviso que seguía pidiendo recargar: en 4.40.1 el EXE tenía la versión nueva, pero la interfaz seguía indicando 4.40. Ahora servidor, interfaz y service worker indican 4.40.2 y el constructor impide empaquetar versiones distintas.
+- La ventana se ejecuta en un programa Windows propio, con el icono e identidad de FISITAAP para ventana, barra de tareas y Alt+Tab. La interfaz ya no se aloja en PowerShell. El acceso del escritorio mantiene su icono de FISITAAP.
+- La ventana retira el controlador de caché local antes de navegar y vuelve a cargar el programa. No se borran cookies, localStorage, IndexedDB, vinculación ni bases del ERP.
 
-## Instalar o actualizar
+Se conservan los cambios de 4.40.1: selector de usuarios locales con contraseña/MFA/PIN según sus reglas, Catálogo web/Clientes web/Mi página exclusivos de cloud, operación de pedidos web, sincronización de productos, caja, impresión y red local.
 
-1. Terminar las operaciones y cerrar las ventanas de FISITAAP.
-2. Ejecutar el instalador 4.40.1 sobre la instalación actual. Los datos y la vinculación se conservan; no es necesario desinstalar ni borrar carpetas.
-3. El asistente comprueba WebView2. Si falta, necesita internet para descargar el instalador oficial de Microsoft y verifica su firma antes de ejecutarlo.
-4. Abrir «FISITAAP Local» desde el escritorio. La ventana propia puede pedir iniciar sesión nuevamente, porque usa un perfil distinto al navegador anterior. La vinculación existente permanece guardada.
-5. Mantener activada la opción de red local si otros equipos deben conectarse. Esos equipos usan `http://IP-DE-LA-PC:8020/app/` en la misma red.
+## Actualizar
 
-Al cerrar la ventana, el servidor sigue activo para los dispositivos secundarios. El icono del escritorio vuelve a abrirla. El PC principal y la red local deben permanecer encendidos. La primera vinculación y el primer ingreso de cada usuario necesitan internet conforme a las reglas del ERP.
+1. Termine las operaciones y cierre todas las ventanas de FISITAAP.
+2. Ejecute este instalador sobre la instalación actual; conserve la opción de red local si otros equipos se conectan al PC. No hace falta desinstalar ni borrar carpetas.
+3. Abra «FISITAAP Local» desde el acceso del escritorio. Se conservan los datos y la vinculación de la empresa.
 
-Esta descarga no modifica cPanel y no contiene datos de empresas ni credenciales. Las secciones exclusivas de cloud se abren en la web con la cuenta correspondiente.
+El instalador verifica WebView2 y, si falta, necesita internet para instalar el componente oficial de Microsoft después de comprobar su firma. La ventana usa .NET Framework 4.6.2 o posterior, disponible en las versiones actuales de Windows 10/11. PowerShell se utiliza durante la instalación y para crear accesos, no como interfaz del programa.
 
-## Validación y límites
+Al cerrar la ventana, el servidor sigue activo para los dispositivos secundarios. El acceso del escritorio vuelve a abrirla. Los secundarios entran a `http://IP-DE-LA-PC:8020/app/`; el PC y la red deben permanecer encendidos. Esta descarga no modifica cPanel ni contiene datos de empresas o credenciales.
 
-203 pruebas relevantes únicas aprobadas: bloqueo, selector, autenticación, sincronización, pedidos, menús, impresión simulada y lanzador. Se omitieron 16 casos que requieren Windows real. Los archivos originales recibidos permanecen intactos; los cambios están en una copia de trabajo.
+## Validación
 
-El EXE Windows compilado pasó su autoprueba y 15 comprobaciones de arranque sin red externa bajo Wine, incluyendo bloqueo de administración web, selector, autenticación y agente de impresión. El código de la ventana compiló contra las bibliotecas reales de Microsoft WebView2.
+52 pruebas de regresión aprobadas en esta corrección: versiones, bloqueo, selector, inicio de sesión, lanzador, menús e impresión simulada. El EXE Windows pasó su autoprueba y 17 verificaciones de arranque sin red externa bajo Wine, incluida la coincidencia de versiones del servidor, interfaz y service worker.
 
-La ventana gráfica, PowerShell, la instalación del Runtime WebView2, el asistente de instalación y una impresora física todavía requieren validación en un equipo Windows real. Estos resultados no son una ejecución de toda la suite del ERP ni una prueba con cuentas productivas.
+La ventana propia compiló contra el SDK real de WebView2. Se verificaron los nueve tamaños del icono de FISITAAP incrustados en su ejecutable, su tipo de aplicación gráfica x64 y la integridad de fuente, ejecutable y bibliotecas. La autoprueba del EXE verifica también los componentes empaquetados.
 
-El instalador y el programa no llevan firma Authenticode propia. Su integridad puede verificarse con `SHA256SUMS.txt`.
+La comprobación visual de la ventana, barra de tareas, asistente, instalación del runtime y una impresora física todavía requieren Windows real. Estas pruebas no equivalen a ejecutar toda la suite del ERP ni a validar cuentas productivas.
 
-No se debe cargar el asistente de instalación en el lugar del ejecutable que usa el actualizador de la nube. Las actualizaciones del programa requieren que WebView2 ya esté instalado en los equipos.
+El instalador y el programa no llevan firma Authenticode propia. Los hashes están en `SHA256SUMS.txt`.
 
-## Versión anterior
+No se debe cargar el asistente de instalación como ejecutable del actualizador de cloud. El publicador usa el programa y su manifiesto; los equipos necesitan WebView2 antes de habilitar actualizaciones automáticas.
 
-[Instalador 4.40 original](https://github.com/fisitalmultiservicios-svg/FISITAAP/raw/refs/heads/descargas-windows/FISITAAP-ERP-4.40-Instalador.exe)
+## Versiones anteriores
+
+Se conservan los archivos 4.40 y 4.40.1 para trazabilidad. Para el aviso de versión y el icono de PowerShell use 4.40.2.
